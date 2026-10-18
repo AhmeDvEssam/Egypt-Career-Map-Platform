@@ -1,0 +1,25 @@
+/* --- FILTER NOTIFICATION --- */
+.ai-filter-notification {
+    position: fixed;
+    bottom: 80px;
+    right: 20px;
+    padding: 14px 20px;
+    background: linear-gradient(135deg, rgba(59, 130, 246, 0.95), rgba(37, 99, 235, 0.95));
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    color: white;
+    border-radius: 10px;
+    box-shadow: 0 6px 24px rgba(0, 0, 0, 0.25);
+    font-size: 0.9rem;
+    font-weight: 500;
+    z-index: 999998;
+    animation: slideInRight 0.3s ease-out, fadeOut 0.3s ease-in 3.7s forwards;
+    pointer-events: none;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.ai-filter-notification i {
+    font-size: 1.1rem;
+}

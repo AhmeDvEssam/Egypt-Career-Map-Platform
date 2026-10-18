@@ -1,0 +1,32 @@
+# Dependencies
+node_modules/
+dist/
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+
+# Environment & Secrets
+.env
+.DS_Store
+
+# Data (Protect Scraped Data)
+data/*.csv
+data/*.json
+data/proxies.txt
+!data/.keep
+
+# Root CSV files (accidentally created)
+*.csv
+
+# TypeScript
+*.tsbuildinfo
+
+# Next.js
+.next/
+out/
+
+# Prisma
+prisma/migrations/
+prisma/*.generated.ts

@@ -1,0 +1,1482 @@
+# Database Deep Row-by-Row Audit Report
+
+## 1. Non-Standard Skill Levels
+- `...`
+- `1+ Year Experience`
+- `1+ Years Experience`
+- `12+ Years`
+- `13–15 Years`
+- `1–3 Years`
+- `2`
+- `2+ Years`
+- `23 - 38`
+- `3+ Years`
+- `30-Hour`
+- `38 - 55`
+- `5 سنوات`
+- `5+ Years`
+- `6 Months`
+- `6+ Years`
+- `7`
+- `7+ Years`
+- `Abilities`
+- `Ability`
+- `Ability To Deal With`
+- `Ability To Handle`
+- `Able`
+- `Academic`
+- `Account Management`
+- `Accuracy`
+- `Accurate`
+- `Actionable`
+- `Added Advantage`
+- `Administration`
+- `Advanced - C1`
+- `Advantage`
+- `Advantageous`
+- `Advertising`
+- `Affinity`
+- `Ambitious`
+- `Analysis`
+- `Analytical`
+- `Aptitude`
+- `As Needed`
+- `Asset`
+- `Assisted`
+- `Associate`
+- `Attention`
+- `Attention To Detail`
+- `Availability`
+- `Aware`
+- `Awareness`
+- `B1 Or Above`
+- `B1+`
+- `B1-B2`
+- `B1/B1+`
+- `B1/B2`
+- `B2 Upper Intermediate`
+- `B2+`
+- `B2+ - C1`
+- `B2+/C1`
+- `B2-C1`
+- `B2/B1+`
+- `B2/C1`
+- `B2/C1 Or Above`
+- `B2/C1/C2`
+- `B2–C1`
+- `Bachelor`
+- `Bachelor Degree`
+- `Bachelor'S`
+- `Bachelor'S Degree`
+- `Bachelor'S Or Doctor'S Degree`
+- `Bachelor/Advanced`
+- `Bachelor’S`
+- `Bachelor’S Degree`
+- `Backend`
+- `Background`
+- `Basic Knowledge`
+- `Basic Understanding`
+- `Basic/Asset`
+- `Basic/Conversational`
+- `Basic/Intermediate`
+- `Basics`
+- `Beginner → Advanced`
+- `Beginner/Advanced`
+- `Beginner/Intermediate`
+- `Beginner/Intermediate/Advanced`
+- `Beginner/Intermediate/Advanced/Not Specified`
+- `Beneficial`
+- `Best Practices`
+- `Best-In-Class`
+- `Bias`
+- `Biased`
+- `Bilingual`
+- `Bonus`
+- `Brand Awareness`
+- `Brokerage`
+- `Business`
+- `Business Fluent`
+- `Business-Fluent`
+- `Business-Oriented`
+- `C1/C2`
+- `C2 Level`
+- `Calm Manner`
+- `Capability`
+- `Capable`
+- `Career Focus`
+- `Certification`
+- `Certified`
+- `Clear`
+- `Clear Explanation`
+- `Clear, Confident`
+- `Coaching`
+- `Collaborative`
+- `Comfort`
+- `Comfortable`
+- `Commercial`
+- `Commitment`
+- `Committed`
+- `Communication`
+- `Competence`
+- `Competency`
+- `Competent`
+- `Complete`
+- `Complex`
+- `Compliance`
+- `Compliant`
+- `Complimentary`
+- `Comprehensive`
+- `Confident`
+- `Consistent`
+- `Consulting`
+- `Continuous Improvement`
+- `Contribution`
+- `Control`
+- `Conversational`
+- `Cooperates`
+- `Coordinating`
+- `Coordination`
+- `Core`
+- `Creative And Enthusiastic`
+- `Custom Reports/Bapis`
+- `Customer-Focused`
+- `Data Entry`
+- `Data Management`
+- `Data-Driven`
+- `Deep`
+- `Deep Knowledge`
+- `Deep Understanding`
+- `Degree`
+- `Degree Holder`
+- `Delivers`
+- `Demonstrated`
+- `Demonstrates`
+- `Dependable`
+- `Designing`
+- `Desirable`
+- `Desire`
+- `Desired`
+- `Developed`
+- `Developing`
+- `Director`
+- `Doctorate`
+- `Domain`
+- `Domain Knowledge`
+- `Driven`
+- `Effective`
+- `Effectively`
+- `Efficient`
+- `Emerging`
+- `End User`
+- `Engaging`
+- `Engineering`
+- `English`
+- `Enterprise`
+- `Entrepreneurial`
+- `Entry`
+- `Entry Level`
+- `Entry-Level`
+- `Entry-Mid`
+- `Essential`
+- `Event Coordination`
+- `Event Execution`
+- `Event Management`
+- `Events Organizing`
+- `Events Planning`
+- `Evidence-Based`
+- `Excellence`
+- `Excellent`
+- `Excellent Proficiency`
+- `Exceptional`
+- `Executive`
+- `Exemplary`
+- `Existing`
+- `Expected`
+- `Experience`
+- `Experienced`
+- `Expert Proficiency`
+- `Expertise`
+- `Exposure`
+- `Extensive`
+- `Extensive Experience`
+- `Extremely High`
+- `Fair`
+- `Familiar`
+- `Familiarity`
+- `Fast-Paced`
+- `Fast/Accurate`
+- `Financial Awareness`
+- `Financial Services`
+- `Fintech`
+- `First Class`
+- `Fixed`
+- `Flexible`
+- `Fluency`
+- `Fluent/Native`
+- `Focused`
+- `Follow`
+- `Follow-Up`
+- `Following`
+- `Forex`
+- `Foundation`
+- `Foundational`
+- `Full`
+- `Full Professional Fluency`
+- `Full Professional Proficiency`
+- `Full-Cycle`
+- `Functional`
+- `Fundamental`
+- `Fundamentals`
+- `General`
+- `General Proficiency`
+- `Genuine`
+- `Good`
+- `Good Background`
+- `Good Command`
+- `Good Knowledge`
+- `Good Proficiency`
+- `Good To Have`
+- `Good To Very Good`
+- `Good Understanding`
+- `Good/Excellent`
+- `Graduate`
+- `Green Belt`
+- `Green/Black Belt`
+- `Handles`
+- `Handling`
+- `Hands On`
+- `Hands On Experience`
+- `Hands-On`
+- `Hands-On Experience`
+- `High`
+- `High Level`
+- `High Proficiency`
+- `High School/Vocational Diploma`
+- `High-Level`
+- `High-Pressure`
+- `Highest Priority`
+- `Highly`
+- `Highly Organized`
+- `Highly Proficient`
+- `I`
+- `Implementation`
+- `Implied`
+- `In-Depth`
+- `In-Depth Knowledge`
+- `In-Depth Mastery`
+- `Included`
+- `Independent`
+- `Innovative`
+- `Interest`
+- `Interest And Knowledge`
+- `Intermediate/Advanced`
+- `Introduction`
+- `Introductory`
+- `Iterative`
+- `Keen`
+- `Keen Eye`
+- `Key Relationships`
+- `Knowledge`
+- `Knowledgeable`
+- `L1`
+- `L2`
+- `L3`
+- `Lead`
+- `Leadership`
+- `Leadership Mindset`
+- `Licensed`
+- `Light`
+- `Maintenance`
+- `Major`
+- `Management`
+- `Manager`
+- `Manager/Supervisor`
+- `Managerial`
+- `Marketing Operations`
+- `Master'S Or Doctorate`
+- `Mastery`
+- `Medication`
+- `Medium`
+- `Membership`
+- `Mentoring Capability`
+- `Mep`
+- `Meticulous`
+- `Microsoft Office`
+- `Mid`
+- `Mid-Advanced`
+- `Mid-Level`
+- `Mid-Senior`
+- `Mindset`
+- `Minimal`
+- `Minimum`
+- `Minimum 1 Year Experience`
+- `Minimum 3 Years`
+- `Minimum 7 Years`
+- `Minimum Of 2 Years`
+- `Minimum Of 4-5 Years`
+- `Moderate`
+- `Moving`
+- `Multilingual`
+- `Multiple`
+- `Must`
+- `Must Have`
+- `Must-Have`
+- `N/A`
+- `Na`
+- `Native Proficiency`
+- `Native Speaker`
+- `Native/C2`
+- `Native/Fluent`
+- `Native/Near Native`
+- `Native/Near-Native`
+- `Native/Professional`
+- `Natural`
+- `Near-Native/Full Professional Proficiency`
+- `New Range`
+- `New Skills And Knowledge`
+- `Nice To Have`
+- `Nice-To-Have`
+- `Not_Specified`
+- `Objective`
+- `Occasional`
+- `Office Management`
+- `Online`
+- `Open`
+- `Openness`
+- `Operational`
+- `Optimization`
+- `Organizational`
+- `Organizational Skills`
+- `Orientation`
+- `Original`
+- `Outgoing`
+- `Outstanding`
+- `Passion`
+- `Passionate`
+- `Patient`
+- `Plans`
+- `Platforms`
+- `Positive Attitude`
+- `Postgraduate`
+- `Practical`
+- `Practical Experience`
+- `Practices`
+- `Practitioner`
+- `Precise`
+- `Preferable`
+- `Preparation`
+- `Previous`
+- `Previous Experience`
+- `Prior`
+- `Prior Experience`
+- `Proactive`
+- `Problem-Solving`
+- `Procedures`
+- `Production`
+- `Productivity Software`
+- `Professional Fluency`
+- `Professional Working Proficiency`
+- `Professional/Bilingual`
+- `Proficiency`
+- `Proficient`
+- `Project Management`
+- `Promotes`
+- `Proven`
+- `Proven Ability`
+- `Proven Experience`
+- `Proven Track Record`
+- `Qualified`
+- `Real Opportunities`
+- `Recommended`
+- `Reform`
+- `Regional`
+- `Registered`
+- `Regular`
+- `Related Field`
+- `Relevant Background`
+- `Reliable`
+- `Requirements`
+- `Responds`
+- `Results-Oriented`
+- `Review`
+- `Rewarded`
+- `Room`
+- `Scheduling`
+- `Seamless`
+- `Second Class`
+- `Self`
+- `Senior-Level`
+- `Simultaneously`
+- `Skill`
+- `Skilled`
+- `Smooth`
+- `Social`
+- `Soft Skills`
+- `Software`
+- `Solid`
+- `Solid Experience`
+- `Solid Foundation`
+- `Solid Grasp`
+- `Solid Knowledge`
+- `Solid Understanding`
+- `Solution-Oriented`
+- `Sound Knowledge`
+- `Specialist`
+- `Specialist/Consultant`
+- `Specialization`
+- `Specialized`
+- `Standard`
+- `Standards`
+- `Standards, Processes, Workflows`
+- `Staying Ahead`
+- `Strategic`
+- `Strict Adherence`
+- `Strives`
+- `Strong`
+- `Strong Ability`
+- `Strong Advantage`
+- `Strong Command`
+- `Strong Knowledge`
+- `Strong Mastery`
+- `Strong Proficiency`
+- `Strong Understanding`
+- `Structured`
+- `Student`
+- `Superior`
+- `Support`
+- `Supported`
+- `Supporting`
+- `Supportive`
+- `Sustainability`
+- `Systematic`
+- `Systems Thinker`
+- `Team Player`
+- `Teamwork`
+- `Technical`
+- `Technical Aptitude`
+- `Technical Expert`
+- `Technical Understanding`
+- `Third Class`
+- `Thorough`
+- `Thrives`
+- `Time Management`
+- `Timely`
+- `Tool`
+- `Tool/Tech`
+- `Tool_Or_Tech`
+- `Tools`
+- `Tracking`
+- `Trading`
+- `Trilingual`
+- `Understanding`
+- `Unknown`
+- `Unspecified`
+- `Updates`
+- `Upper Intermediate`
+- `Upper Intermediate / B2+`
+- `Upper-Intermediate`
+- `Using`
+- `Valid`
+- `Verbal`
+- `Very Good`
+- `Very Good Command`
+- `Very Good To Excellent`
+- `Very Strong`
+- `Very-Good`
+- `Well`
+- `Well Informed`
+- `Willingness`
+- `Willingness To Learn And Develop`
+- `Willingness To Travel Abroad`
+- `Working`
+- `Working Knowledge`
+- `Working Proficiency`
+- `Written And Verbal`
+- `Yellow Belt`
+- `أساسيات`
+- `جيد`
+- `جيد جدا`
+- `حديث`
+- `خفيفة`
+- `لا يشترط`
+- `مؤهل عالي`
+- `متوسط`
+- `مستوي الخبرة`
+
+## 2. Suspicious Skill Types
+- `Acronym (Fmcg Management Association)`
+- `Ais (Automatic Information System) + Gis`
+- `Cambridge University Certification`
+- `Distributed Data Parallel (Ddp)`
+- `Editing Tools`
+- `High Voltage (Hv)/Extra High Voltage (Ehv)`
+- `Integration Technology`
+- `Non-Technical`
+- `Standard Operating Procedures (Sop)`
+- `Tech`
+- `Technical`
+- `Technical Concepts`
+- `Technical Documentation`
+- `Technical Issues`
+- `Technical Resolution`
+- `Technical Testing`
+- `Technique`
+- `Techniques`
+- `Technologies`
+- `Technology`
+- `Tool`
+- `Tooling`
+- `Tools`
+
+## 3. Suspicious Canonical Names (Too long or contains slashes)
+- `24/7 Availability`
+- `2G/3G/4G/5G Networks`
+- `A/B Testing`
+- `A/R`
+- `A320/A321 Type Rating`
+- `ABAP (Advanced Business Application Programming)`
+- `ACI/ACID`
+- `ADSL (Asymmetric Digital Subscriber Line)`
+- `AI/LLM APIs`
+- `AI/LLM Testing`
+- `AI/ML`
+- `AI/ML Algorithms`
+- `AI/ML Analytics`
+- `AI/ML Concepts`
+- `AI/ML Data Requirements`
+- `AI/ML Decisioning Engines`
+- `AI/ML Deployment`
+- `AI/ML Development`
+- `AI/ML Frameworks`
+- `AI/ML Product`
+- `AI/ML Services`
+- `AI/ML Testing`
+- `ALB/NLB`
+- `AML/CFT`
+- `ANSI/IEEE Standards`
+- `AR/VR`
+- `AWS Certified Kubernetes Solutions Architect`
+- `AWS Certified Security – Specialty (ACSP)`
+- `Accounting/ERP systems`
+- `Active Directory / Entra ID`
+- `Adaptability to Dynamic and Ambiguous Environments`
+- `Agile/Scrum`
+- `Agile/Scrum Master`
+- `Airbus A320/A321`
+- `Airline Transport Pilot Ground Instructor`
+- `Ammonia/Urea`
+- `Anti-Money Laundering (AML) & Counter-Financing of Terrorism (CFT)`
+- `Anti-Money Laundering (AML) Certification`
+- `Applied Behavior Analysis (ABA) Intervention`
+- `AppsFlyer (Mobile Marketing & Attribution)`
+- `Arabic/English Reporting`
+- `Audio/Video equipment`
+- `Audit findings/reports`
+- `Azure Identity and Access Management (IAM)`
+- `BC/DR Strategies`
+- `BER (Battlefield Engagement Radar) Testing`
+- `BI/ERP Systems`
+- `BICSI (Building Industry Consulting Service International)`
+- `BIM 4D/5D/6D`
+- `BOM/Routing/Resource Understanding`
+- `BPO/CX`
+- `BRC/FSSC 22000 Audits`
+- `BW/4HANA`
+- `Bash/Shell Scripting`
+- `Battery Management Systems (BMS) & Electrical Low Voltage (ELV)`
+- `Battery Management Systems (BMS) Integration`
+- `Board/Legal Administration`
+- `Building Information Modeling (BIM) - Electrical`
+- `Building Information Modeling (BIM) - Structural`
+- `Building Information Modeling (BIM) Certification`
+- `Building Information Modeling (BIM) Guidelines`
+- `Building Information Modeling (BIM) Level 2`
+- `Building Information Modeling (BIM) Models`
+- `Building Information Modeling (BIM) Platforms`
+- `Building Information Modeling (BIM) Requirements`
+- `Building Information Modeling (BIM) Software`
+- `Building Information Modeling (BIM) Standards`
+- `Building Information Modeling (BIM) Technician`
+- `Building Information Modeling (BIM) Technologies`
+- `Building Information Modeling (BIM) Tools`
+- `Building Information Modeling (BIM) Tracking`
+- `Bulk/Bagged Cement`
+- `Business Intelligence and Analytics Network`
+- `Business Process Outsourcing (BPO)/Contact Center`
+- `C#/.NET`
+- `C/C++`
+- `C/C++ Programming`
+- `CAD/BIM Solutions`
+- `CAD/CAM`
+- `CBE/AFCG/AUDIT recommendations`
+- `CBE/EMLCU Compliance`
+- `CCIE R/S`
+- `CCNP/CCIE`
+- `CDB/PDB`
+- `CFPS (Certified Financial Planner Specialist)`
+- `CI/CD`
+- `CI/CD Integration`
+- `CI/CD Pipelines`
+- `CI/CD Processes`
+- `CI/CD Tools`
+- `CKA/CKAD/CKS Certification`
+- `CKD/SKD Operations`
+- `COPC (Certified Oracle Professional Cloud)`
+- `CQRS (Command Query Responsibility Segregation)`
+- `CRAC/CRAH Systems`
+- `CRM (Hotel/Hospitality)`
+- `CRM/CDP`
+- `CS / SVC Solutions`
+- `CT/VT Calculations`
+- `CT/VT and Relay Schedules`
+- `CX/EX SVP`
+- `Certified Business Analysis Professional (CBAP)`
+- `Certified Business Intelligence Professional (CBIP)`
+- `Certified Business Technology Consultant (CBTC)`
+- `Certified Data Management Professional (CDMP)`
+- `Certified Information Privacy Professional (CIPP/E)`
+- `Certified Information Privacy Professional (CIPP/M)`
+- `Certified Information Privacy Technologist (CIPT)`
+- `Certified Information Systems Auditor or Certified Public Accountant`
+- `Certified Information Systems Security Professional (CISSP)`
+- `Certified Linux Technical Developer (CLTD)`
+- `Certified Maintenance and Reliability Professional (CMRP)`
+- `Certified Professional in Logistics (CPL)`
+- `Certified Professional in Procurement Management (CPM)`
+- `Certified Professional in Supply Management (CPSM)`
+- `Certified Purchasing Professional (CPP) / Certified Professional in Procurement (CPP)`
+- `Certified Supply Chain Professional (CSCP)`
+- `Channel/Field Sales Management`
+- `Chief Information Security Officer (CISO)`
+- `Cisco Certified Internetwork Expert Datacentre`
+- `Cisco IOS (Internetwork Operating System)`
+- `Cisco Wireless Telecommunications & Wireless`
+- `Civil/MEP Activities`
+- `Cloud Identity and Access Management (IAM)`
+- `Collaboration with AI/ML Team`
+- `Common Vulnerabilities and Exposures (CVE)`
+- `Common Vulnerabilities and Exposures (CVE) Assessment`
+- `Common Vulnerability Scoring System (CVSS)`
+- `Component-Driven Development / Event-Driven Development`
+- `Computer-Aided Facility Management (CAFM)`
+- `Computerized Maintenance Management System (CMMS)`
+- `Construction/Fit-out Project Management`
+- `Continuous Security Configuration Management`
+- `Coroutines/Flow`
+- `Cost Per Action/Lead Analysis`
+- `Custom Actions/APIs`
+- `Customer Experience (Retail/Service Industry)`
+- `Customer Relationship Management (CRM) Maintenance`
+- `Customer Technology Interaction Workflows`
+- `Customs/Duty Valuation`
+- `DCACI (Certified Cloud Advanced Infrastructure)`
+- `DCS (Certified Cloud Solutions Architect)`
+- `DCS (Distributed Control System) Engineering`
+- `Dagger/Hilt`
+- `Development/Humanitarian Aid`
+- `DocuSign Contract Lifecycle Management (CLM)`
+- `Drawings/Specifications`
+- `Dynamics AX/AP`
+- `EAM/CMMS`
+- `ECBA (Entry Certificate in Business Analysis)`
+- `ELV / ICT system integration`
+- `EMR/EHR`
+- `ENT/Immunology`
+- `ER/Studio`
+- `ERP/Accounting Systems`
+- `ERP/CRM solutions`
+- `ERP/Financial Software`
+- `ERP/MRP software`
+- `ERP/Manufacturing Resource Planning (MRP) Systems`
+- `ERP/SFA`
+- `ERP/Warehouse Management Systems (WMS)`
+- `ETL/ELT`
+- `ETL/ELT Design`
+- `ETL/ELT Development`
+- `ETL/ELT Pipeline Design`
+- `ETL/ELT Processes`
+- `ETL/ELT Tools`
+- `Eclipse BIRT (Business Intelligence and Reporting Tools)`
+- `Embedded C/C++`
+- `Emerson/CSI Systems`
+- `Enterprise Performance Management (EPM) / Enterprise Process Control (EPC)`
+- `Ericsson CS/PS Core Network`
+- `Ethernet/IP`
+- `European Sustainability Reporting Standards`
+- `Event Reasons / Event Derivation`
+- `F5 (LTM/GTM/WAF)`
+- `FDA 21 CFR Part 11 (Electronic Records; Electronic Signatures)`
+- `FI/CO Integration`
+- `FIFO/FEFO (First-In, First-Out / First Expired, First Out)`
+- `FMCG/CPG Branding`
+- `FMCG/CPG Design`
+- `FMCG/CPG Distribution`
+- `FMCG/CPG Industry`
+- `FMCG/CPG Maintenance`
+- `FMCG/CPG Marketing`
+- `FMCG/CPG Operations`
+- `FMCG/CPG Regulatory Affairs`
+- `FMCG/CPG Sales`
+- `FMCG/Pharma Industry`
+- `FMEA/FMECA`
+- `FRD/FSD Preparation`
+- `FTP/SFTP`
+- `Failure Modes and Effects Analysis (FMEA)`
+- `Film/Video Direction`
+- `Financial Accounting & Controlling (FI/CO)`
+- `Fleet Management Software (e.g., Geotab, Samsara, Verizon Connect)`
+- `Food Safety System Certification (FSSC 22000)`
+- `Free Ad-Supported Streaming TV (FAST) Advertising`
+- `GHG/carbon verification`
+- `GIS/AIS`
+- `GL/FM/CO`
+- `GNSS (Global Navigation Satellite Systems)`
+- `GTP-C/GTP-U`
+- `Gas Chromatography-Flame Ionization Detection (GC-FID)`
+- `Gas Chromatography-Mass Spectrometry (GC-MS)`
+- `GitLab CI/CD`
+- `Gold/Silver Trade`
+- `Google Cloud Pub/Sub`
+- `Governance, Risk, and Compliance Professional (GRCP)`
+- `Governance, Risk, and Management Systems (GRMS)`
+- `Gulf Cooperation Council (GCC) Market Knowledge`
+- `HCIA (Human Capital Intelligence Analyst)`
+- `HDM/CPE Management`
+- `HLD/LLD Documentation`
+- `HMI/SCADA Development`
+- `HP Application Lifecycle Management (ALM)`
+- `HR/Payroll`
+- `HTML/CSS`
+- `HTTP/2`
+- `HTTP/3`
+- `HV/EHV cable systems`
+- `HV/LV Systems`
+- `HVAC-R (Heating, Ventilation, Air Conditioning & Refrigeration)`
+- `HaloPSA (ITSM/PSA Platform)`
+- `Health & Safety Management Systems (HSMS)`
+- `High-availability/DR design`
+- `Honeywell CentraLine (Process Control System)`
+- `Honeywell Experion PKS (Process Knowledge System)`
+- `Huawei ATN Series/NE40 Routers`
+- `IBM BPM/BAW`
+- `IDS/IPS`
+- `IFC (Industry Foundation Classes) Drawings`
+- `IFRS/IAS`
+- `IMS / SBC Services`
+- `IOR/EOR Regulations`
+- `IPC/WHMA-A-620`
+- `IPv4/IPv6`
+- `ISO 13485 Medical Devices – Quality Management Systems`
+- `ISO 14001 Environmental Management Systems`
+- `ISO 14065 Greenhouse Gas Validation and Verification`
+- `ISO 14224 Road Vehicles – Off-Road Vehicles – Vocabulary`
+- `ISO 14644 Cleanrooms and Associated Controlled Environments`
+- `ISO 17025 General Requirements for the Competence of Testing and Calibration Laboratories`
+- `ISO 18001 Occupational Health and Safety Management Systems`
+- `ISO 19650 Building Information Modeling (BIM) Collaboration Enablers`
+- `ISO 20022 Financial Services Message Schemas`
+- `ISO 21434 Road Vehicles – Cybersecurity Engineering`
+- `ISO 22301 Business Continuity Management Systems`
+- `ISO 26262 Functional Safety for Road Vehicles`
+- `ISO 27000 Information Security Management Systems (ISMS)`
+- `ISO 27000 Series Information Security Management Systems`
+- `ISO 27001 Information Security Management Systems`
+- `ISO 27005 Information Security Risk Management`
+- `ISO 37000 Anti-Bribery Management Systems`
+- `ISO 3834 Quality Requirements for Fusion Welding`
+- `ISO 45001 Occupational Health and Safety Management Systems`
+- `ISO 7816 Identification Cards – Integrated Circuit Cards`
+- `ISO 9000 Quality Management Systems Fundamentals and Vocabulary`
+- `ISO/IEC 15288`
+- `ISO/IEC 17021-1`
+- `ISO/IEC 17065`
+- `ISO/IEC 20000`
+- `ISO/IEC 27001`
+- `ISO/IEC 42001`
+- `ISO/TS 55010 Asset Management – Asset Management Systems`
+- `ISR (Intelligence, Surveillance, Reconnaissance)`
+- `ISR (Intelligence, Surveillance, Reconnaissance) Solutions`
+- `IT/Network security support`
+- `Identity Governance and Administration (IGA)`
+- `Identity and Access Management (IAM) Design`
+- `Identity and Access Management (IAM) Technology`
+- `Import/Export`
+- `Import/Export Compliance`
+- `Import/Export Management`
+- `Import/Export Procedures`
+- `Import/export documentation`
+- `InfiniBand/RoCE networking`
+- `Informatica Enterprise Data Catalog (EDC)`
+- `Information Security Management System Compliance`
+- `International Baccalaureate Primary Years Programme`
+- `JHA/JSA`
+- `JNI/NDK`
+- `JPA/Hibernate`
+- `JWT/OIDC/SAML`
+- `KHMS/WCM`
+- `KOB2/KOB3 Opportunities`
+- `KSA/GCC Sales`
+- `KYC/AML`
+- `KYC/CDD`
+- `KYC/KYB`
+- `KYC/eKYC`
+- `LAN/WAN`
+- `LAN/WAN Troubleshooting`
+- `LV/MV Power Distribution`
+- `LV/MV Systems`
+- `LabWindows/CVI`
+- `Laboratory Information Management Systems (LIMS)`
+- `Lambda/Kappa Architectures`
+- `Lean/Agile`
+- `Loading/Unloading Procedures`
+- `Lockout/Tagout`
+- `Lockout/Tagout (LOTO)`
+- `Low-Code/No-Code Tools`
+- `M&E/MEL`
+- `MATLAB/Octave`
+- `MCP/MCSA/MCSE`
+- `MD/DO`
+- `MIDP/TIDP`
+- `MISP (Malware Information Sharing Platform)`
+- `MR/CT Modality`
+- `MRO (Maintenance, Repair, and Operations)`
+- `MSP (Microsoft Solutions Framework/Project Portfolio Management)`
+- `MTS/MTO`
+- `MV/LV cables`
+- `Mac/iOS Integration`
+- `Master Data Management (MDM) Distribution`
+- `Matlab/Simulink`
+- `Mean_Time_Between_Failures_and_Mean_Time_To_Repair`
+- `Medical/Scientific Resource`
+- `Medium/HV switchgear`
+- `Microsoft Azure Solutions Architect Expert`
+- `Microsoft Certified Solutions Associate (MCSA)`
+- `Microsoft Certified Solutions Expert (MCSE)`
+- `Microsoft Dynamics 365 (Finance & Operations)`
+- `Microsoft Dynamics 365 Customer Engagement`
+- `Microsoft Dynamics 365 Customer Relationship Management`
+- `Microsoft Dynamics 365 Customization & Plugins`
+- `Microsoft Dynamics 365 Lifecycle Services`
+- `Microsoft Excel VLOOKUP/XLOOKUP`
+- `Microsoft Internet Information Services (IIS)`
+- `Microsoft Office Specialist - Data Science`
+- `Microsoft Office Specialist - Intermediate`
+- `Microsoft Power Platform Functional Consultant`
+- `Microsoft Power Platform Solution Architect`
+- `Microsoft SC-100: Identity and Access Administrator`
+- `Microsoft SC-200: Securing Windows Server Hybrid`
+- `Microsoft SC-200: Security Operations Analyst`
+- `Microsoft SC-300: Microsoft Identity and Access Administrator`
+- `Microsoft SC-401: Microsoft Information Protection Administrator`
+- `Microsoft SC-900: Microsoft Security, Compliance, and Identity Fundamentals`
+- `Mobile UI/UX Design`
+- `Mobile/Tablet Usage`
+- `MySQL/Aurora`
+- `NACE (Statistical Classification of Economic Activities in the European Community)`
+- `NCCL (NCA Compliance and Controls Library)`
+- `NEC Contracts (NEC3/NEC4)`
+- `NFV/SDN`
+- `Network Address Translation/Carrier Grade NAT`
+- `OAuth 2.0 / OpenID Connect`
+- `OCA/OCP certifications`
+- `ODM/OEM`
+- `OEM/EPC Interface Management`
+- `ONVIF/RTSP`
+- `OSS/BSS`
+- `OT/IT Integration`
+- `Operational Technology (OT) & Information Technology (IT) Network Architectures`
+- `Operational Technology (OT) Firewall Management`
+- `Operational Technology (OT) Infrastructure`
+- `Optical Power/Wavelength Meters`
+- `Oracle JET (JavaScript Extension Toolkit)`
+- `Oracle PL/SQL`
+- `Overall Equipment Effectiveness (OEE) Optimization`
+- `PACS (Picture Archiving and Communication Systems)`
+- `PL/SQL`
+- `PL/pgSQL`
+- `PMSM / Induction motor control`
+- `PPC/SEM`
+- `PPE Usage (Process Performance Evaluation Usage)`
+- `PPP Management (Production Part Approval Process Management)`
+- `Palo Alto Networks Certified Network Security Administrator (PCNSA)`
+- `Personal Protective Equipment (PPE) Management`
+- `Personal Protective Equipment (PPE) Standards`
+- `Pharma/Biotech`
+- `Pharma/Healthcare`
+- `Pharmaceutical Sales/Marketing`
+- `Pharmaceutical/Life Sciences`
+- `Planning/Execution Agents`
+- `Predictive Maintenance (PdM) Certification`
+- `ProGuard/R8`
+- `Process Capability Indices (Cp/Cpk)`
+- `Programmable Logic Controllers (PLCs) & Real-Time Systems`
+- `Project / Program Management`
+- `Project Management Program Implementation`
+- `Project Scheduling Techniques and Networks`
+- `Pub/Sub`
+- `Purchase Requisition & Purchase Order Processing`
+- `QA/QC Procedures`
+- `QHSE (Quality, Health, Safety, and Environment)`
+- `Quality Assurance (QA) / Quality Control (QC)`
+- `REST/SOAP API`
+- `RF/Microwave`
+- `RFI/RFP Management`
+- `RFQ/RFP Processes`
+- `ROO/ROI`
+- `RS232/485`
+- `RTM (Release Train Management) Content Creation`
+- `Red/Blue ops`
+- `Refugee/Marginalized Communities`
+- `Regional/Multi-Country Operations`
+- `Regulatory & Government Health Authorities`
+- `Release/Transport Management`
+- `Respiratory/Pulmonology`
+- `Retrieval-Augmented Generation (RAG) Pipelines`
+- `Rocscience RS2/RS3`
+- `S&OP/IBP`
+- `S/4HANA`
+- `S/4HANA Cloud`
+- `S/4HANA Finance & Controlling`
+- `SAML / SSO`
+- `SAP B1/ERP`
+- `SAP FI/CO`
+- `SAP S/4HANA`
+- `SAP S/4HANA EWM`
+- `SBC/DBC`
+- `SCI/SSCI journals`
+- `SIP/PSTN`
+- `SIT/UAT Management`
+- `SIT/UAT Readiness`
+- `SIVACON S8/S4`
+- `SLA/KPI Management`
+- `SLO/SLI`
+- `SMTP/SMTPS`
+- `SNS/SQS`
+- `SOAR (Security Orchestration, Automation, and Response)`
+- `SOME/IP`
+- `SPHR (Society for Human Resource Management)`
+- `SSL/TLS`
+- `SSL/TLS Certification`
+- `SSL/TLS Pinning`
+- `STP/RO`
+- `Safety, Health & Environmental (SHE) Standards`
+- `Sales Development Representative / Business Development Representative`
+- `Saudi/GCC Business Experience`
+- `Service-Oriented Architecture (SOA) Cloud Services`
+- `ServiceNow Governance, Risk, and Compliance (GRC)`
+- `Slope/W`
+- `Software/portal training`
+- `SolarWinds Network Performance Monitor (NPM)`
+- `SolarWinds Network Performance Monitor (NPM) & Network Threat Analytics (NTA)`
+- `Speech/Translation APIs`
+- `Standby Power/UPS`
+- `Statutory tax/VAT filing procedures`
+- `Swashbuckle / Swagger`
+- `TCP/IP`
+- `TIA/EIA`
+- `TS/SCI CI Poly Clearance`
+- `Talent / Recruitment Marketing`
+- `Task Coding/Classification`
+- `Tax/Accounting Software`
+- `Tcl/Tk`
+- `Telecom/Digital Services Background`
+- `Tendering/Estimating Software`
+- `Textile / Carpet Photography`
+- `Time Off/Absence Configuration`
+- `Torque/Tensioning`
+- `Travel & Entertainment (T&E) Reimbursement`
+- `Travel/Expense Paperwork`
+- `Trellix/McAfee DLP`
+- `Trend Micro EPP/EDR`
+- `UAE/GCC Construction Experience`
+- `UAE/KSA Exposure`
+- `UI/UX Design`
+- `UI/UX Governance`
+- `UI/UX Issue Identification`
+- `UK/EU Technology Regulations`
+- `US GAAP/IFRS`
+- `US/US-Based Compliance Codes`
+- `UX/UI Design`
+- `UX/UI Design Principles`
+- `VFDs/VSDs`
+- `VMware Certified Advanced Professional (VCAP)`
+- `VMware Certified Professional (VCP) Certification`
+- `VMware Certified Professional – VMware Cloud Foundation (VCP-VCF)`
+- `VOV/FlowTracer`
+- `Virtual Router Redundancy Protocol (VRRP)`
+- `WAN/LAN Administration`
+- `Warehouse Management System (WMS) Implementation`
+- `Warehouse Management System (WMS) Utilization`
+- `Win/Loss Analysis`
+- `Win/loss reporting`
+- `Windows 10/11`
+- `WordPress/WooCommerce`
+- `audio/video sync`
+- `automated build/release processes`
+- `educational/customer service field`
+- `eval/backtest harnesses`
+- `high/low voltage electrician`
+- `international principals/manufacturers`
+- `perf/valgrind`
+- `pick/pack workflows`
+- `seismic/liquefaction assessment`
+- `shadcn/ui`
+- `tobacco/FMCG trade marketing`
+
+## 4. Lowercase Canonical Names (Case Inconsistency)
+- `3-year system`
+- `6sense`
+- `ability to get things done`
+- `ability to inspire`
+- `accounting policies`
+- `adapt to evolving business requirements`
+- `administers property policies`
+- `adobe`
+- `aged items`
+- `agentic development workflows`
+- `agricultural markets`
+- `alert mind`
+- `analytical skills`
+- `analytics-focused`
+- `architectural and design industry`
+- `articulate 360`
+- `aseptic techniques`
+- `audio/video sync`
+- `audit standards`
+- `auditability`
+- `auditing`
+- `audits and inspections`
+- `automated build/release processes`
+- `automotive aftermarket`
+- `backend experience`
+- `basic technical accompaniment`
+- `bcrypt`
+- `bearing capacity`
+- `behavioral targeting`
+- `bid governance frameworks`
+- `biochemistry`
+- `book closure`
+- `border security`
+- `bouw`
+- `brings issues to attention`
+- `build target database`
+- `build123d`
+- `business enabler`
+- `call center system`
+- `candidate assessment`
+- `capacity planning`
+- `cards`
+- `carrier ecosystems`
+- `carrying`
+- `certificate management`
+- `character workflows`
+- `chemical awareness`
+- `civil construction`
+- `clinical`
+- `clinical research manager`
+- `closed-loop management`
+- `code adherence`
+- `commercial roles`
+- `commercial storytelling`
+- `commercially compelling propositions`
+- `commissioning procedures`
+- `communicate findings`
+- `communicates performance expectations`
+- `communicates production needs`
+- `company assets`
+- `competitive battlecards`
+- `complex deals`
+- `complex financial analyses`
+- `complex steel structures`
+- `complexity`
+- `compliance checks`
+- `compliance requirements`
+- `computational workflows`
+- `computer science concepts`
+- `confident performance`
+- `consolidated performance`
+- `construction`
+- `contact center solutions`
+- `container platforms`
+- `containerization technologies`
+- `content creation`
+- `content creation software`
+- `contract performance`
+- `contributing positively`
+- `control gaps`
+- `convert relationships`
+- `coordinate systems`
+- `coordinate with external vendors`
+- `coordinating product sampling`
+- `core closing calendar`
+- `corrective-action close-out`
+- `correspondents`
+- `costing`
+- `create guidelines for new solutions`
+- `critical incidents`
+- `criticism`
+- `crop protection products`
+- `cross-functional diplomat`
+- `cruises`
+- `curl`
+- `current and historical business`
+- `custom fields`
+- `customer experience quality management`
+- `customer payments`
+- `data engineering roles`
+- `data management platforms`
+- `data-driven portfolio analysis`
+- `dbaascli`
+- `debugging simulation results`
+- `design`
+- `design requirements`
+- `determination`
+- `digital media`
+- `direction and alignment`
+- `distribution expansion`
+- `document writing`
+- `documentation`
+- `driving growth and innovation`
+- `duplicate billing prevention`
+- `early career roles`
+- `educational/customer service field`
+- `electrical control panel design`
+- `elementor`
+- `embedded wall`
+- `endpoint detection`
+- `energized by the unknown`
+- `energy systems analysis`
+- `energy transition projects`
+- `engagement and inclusion`
+- `engineering`
+- `engineering units`
+- `enterprise data warehouse`
+- `enterprise development`
+- `enterprise systems engineering`
+- `enterprise ticketing systems`
+- `environmental or energy auditing`
+- `estimates daily production needs`
+- `eval/backtest harnesses`
+- `evaluation workflows`
+- `event documentation`
+- `event-driven integration`
+- `exadcli`
+- `execution strength`
+- `expand customer base`
+- `exploit development`
+- `external auditor`
+- `external relations`
+- `face values`
+- `failing fast`
+- `fairness`
+- `ffmpeg`
+- `fieldwork`
+- `finance matters`
+- `financial instruments`
+- `fine arts`
+- `fixed income corporate actions`
+- `fixed income trading limit`
+- `flavors & fragrances`
+- `flutter`
+- `freight`
+- `frontend web testing`
+- `frontline leaders development`
+- `fulfillment reporting tools`
+- `geographies`
+- `geomatics`
+- `global hiring`
+- `google suite`
+- `google workspace`
+- `governance`
+- `governance requirements`
+- `growth functions`
+- `haivision`
+- `hallucination detection`
+- `handicrafts`
+- `handle urgent issues`
+- `handling linens`
+- `hands-on delivery`
+- `hands-on mentality`
+- `head-office and field roles`
+- `health department submittals`
+- `healthcare`
+- `healthcare business development`
+- `healthcare data systems`
+- `healthcare referrals`
+- `high-end service industries`
+- `high-impact enterprise systems`
+- `high/low voltage electrician`
+- `highly regulated healthcare industries`
+- `hiring`
+- `horeca`
+- `hybrid`
+- `identifies developmental needs`
+- `identify`
+- `immersive experiences`
+- `income`
+- `indeling`
+- `industrial equipment`
+- `infrastructure and building projects`
+- `initiatief`
+- `instagram marketing`
+- `institutional security cooperation`
+- `intellectually stimulating`
+- `interactive visual reports`
+- `interface signaling tracing`
+- `internal control principles`
+- `international principals/manufacturers`
+- `invoice management`
+- `iptables`
+- `iron and steel processes`
+- `jetpack compose`
+- `juggling`
+- `kafka`
+- `key deals`
+- `kill chain frameworks`
+- `kubectl`
+- `labor management`
+- `large enterprises`
+- `large-world workflows`
+- `lateral pile analysis`
+- `lead generation`
+- `leads shifts`
+- `life circumstances`
+- `low ego`
+- `low voltage`
+- `luxury`
+- `luxury-focused businesses`
+- `machine commissioning`
+- `maintain organized project records`
+- `management`
+- `managing general ledge`
+- `managing multiple complex bids`
+- `manual and automatic batches`
+- `manufacturing`
+- `manufacturing business processes`
+- `manufacturing data analysis`
+- `maritime`
+- `market outreach`
+- `marketing`
+- `marketing agency`
+- `marketing channels`
+- `marketing standards`
+- `marketing strategy`
+- `mass communication`
+- `material adjustments`
+- `mechanics`
+- `medical examinations`
+- `meet new people`
+- `membership management systems`
+- `metal fabrication`
+- `method fitting`
+- `mitigate`
+- `momentum`
+- `multi-realm setups`
+- `multiple concurrent shipment files`
+- `multiple initiatives`
+- `multitasking`
+- `natural sciences`
+- `navigate ambiguity`
+- `navigate complexity`
+- `navigates challenges`
+- `negotiator`
+- `netjes`
+- `network forensics`
+- `networking concepts`
+- `new verticals`
+- `ngspice`
+- `noise in high-volume alert environments`
+- `observability tooling`
+- `occupational health standards`
+- `offensive knowledge`
+- `onsite consulting`
+- `opatchauto`
+- `operational excellence`
+- `ordelijk`
+- `order management`
+- `organic growth strategies`
+- `organised crime`
+- `organizational rigor`
+- `ott streaming`
+- `outdoor visits`
+- `outlook (emailing)`
+- `oversee data security`
+- `perf/valgrind`
+- `performance issues`
+- `performance trends`
+- `permits`
+- `personal care`
+- `personality`
+- `pgvector`
+- `pharmacy regulations`
+- `pick/pack workflows`
+- `plant layout planning`
+- `platform engineering`
+- `pnpm`
+- `post-processing`
+- `praktisch inzicht`
+- `prevent injury`
+- `printers`
+- `process automation`
+- `process enhancement`
+- `product`
+- `product development`
+- `product development life cycle`
+- `production accounting`
+- `production-grade architectures`
+- `project management skills`
+- `project standards`
+- `project-based customers`
+- `projects`
+- `provides information`
+- `provides services above and beyond`
+- `public area upkeep`
+- `public policy`
+- `publishing and maintaining apps`
+- `putaway`
+- `python-control`
+- `quality`
+- `quality oversight and governance`
+- `quickly adapt`
+- `rally behind a mission`
+- `real estate`
+- `reasons for delays`
+- `receptionist`
+- `recognizes superior quality products`
+- `recruitment`
+- `recruitment fraud`
+- `refractory material`
+- `regulated institution`
+- `related major`
+- `related professional area`
+- `relief delivery systems`
+- `religous tourism`
+- `reporting`
+- `reserve ratio`
+- `resolve`
+- `retail pharmacy experience`
+- `revit`
+- `risk management`
+- `rock engineering`
+- `rtmp`
+- `ruimtelijke oplossingen`
+- `safekeeping`
+- `safety`
+- `safety procedures`
+- `satellite broadband`
+- `satellite connectivity`
+- `satellite navigation`
+- `saying no`
+- `schemes`
+- `scikit-learn`
+- `seamless integration`
+- `secretary`
+- `security`
+- `security workflows`
+- `security-sector analysis`
+- `seismic/liquefaction assessment`
+- `selection tools`
+- `self-reliant`
+- `self-source leads`
+- `service contracts`
+- `sets a positive example`
+- `shadcn/ui`
+- `shipping`
+- `shoring wall`
+- `side effects`
+- `site collection quota settings`
+- `site coordinator`
+- `slope stability`
+- `slope stability analysis`
+- `small business logistics`
+- `smooth audit operations`
+- `snapchat ads`
+- `social enterprises`
+- `social logins`
+- `social media strategy`
+- `software craftsmanship`
+- `soil-structure interaction`
+- `sourcing`
+- `spare parts sourcing`
+- `spend management`
+- `sports medcine`
+- `spotting savings`
+- `staging`
+- `stakeholder management`
+- `stop loss limits`
+- `storage capacity letters`
+- `storytelling`
+- `streamline`
+- `strengthen local leadership`
+- `structural maintenance`
+- `structured logging`
+- `study visits`
+- `supervises and coordinates activities`
+- `supervisory capacity`
+- `swift payments`
+- `system and storage utilization reports`
+- `system documentation`
+- `systemd`
+- `tactical thinker`
+- `talent`
+- `tapeouts`
+- `target segments`
+- `tcpdump`
+- `technical`
+- `technical training`
+- `technical workflows`
+- `techno-economic modelling`
+- `technology`
+- `technology governance`
+- `technology spend control`
+- `telecom markets`
+- `telehealth`
+- `telesales`
+- `terminal-based environments`
+- `terms of reference`
+- `time and attendance systems`
+- `timing signoff`
+- `timmerman`
+- `tobacco legislation`
+- `tooling`
+- `total rewards`
+- `tourism financial operations`
+- `tracking sheet management`
+- `trade funds deployment`
+- `trade program governance`
+- `trading environments`
+- `translate organizational strategy`
+- `translate requirements`
+- `translate schedule data`
+- `transportation management`
+- `treatment`
+- `update infrastructure documentation`
+- `upskilling`
+- `urban design`
+- `usability testing`
+- `use-case descriptions`
+- `users across three countries`
+- `vakmanschap`
+- `vakwerk`
+- `vehicle allocation`
+- `verantwoordelijkheidsgevoel`
+- `visa`
+- `visa application`
+- `visibility quality`
+- `visit`
+- `vmix`
+- `vodafone`
+- `volume and mix management`
+- `volume peaks`
+- `warehouse automation`
+- `well organize`
+- `werkervaring`
+- `willingness to adapt`
+- `winning deals`
+- `wiring`
+- `work in confined spaces`
+- `workflow`
+- `write effectively`
+- `written`
+- `zelfstandig`
+- `zoom`

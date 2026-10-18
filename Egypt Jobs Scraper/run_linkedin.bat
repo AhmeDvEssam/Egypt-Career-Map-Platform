@@ -1,0 +1,6 @@
+@echo off
+echo Compiling TypeScript files...
+call npx tsc
+echo Running LinkedIn Scraper...
+node dist/LinkedInManager.js
+pause

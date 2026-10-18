@@ -1,0 +1,154 @@
+generator client {
+  provider = "prisma-client-js"
+  binaryTargets = ["native", "windows"]
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum UserRole {
+  JOB_SEEKER
+  RECRUITER
+  STRATEGIC_PLANNER
+}
+
+model Job {
+  id          String   @id @default(uuid()) @db.Uuid
+  source      String   @db.VarChar(50)
+  sourceJobId String   @map("source_job_id") @db.VarChar(255)
+
+  titleRaw          String  @map("title_raw") @db.Text
+  titleNormalized   String? @map("title_normalized") @db.Text
+  companyName       String  @map("company_name") @db.VarChar(255)
+  companyUrl        String? @map("company_url") @db.Text
+  locationRaw       String  @map("location_raw") @db.Text
+  locationNormalized String? @map("location_normalized") @db.Text
+
+  jobType          String? @map("job_type") @db.VarChar(100)
+  workType         String? @map("work_type") @db.VarChar(100)
+  careerLevel      String? @map("career_level") @db.VarChar(100)
+  educationLevel   String? @map("education_level") @db.VarChar(255)
+  jobCategory      String? @map("job_category") @db.VarChar(255)
+
+  salaryMin    Decimal?  @map("salary_min") @db.Decimal(12, 2)
+  salaryMax    Decimal?  @map("salary_max") @db.Decimal(12, 2)
+  currency     String?   @db.VarChar(10)
+
+  jobUrl      String      @map("job_url") @db.Text
+  postedDate  DateTime?   @map("posted_date") @db.Timestamptz
+  scrapedAt   DateTime    @map("scraped_at") @default(now()) @db.Timestamptz
+  status      String      @default("Open") @db.VarChar(50)
+
+  sourceRaw Json? @map("source_raw") @db.JsonB
+
+  descriptions JobDescription[]
+  skills       JobSkill[]
+  industries   JobIndustry[]
+
+  createdAt DateTime @map("created_at") @default(now()) @db.Timestamptz
+  updatedAt DateTime @map("updated_at") @updatedAt @db.Timestamptz
+
+  @@unique([source, sourceJobId])
+  @@index([source])
+  @@index([postedDate])
+  @@index([companyName])
+  @@map("jobs")
+}
+
+model JobDescription {
+  id        String  @id @default(uuid()) @db.Uuid
+  jobId     String  @map("job_id") @db.Uuid
+  type      String  @db.VarChar(50)
+  content   String  @db.Text
+  language  String  @default("en") @db.VarChar(10)
+  isPrimary Boolean @default(false) @map("is_primary")
+
+  job Job @relation(fields: [jobId], references: [id], onDelete: Cascade)
+
+  @@index([jobId])
+  @@map("job_descriptions")
+}
+
+model Skill {
+  id       String  @id @default(uuid()) @db.Uuid
+  name     String  @unique @db.VarChar(255)
+  category String? @db.VarChar(100)
+
+  jobs JobSkill[]
+
+  @@map("skills")
+}
+
+model JobSkill {
+  jobId         String  @map("job_id") @db.Uuid
+  skillId       String  @map("skill_id") @db.Uuid
+  isRequired    Boolean @default(true) @map("is_required")
+  extractedFrom String? @map("extracted_from") @db.VarChar(50)
+
+  job   Job   @relation(fields: [jobId], references: [id], onDelete: Cascade)
+  skill Skill @relation(fields: [skillId], references: [id], onDelete: Cascade)
+
+  @@id([jobId, skillId])
+  @@map("job_skills")
+}
+
+model Industry {
+  id   String @id @default(uuid()) @db.Uuid
+  name String @unique @db.VarChar(255)
+
+  jobs JobIndustry[]
+
+  @@map("industries")
+}
+
+model JobIndustry {
+  jobId      String @map("job_id") @db.Uuid
+  industryId String @map("industry_id") @db.Uuid
+
+  job      Job      @relation(fields: [jobId], references: [id], onDelete: Cascade)
+  industry Industry @relation(fields: [industryId], references: [id], onDelete: Cascade)
+
+  @@id([jobId, industryId])
+  @@map("job_industries")
+}
+
+model User {
+  id           String     @id @default(uuid()) @db.Uuid
+  email        String     @unique @db.VarChar(255)
+  passwordHash String     @map("password_hash") @db.VarChar(255)
+  role         UserRole   @default(JOB_SEEKER)
+  profile      UserProfile?
+
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz
+  updatedAt DateTime @updatedAt @map("updated_at") @db.Timestamptz
+
+  @@map("users")
+}
+
+model UserProfile {
+  id            String  @id @default(uuid()) @db.Uuid
+  userId        String  @unique @map("user_id") @db.Uuid
+  bio           String? @db.Text
+  resumeUrl     String? @map("resume_url") @db.Text
+  resumeTextRaw String? @map("resume_text_raw") @db.Text
+  parsedSkills  String[] @map("parsed_skills")
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("user_profiles")
+}
+
+model GovernorateMetrics {
+  id                String   @id @default(uuid()) @db.Uuid
+  governorateName   String   @map("governorate_name") @db.VarChar(100)
+  industry          String   @db.VarChar(100)
+  openJobsCount     Int      @default(0) @map("open_jobs_count")
+  talentShortageIndex Float? @map("talent_shortage_index") @db.Real
+  updatedAt         DateTime @default(now()) @map("updated_at") @db.Timestamptz
+
+  @@unique([governorateName, industry])
+  @@index([governorateName])
+  @@map("governorate_metrics")
+}

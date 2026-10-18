@@ -1,0 +1,770 @@
+================================================================================
+                    HIRE Q - EGYPT JOBS SCRAPER
+                    COMPREHENSIVE CODEBASE ANALYSIS
+================================================================================
+
+Table of Contents:
+  1. Project Overview
+  2. Architecture Diagram
+  3. Scraper 1: Wuzzuf (v3.1 Hybrid Turbo)
+  4. Scraper 2: LinkedIn (v3.0 Enterprise)
+  5. Scraper 3: Indeed (v5.0 Python-Powered)
+  6. Shared Infrastructure
+  7. Database & Ingestion
+  8. Normalization Pipeline
+  9. Tools & Utilities
+  10. Cross-Cutting Issues & Anti-Patterns
+  11. Configuration Reference
+
+================================================================================
+1. PROJECT OVERVIEW
+================================================================================
+
+Name:           Hire Q - Egypt Jobs Scraper
+Language:       TypeScript (Node.js) + Python
+Target Sites:   Wuzzuf.net, LinkedIn.com, Indeed.com
+Market:         Egyptian job market
+Data Output:    CSV files → PostgreSQL database
+Total Source:   ~40+ TypeScript files + 1 Python script
+
+Three independent scraper modules, each with its own manager and strategy.
+Also includes a data ingestion pipeline to push scraped data to PostgreSQL.
+
+================================================================================
+2. ARCHITECTURE DIAGRAM
+================================================================================
+
+                    ┌──────────────────────────────────────────┐
+                    │           GLOBAL ENTRY POINTS            │
+                    │                                          │
+                    │  npm start       → GlobalManager.ts      │
+                    │  npm start:linkedin → LinkedInManager.ts │
+                    │  npm start:indeed:v5 → IndeedManagerV5.ts│
+                    │  npm run ingest  → ingest_jobs.ts        │
+                    └──────────┬───────────────────────┬───────┘
+                               │                       │
+          ┌────────────────────┼───────────────────────┼──────────────────┐
+          │                    │                       │                   │
+          ▼                    ▼                       ▼                   │
+  ┌───────────────┐   ┌───────────────┐      ┌───────────────┐           │
+  │ GlobalManager │   │LinkedInManager │      │IndeedManagerV5│           │
+  │ (Wuzzuf Ctrl) │   │(LinkedIn Ctrl) │      │(Indeed Ctrl)  │           │
+  └───────┬───────┘   └───────┬───────┘      └───────┬───────┘           │
+          │                   │                       │                   │
+          ▼                   ▼                       ▼                   │
+  ┌───────────────┐   ┌───────────────┐      ┌───────────────┐           │
+  │ WuzzufScraper │   │LinkedInBrowser│      │ IndeedScraper │           │
+  │               │   │ Scraper       │      │ (Orchestrator)│           │
+  │ - Cheerio     │   │ - Playwright  │      └───────┬───────┘           │
+  │ - JSON state  │   │ - Stealth     │              │                   │
+  │  extraction   │   │ - Proxy rot.  │              │ JSON over stdio   │
+  └───────┬───────┘   └───────┬───────┘              ▼                   │
+          │                   │              ┌───────────────┐           │
+          ▼                   ▼              │indeed_scraper │           │
+  ┌───────────────┐   ┌───────────────┐      │ .py (Python)  │           │
+  │ JobCollector  │   │  (Direct CSV) │      │ undetected-   │           │
+  │ - CSV mgmt    │   │               │      │ chromedriver  │           │
+  │ - Dedup       │   │               │      └───────────────┘           │
+  │ - State       │   │               │                                   │
+  └───────┬───────┘   └───────────────┘                                   │
+          │                                                               │
+          └────────────────────────┬──────────────────────────────────────┘
+                                   ▼
+                    ┌──────────────────────────────┐
+                    │         CSV FILES            │
+                    │  data/wuzzuf_clean_data_v3   │
+                    │  data/linkedin_clean_data    │
+                    │  data/indeed_jobs            │
+                    └──────────────┬───────────────┘
+                                   ▼
+                    ┌──────────────────────────────┐
+                    │      ingest_jobs.ts          │
+                    │  → PostgreSQL Database       │
+                    │  Tables: jobs,               │
+                    │  job_descriptions, skills,   │
+                    │  job_skills, industries,     │
+                    │  job_industries              │
+                    └──────────────────────────────┘
+
+================================================================================
+3. SCRAPER 1: WUZZUF (v3.1 Hybrid Turbo)
+================================================================================
+
+3.1 Files:
+  - src/GlobalManager.ts              (entry point, infinite loop controller)
+  - src/scrapers/wuzzuf/WuzzufScraper.ts  (scraping logic)
+  - src/scrapers/JobCollector.ts      (CSV management & deduplication)
+  - src/core/BaseScraper.ts           (abstract base class)
+  - src/core/ScraperInterface.ts      (interfaces: JobEntity, IScraper)
+  - src/core/utils.ts                 (sleep, randomDelay, user agents)
+
+3.2 Class Hierarchy:
+  IScraper (interface)
+    └── BaseScraper (abstract)
+          └── WuzzufScraper (concrete)
+
+  JobCollector (standalone orchestrator)
+  GlobalManager (entry point)
+
+3.3 Data Flow:
+  GlobalManager → WuzzufScraper → JobCollector.runCycle()
+    → WuzzufScraper.scrapeSpecificPage(page, skipUrls)
+      → BaseScraper.fetchHtml(searchUrl)        [Playwright with JS]
+      → cheerio.parse job cards (.e1v1l3u10)
+      → For each card (batch 5):
+          → BaseScraper.fetchHtml(detailUrl, {enableJs: false})  [API]
+          → Extract Wuzzuf.initialStoreState (React/Redux JSON)
+          → Parse ~30 fields from store
+          → Return JobEntity
+    → JobCollector filters duplicates
+    → JobCollector.saveJobs() → CSV append
+
+3.4 Key Methods:
+
+  WuzzufScraper.scrapeSpecificPage(page, strictSkipUrls?):
+    1. Build search URL: /search/jobs/?a=hpb&country=Egypt&start={page}
+    2. Fetch HTML with retry (1 retry, 2s delay)
+    3. Cheerio parse job cards
+    4. Loop detection: Track first-card IDs across pages
+    5. Process cards in batches of 5 with 1.5s delay
+    6. Detail page fetch WITHOUT JavaScript (API mode)
+    7. Extract embedded JSON: Wuzzuf.initialStoreState
+    8. Map fields to JobEntity
+
+  WuzzufScraper.cleanText(text):
+    - Removes <style>, <script>, <br>, <p> tags
+    - Strips all HTML, decodes &nbsp;/&amp;
+    - Collapses whitespace
+
+  WuzzufScraper.fetchTotalJobs():
+    - Fetches page 0, parses job count from <title> or <body>
+
+  WuzzufScraper.isJobClosed(url):
+    - Uses axios with validateStatus: < 500
+    - Checks for 404, redirects, expired text, "Job Not Found"
+
+  JobCollector.runCycle():
+    1. fetchTotalJobs() → calculate HARD_PAGE_LIMIT
+    2. Page loop (0 → limit):
+       - scrapeSpecificPage() → filter new → saveJobs()
+       - Smart stop triggers:
+         a. 3 consecutive empty pages
+         b. Infinite loop (same first job ID)
+         c. Network failure after 5 retries
+       - 2.5s delay between pages
+    3. Return stats
+
+  JobCollector.saveJobs():
+    - Manual save lock (20 retry timeout)
+    - Maps headers to JobEntity fields
+    - Proper CSV escaping (", newlines)
+    - Retry loop (5 attempts) for EBUSY/EPERM
+
+3.5 Hybrid Fetching Strategy:
+  - Search pages: Full Playwright browser (JS needed for cards)
+  - Detail pages: Playwright API request (no JS), 3-4x faster
+  - Context pool: 5 reusable browser contexts round-robin
+  - Resource blocking: images, CSS, fonts aborted for speed
+
+3.6 Fields Extracted (23):
+  source_job_id, title, company_name, company_url, location,
+  posted_time, work_type, experience_needed, career_level,
+  education_level, salary, description, requirements, skills,
+  job_status, applicants, views, open_positions, job_categories,
+  logo_url, job_type, url, raw_folder_data
+
+3.7 Configuration:
+  batchSize: 5, batch delay: 1500ms, page delay: 2500ms
+  poolSize: 5, API timeout: 20s, browser timeout: 30s
+  HARD_PAGE_LIMIT: max(expectedPages + 10, 20)
+  DYNAMIC_DUPLICATE_LIMIT: 1000
+
+3.8 Issues:
+  - Headers mismatch: 'Skills' column exists in headers but never populated
+  - 'Job Id' column missing from BaseScraper.getHeaders() but expected by JobCollector
+  - Fresh scraper/collector instance every 10-min cycle (wasteful browser launch)
+  - visitedFirstIds cleared only on page 0 (loop detection useless via scrapeJobs path)
+  - scrapeJobs() is dead code for main flow (1-page stub)
+  - withBrowser(), fetchStaticHtml(), parseCurrency() dead methods in BaseScraper
+  - PartialJob interface never used
+  - Hardcoded CSV column index 12 for URL (fragile)
+  - isJobClosed() uses lazy require('axios') instead of top-level import
+  - Regex for job ID extraction duplicated across files
+
+================================================================================
+4. SCRAPER 2: LINKEDIN (v3.0 Enterprise)
+================================================================================
+
+4.1 Files:
+  - src/LinkedInManager.ts               (entry point, controller)
+  - src/scrapers/linkedin/LinkedInBrowserScraper.ts  (Playwright stealth)
+  - src/scrapers/linkedin/LinkedInScraper.ts         (HTTP/Cheerio fallback)
+  - src/scrapers/linkedin/LinkedInDataRepair.ts      (CSV repair tool)
+  - src/scrapers/linkedin/LinkedInDataRepair.ts      (README references)
+
+4.2 Class Hierarchy:
+  BaseScraper (abstract)
+    ├── LinkedInScraper        (HTTP-only, Cheerio, virtual pagination)
+    └── LinkedInBrowserScraper (Playwright browser automation)
+
+  LinkedInManager.ts — not a class, script with:
+    └── SmartKeywordScheduler  (inner class) — priority/time-of-day ordering
+    └── FailedJobManager       (inner class) — retry queue
+
+4.3 Data Flow (Primary - Browser):
+
+  LinkedInManager.main()
+    ├── keepAwake.start()
+    ├── networkHealth.waitForNetwork()
+    └── INFINITE LOOP (cycle #N):
+          ├── scheduler.getKeywordsForCurrentSession()
+          ├── FOR EACH keyword:
+          │     ├── scraper.discoverJobs(keyword)
+          │     │     Playwright scrolls search results (max 50 scrolls)
+          │     │     Extracts: id, title, company, location, work_mode
+          │     │     Dedup via processedIds Set
+          │     ├── Filter newJobs against knownIds
+          │     ├── FOR EACH newJob:
+          │     │     scraper.scrapeJobDetail(id, partial)
+          │     │       → Navigate to /jobs/view/{id}/
+          │     │       → NUKE MODALS (sign-in popups)
+          │     │       → Extract criteria (seniority, employment, industry)
+          │     │       → Smart description split (state machine)
+          │     │       → Mask detection (*****) → proxy rotation
+          │     │       → Inference: experience, industry, job_type
+          │     │       → Collect posted_time, applicants
+          │     │     Success → collector.saveJobs([detailed]) → CSV
+          │     │     Failure → failedJobManager.addFailedJob()
+          │     └── 8s sleep between keywords
+          ├── RETRY QUEUE: failedJobManager.getJobsToRetry()
+          ├── Save state to linkedin_state.json
+          └── 10 min sleep → next cycle
+
+4.4 Key Methods:
+
+  LinkedInBrowserScraper.initBrowser(forceReset?):
+    - Launch Playwright with stealth args
+    - --disable-blink-features=AutomationControlled
+    - addInitScript: override navigator.webdriver, chrome, plugins
+    - User agent: Chrome 120 Windows 10
+    - Locale: en-US, timezone: Africa/Cairo
+
+  LinkedInBrowserScraper.discoverJobs(keyword):
+    - Navigate to search URL with sort=DD (Most Recent)
+    - Infinite scroll loop (max 50 iterations)
+    - Click "Show More" if stuck >3 times
+    - Dedup against this.processedIds (loaded from CSV)
+    - Returns PartialJob[]
+
+  LinkedInBrowserScraper.scrapeJobDetail(jobId, partialData, attempt?):
+    - Navigate to /jobs/view/{jobId}/
+    - Modal nuke: setInterval(kill, 500) removes dialogs
+    - Extract criteria selectors
+    - Smart description/requirements split (state machine)
+    - Mask detection: ***** in title/company → proxy rotation
+    - Inference fallback for missing experience/industry
+    - Extract posted_time (relative→absolute), applicants
+    - Returns JobEntity or null
+
+  SmartKeywordScheduler:
+    - 285 keywords in ConsumerInfoDatabase
+    - Categories: Core, Tech, Data, AI, Sales, Marketing, etc.
+    - Priorities: high, medium, low
+    - Time-of-day sessions: Morning(6-12)=high, Afternoon(12-18)=high+med, Night(all)
+    - Sort: priority → lastJobsFound desc → least-recently-scraped
+
+  FailedJobManager:
+    - Persistent retry queue, max 5 retries
+    - 24-hour cleanup for stale entries
+    - Persisted via linkedin_state.json
+
+4.5 Anti-Bot Protections:
+  1. Stealth mode: navigator.webdriver = undefined
+  2. Real User Agent: Chrome 120 Windows 10
+  3. Chrome runtime injection: navigator.chrome = { runtime: {} }
+  4. Fake languages/plugins
+  5. --disable-blink-features=AutomationControlled flag
+  6. Proxy rotation from data/proxies.txt
+  7. Mask detection (*****) → hard reset + proxy switch
+  8. Random delays between keywords/jobs
+  9. Modal nuking every 500ms
+
+4.6 State Management:
+  Persisted to data/linkedin_state.json:
+    - lastFullCycle, totalJobsScraped, cycleCount
+    - keywordStats: per-keyword total/last/lastScraped
+    - failedJobs: retry queue
+
+  Ephemeral:
+    - processedIds: Set<string> (reloaded from CSV each discovery)
+    - consecutiveMasks counter
+    - currentProxyIndex
+
+4.7 Configuration:
+  SLEEP_BETWEEN_CYCLES_MS: 600000 (10 min)
+  SLEEP_BETWEEN_KEYWORDS_MS: 8000 (8s)
+  MAX_SCROLL_LOOPS: 50
+  PAGES_PER_KEYWORD: 40 (LinkedInScraper HTTP path)
+  MAX_RETRIES (FailedJobManager): 5
+  SPLIT_MODE env: 'raw' or 'smart' (controls CSV output path)
+
+4.8 Issues:
+  CRITICAL: setInterval(kill, 500) NEVER CLEARED — memory leak
+    Each scrapeJobDetail call adds a new interval that survives page.close()
+  CRITICAL: loadExistingIds() called on EVERY discovery — re-reads entire CSV from disk O(n²)
+  CRITICAL: @ts-ignore suppressing type mismatches (collector.saveJobs)
+  Global browser instance with mixed ownership — no mutex on lifecycle
+  Recursive restart on fatal error — old promise chain abandoned, resource leaks
+  Unbounded Map for discovered jobs (thousands per keyword)
+  LinkedInScraper.scrapeSpecificPage is recursive (18 levels possible)
+  saveState() called every keyword — synchronous writeFileSync (~50KB) blocks event loop
+  Modal nuke selects ALL elements (h1-h3, div, p, span) — expensive
+  analysis_failed_reqs.txt does require('fs') inside hot loop
+  Placeholder comments left in saveJobs (literal // ... map logic ...)
+  scrapeSpecificPage() returns empty stub (incompatible with JobCollector.runCycle)
+  isJobClosed() always returns false
+  fetchTotalJobs() returns hardcoded 50000
+  scrapeJobs() returns empty array
+  LinkedInDataRepair uses __dirname which breaks when compiled to dist/
+
+================================================================================
+5. SCRAPER 3: INDEED (v5.0 Python-Powered)
+================================================================================
+
+5.1 Files:
+  - scripts/indeed_scraper.py                 (Python browser automation)
+  - src/IndeedManagerV5.ts                    (entry point, infinite loop)
+  - src/IndeedManager.ts                      (single-cycle entry point)
+  - src/scrapers/indeed/IndeedScraper.ts      (1416-line god class)
+  - src/scrapers/indeed/IndeedScraperV2.ts    (empty 17-line wrapper)
+  - src/scrapers/indeed/IndeedPythonWorker.ts (Python subprocess mgr)
+  - src/scrapers/indeed/IndeedQueryPlanner.ts (query grid generator)
+  - src/scrapers/indeed/IndeedSearchParser.ts (search HTML parser)
+  - src/scrapers/indeed/IndeedJobDetailParser.ts (detail JSON-LD parser)
+  - src/scrapers/indeed/BlockDetector.ts      (block detection & escalation)
+  - src/scrapers/indeed/StateStore.ts         (persistent state)
+  - src/scrapers/indeed/sinks/CsvSink.ts      (CSV writer)
+  - src/scrapers/indeed/debug/DebugDumper.ts  (debug artifacts)
+  - src/scrapers/indeed/metrics/MetricsReporter.ts (in-memory counters)
+
+5.2 Architecture: Hybrid Node.js + Python
+
+  Node.js (TypeScript) Orchestrator:
+    IndeedManagerV5 → IndeedScraper (god class)
+      ├── IndeedQueryPlanner (generates queries)
+      ├── IndeedPythonWorker (JSON-over-stdio to Python)
+      ├── BlockDetector (escalation ladder)
+      ├── StateStore (persistence)
+      ├── CsvSink (CSV output)
+      ├── DebugDumper (debug artifacts)
+      └── MetricsReporter (in-memory counters)
+
+  Python Worker:
+    indeed_scraper.py → IndeedUCScraper class
+      ├── undetected-chromedriver (Cloudflare bypass)
+      ├── selenium-stealth fallback
+      └── Chrome profile rotation
+
+5.3 Communication Protocol (JSON over Stdio):
+
+  Node → Python (stdin):
+    {"cmd":"discover","keyword":"Software Engineer","location":"Cairo",
+     "start":0,"days":7}
+    {"cmd":"detail","url":"https://eg.indeed.com/viewjob?jk=abc123"}
+    {"cmd":"cookies"}
+    {"cmd":"warmup_only"}
+    {"cmd":"quit"}
+
+  Python → Node (stdout):
+    {"ok":true,"data":{...}}
+    {"ok":false,"error":"Cloudflare challenge detected"}
+    {"ok":true,"status":"ready"}   (on startup)
+
+  Python logs go to stderr to keep stdout clean.
+
+5.4 Query Planning:
+
+  IndeedQueryPlanner generates ~18,000 queries
+    Keywords (~300) × Cities (30) × Modes (2) = ~18,000
+
+  Modes:
+    incremental: 7-day lookback
+    backfill: 90-day lookback
+
+  QueryKey format: "keyword||city||mode"
+
+  Env controls:
+    KEYWORD_OFFSET, CITY_OFFSET, LIMIT_KEYWORDS, LIMIT_CITIES
+    DRY_RUN=1 → 1 keyword × 1 city × 2 pages
+
+5.5 Fetch Modes (INDEED_FETCH_MODE env):
+  browser:  Playwright API + page navigation (most fragile)
+  python:   Python UC exclusively (best Cloudflare bypass)
+  auto:     Try API → Playwright page → Python UC (default)
+
+5.6 Block Detection & Escalation:
+
+  BlockDetector (sliding 10-min window):
+    Signals: 403, 429, 503, Cloudflare titles, Ray IDs, Turnstile, hCaptcha
+
+    Escalation ladder:
+      2+ signals → Polite mode (slower delays, longer timeouts)
+      4+ signals → Bucket cooldown (skip queryKey for 30 min)
+      8+ signals → Global cooldown (stop all for 20 min)
+
+  Profile rotation on block:
+    → Kill Python process
+    → Delete Chrome profile directory (shutil.rmtree)
+    → Spawn fresh Python worker with new profile
+
+5.7 State Persistence (data/indeed_state.json):
+
+  queryStates: per-queryKey → {offset, fingerprint, seenKeys[], emptyPages}
+  retryQueue: failed jobs → {jobKey, url, attempts, nextAttemptAt, payload}
+  seenJobs: global dedup → {jk:abc123 → {firstSeenAt, lastSeenAt}}
+
+  MAX_SEEN_KEYS_PER_QUERY: 5000
+
+5.8 CSV Output (CsvSink - 17 columns):
+  Job Title, Company Name, Location, Posted Date Raw, Job URL, Source,
+  Description, Job Type, Career Level, Work Type, Job Category,
+  Years of Experience, Job Key, Query Keyword, First Seen At,
+  Last Seen At, Description Status
+
+5.9 Python Worker Details (indeed_scraper.py):
+
+  IndeedUCScraper class:
+    - Uses undetected-chromedriver with local Chrome (v144)
+    - Creates fresh Chrome profile each startup
+    - Implicit waits, human-like delays (0.5-2.0s random)
+    - Detects: Cloudflare challenge, sign-in walls, honeypot jobs
+    - Honeypot detection: cyclic job IDs, repetitive chars
+    - Search results: pagination via URL params (start=0,10,20...)
+    - Detail extraction: title, company, location, salary, description, etc.
+
+5.10 Key Methods in IndeedScraper (1416 lines - god class):
+
+  runScrapeCycle():
+    - Load state, load CSVs
+    - Process deferred queries from last run
+    - Process retry queue
+    - Schedule and process new queries
+    - Save state
+
+  processOneQuery(queryKey):
+    - Determine fetch mode (API/page/Python)
+    - Fetch search results
+    - Parse jobs, dedup, filter
+    - Batch process details (with retry queue)
+    - Handle blocks and cooldowns
+
+  fetchViaAPI(queryKey):
+    - Playwright context.request.get() with Indeed headers
+    - Parse JSON response (Indeed's internal API)
+    - Fastest method, fails on Cloudflare
+
+  fetchViaPage(queryKey):
+    - Playwright page navigation
+    - Slower but handles JS rendering
+    - Falls back to Python worker
+
+  fetchViaPython(queryKey):
+    - Spawn Python subprocess
+    - Send discover command
+    - Parse JSON response
+
+5.11 Issues:
+  - IndeedScraperV2 is DEAD CODE — 17-line empty wrapper, confuses versioning (no V4)
+  - IndeedScraper is a GOD CLASS — 1416 lines, violates Single Responsibility Principle
+  - Duplicated inference logic — career level/work type/experience in 3 places (IndeedScraper.ts,
+    IndeedJobDetailParser.ts, indeed_scraper.py) — will diverge
+  - Honeypot detection duplicated with DIFFERENT logic between Python and TS
+  - Silent empty catch {} blocks — debugging failures nearly impossible
+  - Fragile stdout protocol — any Python print() breaks JSON parsing
+  - Race condition in PythonWorker pending queue — no ordering guarantee
+  - Mutable StateStore state — mutations implicit, hard to trace
+  - Global env-var constants baked at import time
+  - Hand-rolled CSV parser doesn't handle edge cases
+  - In-memory-only MetricsReporter — data lost on crash
+  - fetchMode='python' resets offset to 0 each time
+  - require('child_process') inside method instead of top-level import
+  - Profile cleanup race condition between Python and TS
+  - String concatenation for URLs instead of URL builder
+  - No global rate limiting across concurrent operations
+
+================================================================================
+6. SHARED INFRASTRUCTURE
+================================================================================
+
+6.1 BaseScraper.ts (abstract base class)
+
+  Properties: name, baseUrl, defaultPageSize=15, userAgent
+  browserInstance, contextPool[5], poolIndex, cookies
+
+  Key Methods:
+    fetchHtml(url, options?):
+      No-JS path: context.request.get() (API-style, fast)
+        Retry 3x on 429/502/503 with exponential backoff
+      JS path: Playwright page navigation
+        Blocks images/styles/fonts/media/scripts
+        Waits for selector .css-1gatmva, .e1v1l3u10 (8s timeout)
+        Captures cookies for Axios fallback
+
+    closeBrowser(): Closes all pool contexts + browser
+
+    withBrowser<T>(fn, headless?): Generic Playwright helper (unused by Wuzzuf)
+    fetchStaticHtml(url): Axios-based fetch with cookies fallback (unused)
+    parseCurrency(text): EGP/USD/null detection (unused)
+
+  Issues:
+    - browserInstance: any, contextPool: any[] — no type safety
+    - Multiple dead methods (withBrowser, fetchStaticHtml, parseCurrency)
+    - Headers include 'Skills' column but never populated
+    - getHeaders() missing 'Job Id' column
+
+6.2 JobCollector.ts (shared CSV orchestrator)
+
+  Used by: Wuzzuf scraper main path
+  NOT used by: LinkedIn (writes directly), Indeed (has CsvSink)
+
+  Methods:
+    validateHeaders(): Checks CSV integrity, archives corrupt files
+    parseCSVLine(line): Hand-rolled quoted-field CSV parser
+    loadProcessedUrls(): Reads CSV into Set<string> for O(1) dedup
+    extractId(url): Regex-based ID extraction (/p/xxx or digits)
+    runCycle(): Full scrape cycle with smart stop conditions
+    saveJobs(newJobs): CSV append with lock (20 retries) + retry (5 cycles)
+    mapHeaderToValue(header, job): Maps CSV headers to JobEntity fields
+
+  Issues:
+    - Hardcoded URL column index (12) — fragile on header reorder
+    - Regex for ID extraction duplicated (WuzzufScraper + JobCollector)
+    - saveLock not truly atomic (works only because single-threaded)
+
+6.3 BaseScraper.ts (Rate Limit Handling):
+
+    if (response.status() === 429):
+      waitTime = min(5000 * 2^attempt, 30000)  // 5s→10s→20s→30s
+
+    if (response.status() === 502 || 503):
+      waitTime = 3000 * (attempt + 1)  // 3s→6s→9s
+
+6.4 NetworkHealthCheck.ts (singleton):
+
+  checkNetwork(): DNS resolve linkedin.com → fallback HTTPS to google.com
+  waitForNetwork(): Infinite loop with 10s retry (no timeout!)
+  isNetworkError(error): Pattern matches on errors
+  executeWithRetry<T>(op): 3 attempts with 2s*attempt backoff
+  Singleton: networkHealth (no reset mechanism)
+
+6.5 KeepAwake.ts (singleton):
+
+  Windows: PowerShell SetThreadExecutionState + powercfg
+  macOS: caffeinate
+  Linux: xdotool (silently fails if not installed)
+  Keep-alive signal every 60s
+
+  Issues:
+    - Linux silently fails (no systemd-inhibit fallback)
+    - No reset() method for test/hot-reload
+    - exec() without proper error handling on Linux
+
+================================================================================
+7. DATABASE & INGESTION
+================================================================================
+
+7.1 Files:
+  - src/database/db.ts            (PostgreSQL pool client)
+  - src/database/init_db.ts       (schema initializer)
+  - src/database/schema.sql       (production schema)
+  - src/ingestion/schema.sql      (divergent second schema)
+  - src/ingest_jobs.ts            (CSV→DB pipeline)
+
+7.2 CRITICAL: Dual Schema Conflict
+
+  src/database/schema.sql:
+    Table: jobs
+      - id (UUID PK)
+      - source, source_job_id (composite unique: unique_job_source)
+      - title, company_name, location
+      - job_type, work_type, experience_level, career_level, education_level
+      - salary_min, salary_max, salary_currency (NUMERIC)
+      - posted_date, scraped_at
+      - status
+      - source_raw (JSONB)
+
+    Tables: job_descriptions, skills, job_skills, industries, job_industries
+
+  src/ingestion/schema.sql:
+    Table: jobs
+      - job_id (PK, different name)
+      - title_raw, title_normalized (raw/normalized split)
+      - location_raw, location_normalized
+      - job_category (column exists)
+      - source_raw (column exists)
+      - description_raw
+      - salary (INTEGER, not NUMERIC)
+      - Unique constraint: uq_jobs_source_id
+      - NO skills/industries/job_skills/job_industries tables
+
+  COLUMN MISMATCH: database schema lacks job_category and source_raw
+                   ingestion schema lacks job_descriptions FK tables
+  If init_db runs using database/schema.sql, ingest_jobs.ts will FAIL.
+
+7.3 Ingestion Pipeline (ingest_jobs.ts):
+
+  - Reads CSV/Excel via xlsx library
+  - Source detection: override, row column, or filename heuristic
+  - ID extraction: LinkedIn=row.Job_Id, Indeed=jk param, Wuzzuf=URL slug
+  - Fallback: generated-{timestamp}-{random}
+  - Salary parsing: regex number extraction + currency detection
+  - UPSERT: ON CONFLICT (source, source_job_id) DO UPDATE
+    Updates: title, company, location, URL, posted_date, category, scraped_at, source_raw
+    DOES NOT UPDATE: salary, job_type, work_type, experience_level, career_level,
+                     education_level, description
+  - Description: ON CONFLICT DO NOTHING (first description only, never updated)
+  - Transactional: ALL rows in one giant transaction (lock + memory pressure)
+
+7.4 Issues:
+  - Dual schema conflict will cause ingest failure
+  - Description loss on conflict (re-scrape improvements discarded)
+  - No salary/classification update on re-ingest
+  - No transactional batching (7000+ rows in one transaction)
+  - Salary parsing: parseInt truncates decimals (should use parseFloat)
+  - Uses __dirname for file paths (breaks when run from dist/)
+
+================================================================================
+8. NORMALIZATION PIPELINE
+================================================================================
+
+8.1 File: src/normalization/index.ts
+
+  normalizeLocation(location: string):
+    - Maps Egyptian suburbs to canonical cities (Maadi→Cairo, 6th October→Giza)
+    - Strips country suffixes
+    - Falls through to raw first-comma-split
+
+  normalizeTitle(title: string):
+    - Strips parenthetical annotations like (M/F)
+    - Very minimal
+
+  extractSkills(text: string):
+    - Hardcoded keyword scan against 16 common tech skills
+    - No NLP, no stemming, no synonyms
+
+  CRITICAL: None of these functions are called by ingest_jobs.ts
+            Raw values stored directly in database.
+
+================================================================================
+9. TOOLS & UTILITIES
+================================================================================
+
+9.1 Tools (src/tools/):
+
+  clean_linkedin_csv.ts:
+    - Deduplicates and cleans LinkedIn CSV
+    - Extracts IDs from URLs, removes duplicates
+
+  repair_linkedin_csv.ts:
+    - Fixes shifted columns in CSV
+    - Backfills missing data from LinkedIn pages
+
+  fix_csv_encoding.ts:
+    - Adds UTF-8 BOM for Arabic character support in Excel
+
+  benchmark_speed.ts:
+    - Performance testing utility
+
+9.2 Other Utilities:
+
+  normalize.ts:
+    - URL normalization (trim, lowercase, strip params)
+    - Used by Cleaner and JobStatusChecker
+
+  Cleaner.ts:
+    - CSV deduplication engine
+    - ID extraction with site-specific regex
+    - Preserves first occurrence
+    - EBUSY retry (20 attempts, 2s intervals)
+
+  JobStatusChecker.ts:
+    - Reads CSV, samples "active" jobs
+    - Calls isJobClosed(url) → updates status to "Closed"
+    - EBUSY retry (unbounded — infinite loop risk)
+
+  Duplicate parseCSVLine() implementations (Cleaner.ts + JobStatusChecker.ts)
+  Duplicate saveWithRetry() implementations (Cleaner.ts + JobStatusChecker.ts)
+
+================================================================================
+10. CROSS-CUTTING ISSUES & ANTI-PATTERNS
+================================================================================
+
+  CRITICAL (Blocking):
+  ──────────────────────────────────────────────────────────────────────
+  1. Dual schema conflict — database/schema.sql vs ingestion/schema.sql
+     are incompatible. WIll cause ingest_jobs.ts to fail.
+
+  2. LinkedIn setInterval(kill, 500) never cleared — memory leak per job.
+
+  3. LinkedIn loadExistingIds() re-reads entire CSV every keyword O(n²).
+
+  High Priority:
+  ──────────────────────────────────────────────────────────────────────
+  4. LinkedIn @ts-ignore suppresses real type mismatches.
+
+  5. IndeedScraper is a 1416-line god class (SRP violation).
+
+  6. IndeedScraperV2 is dead empty wrapper — confusing versioning.
+
+  7. Normalization exists but is not wired into the pipeline.
+
+  8. Hardcoded CSV column indices across multiple files (fragile).
+
+  9. No global rate limiting across concurrent operations.
+
+  Medium Priority:
+  ──────────────────────────────────────────────────────────────────────
+  10. Duplicate inference logic (career level, work type) in 3 places.
+  11. Multiple empty try-catch blocks (silent error swallowing).
+  12. Recursive restart in LinkedInManager — abandoned promise chains.
+  13. saveState() called every keyword (blocks event loop).
+  14. LinkedIN scraperSpecificPage() returns empty stub.
+  15. parseJob(), scrapeJobs(), isJobClosed() are no-ops in BrowserScraper.
+  16. finder-specific state management — no reset() on singletons.
+  17. Data in in-memory MetricsReporter lost on crash.
+  18. Duplicate saveWithRetry() implementations.
+
+  Low Priority:
+  ──────────────────────────────────────────────────────────────────────
+  19. require('child_process') inside method (Not top-level).
+  20. Hand-rolled CSV parsers (edge cases).
+  21. KeepAwake Linux silently fails (xdotool not installed).
+  22. String concatenation for URLs (no URL builder).
+  23. PartialJob interface dead code.
+  24. Placeholder comments left in production code.
+
+================================================================================
+11. CONFIGURATION REFERENCE
+================================================================================
+
+  Environment Variables (.env):
+    DATABASE_URL, DB_HOST, DB_PORT, DB_NAME, DB_USER, DB_PASSWORD
+    SPLIT_MODE (raw|smart), DRY_RUN
+    LIMIT_KEYWORDS, LIMIT_CITIES, LIMIT_PAGES
+    KEYWORD_OFFSET, CITY_OFFSET
+    INDEED_FETCH_MODE (browser|python|auto)
+    INDEED_PY_STARTUP_TIMEOUT_MS
+
+  Database:
+    URL: postgresql://egypt_jobs:egypt_jobs_2026@localhost:5432/egypt_jobs_db
+
+  Package Scripts:
+    npm start              → Wuzzuf scraper (GlobalManager)
+    npm run start:linkedin → LinkedIn scraper (LinkedInManager)
+    npm run start:indeed:v5 → Indeed scraper v5 (IndeedManagerV5)
+    npm run init:db        → Initialize database schema
+    npm run ingest         → Ingest CSV data to database
+
+================================================================================
+                        END OF ANALYSIS
+================================================================================

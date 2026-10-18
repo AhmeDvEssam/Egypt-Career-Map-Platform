@@ -1,0 +1,2002 @@
+[
+  {
+    "timestamp": "2026-10-02 15:52:34",
+    "category": "TEST",
+    "status": "INFO",
+    "message": "Running Test (Chat LLM (Generate Text))",
+    "provider": "cohere",
+    "model": "command-r-plus-08-2024",
+    "tokens": 0,
+    "duration": 0
+  },
+  {
+    "timestamp": "2026-10-02 15:52:33",
+    "category": "TEST",
+    "status": "INFO",
+    "message": "Running Test (Chat LLM (Generate Text))",
+    "provider": "cohere",
+    "model": "command-r-plus-08-2024",
+    "tokens": 0,
+    "duration": 0
+  },
+  {
+    "timestamp": "2026-10-02 15:52:24",
+    "category": "TEST",
+    "status": "INFO",
+    "message": "Running Test (Chat LLM (Generate Text))",
+    "provider": "cohere",
+    "model": "command-r-plus-08-2024",
+    "tokens": 0,
+    "duration": 0
+  },
+  {
+    "timestamp": "2026-10-02 15:49:49",
+    "category": "TEST",
+    "status": "INFO",
+    "message": "Running Test (Chat LLM (Generate Text))",
+    "provider": "groq",
+    "model": "gpt-oss-20b",
+    "tokens": 0,
+    "duration": 0
+  },
+  {
+    "timestamp": "2026-10-02 15:45:47",
+    "category": "TEST",
+    "status": "INFO",
+    "message": "Running Test (Chat LLM (Generate Text))",
+    "provider": "gemini",
+    "model": "gemini-3.8-flash",
+    "tokens": 0,
+    "duration": 0
+  },
+  {
+    "timestamp": "2026-10-02 15:44:35",
+    "category": "TEST",
+    "status": "INFO",
+    "message": "Running Test (Chat LLM (Generate Text))",
+    "provider": "gemini",
+    "model": "gemini-3.8-flash",
+    "tokens": 0,
+    "duration": 0
+  },
+  {
+    "timestamp": "2026-10-02 15:44:20",
+    "category": "TEST",
+    "status": "INFO",
+    "message": "Running Test (Chat LLM (Generate Text))",
+    "provider": "hugging face",
+    "model": "meta-llama/Llama-3.1-8B-Instruct",
+    "tokens": 0,
+    "duration": 0
+  },
+  {
+    "timestamp": "2026-10-02 15:43:51",
+    "category": "TEST",
+    "status": "INFO",
+    "message": "Running Test (Chat LLM (Generate Text))",
+    "provider": "openrouter",
+    "model": "qwen/qwen3.8-27b:free",
+    "tokens": 0,
+    "duration": 0
+  },
+  {
+    "timestamp": "2026-10-02 15:40:02",
+    "category": "TEST",
+    "status": "INFO",
+    "message": "Running Test (Chat LLM (Generate Text))",
+    "provider": "openrouter",
+    "model": "qwen/qwen3.8-27b:free",
+    "tokens": 0,
+    "duration": 0
+  },
+  {
+    "timestamp": "2026-10-02 15:39:48",
+    "category": "TEST",
+    "status": "INFO",
+    "message": "Running Test (Chat LLM (Generate Text))",
+    "provider": "openrouter",
+    "model": "qwen/qwen3.8-27b:free",
+    "tokens": 0,
+    "duration": 0
+  },
+  {
+    "timestamp": "2026-10-02 15:39:36",
+    "category": "TEST",
+    "status": "INFO",
+    "message": "Running Test (Chat LLM (Generate Text))",
+    "provider": "groq",
+    "model": "canopylabs/orpheus-v1-english",
+    "tokens": 0,
+    "duration": 0
+  },
+  {
+    "timestamp": "2026-10-02 15:39:10",
+    "category": "TEST",
+    "status": "INFO",
+    "message": "Running Test (Chat LLM (Generate Text))",
+    "provider": "groq",
+    "model": "canopylabs/orpheus-v1-english",
+    "tokens": 0,
+    "duration": 0
+  },
+  {
+    "timestamp": "2026-10-02 15:38:31",
+    "category": "TEST",
+    "status": "INFO",
+    "message": "Running Test (Chat LLM (Generate Text))",
+    "provider": "groq",
+    "model": "gpt-oss-20b",
+    "tokens": 0,
+    "duration": 0
+  },
+  {
+    "timestamp": "2026-10-02 15:38:18",
+    "category": "TEST",
+    "status": "INFO",
+    "message": "Running Test (Chat LLM (Generate Text))",
+    "provider": "https://platform.inceptionlabs.ai/",
+    "model": "z-ai/glm-5.3-flash",
+    "tokens": 0,
+    "duration": 0
+  },
+  {
+    "timestamp": "2026-10-02 15:38:11",
+    "category": "TEST",
+    "status": "INFO",
+    "message": "Running Test (Chat LLM (Generate Text))",
+    "provider": "https://platform.inceptionlabs.ai/",
+    "model": "z-ai/glm-5.3-flash",
+    "tokens": 0,
+    "duration": 0
+  },
+  {
+    "timestamp": "2026-10-02 15:37:56",
+    "category": "TEST",
+    "status": "INFO",
+    "message": "Running Test (Chat LLM (Generate Text))",
+    "provider": "https://cleanapis.com/dashboard/api-keys",
+    "model": "z-ai/glm-5.3-flash",
+    "tokens": 0,
+    "duration": 0
+  },
+  {
+    "timestamp": "2026-10-02 15:37:42",
+    "category": "TEST",
+    "status": "INFO",
+    "message": "Running Test (Chat LLM (Generate Text))",
+    "provider": "https://cleanapis.com/dashboard/api-keys",
+    "model": "z-ai/glm-5.3-flash",
+    "tokens": 0,
+    "duration": 0
+  },
+  {
+    "timestamp": "2026-10-02 15:37:27",
+    "category": "TEST",
+    "status": "INFO",
+    "message": "Running Test (Chat LLM (Generate Text))",
+    "provider": "https://cleanapis.com/dashboard/api-keys",
+    "model": "z-ai/glm-5.3-flash",
+    "tokens": 0,
+    "duration": 0
+  },
+  {
+    "timestamp": "2026-10-02 15:37:15",
+    "category": "TEST",
+    "status": "INFO",
+    "message": "Running Test (Chat LLM (Generate Text))",
+    "provider": "https://cleanapis.com/dashboard/api-keys",
+    "model": "z-ai/glm-5.3-flash",
+    "tokens": 0,
+    "duration": 0
+  },
+  {
+    "timestamp": "2026-10-02 15:36:40",
+    "category": "TEST",
+    "status": "INFO",
+    "message": "Running Test (Chat LLM (Generate Text))",
+    "provider": "llm7.io",
+    "model": "z-ai/glm-5.3-flash",
+    "tokens": 0,
+    "duration": 0
+  },
+  {
+    "timestamp": "2026-10-02 15:36:26",
+    "category": "TEST",
+    "status": "INFO",
+    "message": "Running Test (Chat LLM (Generate Text))",
+    "provider": "llm7.io",
+    "model": "z-ai/glm-5.3-flash",
+    "tokens": 0,
+    "duration": 0
+  },
+  {
+    "timestamp": "2026-10-02 15:35:51",
+    "category": "TEST",
+    "status": "INFO",
+    "message": "Running Test (Chat LLM (Generate Text))",
+    "provider": "llm7.io",
+    "model": "z-ai/glm-5.3-flash",
+    "tokens": 0,
+    "duration": 0
+  },
+  {
+    "timestamp": "2026-10-02 15:35:39",
+    "category": "TEST",
+    "status": "INFO",
+    "message": "Running Test (Chat LLM (Generate Text))",
+    "provider": "https://build.nvidia.com/settings/api-keys",
+    "model": "gpt-oss-20b",
+    "tokens": 0,
+    "duration": 0
+  },
+  {
+    "timestamp": "2026-10-02 15:35:37",
+    "category": "TEST",
+    "status": "INFO",
+    "message": "Running Test (Chat LLM (Generate Text))",
+    "provider": "https://build.nvidia.com/settings/api-keys",
+    "model": "gpt-oss-20b",
+    "tokens": 0,
+    "duration": 0
+  },
+  {
+    "timestamp": "2026-10-02 15:35:24",
+    "category": "TEST",
+    "status": "INFO",
+    "message": "Running Test (Chat LLM (Generate Text))",
+    "provider": "https://build.nvidia.com/settings/api-keys",
+    "model": "openai/gpt-oss-20b",
+    "tokens": 0,
+    "duration": 0
+  },
+  {
+    "timestamp": "2026-10-02 15:35:01",
+    "category": "TEST",
+    "status": "INFO",
+    "message": "Running Test (Chat LLM (Generate Text))",
+    "provider": "https://build.nvidia.com/settings/api-keys",
+    "model": "z-ai/glm-5.3-flash",
+    "tokens": 0,
+    "duration": 0
+  },
+  {
+    "timestamp": "2026-10-02 15:34:31",
+    "category": "TEST",
+    "status": "INFO",
+    "message": "Running Test (Chat LLM (Generate Text))",
+    "provider": "https://build.nvidia.com/settings/api-keys",
+    "model": "",
+    "tokens": 0,
+    "duration": 0
+  },
+  {
+    "timestamp": "2026-10-02 15:34:20",
+    "category": "TEST",
+    "status": "INFO",
+    "message": "Running Test (Chat LLM (Generate Text))",
+    "provider": "https://console.mistral.ai/api-keys",
+    "model": "",
+    "tokens": 0,
+    "duration": 0
+  },
+  {
+    "timestamp": "2026-10-02 15:34:04",
+    "category": "TEST",
+    "status": "INFO",
+    "message": "Running Test (Chat LLM (Generate Text))",
+    "provider": "https://console.mistral.ai/api-keys",
+    "model": "",
+    "tokens": 0,
+    "duration": 0
+  },
+  {
+    "timestamp": "2026-10-02 15:34:00",
+    "category": "TEST",
+    "status": "INFO",
+    "message": "Running Test (Embedder/Classifier (Ping /embeddings))",
+    "provider": "https://console.mistral.ai/api-keys",
+    "model": "",
+    "tokens": 0,
+    "duration": 0
+  },
+  {
+    "timestamp": "2026-10-02 15:33:43",
+    "category": "TEST",
+    "status": "INFO",
+    "message": "Running Test (Embedder/Classifier (Ping /embeddings))",
+    "provider": "jina ai",
+    "model": "",
+    "tokens": 0,
+    "duration": 0
+  },
+  {
+    "timestamp": "2026-10-02 15:33:37",
+    "category": "TEST",
+    "status": "INFO",
+    "message": "Running Test (Embedder/Classifier (Ping /embeddings))",
+    "provider": "jina ai",
+    "model": "",
+    "tokens": 0,
+    "duration": 0
+  },
+  {
+    "timestamp": "2026-10-02 15:33:31",
+    "category": "TEST",
+    "status": "INFO",
+    "message": "Running Test (Embedder/Classifier (Ping /embeddings))",
+    "provider": "jina ai",
+    "model": "",
+    "tokens": 0,
+    "duration": 0
+  },
+  {
+    "timestamp": "2026-10-02 15:33:24",
+    "category": "TEST",
+    "status": "INFO",
+    "message": "Running Test (Embedder/Classifier (Ping /embeddings))",
+    "provider": "voyage ai",
+    "model": "",
+    "tokens": 0,
+    "duration": 0
+  },
+  {
+    "timestamp": "2026-10-02 15:33:16",
+    "category": "TEST",
+    "status": "INFO",
+    "message": "Running Test (Embedder/Classifier (Ping /embeddings))",
+    "provider": "voyage ai",
+    "model": "",
+    "tokens": 0,
+    "duration": 0
+  },
+  {
+    "timestamp": "2026-10-02 15:33:09",
+    "category": "TEST",
+    "status": "INFO",
+    "message": "Running Test (Embedder/Classifier (Ping /embeddings))",
+    "provider": "voyage ai",
+    "model": "",
+    "tokens": 0,
+    "duration": 0
+  },
+  {
+    "timestamp": "2026-10-02 15:33:04",
+    "category": "TEST",
+    "status": "INFO",
+    "message": "Running Test (Embedder/Classifier (Ping /embeddings))",
+    "provider": "voyage ai",
+    "model": "",
+    "tokens": 0,
+    "duration": 0
+  },
+  {
+    "timestamp": "2026-10-02 15:32:58",
+    "category": "TEST",
+    "status": "INFO",
+    "message": "Running Test (Embedder/Classifier (Ping /embeddings))",
+    "provider": "voyage ai",
+    "model": "",
+    "tokens": 0,
+    "duration": 0
+  },
+  {
+    "timestamp": "2026-10-02 15:32:49",
+    "category": "TEST",
+    "status": "INFO",
+    "message": "Running Test (Embedder/Classifier (Ping /embeddings))",
+    "provider": "voyage ai",
+    "model": "",
+    "tokens": 0,
+    "duration": 0
+  },
+  {
+    "timestamp": "2026-10-02 15:32:09",
+    "category": "TEST",
+    "status": "INFO",
+    "message": "Running Test (Chat LLM (Generate Text))",
+    "provider": "hugging face",
+    "model": "meta-llama/Llama-3.1-8B-Instruct",
+    "tokens": 0,
+    "duration": 0
+  },
+  {
+    "timestamp": "2026-10-02 15:32:02",
+    "category": "TEST",
+    "status": "INFO",
+    "message": "Running Test (Chat LLM (Generate Text))",
+    "provider": "hugging face",
+    "model": "meta-llama/Llama-3.1-8B-Instruct",
+    "tokens": 0,
+    "duration": 0
+  },
+  {
+    "timestamp": "2026-10-02 15:31:55",
+    "category": "TEST",
+    "status": "INFO",
+    "message": "Running Test (Chat LLM (Generate Text))",
+    "provider": "hugging face",
+    "model": "meta-llama/Llama-3.1-8B-Instruct",
+    "tokens": 0,
+    "duration": 0
+  },
+  {
+    "timestamp": "2026-10-02 15:31:46",
+    "category": "TEST",
+    "status": "INFO",
+    "message": "Running Test (Chat LLM (Generate Text))",
+    "provider": "hugging face",
+    "model": "meta-llama/Llama-3.1-8B-Instruct",
+    "tokens": 0,
+    "duration": 0
+  },
+  {
+    "timestamp": "2026-10-02 15:31:37",
+    "category": "TEST",
+    "status": "INFO",
+    "message": "Running Test (Chat LLM (Generate Text))",
+    "provider": "hugging face",
+    "model": "meta-llama/Llama-3.1-8B-Instruct",
+    "tokens": 0,
+    "duration": 0
+  },
+  {
+    "timestamp": "2026-10-02 15:31:23",
+    "category": "TEST",
+    "status": "INFO",
+    "message": "Running Test (Chat LLM (Generate Text))",
+    "provider": "hugging face",
+    "model": "meta-llama/Llama-3.1-8B-Instruct",
+    "tokens": 0,
+    "duration": 0
+  },
+  {
+    "timestamp": "2026-10-02 15:27:20",
+    "category": "TEST",
+    "status": "INFO",
+    "message": "Running Test (Chat LLM (Generate Text))",
+    "provider": "gemini",
+    "model": "gemini-3.8-flash",
+    "tokens": 0,
+    "duration": 0
+  },
+  {
+    "timestamp": "2026-10-02 06:50:20",
+    "category": "AI_CALL",
+    "status": "SUCCESS",
+    "message": "LLM Call Success",
+    "provider": "hugging face",
+    "model": "meta-llama/Llama-3.1-8B-Instruct",
+    "tokens": 4043,
+    "duration": 49.68
+  },
+  {
+    "timestamp": "2026-10-02 06:49:31",
+    "category": "AI_CALL",
+    "status": "SUCCESS",
+    "message": "LLM Call Success",
+    "provider": "groq",
+    "model": "openai/gpt-oss-20b",
+    "tokens": 4555,
+    "duration": 3.53
+  },
+  {
+    "timestamp": "2026-10-02 06:47:15",
+    "category": "AI_CALL",
+    "status": "SUCCESS",
+    "message": "LLM Call Success",
+    "provider": "cleanapis",
+    "model": "deepseek-v4-flash-0731",
+    "tokens": 6814,
+    "duration": 17.02
+  },
+  {
+    "timestamp": "2026-10-02 06:47:04",
+    "category": "AI_CALL",
+    "status": "SUCCESS",
+    "message": "LLM Call Success",
+    "provider": "zhipuai",
+    "model": "glm-4-flash",
+    "tokens": 4288,
+    "duration": 110.71
+  },
+  {
+    "timestamp": "2026-10-02 06:46:58",
+    "category": "AI_CALL",
+    "status": "ERROR",
+    "message": "Rate Limit Reached (llm7)",
+    "provider": "llm7",
+    "model": "mistral-Nemo-Instruct-2407",
+    "tokens": 0,
+    "duration": 0.95
+  },
+  {
+    "timestamp": "2026-10-02 06:46:46",
+    "category": "AI_CALL",
+    "status": "SUCCESS",
+    "message": "LLM Call Success",
+    "provider": "cleanapis",
+    "model": "deepseek-v4-flash-0731",
+    "tokens": 7487,
+    "duration": 18.36
+  },
+  {
+    "timestamp": "2026-10-02 06:46:31",
+    "category": "AI_CALL",
+    "status": "SUCCESS",
+    "message": "LLM Call Success",
+    "provider": "groq",
+    "model": "openai/gpt-oss-20b",
+    "tokens": 4552,
+    "duration": 3.53
+  },
+  {
+    "timestamp": "2026-10-02 06:46:31",
+    "category": "AI_CALL",
+    "status": "SUCCESS",
+    "message": "LLM Call Success",
+    "provider": "hugging face",
+    "model": "meta-llama/Llama-3.1-8B-Instruct",
+    "tokens": 3974,
+    "duration": 50.16
+  },
+  {
+    "timestamp": "2026-10-02 06:46:28",
+    "category": "AI_CALL",
+    "status": "SUCCESS",
+    "message": "LLM Call Success",
+    "provider": "groq",
+    "model": "openai/gpt-oss-20b",
+    "tokens": 4552,
+    "duration": 3.7
+  },
+  {
+    "timestamp": "2026-10-02 06:46:27",
+    "category": "AI_CALL",
+    "status": "SUCCESS",
+    "message": "LLM Call Success",
+    "provider": "groq",
+    "model": "openai/gpt-oss-20b",
+    "tokens": 4616,
+    "duration": 3.64
+  },
+  {
+    "timestamp": "2026-10-02 06:46:24",
+    "category": "AI_CALL",
+    "status": "ERROR",
+    "message": "Rate Limit Reached (llm7)",
+    "provider": "llm7",
+    "model": "mistral-Nemo-Instruct-2407",
+    "tokens": 0,
+    "duration": 1.11
+  },
+  {
+    "timestamp": "2026-10-02 06:46:22",
+    "category": "AI_CALL",
+    "status": "SUCCESS",
+    "message": "LLM Call Success",
+    "provider": "zhipuai",
+    "model": "glm-4-flash",
+    "tokens": 4324,
+    "duration": 108.99
+  },
+  {
+    "timestamp": "2026-10-02 06:46:14",
+    "category": "AI_CALL",
+    "status": "SUCCESS",
+    "message": "LLM Call Success",
+    "provider": "hugging face",
+    "model": "meta-llama/Llama-3.1-8B-Instruct",
+    "tokens": 3977,
+    "duration": 51.35
+  },
+  {
+    "timestamp": "2026-10-02 06:46:13",
+    "category": "AI_CALL",
+    "status": "SUCCESS",
+    "message": "LLM Call Success",
+    "provider": "hugging face",
+    "model": "meta-llama/Llama-3.1-8B-Instruct",
+    "tokens": 4113,
+    "duration": 51.82
+  },
+  {
+    "timestamp": "2026-10-02 06:46:07",
+    "category": "AI_CALL",
+    "status": "SUCCESS",
+    "message": "LLM Call Success",
+    "provider": "cleanapis",
+    "model": "deepseek-v4-flash-0731",
+    "tokens": 7660,
+    "duration": 23.28
+  },
+  {
+    "timestamp": "2026-10-02 06:46:02",
+    "category": "AI_CALL",
+    "status": "SUCCESS",
+    "message": "LLM Call Success",
+    "provider": "cleanapis",
+    "model": "deepseek-v4-flash-0731",
+    "tokens": 8198,
+    "duration": 21.24
+  },
+  {
+    "timestamp": "2026-10-02 06:46:00",
+    "category": "AI_CALL",
+    "status": "SUCCESS",
+    "message": "LLM Call Success",
+    "provider": "cleanapis",
+    "model": "deepseek-v4-flash-0731",
+    "tokens": 7356,
+    "duration": 18.56
+  },
+  {
+    "timestamp": "2026-10-02 06:45:59",
+    "category": "AI_CALL",
+    "status": "SUCCESS",
+    "message": "LLM Call Success",
+    "provider": "cleanapis",
+    "model": "deepseek-v4-flash-0731",
+    "tokens": 6120,
+    "duration": 17.87
+  },
+  {
+    "timestamp": "2026-10-02 06:45:55",
+    "category": "AI_CALL",
+    "status": "SUCCESS",
+    "message": "LLM Call Success",
+    "provider": "hugging face",
+    "model": "meta-llama/Llama-3.1-8B-Instruct",
+    "tokens": 4009,
+    "duration": 50.51
+  },
+  {
+    "timestamp": "2026-10-02 06:45:55",
+    "category": "AI_CALL",
+    "status": "SUCCESS",
+    "message": "LLM Call Success",
+    "provider": "cleanapis",
+    "model": "deepseek-v4-flash-0731",
+    "tokens": 9414,
+    "duration": 27.56
+  },
+  {
+    "timestamp": "2026-10-02 06:45:55",
+    "category": "AI_CALL",
+    "status": "SUCCESS",
+    "message": "LLM Call Success",
+    "provider": "cleanapis",
+    "model": "deepseek-v4-flash-0731",
+    "tokens": 6352,
+    "duration": 13.86
+  },
+  {
+    "timestamp": "2026-10-02 06:45:44",
+    "category": "AI_CALL",
+    "status": "SUCCESS",
+    "message": "LLM Call Success",
+    "provider": "mistral ai",
+    "model": "open-mistral-nemo",
+    "tokens": 5007,
+    "duration": 21.54
+  },
+  {
+    "timestamp": "2026-10-02 06:45:41",
+    "category": "AI_CALL",
+    "status": "SUCCESS",
+    "message": "LLM Call Success",
+    "provider": "cleanapis",
+    "model": "deepseek-v4-flash-0731",
+    "tokens": 7489,
+    "duration": 19.97
+  },
+  {
+    "timestamp": "2026-10-02 06:45:41",
+    "category": "AI_CALL",
+    "status": "SUCCESS",
+    "message": "LLM Call Success",
+    "provider": "cleanapis",
+    "model": "deepseek-v4-flash-0731",
+    "tokens": 7504,
+    "duration": 18.44
+  },
+  {
+    "timestamp": "2026-10-02 06:45:41",
+    "category": "AI_CALL",
+    "status": "SUCCESS",
+    "message": "LLM Call Success",
+    "provider": "cloudflare",
+    "model": "@cf/meta/llama-3.1-8b-instruct",
+    "tokens": 0,
+    "duration": 3.62
+  },
+  {
+    "timestamp": "2026-10-02 06:45:40",
+    "category": "AI_CALL",
+    "status": "ERROR",
+    "message": "Rate Limit Reached (llm7)",
+    "provider": "llm7",
+    "model": "mistral-Nemo-Instruct-2407",
+    "tokens": 0,
+    "duration": 1.51
+  },
+  {
+    "timestamp": "2026-10-02 06:45:39",
+    "category": "AI_CALL",
+    "status": "SUCCESS",
+    "message": "LLM Call Success",
+    "provider": "mistral ai",
+    "model": "open-mistral-nemo",
+    "tokens": 5079,
+    "duration": 21.32
+  },
+  {
+    "timestamp": "2026-10-02 06:45:39",
+    "category": "AI_CALL",
+    "status": "ERROR",
+    "message": "API Error 404",
+    "provider": "openrouter",
+    "model": "nex-agi/nex-n2.5-mini:free",
+    "tokens": 0,
+    "duration": 1.72
+  },
+  {
+    "timestamp": "2026-10-02 06:45:37",
+    "category": "AI_CALL",
+    "status": "ERROR",
+    "message": "Rate Limit Reached (cohere)",
+    "provider": "cohere",
+    "model": "command-r-plus-08-2024",
+    "tokens": 0,
+    "duration": 1.49
+  },
+  {
+    "timestamp": "2026-10-02 06:45:36",
+    "category": "AI_CALL",
+    "status": "SUCCESS",
+    "message": "LLM Call Success",
+    "provider": "mistral ai",
+    "model": "open-mistral-nemo",
+    "tokens": 4938,
+    "duration": 24.26
+  },
+  {
+    "timestamp": "2026-10-02 06:45:27",
+    "category": "AI_CALL",
+    "status": "SUCCESS",
+    "message": "LLM Call Success",
+    "provider": "zhipuai",
+    "model": "glm-4-flash",
+    "tokens": 4323,
+    "duration": 105.83
+  },
+  {
+    "timestamp": "2026-10-02 06:45:23",
+    "category": "AI_CALL",
+    "status": "ERROR",
+    "message": "Rate Limit Reached (llm7)",
+    "provider": "llm7",
+    "model": "mistral-Nemo-Instruct-2407",
+    "tokens": 0,
+    "duration": 1.86
+  },
+  {
+    "timestamp": "2026-10-02 06:45:22",
+    "category": "AI_CALL",
+    "status": "SUCCESS",
+    "message": "LLM Call Success",
+    "provider": "zhipuai",
+    "model": "glm-4-flash",
+    "tokens": 4241,
+    "duration": 115.56
+  },
+  {
+    "timestamp": "2026-10-02 06:45:21",
+    "category": "AI_CALL",
+    "status": "ERROR",
+    "message": "Rate Limit Reached (cohere)",
+    "provider": "cohere",
+    "model": "command-r-plus-08-2024",
+    "tokens": 0,
+    "duration": 1.35
+  },
+  {
+    "timestamp": "2026-10-02 06:45:21",
+    "category": "AI_CALL",
+    "status": "ERROR",
+    "message": "API Error 404",
+    "provider": "openrouter",
+    "model": "nex-agi/nex-n2.5-mini:free",
+    "tokens": 0,
+    "duration": 1.37
+  },
+  {
+    "timestamp": "2026-10-02 06:45:21",
+    "category": "AI_CALL",
+    "status": "SUCCESS",
+    "message": "LLM Call Success",
+    "provider": "mistral ai",
+    "model": "open-mistral-nemo",
+    "tokens": 4728,
+    "duration": 17.75
+  },
+  {
+    "timestamp": "2026-10-02 06:45:21",
+    "category": "AI_CALL",
+    "status": "SUCCESS",
+    "message": "LLM Call Success",
+    "provider": "mistral ai",
+    "model": "open-mistral-nemo",
+    "tokens": 5008,
+    "duration": 25.82
+  },
+  {
+    "timestamp": "2026-10-02 06:45:20",
+    "category": "AI_CALL",
+    "status": "SUCCESS",
+    "message": "LLM Call Success",
+    "provider": "gemini",
+    "model": "gemini-3.1-flash-lite",
+    "tokens": 0,
+    "duration": 6.36
+  },
+  {
+    "timestamp": "2026-10-02 06:45:19",
+    "category": "AI_CALL",
+    "status": "SUCCESS",
+    "message": "LLM Call Success",
+    "provider": "gemini",
+    "model": "gemini-3.1-flash-lite",
+    "tokens": 0,
+    "duration": 6.17
+  },
+  {
+    "timestamp": "2026-10-02 06:45:18",
+    "category": "AI_CALL",
+    "status": "SUCCESS",
+    "message": "LLM Call Success",
+    "provider": "gemini",
+    "model": "gemini-3.1-flash-lite",
+    "tokens": 0,
+    "duration": 6.9
+  },
+  {
+    "timestamp": "2026-10-02 06:45:13",
+    "category": "AI_CALL",
+    "status": "SUCCESS",
+    "message": "LLM Call Success",
+    "provider": "groq",
+    "model": "openai/gpt-oss-20b",
+    "tokens": 4516,
+    "duration": 4.11
+  },
+  {
+    "timestamp": "2026-10-02 06:45:13",
+    "category": "AI_CALL",
+    "status": "SUCCESS",
+    "message": "LLM Call Success",
+    "provider": "groq",
+    "model": "openai/gpt-oss-20b",
+    "tokens": 4500,
+    "duration": 4.19
+  },
+  {
+    "timestamp": "2026-10-02 06:45:13",
+    "category": "AI_CALL",
+    "status": "SUCCESS",
+    "message": "LLM Call Success",
+    "provider": "groq",
+    "model": "openai/gpt-oss-20b",
+    "tokens": 4574,
+    "duration": 4.13
+  },
+  {
+    "timestamp": "2026-10-02 06:45:12",
+    "category": "AI_CALL",
+    "status": "SUCCESS",
+    "message": "LLM Call Success",
+    "provider": "cleanapis",
+    "model": "deepseek-v4-flash-0731",
+    "tokens": 8281,
+    "duration": 21.25
+  },
+  {
+    "timestamp": "2026-10-02 06:45:11",
+    "category": "AI_CALL",
+    "status": "SUCCESS",
+    "message": "LLM Call Success",
+    "provider": "hugging face",
+    "model": "meta-llama/Llama-3.1-8B-Instruct",
+    "tokens": 4104,
+    "duration": 53.29
+  },
+  {
+    "timestamp": "2026-10-02 06:45:11",
+    "category": "AI_CALL",
+    "status": "ERROR",
+    "message": "Rate Limit Reached (llm7)",
+    "provider": "llm7",
+    "model": "mistral-Nemo-Instruct-2407",
+    "tokens": 0,
+    "duration": 1.87
+  },
+  {
+    "timestamp": "2026-10-02 06:45:11",
+    "category": "AI_CALL",
+    "status": "SUCCESS",
+    "message": "LLM Call Success",
+    "provider": "cleanapis",
+    "model": "deepseek-v4-flash-0731",
+    "tokens": 7447,
+    "duration": 18.37
+  },
+  {
+    "timestamp": "2026-10-02 06:45:09",
+    "category": "AI_CALL",
+    "status": "SUCCESS",
+    "message": "LLM Call Success",
+    "provider": "cleanapis",
+    "model": "deepseek-v4-flash-0731",
+    "tokens": 6706,
+    "duration": 14.73
+  },
+  {
+    "timestamp": "2026-10-02 06:45:09",
+    "category": "AI_CALL",
+    "status": "ERROR",
+    "message": "API Error 404",
+    "provider": "openrouter",
+    "model": "nex-agi/nex-n2.5-mini:free",
+    "tokens": 0,
+    "duration": 1.05
+  },
+  {
+    "timestamp": "2026-10-02 06:45:09",
+    "category": "AI_CALL",
+    "status": "SUCCESS",
+    "message": "LLM Call Success",
+    "provider": "gemini",
+    "model": "gemini-3.1-flash-lite",
+    "tokens": 0,
+    "duration": 6.74
+  },
+  {
+    "timestamp": "2026-10-02 06:45:09",
+    "category": "AI_CALL",
+    "status": "SUCCESS",
+    "message": "LLM Call Success",
+    "provider": "hugging face",
+    "model": "meta-llama/Llama-3.1-8B-Instruct",
+    "tokens": 3982,
+    "duration": 47.88
+  },
+  {
+    "timestamp": "2026-10-02 06:45:08",
+    "category": "AI_CALL",
+    "status": "SUCCESS",
+    "message": "LLM Call Success",
+    "provider": "hugging face",
+    "model": "meta-llama/Llama-3.1-8B-Instruct",
+    "tokens": 4015,
+    "duration": 47.97
+  },
+  {
+    "timestamp": "2026-10-02 06:45:03",
+    "category": "AI_CALL",
+    "status": "SUCCESS",
+    "message": "LLM Call Success",
+    "provider": "hugging face",
+    "model": "meta-llama/Llama-3.1-8B-Instruct",
+    "tokens": 4063,
+    "duration": 46.09
+  },
+  {
+    "timestamp": "2026-10-02 06:45:02",
+    "category": "AI_CALL",
+    "status": "SUCCESS",
+    "message": "LLM Call Success",
+    "provider": "gemini",
+    "model": "gemini-3.1-flash-lite",
+    "tokens": 0,
+    "duration": 6.76
+  },
+  {
+    "timestamp": "2026-10-02 06:44:57",
+    "category": "AI_CALL",
+    "status": "SUCCESS",
+    "message": "LLM Call Success",
+    "provider": "hugging face",
+    "model": "meta-llama/Llama-3.1-8B-Instruct",
+    "tokens": 4002,
+    "duration": 44.52
+  },
+  {
+    "timestamp": "2026-10-02 06:44:55",
+    "category": "AI_CALL",
+    "status": "SUCCESS",
+    "message": "LLM Call Success",
+    "provider": "mistral ai",
+    "model": "open-mistral-nemo",
+    "tokens": 5082,
+    "duration": 20.61
+  },
+  {
+    "timestamp": "2026-10-02 06:44:55",
+    "category": "AI_CALL",
+    "status": "SUCCESS",
+    "message": "LLM Call Success",
+    "provider": "mistral ai",
+    "model": "open-mistral-nemo",
+    "tokens": 5003,
+    "duration": 20.89
+  },
+  {
+    "timestamp": "2026-10-02 06:44:54",
+    "category": "AI_CALL",
+    "status": "SUCCESS",
+    "message": "LLM Call Success",
+    "provider": "zhipuai",
+    "model": "glm-4-flash",
+    "tokens": 4314,
+    "duration": 95.78
+  },
+  {
+    "timestamp": "2026-10-02 06:44:52",
+    "category": "AI_CALL",
+    "status": "SUCCESS",
+    "message": "LLM Call Success",
+    "provider": "zhipuai",
+    "model": "glm-4-flash",
+    "tokens": 4345,
+    "duration": 105.09
+  },
+  {
+    "timestamp": "2026-10-02 06:44:51",
+    "category": "AI_CALL",
+    "status": "ERROR",
+    "message": "API Error 404",
+    "provider": "openrouter",
+    "model": "nex-agi/nex-n2.5-mini:free",
+    "tokens": 0,
+    "duration": 1.0
+  },
+  {
+    "timestamp": "2026-10-02 06:44:50",
+    "category": "AI_CALL",
+    "status": "ERROR",
+    "message": "Rate Limit Reached (llm7)",
+    "provider": "llm7",
+    "model": "mistral-Nemo-Instruct-2407",
+    "tokens": 0,
+    "duration": 0.99
+  },
+  {
+    "timestamp": "2026-10-02 06:44:49",
+    "category": "AI_CALL",
+    "status": "ERROR",
+    "message": "Rate Limit Reached (cohere)",
+    "provider": "cohere",
+    "model": "command-r-plus-08-2024",
+    "tokens": 0,
+    "duration": 1.01
+  },
+  {
+    "timestamp": "2026-10-02 06:44:47",
+    "category": "AI_CALL",
+    "status": "ERROR",
+    "message": "API Error 404",
+    "provider": "openrouter",
+    "model": "nex-agi/nex-n2.5-mini:free",
+    "tokens": 0,
+    "duration": 1.02
+  },
+  {
+    "timestamp": "2026-10-02 06:44:46",
+    "category": "AI_CALL",
+    "status": "ERROR",
+    "message": "API Error 404",
+    "provider": "openrouter",
+    "model": "nex-agi/nex-n2.5-mini:free",
+    "tokens": 0,
+    "duration": 1.1
+  },
+  {
+    "timestamp": "2026-10-02 06:44:45",
+    "category": "AI_CALL",
+    "status": "SUCCESS",
+    "message": "LLM Call Success",
+    "provider": "groq",
+    "model": "openai/gpt-oss-20b",
+    "tokens": 4597,
+    "duration": 3.37
+  },
+  {
+    "timestamp": "2026-10-02 06:44:42",
+    "category": "AI_CALL",
+    "status": "SUCCESS",
+    "message": "LLM Call Success",
+    "provider": "cleanapis",
+    "model": "deepseek-v4-flash-0731",
+    "tokens": 7296,
+    "duration": 19.01
+  },
+  {
+    "timestamp": "2026-10-02 06:44:39",
+    "category": "AI_CALL",
+    "status": "SUCCESS",
+    "message": "LLM Call Success",
+    "provider": "zhipuai",
+    "model": "glm-4-flash",
+    "tokens": 4241,
+    "duration": 108.58
+  },
+  {
+    "timestamp": "2026-10-02 06:44:34",
+    "category": "AI_CALL",
+    "status": "SUCCESS",
+    "message": "LLM Call Success",
+    "provider": "upstage",
+    "model": "solar-pro",
+    "tokens": 5041,
+    "duration": 17.82
+  },
+  {
+    "timestamp": "2026-10-02 06:44:34",
+    "category": "AI_CALL",
+    "status": "SUCCESS",
+    "message": "LLM Call Success",
+    "provider": "hugging face",
+    "model": "meta-llama/Llama-3.1-8B-Instruct",
+    "tokens": 4152,
+    "duration": 38.53
+  },
+  {
+    "timestamp": "2026-10-02 06:44:23",
+    "category": "AI_CALL",
+    "status": "SUCCESS",
+    "message": "LLM Call Success",
+    "provider": "cleanapis",
+    "model": "deepseek-v4-flash-0731",
+    "tokens": 8181,
+    "duration": 21.15
+  },
+  {
+    "timestamp": "2026-10-02 06:44:21",
+    "category": "AI_CALL",
+    "status": "SUCCESS",
+    "message": "LLM Call Success",
+    "provider": "cleanapis",
+    "model": "deepseek-v4-flash-0731",
+    "tokens": 7546,
+    "duration": 20.22
+  },
+  {
+    "timestamp": "2026-10-02 06:44:20",
+    "category": "AI_CALL",
+    "status": "SUCCESS",
+    "message": "LLM Call Success",
+    "provider": "cleanapis",
+    "model": "deepseek-v4-flash-0731",
+    "tokens": 7468,
+    "duration": 18.66
+  },
+  {
+    "timestamp": "2026-10-02 06:44:18",
+    "category": "AI_CALL",
+    "status": "SUCCESS",
+    "message": "LLM Call Success",
+    "provider": "cleanapis",
+    "model": "deepseek-v4-flash-0731",
+    "tokens": 8111,
+    "duration": 23.89
+  },
+  {
+    "timestamp": "2026-10-02 06:44:17",
+    "category": "AI_CALL",
+    "status": "SUCCESS",
+    "message": "LLM Call Success",
+    "provider": "cleanapis",
+    "model": "deepseek-v4-flash-0731",
+    "tokens": 8618,
+    "duration": 23.45
+  },
+  {
+    "timestamp": "2026-10-02 06:44:16",
+    "category": "AI_CALL",
+    "status": "SUCCESS",
+    "message": "LLM Call Success",
+    "provider": "cleanapis",
+    "model": "deepseek-v4-flash-0731",
+    "tokens": 6903,
+    "duration": 16.85
+  },
+  {
+    "timestamp": "2026-10-02 06:44:12",
+    "category": "AI_CALL",
+    "status": "SUCCESS",
+    "message": "LLM Call Success",
+    "provider": "cleanapis",
+    "model": "deepseek-v4-flash-0731",
+    "tokens": 7807,
+    "duration": 17.64
+  },
+  {
+    "timestamp": "2026-10-02 06:44:02",
+    "category": "AI_CALL",
+    "status": "SUCCESS",
+    "message": "LLM Call Success",
+    "provider": "cleanapis",
+    "model": "deepseek-v4-flash-0731",
+    "tokens": 7200,
+    "duration": 15.75
+  },
+  {
+    "timestamp": "2026-10-02 06:44:01",
+    "category": "AI_CALL",
+    "status": "SUCCESS",
+    "message": "LLM Call Success",
+    "provider": "cleanapis",
+    "model": "deepseek-v4-flash-0731",
+    "tokens": 7211,
+    "duration": 15.6
+  },
+  {
+    "timestamp": "2026-10-02 06:44:00",
+    "category": "AI_CALL",
+    "status": "ERROR",
+    "message": "API Error 404",
+    "provider": "openrouter",
+    "model": "nex-agi/nex-n2.5-mini:free",
+    "tokens": 0,
+    "duration": 1.09
+  },
+  {
+    "timestamp": "2026-10-02 06:44:00",
+    "category": "AI_CALL",
+    "status": "ERROR",
+    "message": "Rate Limit Reached (llm7)",
+    "provider": "llm7",
+    "model": "mistral-Nemo-Instruct-2407",
+    "tokens": 0,
+    "duration": 1.02
+  },
+  {
+    "timestamp": "2026-10-02 06:43:59",
+    "category": "AI_CALL",
+    "status": "SUCCESS",
+    "message": "LLM Call Success",
+    "provider": "gemini",
+    "model": "gemini-3.1-flash-lite",
+    "tokens": 0,
+    "duration": 6.54
+  },
+  {
+    "timestamp": "2026-10-02 06:43:58",
+    "category": "AI_CALL",
+    "status": "ERROR",
+    "message": "Rate Limit Reached (llm7)",
+    "provider": "llm7",
+    "model": "mistral-Nemo-Instruct-2407",
+    "tokens": 0,
+    "duration": 0.84
+  },
+  {
+    "timestamp": "2026-10-02 06:43:58",
+    "category": "AI_CALL",
+    "status": "ERROR",
+    "message": "Rate Limit Reached (llm7)",
+    "provider": "llm7",
+    "model": "mistral-Nemo-Instruct-2407",
+    "tokens": 0,
+    "duration": 0.83
+  },
+  {
+    "timestamp": "2026-10-02 06:43:57",
+    "category": "AI_CALL",
+    "status": "ERROR",
+    "message": "Rate Limit Reached (llm7)",
+    "provider": "llm7",
+    "model": "mistral-Nemo-Instruct-2407",
+    "tokens": 0,
+    "duration": 0.96
+  },
+  {
+    "timestamp": "2026-10-02 06:43:56",
+    "category": "AI_CALL",
+    "status": "SUCCESS",
+    "message": "LLM Call Success",
+    "provider": "cloudflare",
+    "model": "@cf/meta/llama-3.1-8b-instruct",
+    "tokens": 0,
+    "duration": 3.02
+  },
+  {
+    "timestamp": "2026-10-02 06:43:55",
+    "category": "AI_CALL",
+    "status": "SUCCESS",
+    "message": "LLM Call Success",
+    "provider": "groq",
+    "model": "openai/gpt-oss-20b",
+    "tokens": 4720,
+    "duration": 3.36
+  },
+  {
+    "timestamp": "2026-10-02 06:43:54",
+    "category": "AI_CALL",
+    "status": "ERROR",
+    "message": "Rate Limit Reached (cohere)",
+    "provider": "cohere",
+    "model": "command-r-plus-08-2024",
+    "tokens": 0,
+    "duration": 1.65
+  },
+  {
+    "timestamp": "2026-10-02 06:43:54",
+    "category": "AI_CALL",
+    "status": "SUCCESS",
+    "message": "LLM Call Success",
+    "provider": "gemini",
+    "model": "gemini-3.1-flash-lite",
+    "tokens": 0,
+    "duration": 6.41
+  },
+  {
+    "timestamp": "2026-10-02 06:43:53",
+    "category": "AI_CALL",
+    "status": "SUCCESS",
+    "message": "LLM Call Success",
+    "provider": "cleanapis",
+    "model": "deepseek-v4-flash-0731",
+    "tokens": 6968,
+    "duration": 14.1
+  },
+  {
+    "timestamp": "2026-10-02 06:43:53",
+    "category": "AI_CALL",
+    "status": "SUCCESS",
+    "message": "LLM Call Success",
+    "provider": "groq",
+    "model": "openai/gpt-oss-20b",
+    "tokens": 4604,
+    "duration": 3.08
+  },
+  {
+    "timestamp": "2026-10-02 06:43:53",
+    "category": "AI_CALL",
+    "status": "SUCCESS",
+    "message": "LLM Call Success",
+    "provider": "hugging face",
+    "model": "meta-llama/Llama-3.1-8B-Instruct",
+    "tokens": 4022,
+    "duration": 37.09
+  },
+  {
+    "timestamp": "2026-10-02 06:43:52",
+    "category": "AI_CALL",
+    "status": "SUCCESS",
+    "message": "LLM Call Success",
+    "provider": "cleanapis",
+    "model": "deepseek-v4-flash-0731",
+    "tokens": 6851,
+    "duration": 12.41
+  },
+  {
+    "timestamp": "2026-10-02 06:43:50",
+    "category": "AI_CALL",
+    "status": "SUCCESS",
+    "message": "LLM Call Success",
+    "provider": "cleanapis",
+    "model": "deepseek-v4-flash-0731",
+    "tokens": 6265,
+    "duration": 11.98
+  },
+  {
+    "timestamp": "2026-10-02 06:43:47",
+    "category": "AI_CALL",
+    "status": "SUCCESS",
+    "message": "LLM Call Success",
+    "provider": "mistral ai",
+    "model": "open-mistral-nemo",
+    "tokens": 5106,
+    "duration": 21.2
+  },
+  {
+    "timestamp": "2026-10-02 06:43:47",
+    "category": "AI_CALL",
+    "status": "SUCCESS",
+    "message": "LLM Call Success",
+    "provider": "cleanapis",
+    "model": "deepseek-v4-flash-0731",
+    "tokens": 5018,
+    "duration": 8.83
+  },
+  {
+    "timestamp": "2026-10-02 06:43:46",
+    "category": "AI_CALL",
+    "status": "SUCCESS",
+    "message": "LLM Call Success",
+    "provider": "cleanapis",
+    "model": "deepseek-v4-flash-0731",
+    "tokens": 7592,
+    "duration": 16.2
+  },
+  {
+    "timestamp": "2026-10-02 06:43:45",
+    "category": "AI_CALL",
+    "status": "SUCCESS",
+    "message": "LLM Call Success",
+    "provider": "groq",
+    "model": "openai/gpt-oss-20b",
+    "tokens": 4590,
+    "duration": 3.36
+  },
+  {
+    "timestamp": "2026-10-02 06:43:42",
+    "category": "AI_CALL",
+    "status": "SUCCESS",
+    "message": "LLM Call Success",
+    "provider": "mistral ai",
+    "model": "open-mistral-nemo",
+    "tokens": 5099,
+    "duration": 22.17
+  },
+  {
+    "timestamp": "2026-10-02 06:43:41",
+    "category": "AI_CALL",
+    "status": "SUCCESS",
+    "message": "LLM Call Success",
+    "provider": "mistral ai",
+    "model": "open-mistral-nemo",
+    "tokens": 5047,
+    "duration": 19.06
+  },
+  {
+    "timestamp": "2026-10-02 06:43:39",
+    "category": "AI_CALL",
+    "status": "SUCCESS",
+    "message": "LLM Call Success",
+    "provider": "zhipuai",
+    "model": "glm-4-flash",
+    "tokens": 4283,
+    "duration": 112.72
+  },
+  {
+    "timestamp": "2026-10-02 06:43:39",
+    "category": "AI_CALL",
+    "status": "SUCCESS",
+    "message": "LLM Call Success",
+    "provider": "mistral ai",
+    "model": "open-mistral-nemo",
+    "tokens": 5034,
+    "duration": 18.81
+  },
+  {
+    "timestamp": "2026-10-02 06:43:38",
+    "category": "AI_CALL",
+    "status": "SUCCESS",
+    "message": "LLM Call Success",
+    "provider": "cleanapis",
+    "model": "deepseek-v4-flash-0731",
+    "tokens": 8987,
+    "duration": 20.78
+  },
+  {
+    "timestamp": "2026-10-02 06:43:38",
+    "category": "AI_CALL",
+    "status": "SUCCESS",
+    "message": "LLM Call Success",
+    "provider": "zhipuai",
+    "model": "glm-4-flash",
+    "tokens": 4101,
+    "duration": 93.47
+  },
+  {
+    "timestamp": "2026-10-02 06:43:29",
+    "category": "AI_CALL",
+    "status": "SUCCESS",
+    "message": "LLM Call Success",
+    "provider": "mistral ai",
+    "model": "open-mistral-nemo",
+    "tokens": 5197,
+    "duration": 24.31
+  },
+  {
+    "timestamp": "2026-10-02 06:43:27",
+    "category": "AI_CALL",
+    "status": "SUCCESS",
+    "message": "LLM Call Success",
+    "provider": "mistral ai",
+    "model": "open-mistral-nemo",
+    "tokens": 5005,
+    "duration": 21.63
+  },
+  {
+    "timestamp": "2026-10-02 06:43:26",
+    "category": "AI_CALL",
+    "status": "ERROR",
+    "message": "Rate Limit Reached (llm7)",
+    "provider": "llm7",
+    "model": "mistral-Nemo-Instruct-2407",
+    "tokens": 0,
+    "duration": 0.82
+  },
+  {
+    "timestamp": "2026-10-02 06:43:25",
+    "category": "AI_CALL",
+    "status": "SUCCESS",
+    "message": "LLM Call Success",
+    "provider": "gemini",
+    "model": "gemini-3.1-flash-lite",
+    "tokens": 0,
+    "duration": 6.71
+  },
+  {
+    "timestamp": "2026-10-02 06:43:22",
+    "category": "AI_CALL",
+    "status": "SUCCESS",
+    "message": "LLM Call Success",
+    "provider": "gemini",
+    "model": "gemini-3.1-flash-lite",
+    "tokens": 0,
+    "duration": 6.69
+  },
+  {
+    "timestamp": "2026-10-02 06:43:20",
+    "category": "AI_CALL",
+    "status": "SUCCESS",
+    "message": "LLM Call Success",
+    "provider": "groq",
+    "model": "openai/gpt-oss-20b",
+    "tokens": 4586,
+    "duration": 3.39
+  },
+  {
+    "timestamp": "2026-10-02 06:43:20",
+    "category": "AI_CALL",
+    "status": "SUCCESS",
+    "message": "LLM Call Success",
+    "provider": "gemini",
+    "model": "gemini-3.1-flash-lite",
+    "tokens": 0,
+    "duration": 5.98
+  },
+  {
+    "timestamp": "2026-10-02 06:43:18",
+    "category": "AI_CALL",
+    "status": "SUCCESS",
+    "message": "LLM Call Success",
+    "provider": "cleanapis",
+    "model": "deepseek-v4-flash-0731",
+    "tokens": 7791,
+    "duration": 16.35
+  },
+  {
+    "timestamp": "2026-10-02 06:43:18",
+    "category": "AI_CALL",
+    "status": "SUCCESS",
+    "message": "LLM Call Success",
+    "provider": "hugging face",
+    "model": "meta-llama/Llama-3.1-8B-Instruct",
+    "tokens": 3968,
+    "duration": 34.45
+  },
+  {
+    "timestamp": "2026-10-02 06:43:17",
+    "category": "AI_CALL",
+    "status": "ERROR",
+    "message": "API Error 404",
+    "provider": "openrouter",
+    "model": "nex-agi/nex-n2.5-mini:free",
+    "tokens": 0,
+    "duration": 1.87
+  },
+  {
+    "timestamp": "2026-10-02 06:43:17",
+    "category": "AI_CALL",
+    "status": "SUCCESS",
+    "message": "LLM Call Success",
+    "provider": "upstage",
+    "model": "solar-pro",
+    "tokens": 5236,
+    "duration": 18.45
+  },
+  {
+    "timestamp": "2026-10-02 06:43:16",
+    "category": "AI_CALL",
+    "status": "ERROR",
+    "message": "API Error 404",
+    "provider": "openrouter",
+    "model": "nex-agi/nex-n2.5-mini:free",
+    "tokens": 0,
+    "duration": 1.03
+  },
+  {
+    "timestamp": "2026-10-02 06:43:16",
+    "category": "AI_CALL",
+    "status": "SUCCESS",
+    "message": "LLM Call Success",
+    "provider": "hugging face",
+    "model": "meta-llama/Llama-3.1-8B-Instruct",
+    "tokens": 4029,
+    "duration": 36.62
+  },
+  {
+    "timestamp": "2026-10-02 06:43:15",
+    "category": "AI_CALL",
+    "status": "SUCCESS",
+    "message": "LLM Call Success",
+    "provider": "cleanapis",
+    "model": "deepseek-v4-flash-0731",
+    "tokens": 7789,
+    "duration": 15.51
+  },
+  {
+    "timestamp": "2026-10-02 06:43:15",
+    "category": "AI_CALL",
+    "status": "ERROR",
+    "message": "Rate Limit Reached (llm7)",
+    "provider": "llm7",
+    "model": "mistral-Nemo-Instruct-2407",
+    "tokens": 0,
+    "duration": 1.19
+  },
+  {
+    "timestamp": "2026-10-02 06:43:14",
+    "category": "AI_CALL",
+    "status": "SUCCESS",
+    "message": "LLM Call Success",
+    "provider": "mistral ai",
+    "model": "open-mistral-nemo",
+    "tokens": 5053,
+    "duration": 25.44
+  },
+  {
+    "timestamp": "2026-10-02 06:43:05",
+    "category": "AI_CALL",
+    "status": "SUCCESS",
+    "message": "LLM Call Success",
+    "provider": "cleanapis",
+    "model": "deepseek-v4-flash-0731",
+    "tokens": 7444,
+    "duration": 18.11
+  },
+  {
+    "timestamp": "2026-10-02 06:43:02",
+    "category": "AI_CALL",
+    "status": "ERROR",
+    "message": "API Error 404",
+    "provider": "openrouter",
+    "model": "nex-agi/nex-n2.5-mini:free",
+    "tokens": 0,
+    "duration": 0.86
+  },
+  {
+    "timestamp": "2026-10-02 06:43:01",
+    "category": "AI_CALL",
+    "status": "SUCCESS",
+    "message": "LLM Call Success",
+    "provider": "groq",
+    "model": "openai/gpt-oss-20b",
+    "tokens": 4623,
+    "duration": 3.35
+  },
+  {
+    "timestamp": "2026-10-02 06:43:00",
+    "category": "AI_CALL",
+    "status": "ERROR",
+    "message": "API Error 404",
+    "provider": "openrouter",
+    "model": "nex-agi/nex-n2.5-mini:free",
+    "tokens": 0,
+    "duration": 1.22
+  },
+  {
+    "timestamp": "2026-10-02 06:43:00",
+    "category": "AI_CALL",
+    "status": "ERROR",
+    "message": "API Error 404",
+    "provider": "openrouter",
+    "model": "nex-agi/nex-n2.5-mini:free",
+    "tokens": 0,
+    "duration": 1.36
+  },
+  {
+    "timestamp": "2026-10-02 06:42:59",
+    "category": "AI_CALL",
+    "status": "SUCCESS",
+    "message": "LLM Call Success",
+    "provider": "cleanapis",
+    "model": "deepseek-v4-flash-0731",
+    "tokens": 10118,
+    "duration": 36.68
+  },
+  {
+    "timestamp": "2026-10-02 06:42:58",
+    "category": "AI_CALL",
+    "status": "SUCCESS",
+    "message": "LLM Call Success",
+    "provider": "cleanapis",
+    "model": "deepseek-v4-flash-0731",
+    "tokens": 8417,
+    "duration": 19.61
+  },
+  {
+    "timestamp": "2026-10-02 06:42:58",
+    "category": "AI_CALL",
+    "status": "SUCCESS",
+    "message": "LLM Call Success",
+    "provider": "groq",
+    "model": "openai/gpt-oss-20b",
+    "tokens": 4623,
+    "duration": 3.35
+  },
+  {
+    "timestamp": "2026-10-02 06:42:58",
+    "category": "AI_CALL",
+    "status": "SUCCESS",
+    "message": "LLM Call Success",
+    "provider": "cleanapis",
+    "model": "deepseek-v4-flash-0731",
+    "tokens": 6697,
+    "duration": 13.92
+  },
+  {
+    "timestamp": "2026-10-02 06:42:55",
+    "category": "AI_CALL",
+    "status": "SUCCESS",
+    "message": "LLM Call Success",
+    "provider": "zhipuai",
+    "model": "glm-4-flash",
+    "tokens": 4272,
+    "duration": 106.91
+  },
+  {
+    "timestamp": "2026-10-02 06:42:50",
+    "category": "AI_CALL",
+    "status": "SUCCESS",
+    "message": "LLM Call Success",
+    "provider": "zhipuai",
+    "model": "glm-4-flash",
+    "tokens": 4330,
+    "duration": 107.37
+  },
+  {
+    "timestamp": "2026-10-02 06:42:50",
+    "category": "AI_CALL",
+    "status": "SUCCESS",
+    "message": "LLM Call Success",
+    "provider": "mistral ai",
+    "model": "open-mistral-nemo",
+    "tokens": 5131,
+    "duration": 21.25
+  },
+  {
+    "timestamp": "2026-10-02 06:42:48",
+    "category": "AI_CALL",
+    "status": "SUCCESS",
+    "message": "LLM Call Success",
+    "provider": "zhipuai",
+    "model": "glm-4-flash",
+    "tokens": 4098,
+    "duration": 94.11
+  },
+  {
+    "timestamp": "2026-10-02 06:42:48",
+    "category": "AI_CALL",
+    "status": "ERROR",
+    "message": "Rate Limit Reached (cohere)",
+    "provider": "cohere",
+    "model": "command-r-plus-08-2024",
+    "tokens": 0,
+    "duration": 0.98
+  },
+  {
+    "timestamp": "2026-10-02 06:42:47",
+    "category": "AI_CALL",
+    "status": "SUCCESS",
+    "message": "LLM Call Success",
+    "provider": "zhipuai",
+    "model": "glm-4-flash",
+    "tokens": 4461,
+    "duration": 112.77
+  },
+  {
+    "timestamp": "2026-10-02 06:42:47",
+    "category": "AI_CALL",
+    "status": "ERROR",
+    "message": "Rate Limit Reached (cohere)",
+    "provider": "cohere",
+    "model": "command-r-plus-08-2024",
+    "tokens": 0,
+    "duration": 0.82
+  },
+  {
+    "timestamp": "2026-10-02 06:42:46",
+    "category": "AI_CALL",
+    "status": "SUCCESS",
+    "message": "LLM Call Success",
+    "provider": "cleanapis",
+    "model": "deepseek-v4-flash-0731",
+    "tokens": 7743,
+    "duration": 19.49
+  },
+  {
+    "timestamp": "2026-10-02 06:42:44",
+    "category": "AI_CALL",
+    "status": "SUCCESS",
+    "message": "LLM Call Success",
+    "provider": "cleanapis",
+    "model": "deepseek-v4-flash-0731",
+    "tokens": 7467,
+    "duration": 17.52
+  },
+  {
+    "timestamp": "2026-10-02 06:42:43",
+    "category": "AI_CALL",
+    "status": "SUCCESS",
+    "message": "LLM Call Success",
+    "provider": "groq",
+    "model": "openai/gpt-oss-20b",
+    "tokens": 4535,
+    "duration": 3.14
+  },
+  {
+    "timestamp": "2026-10-02 06:42:42",
+    "category": "AI_CALL",
+    "status": "ERROR",
+    "message": "Rate Limit Reached (cohere)",
+    "provider": "cohere",
+    "model": "command-r-plus-08-2024",
+    "tokens": 0,
+    "duration": 0.8
+  },
+  {
+    "timestamp": "2026-10-02 06:42:41",
+    "category": "AI_CALL",
+    "status": "SUCCESS",
+    "message": "LLM Call Success",
+    "provider": "cleanapis",
+    "model": "deepseek-v4-flash-0731",
+    "tokens": 7760,
+    "duration": 16.33
+  },
+  {
+    "timestamp": "2026-10-02 06:42:40",
+    "category": "AI_CALL",
+    "status": "ERROR",
+    "message": "API Error 404",
+    "provider": "openrouter",
+    "model": "nex-agi/nex-n2.5-mini:free",
+    "tokens": 0,
+    "duration": 1.35
+  },
+  {
+    "timestamp": "2026-10-02 06:42:39",
+    "category": "AI_CALL",
+    "status": "SUCCESS",
+    "message": "LLM Call Success",
+    "provider": "hugging face",
+    "model": "meta-llama/Llama-3.1-8B-Instruct",
+    "tokens": 4191,
+    "duration": 52.76
+  },
+  {
+    "timestamp": "2026-10-02 06:42:39",
+    "category": "AI_CALL",
+    "status": "ERROR",
+    "message": "Rate Limit Reached (llm7)",
+    "provider": "llm7",
+    "model": "mistral-Nemo-Instruct-2407",
+    "tokens": 0,
+    "duration": 2.63
+  },
+  {
+    "timestamp": "2026-10-02 06:42:39",
+    "category": "AI_CALL",
+    "status": "ERROR",
+    "message": "Rate Limit Reached (llm7)",
+    "provider": "llm7",
+    "model": "mistral-Nemo-Instruct-2407",
+    "tokens": 0,
+    "duration": 2.85
+  },
+  {
+    "timestamp": "2026-10-02 06:42:35",
+    "category": "AI_CALL",
+    "status": "SUCCESS",
+    "message": "LLM Call Success",
+    "provider": "gemini",
+    "model": "gemini-3.1-flash-lite",
+    "tokens": 0,
+    "duration": 6.01
+  },
+  {
+    "timestamp": "2026-10-02 06:42:35",
+    "category": "AI_CALL",
+    "status": "SUCCESS",
+    "message": "LLM Call Success",
+    "provider": "cleanapis",
+    "model": "deepseek-v4-flash-0731",
+    "tokens": 8655,
+    "duration": 23.34
+  },
+  {
+    "timestamp": "2026-10-02 06:42:34",
+    "category": "AI_CALL",
+    "status": "SUCCESS",
+    "message": "LLM Call Success",
+    "provider": "cleanapis",
+    "model": "deepseek-v4-flash-0731",
+    "tokens": 7570,
+    "duration": 19.27
+  },
+  {
+    "timestamp": "2026-10-02 06:42:29",
+    "category": "AI_CALL",
+    "status": "ERROR",
+    "message": "Rate Limit Reached (llm7)",
+    "provider": "llm7",
+    "model": "mistral-Nemo-Instruct-2407",
+    "tokens": 0,
+    "duration": 0.57
+  },
+  {
+    "timestamp": "2026-10-02 06:42:28",
+    "category": "AI_CALL",
+    "status": "SUCCESS",
+    "message": "LLM Call Success",
+    "provider": "cleanapis",
+    "model": "deepseek-v4-flash-0731",
+    "tokens": 7099,
+    "duration": 17.89
+  },
+  {
+    "timestamp": "2026-10-02 06:42:28",
+    "category": "AI_CALL",
+    "status": "SUCCESS",
+    "message": "LLM Call Success",
+    "provider": "cleanapis",
+    "model": "deepseek-v4-flash-0731",
+    "tokens": 7024,
+    "duration": 17.44
+  },
+  {
+    "timestamp": "2026-10-02 06:42:26",
+    "category": "AI_CALL",
+    "status": "SUCCESS",
+    "message": "LLM Call Success",
+    "provider": "cleanapis",
+    "model": "deepseek-v4-flash-0731",
+    "tokens": 7092,
+    "duration": 17.1
+  },
+  {
+    "timestamp": "2026-10-02 06:42:26",
+    "category": "AI_CALL",
+    "status": "SUCCESS",
+    "message": "LLM Call Success",
+    "provider": "gemini",
+    "model": "gemini-3.1-flash-lite",
+    "tokens": 0,
+    "duration": 5.91
+  },
+  {
+    "timestamp": "2026-10-02 06:42:24",
+    "category": "AI_CALL",
+    "status": "SUCCESS",
+    "message": "LLM Call Success",
+    "provider": "gemini",
+    "model": "gemini-3.1-flash-lite",
+    "tokens": 0,
+    "duration": 6.18
+  },
+  {
+    "timestamp": "2026-10-02 06:42:22",
+    "category": "AI_CALL",
+    "status": "ERROR",
+    "message": "Rate Limit Reached (cohere)",
+    "provider": "cohere",
+    "model": "command-r-plus-08-2024",
+    "tokens": 0,
+    "duration": 0.58
+  }
+]

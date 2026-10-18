@@ -1,0 +1,489 @@
+generator client {
+  provider = "prisma-client-js"
+  previewFeatures = ["fullTextSearch"]
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Job {
+  id                  String           @id @default(uuid()) @db.Uuid
+  source              String           @db.VarChar(50)
+  sourceJobId         String           @map("source_job_id") @db.VarChar(255)
+  titleRaw            String           @map("title_raw")
+  titleNormalized     String?          @map("title_normalized")
+  companyName         String           @map("company_name") @db.VarChar(255)
+  companyUrl          String?          @map("company_url")
+  locationRaw         String           @map("location_raw")
+  locationNormalized  String?          @map("location_normalized")
+  jobType             String?          @map("job_type") @db.VarChar(100)
+  workType            String?          @map("work_type") @db.VarChar(100)
+  careerLevel         String?          @map("career_level") @db.VarChar(100)
+  educationLevel      String?          @map("education_level") @db.VarChar(255)
+  jobCategory         String?          @map("job_category") @db.VarChar(255)
+  salaryMin           Decimal?         @map("salary_min") @db.Decimal(12, 2)
+  salaryMax           Decimal?         @map("salary_max") @db.Decimal(12, 2)
+  currency            String?          @db.VarChar(10)
+  jobUrl              String           @unique(map: "jobs_job_url_unique") @map("job_url")
+  postedDate          DateTime?        @map("posted_date") @db.Timestamptz(6)
+  scrapedAt           DateTime         @default(now()) @map("scraped_at") @db.Timestamptz(6)
+  status              String           @default("Open") @db.VarChar(50)
+  sourceRaw           Json?            @map("source_raw")
+  createdAt           DateTime         @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt           DateTime         @updatedAt @map("updated_at") @db.Timestamptz(6)
+  logo_url            String?
+  applicants          Int?             @default(0)
+  viewed              Int?             @default(0)
+  internal_category   String?          @db.VarChar(255)
+  has_explicit_skills Boolean?         @default(false)
+  ai_analyzed         Boolean?         @default(false)
+  min_experience      Decimal?         @db.Decimal
+  max_experience      Decimal?         @db.Decimal
+  avg_experience      Decimal?         @db.Decimal
+  expected_close_date DateTime?        @db.Date
+  descriptions        JobDescription[]
+  industries          JobIndustry[]
+  skills              JobSkill[]
+  applications        JobApplication[]
+
+  @@unique([source, sourceJobId])
+  @@index([source])
+  @@index([postedDate])
+  @@index([companyName])
+  @@map("jobs")
+}
+
+model JobDescription {
+  id        String  @id @default(uuid()) @db.Uuid
+  jobId     String  @map("job_id") @db.Uuid
+  type      String  @db.VarChar(50)
+  content   String
+  language  String  @default("en") @db.VarChar(10)
+  isPrimary Boolean @default(false) @map("is_primary")
+  job       Job     @relation(fields: [jobId], references: [id], onDelete: Cascade)
+
+  @@index([jobId])
+  @@map("job_descriptions")
+}
+
+model Skill {
+  id               String            @id @default(uuid()) @db.Uuid
+  name             String            @unique @db.VarChar(255)
+  domain           String?           @db.VarChar(100)
+  sub_category     String?           @db.VarChar(255)
+  normalized_name  String?           @db.VarChar(255)
+  jobs             JobSkill[]
+  skill_aliases    skill_aliases[]
+  skill_embeddings skill_embeddings?
+  userSkills       UserSkill[]
+
+  @@map("skills")
+}
+
+model JobSkill {
+  jobId          String  @map("job_id") @db.Uuid
+  skillId        String  @map("skill_id") @db.Uuid
+  isRequired     Boolean @default(true) @map("is_required")
+  extractedFrom  String? @map("extracted_from") @db.VarChar(50)
+  skill_level    String? @db.VarChar
+  confidence     Float?  @default(1.0)
+  source_job_id  String? @db.VarChar
+  raw_skill_text String?
+  skill_type     String? @db.VarChar(255)
+  job            Job     @relation(fields: [jobId], references: [id], onDelete: Cascade)
+  skill          Skill   @relation(fields: [skillId], references: [id], onDelete: Cascade)
+
+  @@id([jobId, skillId])
+  @@map("job_skills")
+}
+
+model Industry {
+  id   String        @id @default(uuid()) @db.Uuid
+  name String        @unique @db.VarChar(255)
+  jobs JobIndustry[]
+
+  @@map("industries")
+}
+
+model JobIndustry {
+  jobId      String   @map("job_id") @db.Uuid
+  industryId String   @map("industry_id") @db.Uuid
+  industry   Industry @relation(fields: [industryId], references: [id], onDelete: Cascade)
+  job        Job      @relation(fields: [jobId], references: [id], onDelete: Cascade)
+
+  @@id([jobId, industryId])
+  @@map("job_industries")
+}
+
+model User {
+  id           String                   @id @default(uuid()) @db.Uuid
+  name         String?                  @db.VarChar(255)
+  email        String                   @unique @db.VarChar(255)
+  passwordHash String?                  @map("password_hash") @db.VarChar(255)
+  image        String?
+  provider     String                   @default("credentials") @db.VarChar(50)
+  role         UserRole                 @default(JOB_SEEKER)
+  createdAt    DateTime                 @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt    DateTime                 @updatedAt @map("updated_at") @db.Timestamptz(6)
+
+  profile      UserProfile?
+  vaultAnswers ApplicationVaultAnswer[]
+  applications JobApplication[]
+
+  @@map("users")
+}
+
+model UserProfile {
+  id             String           @id @default(uuid()) @db.Uuid
+  userId         String           @unique @map("user_id") @db.Uuid
+  headline       String?          @db.VarChar(255)
+  bio            String?          @db.Text
+  coverImage     String?          @map("cover_image")
+  phoneNumber    String?          @map("phone_number") @db.VarChar(50)
+  location       String?          @db.VarChar(100)
+  nationality    String?          @default("Egyptian") @db.VarChar(100)
+
+  // Target Domain & Exact Skills Matching
+  category       String?          @db.VarChar(100)
+  targetRole     String?          @map("target_role") @db.VarChar(100)
+  careerLevel    String?          @map("career_level") @db.VarChar(50)
+  expectedSalary Decimal?         @map("expected_salary") @db.Decimal(12, 2)
+  salaryCurrency String?          @default("EGP") @map("salary_currency") @db.VarChar(10)
+  noticePeriod   String?          @map("notice_period") @db.VarChar(50)
+  workModePref   String?          @map("work_mode_pref") @db.VarChar(50)
+
+  // Resume raw storage & sync
+  resumeUrl      String?          @map("resume_url")
+  resumeTextRaw  String?          @map("resume_text_raw") @db.Text
+  resumeParsedAt DateTime?        @map("resume_parsed_at") @db.Timestamptz(6)
+
+  // Relations
+  experiences    UserExperience[]
+  educations     UserEducation[]
+  skills         UserSkill[]
+
+  user           User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("user_profiles")
+}
+
+model UserExperience {
+  id          String      @id @default(uuid()) @db.Uuid
+  profileId   String      @map("profile_id") @db.Uuid
+  company     String      @db.VarChar(255)
+  role        String      @db.VarChar(255)
+  location    String?     @db.VarChar(100)
+  startDate   DateTime    @map("start_date") @db.Date
+  endDate     DateTime?   @map("end_date") @db.Date
+  isCurrent   Boolean     @default(false) @map("is_current")
+  description String?     @db.Text
+
+  profile     UserProfile @relation(fields: [profileId], references: [id], onDelete: Cascade)
+
+  @@index([profileId])
+  @@map("user_experiences")
+}
+
+model UserEducation {
+  id           String      @id @default(uuid()) @db.Uuid
+  profileId    String      @map("profile_id") @db.Uuid
+  institution  String      @db.VarChar(255)
+  degree       String      @db.VarChar(100)
+  fieldOfStudy String?     @map("field_of_study") @db.VarChar(255)
+  startYear    Int?        @map("start_year")
+  endYear      Int?        @map("end_year")
+
+  profile      UserProfile @relation(fields: [profileId], references: [id], onDelete: Cascade)
+
+  @@index([profileId])
+  @@map("user_educations")
+}
+
+model UserSkill {
+  id        String      @id @default(uuid()) @db.Uuid
+  profileId String      @map("profile_id") @db.Uuid
+  skillId   String?     @map("skill_id") @db.Uuid
+  skillName String      @map("skill_name") @db.VarChar(255)
+  level     String?     @default("Intermediate") @db.VarChar(50)
+
+  profile   UserProfile @relation(fields: [profileId], references: [id], onDelete: Cascade)
+  skill     Skill?      @relation(fields: [skillId], references: [id], onDelete: SetNull)
+
+  @@unique([profileId, skillName])
+  @@index([skillId])
+  @@map("user_skills")
+}
+
+model ApplicationVaultAnswer {
+  id               String   @id @default(uuid()) @db.Uuid
+  userId           String   @map("user_id") @db.Uuid
+  questionKey      String   @map("question_key") @db.VarChar(100)
+  questionCategory String   @default("GENERAL") @map("question_category") @db.VarChar(50)
+  questionText     String   @map("question_text") @db.Text
+  answerValue      String   @map("answer_value") @db.Text
+  isAiGenerated    Boolean  @default(false) @map("is_ai_generated")
+  updatedAt        DateTime @updatedAt @map("updated_at") @db.Timestamptz(6)
+
+  user             User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, questionKey])
+  @@index([userId])
+  @@map("application_vault_answers")
+}
+
+model JobApplication {
+  id             String    @id @default(uuid()) @db.Uuid
+  userId         String    @map("user_id") @db.Uuid
+  jobId          String    @map("job_id") @db.Uuid
+  status         String    @default("PENDING_REVIEW") @db.VarChar(50)
+  submissionData Json?     @map("submission_data")
+  hasAiFields    Boolean   @default(false) @map("has_ai_fields")
+  submittedAt    DateTime? @map("submitted_at") @db.Timestamptz(6)
+  createdAt      DateTime  @default(now()) @map("created_at") @db.Timestamptz(6)
+
+  user           User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  job            Job       @relation(fields: [jobId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([jobId])
+  @@map("job_applications")
+}
+
+model GovernorateMetrics {
+  id                  String   @id @default(uuid()) @db.Uuid
+  governorateName     String   @map("governorate_name") @db.VarChar(100)
+  industry            String   @db.VarChar(100)
+  openJobsCount       Int      @default(0) @map("open_jobs_count")
+  talentShortageIndex Float?   @map("talent_shortage_index") @db.Real
+  updatedAt           DateTime @default(now()) @map("updated_at") @db.Timestamptz(6)
+
+  @@unique([governorateName, industry])
+  @@index([governorateName])
+  @@map("governorate_metrics")
+}
+
+model SavedQuestion {
+  id        String    @id @default(uuid()) @db.Uuid
+  question  String
+  intent    Json
+  embedding Float[]
+  createdAt DateTime? @default(now()) @map("created_at") @db.Timestamptz(6)
+
+  @@map("saved_questions")
+}
+
+model SequelizeMeta {
+  name String @id @db.VarChar(255)
+}
+
+model ai_verification_logs {
+  id           Int       @id @default(autoincrement())
+  session_id   String?   @db.VarChar(255)
+  target_role  String?   @db.VarChar(255)
+  skill_name   String?   @db.VarChar(255)
+  evidence     String?
+  ai_decision  String?   @db.VarChar(50)
+  llm_provider String?   @db.VarChar(100)
+  created_at   DateTime? @default(now()) @db.Timestamp(6)
+}
+
+model candidate_vectors {
+  id              Int       @id @default(autoincrement())
+  session_id      String?   @db.VarChar(255)
+  target_role     String?   @db.VarChar(255)
+  readiness_score Decimal?  @db.Decimal(5, 2)
+  top_skills      Json?
+  missing_skills  Json?
+  created_at      DateTime? @default(now()) @db.Timestamp(6)
+}
+
+model canonical_skills {
+  id                    Int                     @id @default(autoincrement())
+  canonical_name        String?                 @unique(map: "ix_canonical_skills_canonical_name") @db.VarChar
+  category              String?                 @db.VarChar
+  created_at            DateTime?               @db.Timestamp(6)
+  job_skill_occurrences job_skill_occurrences[]
+
+  @@index([category], map: "ix_canonical_skills_category")
+  @@index([id], map: "ix_canonical_skills_id")
+}
+
+model cv_intelligence_records {
+  id                   Int       @id @default(autoincrement())
+  session_id           String?   @db.VarChar(255)
+  target_role          String?   @db.VarChar(255)
+  extracted_new_skills Json?
+  tools_used           Json?
+  created_at           DateTime? @default(now()) @db.Timestamp(6)
+  category             String?   @db.VarChar(255)
+  period_date          DateTime? @default(dbgenerated("CURRENT_DATE")) @db.Date
+}
+
+model job_listings {
+  id                    Int                     @id @default(autoincrement())
+  title                 String?                 @db.VarChar
+  company               String?                 @db.VarChar
+  location              String?                 @db.VarChar
+  job_type              String?                 @db.VarChar
+  work_type             String?                 @db.VarChar
+  experience_needed     String?                 @db.VarChar
+  salary                String?                 @db.VarChar
+  skills                String?
+  description           String?
+  source                String?                 @db.VarChar
+  url                   String?                 @db.VarChar
+  country               String?                 @default("Egypt") @db.VarChar
+  city                  String?                 @db.VarChar
+  district              String?                 @db.VarChar
+  min_experience        Float?
+  max_experience        Float?
+  avg_experience        Float?
+  has_explicit_skills   Boolean?                @default(false)
+  skills_source         String?                 @db.VarChar
+  source_job_id         String?                 @db.VarChar
+  ai_analyzed           Boolean?                @default(false)
+  created_at            DateTime?               @db.Timestamp(6)
+  updated_at            DateTime?               @db.Timestamp(6)
+  job_skill_occurrences job_skill_occurrences[]
+
+  @@index([company], map: "ix_job_listings_company")
+  @@index([id], map: "ix_job_listings_id")
+  @@index([location], map: "ix_job_listings_location")
+  @@index([title], map: "ix_job_listings_title")
+}
+
+model job_skill_occurrences {
+  id                 Int               @id @default(autoincrement())
+  job_id             Int?
+  canonical_skill_id Int?
+  raw_skill_text     String?           @db.VarChar
+  skill_level        String?           @db.VarChar
+  confidence         Float?
+  extraction_method  String?           @db.VarChar
+  created_at         DateTime?         @db.Timestamp(6)
+  canonical_skills   canonical_skills? @relation(fields: [canonical_skill_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  job_listings       job_listings?     @relation(fields: [job_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+
+  @@index([canonical_skill_id], map: "ix_job_skill_occurrences_canonical_skill_id")
+  @@index([id], map: "ix_job_skill_occurrences_id")
+  @@index([job_id], map: "ix_job_skill_occurrences_job_id")
+  @@index([skill_level], map: "ix_job_skill_occurrences_skill_level")
+}
+
+/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
+model job_skills_backup {
+  job_id         String?  @db.Uuid
+  skill_id       String?  @db.Uuid
+  is_required    Boolean?
+  extracted_from String?  @db.VarChar(50)
+  skill_level    String?  @db.VarChar
+  confidence     Float?
+  source_job_id  String?  @db.VarChar
+  raw_skill_text String?
+  skill_type     String?  @db.VarChar(255)
+
+  @@ignore
+}
+
+/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
+model kaggle_raw_resumes {
+  category    String?
+  resume_text String?
+  id          Int      @default(autoincrement())
+  processed   Boolean? @default(false)
+
+  @@ignore
+}
+
+model market_skill_trends {
+  id           Int       @id @default(autoincrement())
+  skill_name   String?   @db.VarChar(255)
+  period_type  String?   @db.VarChar(50)
+  period_date  DateTime? @db.Date
+  supply_count Int?      @default(0)
+  demand_count Int?      @default(0)
+
+  @@unique([skill_name, period_type, period_date])
+}
+
+model skill_aliases {
+  id         Int     @id @default(autoincrement())
+  skill_id   String? @db.Uuid
+  alias_name String  @unique
+  skills     Skill?  @relation(fields: [skill_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+}
+
+/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
+model skill_aliases_backup {
+  id         Int?
+  skill_id   String? @db.Uuid
+  alias_name String?
+
+  @@ignore
+}
+
+model skill_embeddings {
+  skill_id   String  @id @db.Uuid
+  embedding  Float[] @db.Real
+  model_name String
+  dimension  Int
+  skills     Skill   @relation(fields: [skill_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+}
+
+model skill_tool_relationships {
+  id                  Int       @id @default(autoincrement())
+  tool_name           String?   @db.VarChar(255)
+  related_skill       String?   @db.VarChar(255)
+  co_occurrence_count Int?      @default(1)
+  confidence          Decimal?  @default(0.5) @db.Decimal(5, 4)
+  last_seen           DateTime? @default(dbgenerated("CURRENT_DATE")) @db.Date
+
+  @@unique([tool_name, related_skill])
+}
+
+/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
+model skills_backup {
+  id       String? @db.Uuid
+  name     String? @db.VarChar(255)
+  category String? @db.VarChar(100)
+
+  @@ignore
+}
+
+enum UserRole {
+  JOB_SEEKER
+  RECRUITER
+  STRATEGIC_PLANNER
+}
+
+enum enum_Attendances_check_type {
+  I
+  O
+}
+
+enum enum_Employees_contract_type {
+  SEASONAL @map("موسمي")
+  LIMITED @map("محدد المدة")
+  MINISTERIAL @map("وزاري")
+}
+
+enum enum_Leaves_status {
+  Pending
+  Approved
+  Rejected
+}
+
+enum enum_Leaves_type {
+  NORMAL @map("اعتيادي")
+  CASUAL @map("عارضة")
+  REST_ALLOWANCE @map("بدل راحة")
+  EXCEPTIONAL @map("استثنائية")
+}
+
+enum enum_Permissions_status {
+  Pending
+  Approved
+  Rejected
+}

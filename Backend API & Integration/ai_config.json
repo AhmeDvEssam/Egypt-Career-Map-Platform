@@ -1,0 +1,90 @@
+{
+    "providers": {
+        "gemini": {
+            "enabled": true,
+            "model": "gemini-3.8-flash"
+        },
+        "groq": {
+            "enabled": true,
+            "model": "openai/gpt-oss-20b"
+        },
+        "mistral ai": {
+            "enabled": true,
+            "model": "ministral-8b-latest"
+        },
+        "cleanapis": {
+            "enabled": false,
+            "model": "deepseek-v4-flash-0731"
+        },
+        "inceptionlabs": {
+            "enabled": true,
+            "model": "mercury-2.5"
+        },
+        "zhipuai": {
+            "enabled": true,
+            "model": "glm-4-flash"
+        },
+        "cohere": {
+            "enabled": true,
+            "model": "command-r-08-2024"
+        },
+        "upstage": {
+            "enabled": true,
+            "model": "solar-1-mini-chat"
+        },
+        "llm7": {
+            "enabled": true,
+            "model": "mistral-Nemo-Instruct-2407"
+        },
+        "voyage": {
+            "enabled": true,
+            "model": "voyage-3-lite",
+            "type": "embeddings"
+        },
+        "jina": {
+            "enabled": true,
+            "model": "jina-embeddings-v3",
+            "type": "embeddings_rerank"
+        },
+        "cloudflare": {
+            "enabled": true,
+            "model": "@cf/meta/llama-3.1-8b-instruct"
+        },
+        "openrouter": {
+            "enabled": false,
+            "model": "google/gemma-4-26b-a4b-it:free",
+            "reason": "Free model rate limits on zero-balance accounts"
+        },
+        "hugging face": {
+            "enabled": false,
+            "model": "meta-llama/Llama-3.1-8B-Instruct",
+            "reason": "Router credits exhausted (402)"
+        },
+        "together": {
+            "enabled": false,
+            "model": "meta-llama/Meta-Llama-3.1-8B-Instruct-Turbo",
+            "reason": "All keys expired (401)"
+        },
+        "sambanova": {
+            "enabled": false,
+            "model": "Meta-Llama-3.3-70B-Instruct",
+            "reason": "All keys invalid/revoked (401)"
+        },
+        "nvidia": {
+            "enabled": false,
+            "model": "meta/llama-3.3-70b-instruct",
+            "reason": "Credits exhausted / model deprecated"
+        },
+        "aionlabs": {
+            "enabled": false,
+            "model": "",
+            "reason": "Endpoint inactive"
+        }
+    },
+    "global": {
+        "speed_mode": "max",
+        "extraction_strategy": "semantic_filter",
+        "semantic_threshold": 0.25,
+        "threads": 25
+    }
+}

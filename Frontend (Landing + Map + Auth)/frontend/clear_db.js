@@ -1,0 +1,1 @@
+const { PrismaClient } = require('@prisma/client'); const prisma = new PrismaClient(); async function main() { await prisma.jobSkill.deleteMany({}); await prisma.jobDescription.deleteMany({}); await prisma.job.deleteMany({}); console.log('Database cleared! Ready for fresh data.'); } main().finally(() => prisma.$disconnect());

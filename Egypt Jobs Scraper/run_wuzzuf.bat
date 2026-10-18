@@ -1,0 +1,6 @@
+@echo off
+echo Compiling TypeScript files...
+call npx tsc
+echo Running Wuzzuf Scraper...
+node dist/GlobalManager.js
+pause

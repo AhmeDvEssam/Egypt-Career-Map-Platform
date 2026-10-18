@@ -1,0 +1,190 @@
+# ==============================================================================
+# HIRE Q PLATFORM - PRODUCTION .GITIGNORE
+# ==============================================================================
+
+# ------------------------------------------------------------------------------
+# 1. Environment & Secrets (CRITICAL SECURITY)
+# ------------------------------------------------------------------------------
+.env
+.env.*
+!.env.example
+*.env
+*secret*
+*credential*
+*.pem
+*.key
+API KEYS.xlsx
+api_keys_audit_results.csv
+working_free_models.json
+token_usage.json
+security tips.txt
+
+# ------------------------------------------------------------------------------
+# 2. Python & Virtual Environments
+# ------------------------------------------------------------------------------
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+.venv/
+ENV/
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# ------------------------------------------------------------------------------
+# 3. Node.js & Frontend Build Outputs
+# ------------------------------------------------------------------------------
+node_modules/
+node_modules_old/
+*node_modules*/
+.next/
+out/
+.npm
+.yarn/
+.turbo/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# ------------------------------------------------------------------------------
+# 4. Scraper Caches, Browser Profiles & Raw Scraped Data
+# ------------------------------------------------------------------------------
+indeed_profile/
+wuzzuf_profile/
+parallel_tmp/
+browser_session/
+chromedriver-linux64/
+chromedriver*
+Crashpad/
+GrShaderCache/
+ShaderCache/
+component_crx_cache/
+extensions_crx_cache/
+GPUPersistentCache/
+first_party_sets.db*
+Last Browser
+Last Version
+Local State
+Variations
+**/indeed_uc_profile*/
+**/test_profile*/
+Egypt Jobs Scraper/data/*.csv
+Egypt Jobs Scraper/data/*.json
+!Egypt Jobs Scraper/data/README.md
+Egypt Jobs Scraper/wuzzuf_rss.xml
+*.xml
+*.rss
+
+# ------------------------------------------------------------------------------
+# 5. Database & Local Storage Files
+# ------------------------------------------------------------------------------
+*.db
+*.db-journal
+*.sqlite
+*.sqlite3
+jobs.db
+
+# ------------------------------------------------------------------------------
+# 6. Heavy Datasets, Archives & Machine Learning Models (Keep on Google Drive)
+# ------------------------------------------------------------------------------
+Rusumes data and  model/
+*.pbix
+*.pickle
+*.pkl
+*.bin
+*.pt
+*.pth
+*.onnx
+*.rar
+*.zip
+*.7z
+*.tar
+*.tar.gz
+*.exe
+dataset.jsonl
+data_shit.csv
+cleansing_progress.json
+all_families_dump.json
+v3_stress_validation_results.json
+v3_validation_results.json
+flagged_skills_for_review*.csv
+flagged_with_counts.csv
+
+# ------------------------------------------------------------------------------
+# 7. Media & Video Files (Large Assets)
+# ------------------------------------------------------------------------------
+*.mp4
+*.mov
+*.avi
+*.mkv
+*.webm
+*.mp3
+*.wav
+voice_cache/
+audio_cache/
+
+# ------------------------------------------------------------------------------
+# 8. Personal Files, Resumes & Unrelated Projects
+# ------------------------------------------------------------------------------
+Rusmue/
+resumes/
+Attrition Rate analysis/
+Teleperformance_*
+Task7_Attrition_By_Department.sql
+Decommantation.ipynb
+*.pdf
+*.docx
+
+# ------------------------------------------------------------------------------
+# 9. Logs & Temporary Output Files
+# ------------------------------------------------------------------------------
+*.log
+error_log.txt
+output_log.txt
+overnight_monitor.log
+mls_pipeline.log
+check_kg_out.txt
+key_test_report.txt
+analysis_report.txt
+api_report_temp.md
+temp.txt
+query
+output.txt
+output_match.txt
+output_process.txt
+
+# ------------------------------------------------------------------------------
+# 10. Archived Scripts & Scratch Folders
+# ------------------------------------------------------------------------------
+scripts_archive/
+scratch/
+page_backup.tsx
+
+# ------------------------------------------------------------------------------
+# 11. IDE & OS Specific Files
+# ------------------------------------------------------------------------------
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+.DS_Store
+Thumbs.db
+desktop.ini
