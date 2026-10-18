@@ -142,11 +142,13 @@ voice_cache/
 audio_cache/
 
 # ------------------------------------------------------------------------------
-# 8. Personal Files, Resumes & Unrelated Projects
+# 8. Personal Files, Resumes, Staging & Unrelated Projects
 # ------------------------------------------------------------------------------
 Rusmue/
 resumes/
 Attrition Rate analysis/
+Interview Simulator & Career Coach/
+ESCO_Taxonomy/
 Teleperformance_*
 Task7_Attrition_By_Department.sql
 Decommantation.ipynb
