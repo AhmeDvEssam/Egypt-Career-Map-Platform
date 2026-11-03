@@ -1,0 +1,3476 @@
+{
+  "ux": {
+    "acronym": "UX",
+    "full_name": "User Experience",
+    "canonical_skill_name": "User Experience",
+    "domain": "Software Engineering & IT",
+    "sub_category": "Frontend Development",
+    "skill_type": "Hard Skill",
+    "source": "Global Industry Standard"
+  },
+  "ui": {
+    "acronym": "UI",
+    "full_name": "User Interface",
+    "canonical_skill_name": "User Interface",
+    "domain": "Software Engineering & IT",
+    "sub_category": "Frontend Development",
+    "skill_type": "Hard Skill",
+    "source": "Global Industry Standard"
+  },
+  "ui/ux": {
+    "acronym": "UI/UX",
+    "full_name": "UI/UX Design",
+    "canonical_skill_name": "UI/UX Design",
+    "domain": "Software Engineering & IT",
+    "sub_category": "Frontend Development",
+    "skill_type": "Hard Skill",
+    "source": "Global Industry Standard"
+  },
+  "cx": {
+    "acronym": "CX",
+    "full_name": "Customer Experience",
+    "canonical_skill_name": "Customer Experience",
+    "domain": "Operations & Project Management",
+    "sub_category": "Customer Service & Support Operations",
+    "skill_type": "Hard Skill",
+    "source": "Global Industry Standard"
+  },
+  "dx": {
+    "acronym": "DX",
+    "full_name": "Developer Experience",
+    "canonical_skill_name": "Developer Experience",
+    "domain": "Software Engineering & IT",
+    "sub_category": "DevOps & Cloud Infrastructure",
+    "skill_type": "Hard Skill",
+    "source": "Global Industry Standard"
+  },
+  "sdlc": {
+    "acronym": "SDLC",
+    "full_name": "Software Development Life Cycle",
+    "canonical_skill_name": "Software Development Life Cycle",
+    "domain": "Software Engineering & IT",
+    "sub_category": "Backend Development",
+    "skill_type": "Methodology",
+    "source": "Global Industry Standard"
+  },
+  "tdd": {
+    "acronym": "TDD",
+    "full_name": "Test-Driven Development",
+    "canonical_skill_name": "Test-Driven Development",
+    "domain": "Software Engineering & IT",
+    "sub_category": "Quality Assurance & Testing",
+    "skill_type": "Methodology",
+    "source": "Global Industry Standard"
+  },
+  "bdd": {
+    "acronym": "BDD",
+    "full_name": "Behavior-Driven Development",
+    "canonical_skill_name": "Behavior-Driven Development",
+    "domain": "Software Engineering & IT",
+    "sub_category": "Quality Assurance & Testing",
+    "skill_type": "Methodology",
+    "source": "Global Industry Standard"
+  },
+  "ci/cd": {
+    "acronym": "CI/CD",
+    "full_name": "CI/CD Pipelines",
+    "canonical_skill_name": "CI/CD Pipelines",
+    "domain": "Software Engineering & IT",
+    "sub_category": "DevOps & Cloud Infrastructure",
+    "skill_type": "Hard Skill",
+    "source": "Global Industry Standard"
+  },
+  "iac": {
+    "acronym": "IAC",
+    "full_name": "Infrastructure as Code",
+    "canonical_skill_name": "Infrastructure as Code",
+    "domain": "Software Engineering & IT",
+    "sub_category": "DevOps & Cloud Infrastructure",
+    "skill_type": "Hard Skill",
+    "source": "Global Industry Standard"
+  },
+  "sre": {
+    "acronym": "SRE",
+    "full_name": "Site Reliability Engineering",
+    "canonical_skill_name": "Site Reliability Engineering",
+    "domain": "Software Engineering & IT",
+    "sub_category": "DevOps & Cloud Infrastructure",
+    "skill_type": "Hard Skill",
+    "source": "Global Industry Standard"
+  },
+  "esb": {
+    "acronym": "ESB",
+    "full_name": "Enterprise Service Bus",
+    "canonical_skill_name": "Enterprise Service Bus",
+    "domain": "Software Engineering & IT",
+    "sub_category": "Backend Development",
+    "skill_type": "Tool / Software",
+    "source": "Global Industry Standard"
+  },
+  "waf": {
+    "acronym": "WAF",
+    "full_name": "Web Application Firewall",
+    "canonical_skill_name": "Web Application Firewall",
+    "domain": "Software Engineering & IT",
+    "sub_category": "Cybersecurity & Information Security",
+    "skill_type": "Tool / Software",
+    "source": "Global Industry Standard"
+  },
+  "iam": {
+    "acronym": "IAM",
+    "full_name": "Identity and Access Management",
+    "canonical_skill_name": "Identity and Access Management",
+    "domain": "Software Engineering & IT",
+    "sub_category": "Cybersecurity & Information Security",
+    "skill_type": "Hard Skill",
+    "source": "Global Industry Standard"
+  },
+  "pam": {
+    "acronym": "PAM",
+    "full_name": "Privileged Access Management",
+    "canonical_skill_name": "Privileged Access Management",
+    "domain": "Software Engineering & IT",
+    "sub_category": "Cybersecurity & Information Security",
+    "skill_type": "Hard Skill",
+    "source": "Global Industry Standard"
+  },
+  "siem": {
+    "acronym": "SIEM",
+    "full_name": "Security Information and Event Management",
+    "canonical_skill_name": "Security Information and Event Management",
+    "domain": "Software Engineering & IT",
+    "sub_category": "Cybersecurity & Information Security",
+    "skill_type": "Tool / Software",
+    "source": "Global Industry Standard"
+  },
+  "soar": {
+    "acronym": "SOAR",
+    "full_name": "Security Orchestration, Automation, and Response",
+    "canonical_skill_name": "Security Orchestration, Automation, and Response",
+    "domain": "Software Engineering & IT",
+    "sub_category": "Cybersecurity & Information Security",
+    "skill_type": "Tool / Software",
+    "source": "Global Industry Standard"
+  },
+  "soc": {
+    "acronym": "SOC",
+    "full_name": "Security Operations Center",
+    "canonical_skill_name": "Security Operations Center",
+    "domain": "Software Engineering & IT",
+    "sub_category": "Cybersecurity & Information Security",
+    "skill_type": "Hard Skill",
+    "source": "Global Industry Standard"
+  },
+  "noc": {
+    "acronym": "NOC",
+    "full_name": "Network Operations Center",
+    "canonical_skill_name": "Network Operations Center",
+    "domain": "Software Engineering & IT",
+    "sub_category": "DevOps & Cloud Infrastructure",
+    "skill_type": "Hard Skill",
+    "source": "Global Industry Standard"
+  },
+  "ai": {
+    "acronym": "AI",
+    "full_name": "Artificial Intelligence",
+    "canonical_skill_name": "Artificial Intelligence",
+    "domain": "Data Science & Analytics",
+    "sub_category": "Artificial Intelligence & Deep Learning",
+    "skill_type": "Hard Skill",
+    "source": "Global Industry Standard"
+  },
+  "ml": {
+    "acronym": "ML",
+    "full_name": "Machine Learning",
+    "canonical_skill_name": "Machine Learning",
+    "domain": "Data Science & Analytics",
+    "sub_category": "Machine Learning & Data Science",
+    "skill_type": "Hard Skill",
+    "source": "Global Industry Standard"
+  },
+  "dl": {
+    "acronym": "DL",
+    "full_name": "Deep Learning",
+    "canonical_skill_name": "Deep Learning",
+    "domain": "Data Science & Analytics",
+    "sub_category": "Artificial Intelligence & Deep Learning",
+    "skill_type": "Hard Skill",
+    "source": "Global Industry Standard"
+  },
+  "nlp": {
+    "acronym": "NLP",
+    "full_name": "Natural Language Processing (NLP)",
+    "canonical_skill_name": "Natural Language Processing (NLP)",
+    "domain": "Data Science & Analytics",
+    "sub_category": "Artificial Intelligence & Deep Learning",
+    "skill_type": "Hard Skill",
+    "source": "Global Industry Standard"
+  },
+  "llm": {
+    "acronym": "LLM",
+    "full_name": "Large Language Models (LLM)",
+    "canonical_skill_name": "Large Language Models (LLM)",
+    "domain": "Data Science & Analytics",
+    "sub_category": "Artificial Intelligence & Deep Learning",
+    "skill_type": "Hard Skill",
+    "source": "Global Industry Standard"
+  },
+  "bi": {
+    "acronym": "BI",
+    "full_name": "Business Intelligence",
+    "canonical_skill_name": "Business Intelligence",
+    "domain": "Data Science & Analytics",
+    "sub_category": "Business Intelligence & Data Analytics",
+    "skill_type": "Hard Skill",
+    "source": "Global Industry Standard"
+  },
+  "mvp": {
+    "acronym": "MVP",
+    "full_name": "Minimum Viable Product (MVP)",
+    "canonical_skill_name": "Minimum Viable Product (MVP)",
+    "domain": "Operations & Project Management",
+    "sub_category": "Project & Agile Management (PMP, Agile, Scrum)",
+    "skill_type": "Methodology",
+    "source": "Global Industry Standard"
+  },
+  "seo": {
+    "acronym": "SEO",
+    "full_name": "Search Engine Optimization (SEO)",
+    "canonical_skill_name": "Search Engine Optimization (SEO)",
+    "domain": "Marketing & Sales",
+    "sub_category": "Content Marketing, SEO & Social Media",
+    "skill_type": "Hard Skill",
+    "source": "Global Industry Standard"
+  },
+  "sem": {
+    "acronym": "SEM",
+    "full_name": "Search Engine Marketing (SEM)",
+    "canonical_skill_name": "Search Engine Marketing (SEM)",
+    "domain": "Marketing & Sales",
+    "sub_category": "Digital Marketing & Paid Ads (Performance Media)",
+    "skill_type": "Hard Skill",
+    "source": "Global Industry Standard"
+  },
+  "ppc": {
+    "acronym": "PPC",
+    "full_name": "Pay-Per-Click (PPC)",
+    "canonical_skill_name": "Pay-Per-Click (PPC)",
+    "domain": "Marketing & Sales",
+    "sub_category": "Digital Marketing & Paid Ads (Performance Media)",
+    "skill_type": "Hard Skill",
+    "source": "Global Industry Standard"
+  },
+  "cro": {
+    "acronym": "CRO",
+    "full_name": "Conversion Rate Optimization (CRO)",
+    "canonical_skill_name": "Conversion Rate Optimization (CRO)",
+    "domain": "Marketing & Sales",
+    "sub_category": "Digital Marketing & Paid Ads (Performance Media)",
+    "skill_type": "Hard Skill",
+    "source": "Global Industry Standard"
+  },
+  "b2b": {
+    "acronym": "B2B",
+    "full_name": "B2B Sales",
+    "canonical_skill_name": "B2B Sales",
+    "domain": "Marketing & Sales",
+    "sub_category": "B2B Sales & Business Development",
+    "skill_type": "Hard Skill",
+    "source": "Global Industry Standard"
+  },
+  "b2c": {
+    "acronym": "B2C",
+    "full_name": "B2C Sales",
+    "canonical_skill_name": "B2C Sales",
+    "domain": "Marketing & Sales",
+    "sub_category": "Retail, B2C Sales & Account Management",
+    "skill_type": "Hard Skill",
+    "source": "Global Industry Standard"
+  },
+  "aws": {
+    "acronym": "AWS",
+    "full_name": "Amazon Web Services (AWS)",
+    "canonical_skill_name": "Amazon Web Services (AWS)",
+    "domain": "Software Engineering & IT",
+    "sub_category": "DevOps & Cloud Infrastructure",
+    "skill_type": "Tool / Software",
+    "source": "Global Industry Standard"
+  },
+  "gcp": {
+    "acronym": "GCP",
+    "full_name": "Google Cloud Platform",
+    "canonical_skill_name": "Google Cloud Platform",
+    "domain": "Software Engineering & IT",
+    "sub_category": "DevOps & Cloud Infrastructure",
+    "skill_type": "Tool / Software",
+    "source": "Global Industry Standard"
+  },
+  "oci": {
+    "acronym": "OCI",
+    "full_name": "Oracle Cloud Infrastructure",
+    "canonical_skill_name": "Oracle Cloud Infrastructure",
+    "domain": "Software Engineering & IT",
+    "sub_category": "DevOps & Cloud Infrastructure",
+    "skill_type": "Tool / Software",
+    "source": "Global Industry Standard"
+  },
+  "oic": {
+    "acronym": "OIC",
+    "full_name": "Oracle Integration Cloud",
+    "canonical_skill_name": "Oracle Integration Cloud",
+    "domain": "Software Engineering & IT",
+    "sub_category": "DevOps & Cloud Infrastructure",
+    "skill_type": "Tool / Software",
+    "source": "Global Industry Standard"
+  },
+  "acc": {
+    "acronym": "ACC",
+    "full_name": "Autodesk Construction Cloud",
+    "canonical_skill_name": "Autodesk Construction Cloud",
+    "domain": "Engineering & Construction",
+    "sub_category": "Construction Management & Site Supervision",
+    "skill_type": "Tool / Software",
+    "source": "Global Industry Standard"
+  },
+  "api": {
+    "acronym": "API",
+    "full_name": "API",
+    "canonical_skill_name": "API",
+    "domain": "Software Engineering & IT",
+    "sub_category": "Backend Development",
+    "skill_type": "Hard Skill",
+    "source": "Global Industry Standard"
+  },
+  "sdk": {
+    "acronym": "SDK",
+    "full_name": "Software Development Kit",
+    "canonical_skill_name": "Software Development Kit",
+    "domain": "Software Engineering & IT",
+    "sub_category": "Backend Development",
+    "skill_type": "Tool / Software",
+    "source": "Global Industry Standard"
+  },
+  "cli": {
+    "acronym": "CLI",
+    "full_name": "Command Line Interface",
+    "canonical_skill_name": "Command Line Interface",
+    "domain": "Software Engineering & IT",
+    "sub_category": "DevOps & Cloud Infrastructure",
+    "skill_type": "Tool / Software",
+    "source": "Global Industry Standard"
+  },
+  "etl": {
+    "acronym": "ETL",
+    "full_name": "ETL",
+    "canonical_skill_name": "ETL",
+    "domain": "Data Science & Analytics",
+    "sub_category": "Data Engineering",
+    "skill_type": "Hard Skill",
+    "source": "Global Industry Standard"
+  },
+  "elt": {
+    "acronym": "ELT",
+    "full_name": "ELT",
+    "canonical_skill_name": "ELT",
+    "domain": "Data Science & Analytics",
+    "sub_category": "Data Engineering",
+    "skill_type": "Hard Skill",
+    "source": "Global Industry Standard"
+  },
+  "erp": {
+    "acronym": "ERP",
+    "full_name": "ERP Systems",
+    "canonical_skill_name": "ERP Systems",
+    "domain": "Operations & Project Management",
+    "sub_category": "Business Operations & Process Improvement",
+    "skill_type": "Tool / Software",
+    "source": "Global Industry Standard"
+  },
+  "crm": {
+    "acronym": "CRM",
+    "full_name": "CRM Systems",
+    "canonical_skill_name": "CRM Systems",
+    "domain": "Marketing & Sales",
+    "sub_category": "B2B Sales & Business Development",
+    "skill_type": "Tool / Software",
+    "source": "Global Industry Standard"
+  },
+  "ats": {
+    "acronym": "ATS",
+    "full_name": "Applicant Tracking Systems",
+    "canonical_skill_name": "Applicant Tracking Systems",
+    "domain": "Human Resources",
+    "sub_category": "Talent Acquisition & Recruitment",
+    "skill_type": "Tool / Software",
+    "source": "Global Industry Standard"
+  },
+  "hris": {
+    "acronym": "HRIS",
+    "full_name": "HR Information Systems (HRIS)",
+    "canonical_skill_name": "HR Information Systems (HRIS)",
+    "domain": "Human Resources",
+    "sub_category": "HR Operations & People Analytics",
+    "skill_type": "Tool / Software",
+    "source": "Global Industry Standard"
+  },
+  "lms": {
+    "acronym": "LMS",
+    "full_name": "Learning Management Systems (LMS)",
+    "canonical_skill_name": "Learning Management Systems (LMS)",
+    "domain": "Human Resources",
+    "sub_category": "Learning & Development (L&D)",
+    "skill_type": "Tool / Software",
+    "source": "Global Industry Standard"
+  },
+  "wms": {
+    "acronym": "WMS",
+    "full_name": "Warehouse Management Systems",
+    "canonical_skill_name": "Warehouse Management Systems",
+    "domain": "Supply Chain & Logistics",
+    "sub_category": "Inventory & Warehouse Management",
+    "skill_type": "Tool / Software",
+    "source": "Global Industry Standard"
+  },
+  "tms": {
+    "acronym": "TMS",
+    "full_name": "Transportation Management Systems",
+    "canonical_skill_name": "Transportation Management Systems",
+    "domain": "Supply Chain & Logistics",
+    "sub_category": "Logistics, Freight & Fleet Operations",
+    "skill_type": "Tool / Software",
+    "source": "Global Industry Standard"
+  },
+  "bom": {
+    "acronym": "BOM",
+    "full_name": "Bill of Materials (BOM)",
+    "canonical_skill_name": "Bill of Materials (BOM)",
+    "domain": "Manufacturing & Industrial Production",
+    "sub_category": "Production Line & Assembly Operations",
+    "skill_type": "Hard Skill",
+    "source": "Global Industry Standard"
+  },
+  "boq": {
+    "acronym": "BOQ",
+    "full_name": "Bill of Quantities (BOQ)",
+    "canonical_skill_name": "Bill of Quantities (BOQ)",
+    "domain": "Engineering & Construction",
+    "sub_category": "Civil & Structural Engineering",
+    "skill_type": "Hard Skill",
+    "source": "Global Industry Standard"
+  },
+  "bim": {
+    "acronym": "BIM",
+    "full_name": "Building Information Modeling (BIM)",
+    "canonical_skill_name": "Building Information Modeling (BIM)",
+    "domain": "Engineering & Construction",
+    "sub_category": "Architecture & Interior Design",
+    "skill_type": "Hard Skill",
+    "source": "Global Industry Standard"
+  },
+  "mep": {
+    "acronym": "MEP",
+    "full_name": "Mechanical, Electrical, and Plumbing (MEP)",
+    "canonical_skill_name": "Mechanical, Electrical, and Plumbing (MEP)",
+    "domain": "Engineering & Construction",
+    "sub_category": "Mechanical & MEP Engineering",
+    "skill_type": "Hard Skill",
+    "source": "Global Industry Standard"
+  },
+  "hvac": {
+    "acronym": "HVAC",
+    "full_name": "HVAC",
+    "canonical_skill_name": "HVAC",
+    "domain": "Engineering & Construction",
+    "sub_category": "Mechanical & MEP Engineering",
+    "skill_type": "Hard Skill",
+    "source": "Global Industry Standard"
+  },
+  "plc": {
+    "acronym": "PLC",
+    "full_name": "Programmable Logic Controllers (PLC)",
+    "canonical_skill_name": "Programmable Logic Controllers (PLC)",
+    "domain": "Manufacturing & Industrial Production",
+    "sub_category": "Industrial Automation, PLC & Instrumentation",
+    "skill_type": "Tool / Software",
+    "source": "Global Industry Standard"
+  },
+  "scada": {
+    "acronym": "SCADA",
+    "full_name": "SCADA",
+    "canonical_skill_name": "SCADA",
+    "domain": "Manufacturing & Industrial Production",
+    "sub_category": "Industrial Automation, PLC & Instrumentation",
+    "skill_type": "Tool / Software",
+    "source": "Global Industry Standard"
+  },
+  "cnc": {
+    "acronym": "CNC",
+    "full_name": "CNC Machining",
+    "canonical_skill_name": "CNC Machining",
+    "domain": "Manufacturing & Industrial Production",
+    "sub_category": "CNC, Machining & Metal Fabrication",
+    "skill_type": "Hard Skill",
+    "source": "Global Industry Standard"
+  },
+  "loto": {
+    "acronym": "LOTO",
+    "full_name": "Lockout/Tagout (LOTO)",
+    "canonical_skill_name": "Lockout/Tagout (LOTO)",
+    "domain": "Manufacturing & Industrial Production",
+    "sub_category": "Industrial Health, Safety & Environment (HSE)",
+    "skill_type": "Hard Skill",
+    "source": "Global Industry Standard"
+  },
+  "opex": {
+    "acronym": "OPEX",
+    "full_name": "Operational Excellence",
+    "canonical_skill_name": "Operational Excellence",
+    "domain": "Operations & Project Management",
+    "sub_category": "Business Operations & Process Improvement",
+    "skill_type": "Hard Skill",
+    "source": "Global Industry Standard"
+  },
+  "dei": {
+    "acronym": "DEI",
+    "full_name": "Diversity, Equity, and Inclusion (DEI)",
+    "canonical_skill_name": "Diversity, Equity, and Inclusion (DEI)",
+    "domain": "Human Resources",
+    "sub_category": "HR Operations & People Analytics",
+    "skill_type": "Hard Skill",
+    "source": "Global Industry Standard"
+  },
+  "grc": {
+    "acronym": "GRC",
+    "full_name": "Governance, Risk, and Compliance (GRC)",
+    "canonical_skill_name": "Governance, Risk, and Compliance (GRC)",
+    "domain": "Business & Finance",
+    "sub_category": "Auditing, Tax & Compliance",
+    "skill_type": "Hard Skill",
+    "source": "Global Industry Standard"
+  },
+  "grcp": {
+    "acronym": "GRCP",
+    "full_name": "Governance, Risk, and Compliance Professional (GRCP)",
+    "canonical_skill_name": "Governance, Risk, and Compliance Professional (GRCP)",
+    "domain": "Business & Finance",
+    "sub_category": "Auditing, Tax & Compliance",
+    "skill_type": "Certification",
+    "source": "Global Industry Standard"
+  },
+  "esg": {
+    "acronym": "ESG",
+    "full_name": "Environmental, Social, and Governance (ESG)",
+    "canonical_skill_name": "Environmental, Social, and Governance (ESG)",
+    "domain": "Business & Finance",
+    "sub_category": "Corporate Finance & Financial Analysis",
+    "skill_type": "Hard Skill",
+    "source": "Global Industry Standard"
+  },
+  "hse": {
+    "acronym": "HSE",
+    "full_name": "Health, Safety, and Environment (HSE)",
+    "canonical_skill_name": "Health, Safety, and Environment (HSE)",
+    "domain": "Manufacturing & Industrial Production",
+    "sub_category": "Industrial Health, Safety & Environment (HSE)",
+    "skill_type": "Hard Skill",
+    "source": "Global Industry Standard"
+  },
+  "qhse": {
+    "acronym": "QHSE",
+    "full_name": "Quality, Health, Safety, and Environment (QHSE)",
+    "canonical_skill_name": "Quality, Health, Safety, and Environment (QHSE)",
+    "domain": "Manufacturing & Industrial Production",
+    "sub_category": "Industrial Health, Safety & Environment (HSE)",
+    "skill_type": "Hard Skill",
+    "source": "Global Industry Standard"
+  },
+  "fatf": {
+    "acronym": "FATF",
+    "full_name": "FATF Guidelines",
+    "canonical_skill_name": "FATF Guidelines",
+    "domain": "Business & Finance",
+    "sub_category": "Auditing, Tax & Compliance",
+    "skill_type": "Hard Skill",
+    "source": "Global Industry Standard"
+  },
+  "wht": {
+    "acronym": "WHT",
+    "full_name": "Withholding Tax",
+    "canonical_skill_name": "Withholding Tax",
+    "domain": "Business & Finance",
+    "sub_category": "Auditing, Tax & Compliance",
+    "skill_type": "Hard Skill",
+    "source": "Global Industry Standard"
+  },
+  "vat": {
+    "acronym": "VAT",
+    "full_name": "Value Added Tax (VAT)",
+    "canonical_skill_name": "Value Added Tax (VAT)",
+    "domain": "Business & Finance",
+    "sub_category": "Auditing, Tax & Compliance",
+    "skill_type": "Hard Skill",
+    "source": "Global Industry Standard"
+  },
+  "ifrs": {
+    "acronym": "IFRS",
+    "full_name": "IFRS",
+    "canonical_skill_name": "IFRS",
+    "domain": "Business & Finance",
+    "sub_category": "Accounting & Financial Reporting",
+    "skill_type": "Hard Skill",
+    "source": "Global Industry Standard"
+  },
+  "gaap": {
+    "acronym": "GAAP",
+    "full_name": "GAAP",
+    "canonical_skill_name": "GAAP",
+    "domain": "Business & Finance",
+    "sub_category": "Accounting & Financial Reporting",
+    "skill_type": "Hard Skill",
+    "source": "Global Industry Standard"
+  },
+  "kol": {
+    "acronym": "KOL",
+    "full_name": "Key Opinion Leader (KOL) Management",
+    "canonical_skill_name": "Key Opinion Leader (KOL) Management",
+    "domain": "Marketing & Sales",
+    "sub_category": "B2B Sales & Business Development",
+    "skill_type": "Hard Skill",
+    "source": "Global Industry Standard"
+  },
+  "fmcg": {
+    "acronym": "FMCG",
+    "full_name": "FMCG Industry",
+    "canonical_skill_name": "FMCG Industry",
+    "domain": "Supply Chain & Logistics",
+    "sub_category": "Supply Chain Planning & Demand Forecasting",
+    "skill_type": "Hard Skill",
+    "source": "Global Industry Standard"
+  },
+  "p&l": {
+    "acronym": "P&L",
+    "full_name": "P&L Management",
+    "canonical_skill_name": "P&L Management",
+    "domain": "Business & Finance",
+    "sub_category": "Corporate Finance & Financial Analysis",
+    "skill_type": "Hard Skill",
+    "source": "Global Industry Standard"
+  },
+  "r&d": {
+    "acronym": "R&D",
+    "full_name": "Research & Development",
+    "canonical_skill_name": "Research & Development",
+    "domain": "Operations & Project Management",
+    "sub_category": "Business Operations & Process Improvement",
+    "skill_type": "Hard Skill",
+    "source": "Global Industry Standard"
+  },
+  "aql": {
+    "acronym": "AQL",
+    "full_name": "Acceptance Quality Limit (AQL)",
+    "canonical_skill_name": "Acceptance Quality Limit (AQL)",
+    "domain": "Manufacturing & Industrial Production",
+    "sub_category": "Production Line & Assembly Operations",
+    "skill_type": "Hard Skill",
+    "source": "Global Industry Standard"
+  },
+  "rcm": {
+    "acronym": "RCM",
+    "full_name": "Reliability-Centered Maintenance (RCM)",
+    "canonical_skill_name": "Reliability-Centered Maintenance (RCM)",
+    "domain": "Manufacturing & Industrial Production",
+    "sub_category": "Industrial Machinery & Equipment Maintenance",
+    "skill_type": "Hard Skill",
+    "source": "Global Industry Standard"
+  },
+  "rgpd": {
+    "acronym": "RGPD",
+    "full_name": "Legal Compliance",
+    "canonical_skill_name": "Legal Compliance",
+    "domain": "Business & Finance",
+    "sub_category": "Auditing, Tax & Compliance",
+    "skill_type": "Hard Skill",
+    "source": "Empirical Parenthetical Discovery"
+  },
+  "aml": {
+    "acronym": "AML",
+    "full_name": "Anti-Money Laundering",
+    "canonical_skill_name": "Anti-Money Laundering",
+    "domain": "Business & Finance",
+    "sub_category": "Banking & Treasury Operations",
+    "skill_type": "Hard Skill",
+    "source": "Empirical Parenthetical Discovery"
+  },
+  "jdbc": {
+    "acronym": "JDBC",
+    "full_name": "Java Database Connectivity",
+    "canonical_skill_name": "Java Database Connectivity",
+    "domain": "Software Engineering & IT",
+    "sub_category": "Backend Development",
+    "skill_type": "Tool / Software",
+    "source": "Empirical Parenthetical Discovery"
+  },
+  "mdb": {
+    "acronym": "MDB",
+    "full_name": "Master Data Bus",
+    "canonical_skill_name": "Master Data Bus",
+    "domain": "Software Engineering & IT",
+    "sub_category": "Frontend Development",
+    "skill_type": "Hard Skill",
+    "source": "Empirical Parenthetical Discovery"
+  },
+  "gcc": {
+    "acronym": "GCC",
+    "full_name": "Compliance & Legal Processes",
+    "canonical_skill_name": "Compliance & Legal Processes",
+    "domain": "Marketing & Sales",
+    "sub_category": "B2B Sales & Business Development",
+    "skill_type": "Hard Skill",
+    "source": "Empirical Parenthetical Discovery"
+  },
+  "bcp": {
+    "acronym": "BCP",
+    "full_name": "Business Continuity Planning",
+    "canonical_skill_name": "Business Continuity Planning",
+    "domain": "Software Engineering & IT",
+    "sub_category": "Frontend Development",
+    "skill_type": "Hard Skill",
+    "source": "Empirical Parenthetical Discovery"
+  },
+  "snow": {
+    "acronym": "SNOW",
+    "full_name": "Service Incident Troubleshooting",
+    "canonical_skill_name": "Service Incident Troubleshooting",
+    "domain": "Software Engineering & IT",
+    "sub_category": "Frontend Development",
+    "skill_type": "Hard Skill",
+    "source": "Empirical Parenthetical Discovery"
+  },
+  "s2d": {
+    "acronym": "S2D",
+    "full_name": "Storage Spaces Direct",
+    "canonical_skill_name": "Storage Spaces Direct",
+    "domain": "Software Engineering & IT",
+    "sub_category": "Frontend Development",
+    "skill_type": "Hard Skill",
+    "source": "Empirical Parenthetical Discovery"
+  },
+  "ojt": {
+    "acronym": "OJT",
+    "full_name": "On-the-Job Training",
+    "canonical_skill_name": "On-the-Job Training",
+    "domain": "Human Resources",
+    "sub_category": "Learning & Development (L&D)",
+    "skill_type": "Hard Skill",
+    "source": "Empirical Parenthetical Discovery"
+  },
+  "cv": {
+    "acronym": "CV",
+    "full_name": "Curriculum Vitae",
+    "canonical_skill_name": "Curriculum Vitae",
+    "domain": "Human Resources",
+    "sub_category": "Talent Acquisition & Recruitment",
+    "skill_type": "Hard Skill",
+    "source": "Empirical Parenthetical Discovery"
+  },
+  "ghs": {
+    "acronym": "GHS",
+    "full_name": "Global Harmonised System",
+    "canonical_skill_name": "Global Harmonised System",
+    "domain": "Operations & Project Management",
+    "sub_category": "Project & Agile Management (PMP, Agile, Scrum)",
+    "skill_type": "Hard Skill",
+    "source": "Empirical Parenthetical Discovery"
+  },
+  "ohs": {
+    "acronym": "OHS",
+    "full_name": "Occupational Health and Safety",
+    "canonical_skill_name": "Occupational Health and Safety",
+    "domain": "Manufacturing & Industrial Production",
+    "sub_category": "Industrial Health, Safety & Environment (HSE)",
+    "skill_type": "Hard Skill",
+    "source": "Empirical Parenthetical Discovery"
+  },
+  "mfs": {
+    "acronym": "MFS",
+    "full_name": "Mobile Financial Services",
+    "canonical_skill_name": "Mobile Financial Services",
+    "domain": "Business & Finance",
+    "sub_category": "Accounting & Financial Reporting",
+    "skill_type": "Hard Skill",
+    "source": "Empirical Parenthetical Discovery"
+  },
+  "npv": {
+    "acronym": "NPV",
+    "full_name": "Net Present Value",
+    "canonical_skill_name": "Net Present Value",
+    "domain": "Business & Finance",
+    "sub_category": "Accounting & Financial Reporting",
+    "skill_type": "Hard Skill",
+    "source": "Empirical Parenthetical Discovery"
+  },
+  "dv360": {
+    "acronym": "DV360",
+    "full_name": "DoubleClick Digital",
+    "canonical_skill_name": "DoubleClick Digital",
+    "domain": "Marketing & Sales",
+    "sub_category": "B2B Sales & Business Development",
+    "skill_type": "Hard Skill",
+    "source": "Empirical Parenthetical Discovery"
+  },
+  "oke": {
+    "acronym": "OKE",
+    "full_name": "OCI Container Engine for Kubernetes",
+    "canonical_skill_name": "OCI Container Engine for Kubernetes",
+    "domain": "Software Engineering & IT",
+    "sub_category": "DevOps & Cloud Infrastructure",
+    "skill_type": "Tool / Software",
+    "source": "Empirical Parenthetical Discovery"
+  },
+  "pmo": {
+    "acronym": "PMO",
+    "full_name": "Project Management Office",
+    "canonical_skill_name": "Project Management Office",
+    "domain": "Operations & Project Management",
+    "sub_category": "Project & Agile Management (PMP, Agile, Scrum)",
+    "skill_type": "Hard Skill",
+    "source": "Empirical Parenthetical Discovery"
+  },
+  "gmp/iso": {
+    "acronym": "GMP/ISO",
+    "full_name": "Quality Control",
+    "canonical_skill_name": "Quality Control",
+    "domain": "Manufacturing & Industrial Production",
+    "sub_category": "Production Line & Assembly Operations",
+    "skill_type": "Hard Skill",
+    "source": "Empirical Parenthetical Discovery"
+  },
+  "mdm": {
+    "acronym": "MDM",
+    "full_name": "MobileIron",
+    "canonical_skill_name": "MobileIron",
+    "domain": "Software Engineering & IT",
+    "sub_category": "Mobile Development",
+    "skill_type": "Hard Skill",
+    "source": "Empirical Parenthetical Discovery"
+  },
+  "his": {
+    "acronym": "HIS",
+    "full_name": "Healthcare Information Systems",
+    "canonical_skill_name": "Healthcare Information Systems",
+    "domain": "Operations & Project Management",
+    "sub_category": "Project & Agile Management (PMP, Agile, Scrum)",
+    "skill_type": "Hard Skill",
+    "source": "Empirical Parenthetical Discovery"
+  },
+  "ssis": {
+    "acronym": "SSIS",
+    "full_name": "SQL Server Integration Services",
+    "canonical_skill_name": "SQL Server Integration Services",
+    "domain": "Software Engineering & IT",
+    "sub_category": "Frontend Development",
+    "skill_type": "Tool / Software",
+    "source": "Empirical Parenthetical Discovery"
+  },
+  "gc-fid": {
+    "acronym": "GC-FID",
+    "full_name": "Gas Chromatography-Flame Ionization Detection",
+    "canonical_skill_name": "Gas Chromatography-Flame Ionization Detection",
+    "domain": "Data Science & Analytics",
+    "sub_category": "Artificial Intelligence & Deep Learning",
+    "skill_type": "Hard Skill",
+    "source": "Empirical Parenthetical Discovery"
+  },
+  "sprint": {
+    "acronym": "SPRINT",
+    "full_name": "RFX Creation",
+    "canonical_skill_name": "RFX Creation",
+    "domain": "Business & Finance",
+    "sub_category": "Accounting & Financial Reporting",
+    "skill_type": "Hard Skill",
+    "source": "Empirical Parenthetical Discovery"
+  },
+  "rtos": {
+    "acronym": "RTOS",
+    "full_name": "Real-Time Operating System",
+    "canonical_skill_name": "Real-Time Operating System",
+    "domain": "Software Engineering & IT",
+    "sub_category": "Frontend Development",
+    "skill_type": "Hard Skill",
+    "source": "Empirical Parenthetical Discovery"
+  },
+  "adls": {
+    "acronym": "ADLS",
+    "full_name": "Azure Data Lake Storage",
+    "canonical_skill_name": "Azure Data Lake Storage",
+    "domain": "Software Engineering & IT",
+    "sub_category": "DevOps & Cloud Infrastructure",
+    "skill_type": "Tool / Software",
+    "source": "Empirical Parenthetical Discovery"
+  },
+  "elv": {
+    "acronym": "ELV",
+    "full_name": "Battery Management Systems (BMS) & Electrical Low Voltage",
+    "canonical_skill_name": "Battery Management Systems (BMS) & Electrical Low Voltage",
+    "domain": "Engineering & Construction",
+    "sub_category": "Electrical & Power Engineering",
+    "skill_type": "Hard Skill",
+    "source": "Empirical Parenthetical Discovery"
+  },
+  "cpl": {
+    "acronym": "CPL",
+    "full_name": "Certified Professional in Logistics",
+    "canonical_skill_name": "Certified Professional in Logistics",
+    "domain": "Supply Chain & Logistics",
+    "sub_category": "Logistics, Freight & Fleet Operations",
+    "skill_type": "Certification",
+    "source": "Empirical Parenthetical Discovery"
+  },
+  "cbt": {
+    "acronym": "CBT",
+    "full_name": "Certified Business Technologist",
+    "canonical_skill_name": "Certified Business Technologist",
+    "domain": "Operations & Project Management",
+    "sub_category": "Project & Agile Management (PMP, Agile, Scrum)",
+    "skill_type": "Certification",
+    "source": "Empirical Parenthetical Discovery"
+  },
+  "plg": {
+    "acronym": "PLG",
+    "full_name": "Product-Led Growth",
+    "canonical_skill_name": "Product-Led Growth",
+    "domain": "Marketing & Sales",
+    "sub_category": "B2B Sales & Business Development",
+    "skill_type": "Hard Skill",
+    "source": "Empirical Parenthetical Discovery"
+  },
+  "grms": {
+    "acronym": "GRMS",
+    "full_name": "Governance, Risk, and Management Systems",
+    "canonical_skill_name": "Governance, Risk, and Management Systems",
+    "domain": "Data Science & Analytics",
+    "sub_category": "Data Governance, Quality & Architecture",
+    "skill_type": "Hard Skill",
+    "source": "Empirical Parenthetical Discovery"
+  },
+  "az-104": {
+    "acronym": "AZ-104",
+    "full_name": "Azure Administrator Associate",
+    "canonical_skill_name": "Azure Administrator Associate",
+    "domain": "Software Engineering & IT",
+    "sub_category": "DevOps & Cloud Infrastructure",
+    "skill_type": "Tool / Software",
+    "source": "Empirical Parenthetical Discovery"
+  },
+  "mer": {
+    "acronym": "MER",
+    "full_name": "Margin Efficiency Ratio",
+    "canonical_skill_name": "Margin Efficiency Ratio",
+    "domain": "Marketing & Sales",
+    "sub_category": "B2B Sales & Business Development",
+    "skill_type": "Hard Skill",
+    "source": "Empirical Parenthetical Discovery"
+  },
+  "ftq": {
+    "acronym": "FTQ",
+    "full_name": "First Time Quality",
+    "canonical_skill_name": "First Time Quality",
+    "domain": "Operations & Project Management",
+    "sub_category": "Project & Agile Management (PMP, Agile, Scrum)",
+    "skill_type": "Hard Skill",
+    "source": "Empirical Parenthetical Discovery"
+  },
+  "sla": {
+    "acronym": "SLA",
+    "full_name": "Service Level Agreement",
+    "canonical_skill_name": "Service Level Agreement",
+    "domain": "Operations & Project Management",
+    "sub_category": "Project & Agile Management (PMP, Agile, Scrum)",
+    "skill_type": "Hard Skill",
+    "source": "Empirical Parenthetical Discovery"
+  },
+  "bcm": {
+    "acronym": "BCM",
+    "full_name": "Battery Control Modules",
+    "canonical_skill_name": "Battery Control Modules",
+    "domain": "Engineering & Construction",
+    "sub_category": "Civil & Structural Engineering",
+    "skill_type": "Hard Skill",
+    "source": "Empirical Parenthetical Discovery"
+  },
+  "ptsi": {
+    "acronym": "PTSI",
+    "full_name": "Power Integrity & Signal Integrity",
+    "canonical_skill_name": "Power Integrity & Signal Integrity",
+    "domain": "Engineering & Construction",
+    "sub_category": "Civil & Structural Engineering",
+    "skill_type": "Hard Skill",
+    "source": "Empirical Parenthetical Discovery"
+  },
+  "vlan": {
+    "acronym": "VLAN",
+    "full_name": "Virtual LAN",
+    "canonical_skill_name": "Virtual LAN",
+    "domain": "Software Engineering & IT",
+    "sub_category": "Frontend Development",
+    "skill_type": "Hard Skill",
+    "source": "Empirical Parenthetical Discovery"
+  },
+  "aci": {
+    "acronym": "ACI",
+    "full_name": "Advance Cargo Information",
+    "canonical_skill_name": "Advance Cargo Information",
+    "domain": "Supply Chain & Logistics",
+    "sub_category": "Procurement & Purchasing",
+    "skill_type": "Hard Skill",
+    "source": "Empirical Parenthetical Discovery"
+  },
+  "nasp": {
+    "acronym": "NASP",
+    "full_name": "Network-Attached Secure Protocol",
+    "canonical_skill_name": "Network-Attached Secure Protocol",
+    "domain": "Software Engineering & IT",
+    "sub_category": "DevOps & Cloud Infrastructure",
+    "skill_type": "Hard Skill",
+    "source": "Empirical Parenthetical Discovery"
+  },
+  "vbcs": {
+    "acronym": "VBCS",
+    "full_name": "Visual Builder Cloud Service",
+    "canonical_skill_name": "Visual Builder Cloud Service",
+    "domain": "Software Engineering & IT",
+    "sub_category": "DevOps & Cloud Infrastructure",
+    "skill_type": "Hard Skill",
+    "source": "Empirical Parenthetical Discovery"
+  },
+  "bpo": {
+    "acronym": "BPO",
+    "full_name": "Business Process Outsourcing",
+    "canonical_skill_name": "Business Process Outsourcing",
+    "domain": "Human Resources",
+    "sub_category": "Talent Acquisition & Recruitment",
+    "skill_type": "Hard Skill",
+    "source": "Empirical Parenthetical Discovery"
+  },
+  "en50126": {
+    "acronym": "EN50126",
+    "full_name": "Safety Assurance",
+    "canonical_skill_name": "Safety Assurance",
+    "domain": "Engineering & Construction",
+    "sub_category": "Civil & Structural Engineering",
+    "skill_type": "Hard Skill",
+    "source": "Empirical Parenthetical Discovery"
+  },
+  "rpa": {
+    "acronym": "RPA",
+    "full_name": "Robotic Process Automation",
+    "canonical_skill_name": "Robotic Process Automation",
+    "domain": "Software Engineering & IT",
+    "sub_category": "Frontend Development",
+    "skill_type": "Hard Skill",
+    "source": "Empirical Parenthetical Discovery"
+  },
+  "usa": {
+    "acronym": "USA",
+    "full_name": "Market Knowledge",
+    "canonical_skill_name": "Market Knowledge",
+    "domain": "Marketing & Sales",
+    "sub_category": "B2B Sales & Business Development",
+    "skill_type": "Hard Skill",
+    "source": "Empirical Parenthetical Discovery"
+  },
+  "mba": {
+    "acronym": "MBA",
+    "full_name": "Business Administration",
+    "canonical_skill_name": "Business Administration",
+    "domain": "Engineering & Construction",
+    "sub_category": "Civil & Structural Engineering",
+    "skill_type": "Hard Skill",
+    "source": "Empirical Parenthetical Discovery"
+  },
+  "cqa": {
+    "acronym": "CQA",
+    "full_name": "Certified Quality Auditor",
+    "canonical_skill_name": "Certified Quality Auditor",
+    "domain": "Business & Finance",
+    "sub_category": "Auditing, Tax & Compliance",
+    "skill_type": "Certification",
+    "source": "Empirical Parenthetical Discovery"
+  },
+  "npi": {
+    "acronym": "NPI",
+    "full_name": "New Product Introduction",
+    "canonical_skill_name": "New Product Introduction",
+    "domain": "Engineering & Construction",
+    "sub_category": "Mechanical & MEP Engineering",
+    "skill_type": "Hard Skill",
+    "source": "Empirical Parenthetical Discovery"
+  },
+  "gmp": {
+    "acronym": "GMP",
+    "full_name": "Good Manufacturing Practice",
+    "canonical_skill_name": "Good Manufacturing Practice",
+    "domain": "Manufacturing & Industrial Production",
+    "sub_category": "Production Line & Assembly Operations",
+    "skill_type": "Methodology",
+    "source": "Empirical Parenthetical Discovery"
+  },
+  "mcse": {
+    "acronym": "MCSE",
+    "full_name": "Microsoft Certified Solutions Expert",
+    "canonical_skill_name": "Microsoft Certified Solutions Expert",
+    "domain": "Software Engineering & IT",
+    "sub_category": "Frontend Development",
+    "skill_type": "Certification",
+    "source": "Empirical Parenthetical Discovery"
+  },
+  "rdc": {
+    "acronym": "RDC",
+    "full_name": "Redundancy Detection Check",
+    "canonical_skill_name": "Redundancy Detection Check",
+    "domain": "Engineering & Construction",
+    "sub_category": "Civil & Structural Engineering",
+    "skill_type": "Hard Skill",
+    "source": "Empirical Parenthetical Discovery"
+  },
+  "clac": {
+    "acronym": "CLAC",
+    "full_name": "Certified Learning and Competency",
+    "canonical_skill_name": "Certified Learning and Competency",
+    "domain": "Human Resources",
+    "sub_category": "Learning & Development (L&D)",
+    "skill_type": "Certification",
+    "source": "Empirical Parenthetical Discovery"
+  },
+  "vmi": {
+    "acronym": "VMI",
+    "full_name": "Virtual Machine Infrastructure",
+    "canonical_skill_name": "Virtual Machine Infrastructure",
+    "domain": "Software Engineering & IT",
+    "sub_category": "Frontend Development",
+    "skill_type": "Hard Skill",
+    "source": "Empirical Parenthetical Discovery"
+  },
+  "sendco": {
+    "acronym": "SENDCO",
+    "full_name": "Special Educational Needs Coordination",
+    "canonical_skill_name": "Special Educational Needs Coordination",
+    "domain": "Operations & Project Management",
+    "sub_category": "Office & Administrative Management",
+    "skill_type": "Hard Skill",
+    "source": "Empirical Parenthetical Discovery"
+  },
+  "zatca": {
+    "acronym": "ZATCA",
+    "full_name": "Zakat Tax Authority",
+    "canonical_skill_name": "Zakat Tax Authority",
+    "domain": "Business & Finance",
+    "sub_category": "Auditing, Tax & Compliance",
+    "skill_type": "Hard Skill",
+    "source": "Empirical Parenthetical Discovery"
+  },
+  "sap": {
+    "acronym": "SAP",
+    "full_name": "Accounting Software",
+    "canonical_skill_name": "Accounting Software",
+    "domain": "Business & Finance",
+    "sub_category": "Accounting & Financial Reporting",
+    "skill_type": "Tool / Software",
+    "source": "Empirical Parenthetical Discovery"
+  },
+  "geo": {
+    "acronym": "GEO",
+    "full_name": "Generative Engine Optimization",
+    "canonical_skill_name": "Generative Engine Optimization",
+    "domain": "Marketing & Sales",
+    "sub_category": "B2B Sales & Business Development",
+    "skill_type": "Hard Skill",
+    "source": "Empirical Parenthetical Discovery"
+  },
+  "cfd": {
+    "acronym": "CFD",
+    "full_name": "Computational Fluid Dynamics",
+    "canonical_skill_name": "Computational Fluid Dynamics",
+    "domain": "Engineering & Construction",
+    "sub_category": "Civil & Structural Engineering",
+    "skill_type": "Hard Skill",
+    "source": "Empirical Parenthetical Discovery"
+  },
+  "pdms": {
+    "acronym": "PDMS",
+    "full_name": "Product Data Management Systems",
+    "canonical_skill_name": "Product Data Management Systems",
+    "domain": "Engineering & Construction",
+    "sub_category": "Mechanical & MEP Engineering",
+    "skill_type": "Hard Skill",
+    "source": "Empirical Parenthetical Discovery"
+  },
+  "matlab": {
+    "acronym": "MATLAB",
+    "full_name": "Embedded Coder",
+    "canonical_skill_name": "Embedded Coder",
+    "domain": "Software Engineering & IT",
+    "sub_category": "Frontend Development",
+    "skill_type": "Tool / Software",
+    "source": "Empirical Parenthetical Discovery"
+  },
+  "ad": {
+    "acronym": "AD",
+    "full_name": "Azure Active Directory",
+    "canonical_skill_name": "Azure Active Directory",
+    "domain": "Software Engineering & IT",
+    "sub_category": "DevOps & Cloud Infrastructure",
+    "skill_type": "Tool / Software",
+    "source": "Empirical Parenthetical Discovery"
+  },
+  "mcsa": {
+    "acronym": "MCSA",
+    "full_name": "Microsoft Certified Solutions Associate",
+    "canonical_skill_name": "Microsoft Certified Solutions Associate",
+    "domain": "Software Engineering & IT",
+    "sub_category": "Cybersecurity & Information Security",
+    "skill_type": "Certification",
+    "source": "Empirical Parenthetical Discovery"
+  },
+  "isms": {
+    "acronym": "ISMS",
+    "full_name": "ISO 27000 Information Security Management Systems",
+    "canonical_skill_name": "ISO 27000 Information Security Management Systems",
+    "domain": "Software Engineering & IT",
+    "sub_category": "Cybersecurity & Information Security",
+    "skill_type": "Hard Skill",
+    "source": "Empirical Parenthetical Discovery"
+  },
+  "cio": {
+    "acronym": "CIO",
+    "full_name": "Chief Information Officer",
+    "canonical_skill_name": "Chief Information Officer",
+    "domain": "Operations & Project Management",
+    "sub_category": "Project & Agile Management (PMP, Agile, Scrum)",
+    "skill_type": "Hard Skill",
+    "source": "Empirical Parenthetical Discovery"
+  },
+  "mrp": {
+    "acronym": "MRP",
+    "full_name": "Material Requirements Planning",
+    "canonical_skill_name": "Material Requirements Planning",
+    "domain": "Supply Chain & Logistics",
+    "sub_category": "Supply Chain Planning & Demand Forecasting",
+    "skill_type": "Hard Skill",
+    "source": "Empirical Parenthetical Discovery"
+  },
+  "ltv": {
+    "acronym": "LTV",
+    "full_name": "Lifetime Value",
+    "canonical_skill_name": "Lifetime Value",
+    "domain": "Marketing & Sales",
+    "sub_category": "B2B Sales & Business Development",
+    "skill_type": "Hard Skill",
+    "source": "Empirical Parenthetical Discovery"
+  },
+  "ews": {
+    "acronym": "EWS",
+    "full_name": "Early Warning Signals",
+    "canonical_skill_name": "Early Warning Signals",
+    "domain": "Business & Finance",
+    "sub_category": "Accounting & Financial Reporting",
+    "skill_type": "Hard Skill",
+    "source": "Empirical Parenthetical Discovery"
+  },
+  "ghl": {
+    "acronym": "GHL",
+    "full_name": "Go High Level",
+    "canonical_skill_name": "Go High Level",
+    "domain": "Operations & Project Management",
+    "sub_category": "Project & Agile Management (PMP, Agile, Scrum)",
+    "skill_type": "Tool / Software",
+    "source": "Empirical Parenthetical Discovery"
+  },
+  "cft": {
+    "acronym": "CFT",
+    "full_name": "Anti-Money Laundering (AML) & Counter-Financing of Terrorism",
+    "canonical_skill_name": "Anti-Money Laundering (AML) & Counter-Financing of Terrorism",
+    "domain": "Business & Finance",
+    "sub_category": "Banking & Treasury Operations",
+    "skill_type": "Hard Skill",
+    "source": "Empirical Parenthetical Discovery"
+  },
+  "sdn": {
+    "acronym": "SDN",
+    "full_name": "Software-Defined Networking",
+    "canonical_skill_name": "Software-Defined Networking",
+    "domain": "Software Engineering & IT",
+    "sub_category": "DevOps & Cloud Infrastructure",
+    "skill_type": "Hard Skill",
+    "source": "Empirical Parenthetical Discovery"
+  },
+  "cpa": {
+    "acronym": "CPA",
+    "full_name": "Cost Per Acquisition",
+    "canonical_skill_name": "Cost Per Acquisition",
+    "domain": "Marketing & Sales",
+    "sub_category": "B2B Sales & Business Development",
+    "skill_type": "Hard Skill",
+    "source": "Empirical Parenthetical Discovery"
+  },
+  "kyc": {
+    "acronym": "KYC",
+    "full_name": "Know Your Customer",
+    "canonical_skill_name": "Know Your Customer",
+    "domain": "Business & Finance",
+    "sub_category": "Banking & Treasury Operations",
+    "skill_type": "Hard Skill",
+    "source": "Empirical Parenthetical Discovery"
+  },
+  "xdr": {
+    "acronym": "XDR",
+    "full_name": "Extended Detection and Response",
+    "canonical_skill_name": "Extended Detection and Response",
+    "domain": "Software Engineering & IT",
+    "sub_category": "Frontend Development",
+    "skill_type": "Hard Skill",
+    "source": "Empirical Parenthetical Discovery"
+  },
+  "cac": {
+    "acronym": "CAC",
+    "full_name": "Customer Acquisition Cost",
+    "canonical_skill_name": "Customer Acquisition Cost",
+    "domain": "Marketing & Sales",
+    "sub_category": "B2B Sales & Business Development",
+    "skill_type": "Hard Skill",
+    "source": "Empirical Parenthetical Discovery"
+  },
+  "cpa/cpc": {
+    "acronym": "CPA/CPC",
+    "full_name": "Cost Per Acquisition/Click",
+    "canonical_skill_name": "Cost Per Acquisition/Click",
+    "domain": "Marketing & Sales",
+    "sub_category": "B2B Sales & Business Development",
+    "skill_type": "Hard Skill",
+    "source": "Empirical Parenthetical Discovery"
+  },
+  "rto": {
+    "acronym": "RTO",
+    "full_name": "Recovery Time Objective",
+    "canonical_skill_name": "Recovery Time Objective",
+    "domain": "Data Science & Analytics",
+    "sub_category": "Artificial Intelligence & Deep Learning",
+    "skill_type": "Hard Skill",
+    "source": "Empirical Parenthetical Discovery"
+  },
+  "aml/cft": {
+    "acronym": "AML/CFT",
+    "full_name": "Regulatory Compliance",
+    "canonical_skill_name": "Regulatory Compliance",
+    "domain": "Business & Finance",
+    "sub_category": "Auditing, Tax & Compliance",
+    "skill_type": "Hard Skill",
+    "source": "Empirical Parenthetical Discovery"
+  },
+  "eks": {
+    "acronym": "EKS",
+    "full_name": "Amazon Elastic Kubernetes Service",
+    "canonical_skill_name": "Amazon Elastic Kubernetes Service",
+    "domain": "Software Engineering & IT",
+    "sub_category": "DevOps & Cloud Infrastructure",
+    "skill_type": "Tool / Software",
+    "source": "Empirical Parenthetical Discovery"
+  },
+  "iga": {
+    "acronym": "IGA",
+    "full_name": "Identity Governance and Administration",
+    "canonical_skill_name": "Identity Governance and Administration",
+    "domain": "Software Engineering & IT",
+    "sub_category": "Frontend Development",
+    "skill_type": "Hard Skill",
+    "source": "Empirical Parenthetical Discovery"
+  },
+  "gcp/aws": {
+    "acronym": "GCP/AWS",
+    "full_name": "Cloud Solutions",
+    "canonical_skill_name": "Cloud Solutions",
+    "domain": "Data Science & Analytics",
+    "sub_category": "Artificial Intelligence & Deep Learning",
+    "skill_type": "Tool / Software",
+    "source": "Empirical Parenthetical Discovery"
+  },
+  "rpo": {
+    "acronym": "RPO",
+    "full_name": "Recovery Point Objective",
+    "canonical_skill_name": "Recovery Point Objective",
+    "domain": "Data Science & Analytics",
+    "sub_category": "Artificial Intelligence & Deep Learning",
+    "skill_type": "Hard Skill",
+    "source": "Empirical Parenthetical Discovery"
+  },
+  "hdr": {
+    "acronym": "HDR",
+    "full_name": "Hadoop Data Recovery",
+    "canonical_skill_name": "Hadoop Data Recovery",
+    "domain": "Data Science & Analytics",
+    "sub_category": "Data Engineering",
+    "skill_type": "Tool / Software",
+    "source": "Empirical Parenthetical Discovery"
+  },
+  "dlp": {
+    "acronym": "DLP",
+    "full_name": "Data Loss Prevention",
+    "canonical_skill_name": "Data Loss Prevention",
+    "domain": "Data Science & Analytics",
+    "sub_category": "Artificial Intelligence & Deep Learning",
+    "skill_type": "Hard Skill",
+    "source": "Empirical Parenthetical Discovery"
+  },
+  "lopa": {
+    "acronym": "LOPA",
+    "full_name": "Layer of Protection Analysis",
+    "canonical_skill_name": "Layer of Protection Analysis",
+    "domain": "Engineering & Construction",
+    "sub_category": "Civil & Structural Engineering",
+    "skill_type": "Hard Skill",
+    "source": "Empirical Parenthetical Discovery"
+  },
+  "ctf": {
+    "acronym": "CTF",
+    "full_name": "Capture The Flag",
+    "canonical_skill_name": "Capture The Flag",
+    "domain": "Software Engineering & IT",
+    "sub_category": "Frontend Development",
+    "skill_type": "Hard Skill",
+    "source": "Empirical Parenthetical Discovery"
+  },
+  "dtp": {
+    "acronym": "DTP",
+    "full_name": "Desktop Publishing",
+    "canonical_skill_name": "Desktop Publishing",
+    "domain": "Operations & Project Management",
+    "sub_category": "Project & Agile Management (PMP, Agile, Scrum)",
+    "skill_type": "Hard Skill",
+    "source": "Empirical Parenthetical Discovery"
+  },
+  "fi/co": {
+    "acronym": "FI/CO",
+    "full_name": "Financial Accounting & Controlling",
+    "canonical_skill_name": "Financial Accounting & Controlling",
+    "domain": "Business & Finance",
+    "sub_category": "Accounting & Financial Reporting",
+    "skill_type": "Hard Skill",
+    "source": "Empirical Parenthetical Discovery"
+  },
+  "cissp": {
+    "acronym": "CISSP",
+    "full_name": "Certified Information Systems Security Professional",
+    "canonical_skill_name": "Certified Information Systems Security Professional",
+    "domain": "Software Engineering & IT",
+    "sub_category": "Cybersecurity & Information Security",
+    "skill_type": "Certification",
+    "source": "Empirical Parenthetical Discovery"
+  },
+  "caf": {
+    "acronym": "CAF",
+    "full_name": "Microsoft Cloud Adoption Framework",
+    "canonical_skill_name": "Microsoft Cloud Adoption Framework",
+    "domain": "Software Engineering & IT",
+    "sub_category": "DevOps & Cloud Infrastructure",
+    "skill_type": "Tool / Software",
+    "source": "Empirical Parenthetical Discovery"
+  },
+  "ga4": {
+    "acronym": "GA4",
+    "full_name": "Google Analytics 4",
+    "canonical_skill_name": "Google Analytics 4",
+    "domain": "Marketing & Sales",
+    "sub_category": "B2B Sales & Business Development",
+    "skill_type": "Tool / Software",
+    "source": "Empirical Parenthetical Discovery"
+  },
+  "eqa": {
+    "acronym": "EQA",
+    "full_name": "External Quality Assessment",
+    "canonical_skill_name": "External Quality Assessment",
+    "domain": "Operations & Project Management",
+    "sub_category": "Project & Agile Management (PMP, Agile, Scrum)",
+    "skill_type": "Hard Skill",
+    "source": "Empirical Parenthetical Discovery"
+  },
+  "ran": {
+    "acronym": "RAN",
+    "full_name": "Ericsson Radio Access Network",
+    "canonical_skill_name": "Ericsson Radio Access Network",
+    "domain": "Software Engineering & IT",
+    "sub_category": "Frontend Development",
+    "skill_type": "Hard Skill",
+    "source": "Empirical Parenthetical Discovery"
+  },
+  "vcdx": {
+    "acronym": "VCDX",
+    "full_name": "VMware Certified Design Expert",
+    "canonical_skill_name": "VMware Certified Design Expert",
+    "domain": "Software Engineering & IT",
+    "sub_category": "Frontend Development",
+    "skill_type": "Certification",
+    "source": "Empirical Parenthetical Discovery"
+  },
+  "rls": {
+    "acronym": "RLS",
+    "full_name": "Row-Level Security",
+    "canonical_skill_name": "Row-Level Security",
+    "domain": "Software Engineering & IT",
+    "sub_category": "Cybersecurity & Information Security",
+    "skill_type": "Hard Skill",
+    "source": "Empirical Parenthetical Discovery"
+  },
+  "edr": {
+    "acronym": "EDR",
+    "full_name": "Endpoint Detection and Response",
+    "canonical_skill_name": "Endpoint Detection and Response",
+    "domain": "Software Engineering & IT",
+    "sub_category": "Frontend Development",
+    "skill_type": "Hard Skill",
+    "source": "Empirical Parenthetical Discovery"
+  },
+  "pki": {
+    "acronym": "PKI",
+    "full_name": "Public Key Infrastructure",
+    "canonical_skill_name": "Public Key Infrastructure",
+    "domain": "Software Engineering & IT",
+    "sub_category": "Frontend Development",
+    "skill_type": "Hard Skill",
+    "source": "Empirical Parenthetical Discovery"
+  },
+  "vlookup": {
+    "acronym": "VLOOKUP",
+    "full_name": "Microsoft Excel",
+    "canonical_skill_name": "Microsoft Excel",
+    "domain": "Supply Chain & Logistics",
+    "sub_category": "Procurement & Purchasing",
+    "skill_type": "Tool / Software",
+    "source": "Empirical Parenthetical Discovery"
+  },
+  "ntp": {
+    "acronym": "NTP",
+    "full_name": "Network Time Protocol",
+    "canonical_skill_name": "Network Time Protocol",
+    "domain": "Software Engineering & IT",
+    "sub_category": "DevOps & Cloud Infrastructure",
+    "skill_type": "Hard Skill",
+    "source": "Empirical Parenthetical Discovery"
+  },
+  "ckad/cka": {
+    "acronym": "CKAD/CKA",
+    "full_name": "Cloud Engineer",
+    "canonical_skill_name": "Cloud Engineer",
+    "domain": "Software Engineering & IT",
+    "sub_category": "DevOps & Cloud Infrastructure",
+    "skill_type": "Hard Skill",
+    "source": "Empirical Parenthetical Discovery"
+  },
+  "soa": {
+    "acronym": "SOA",
+    "full_name": "Service-Oriented Architecture",
+    "canonical_skill_name": "Service-Oriented Architecture",
+    "domain": "Software Engineering & IT",
+    "sub_category": "Frontend Development",
+    "skill_type": "Hard Skill",
+    "source": "Empirical Parenthetical Discovery"
+  },
+  "bms": {
+    "acronym": "BMS",
+    "full_name": "Battery Management Systems",
+    "canonical_skill_name": "Battery Management Systems",
+    "domain": "Engineering & Construction",
+    "sub_category": "Civil & Structural Engineering",
+    "skill_type": "Hard Skill",
+    "source": "Empirical Parenthetical Discovery"
+  },
+  "capi": {
+    "acronym": "CAPI",
+    "full_name": "Meta Pixel & Conversions API",
+    "canonical_skill_name": "Meta Pixel & Conversions API",
+    "domain": "Marketing & Sales",
+    "sub_category": "Digital Marketing & Paid Ads (Performance Media)",
+    "skill_type": "Hard Skill",
+    "source": "Empirical Parenthetical Discovery"
+  },
+  "brd": {
+    "acronym": "BRD",
+    "full_name": "Business Requirements Document",
+    "canonical_skill_name": "Business Requirements Document",
+    "domain": "Business & Finance",
+    "sub_category": "Accounting & Financial Reporting",
+    "skill_type": "Hard Skill",
+    "source": "Empirical Parenthetical Discovery"
+  },
+  "hsm": {
+    "acronym": "HSM",
+    "full_name": "Cybersecurity & Hardware Security Modules",
+    "canonical_skill_name": "Cybersecurity & Hardware Security Modules",
+    "domain": "Software Engineering & IT",
+    "sub_category": "Cybersecurity & Information Security",
+    "skill_type": "Hard Skill",
+    "source": "Empirical Parenthetical Discovery"
+  },
+  "ragas": {
+    "acronym": "RAGAS",
+    "full_name": "RAG Evaluation Framework",
+    "canonical_skill_name": "RAG Evaluation Framework",
+    "domain": "Data Science & Analytics",
+    "sub_category": "Artificial Intelligence & Deep Learning",
+    "skill_type": "Hard Skill",
+    "source": "Empirical Parenthetical Discovery"
+  },
+  "cma": {
+    "acronym": "CMA",
+    "full_name": "Certified Management Accountant",
+    "canonical_skill_name": "Certified Management Accountant",
+    "domain": "Business & Finance",
+    "sub_category": "Accounting & Financial Reporting",
+    "skill_type": "Certification",
+    "source": "Empirical Parenthetical Discovery"
+  },
+  "cscp": {
+    "acronym": "CSCP",
+    "full_name": "Certified Supply Chain Professional",
+    "canonical_skill_name": "Certified Supply Chain Professional",
+    "domain": "Supply Chain & Logistics",
+    "sub_category": "Supply Chain Planning & Demand Forecasting",
+    "skill_type": "Certification",
+    "source": "Empirical Parenthetical Discovery"
+  },
+  "idq": {
+    "acronym": "IDQ",
+    "full_name": "Informatica Information Director",
+    "canonical_skill_name": "Informatica Information Director",
+    "domain": "Data Science & Analytics",
+    "sub_category": "Artificial Intelligence & Deep Learning",
+    "skill_type": "Hard Skill",
+    "source": "Empirical Parenthetical Discovery"
+  },
+  "sas": {
+    "acronym": "SAS",
+    "full_name": "Substation Automation Systems",
+    "canonical_skill_name": "Substation Automation Systems",
+    "domain": "Engineering & Construction",
+    "sub_category": "Electrical & Power Engineering",
+    "skill_type": "Hard Skill",
+    "source": "Empirical Parenthetical Discovery"
+  },
+  "cpsm": {
+    "acronym": "CPSM",
+    "full_name": "Certified Professional in Supply Management",
+    "canonical_skill_name": "Certified Professional in Supply Management",
+    "domain": "Supply Chain & Logistics",
+    "sub_category": "Procurement & Purchasing",
+    "skill_type": "Certification",
+    "source": "Empirical Parenthetical Discovery"
+  },
+  "vrrp": {
+    "acronym": "VRRP",
+    "full_name": "Virtual Router Redundancy Protocol",
+    "canonical_skill_name": "Virtual Router Redundancy Protocol",
+    "domain": "Software Engineering & IT",
+    "sub_category": "Frontend Development",
+    "skill_type": "Hard Skill",
+    "source": "Empirical Parenthetical Discovery"
+  },
+  "ssrs": {
+    "acronym": "SSRS",
+    "full_name": "SQL Server Reporting Services",
+    "canonical_skill_name": "SQL Server Reporting Services",
+    "domain": "Data Science & Analytics",
+    "sub_category": "Data Engineering",
+    "skill_type": "Tool / Software",
+    "source": "Empirical Parenthetical Discovery"
+  },
+  "tsc": {
+    "acronym": "TSC",
+    "full_name": "Technical Safety Concept",
+    "canonical_skill_name": "Technical Safety Concept",
+    "domain": "Engineering & Construction",
+    "sub_category": "Civil & Structural Engineering",
+    "skill_type": "Hard Skill",
+    "source": "Empirical Parenthetical Discovery"
+  },
+  "p2p": {
+    "acronym": "P2P",
+    "full_name": "Procure-to-Pay",
+    "canonical_skill_name": "Procure-to-Pay",
+    "domain": "Supply Chain & Logistics",
+    "sub_category": "Procurement & Purchasing",
+    "skill_type": "Hard Skill",
+    "source": "Empirical Parenthetical Discovery"
+  },
+  "lims": {
+    "acronym": "LIMS",
+    "full_name": "Laboratory Information Management Systems",
+    "canonical_skill_name": "Laboratory Information Management Systems",
+    "domain": "Healthcare & Medical Sciences",
+    "sub_category": "Medical Laboratory & Diagnostic Imaging",
+    "skill_type": "Hard Skill",
+    "source": "Empirical Parenthetical Discovery"
+  },
+  "1g": {
+    "acronym": "1G",
+    "full_name": "Semi-Automatic Welding",
+    "canonical_skill_name": "Semi-Automatic Welding",
+    "domain": "Manufacturing & Industrial Production",
+    "sub_category": "CNC, Machining & Metal Fabrication",
+    "skill_type": "Hard Skill",
+    "source": "Empirical Parenthetical Discovery"
+  },
+  "fob": {
+    "acronym": "FOB",
+    "full_name": "Free On Board",
+    "canonical_skill_name": "Free On Board",
+    "domain": "Supply Chain & Logistics",
+    "sub_category": "Procurement & Purchasing",
+    "skill_type": "Hard Skill",
+    "source": "Empirical Parenthetical Discovery"
+  },
+  "eda": {
+    "acronym": "EDA",
+    "full_name": "Electronic Design Automation",
+    "canonical_skill_name": "Electronic Design Automation",
+    "domain": "Software Engineering & IT",
+    "sub_category": "Frontend Development",
+    "skill_type": "Hard Skill",
+    "source": "Empirical Parenthetical Discovery"
+  },
+  "ssr": {
+    "acronym": "SSR",
+    "full_name": "Server-Side Rendering",
+    "canonical_skill_name": "Server-Side Rendering",
+    "domain": "Software Engineering & IT",
+    "sub_category": "Frontend Development",
+    "skill_type": "Hard Skill",
+    "source": "Empirical Parenthetical Discovery"
+  },
+  "cafm": {
+    "acronym": "CAFM",
+    "full_name": "Computer-Aided Facility Management",
+    "canonical_skill_name": "Computer-Aided Facility Management",
+    "domain": "Operations & Project Management",
+    "sub_category": "Project & Agile Management (PMP, Agile, Scrum)",
+    "skill_type": "Hard Skill",
+    "source": "Empirical Parenthetical Discovery"
+  },
+  "az-400": {
+    "acronym": "AZ-400",
+    "full_name": "Azure DevOps Engineer Expert",
+    "canonical_skill_name": "Azure DevOps Engineer Expert",
+    "domain": "Software Engineering & IT",
+    "sub_category": "DevOps & Cloud Infrastructure",
+    "skill_type": "Tool / Software",
+    "source": "Empirical Parenthetical Discovery"
+  },
+  "wan": {
+    "acronym": "WAN",
+    "full_name": "Wide Area Network",
+    "canonical_skill_name": "Wide Area Network",
+    "domain": "Software Engineering & IT",
+    "sub_category": "DevOps & Cloud Infrastructure",
+    "skill_type": "Hard Skill",
+    "source": "Empirical Parenthetical Discovery"
+  },
+  "hsms": {
+    "acronym": "HSMS",
+    "full_name": "Health & Safety Management Systems",
+    "canonical_skill_name": "Health & Safety Management Systems",
+    "domain": "Manufacturing & Industrial Production",
+    "sub_category": "Industrial Health, Safety & Environment (HSE)",
+    "skill_type": "Hard Skill",
+    "source": "Empirical Parenthetical Discovery"
+  },
+  "cism": {
+    "acronym": "CISM",
+    "full_name": "Certified Information Security Manager",
+    "canonical_skill_name": "Certified Information Security Manager",
+    "domain": "Software Engineering & IT",
+    "sub_category": "Cybersecurity & Information Security",
+    "skill_type": "Certification",
+    "source": "Empirical Parenthetical Discovery"
+  },
+  "hdfs": {
+    "acronym": "HDFS",
+    "full_name": "Hadoop Distributed File System",
+    "canonical_skill_name": "Hadoop Distributed File System",
+    "domain": "Data Science & Analytics",
+    "sub_category": "Data Engineering",
+    "skill_type": "Tool / Software",
+    "source": "Empirical Parenthetical Discovery"
+  },
+  "lis": {
+    "acronym": "LIS",
+    "full_name": "Laboratory Information Systems",
+    "canonical_skill_name": "Laboratory Information Systems",
+    "domain": "Healthcare & Medical Sciences",
+    "sub_category": "Medical Laboratory & Diagnostic Imaging",
+    "skill_type": "Hard Skill",
+    "source": "Empirical Parenthetical Discovery"
+  },
+  "uat": {
+    "acronym": "UAT",
+    "full_name": "User Acceptance Testing",
+    "canonical_skill_name": "User Acceptance Testing",
+    "domain": "Software Engineering & IT",
+    "sub_category": "Quality Assurance & Testing",
+    "skill_type": "Hard Skill",
+    "source": "Empirical Parenthetical Discovery"
+  },
+  "ecr": {
+    "acronym": "ECR",
+    "full_name": "AWS Elastic Container Registry",
+    "canonical_skill_name": "AWS Elastic Container Registry",
+    "domain": "Software Engineering & IT",
+    "sub_category": "DevOps & Cloud Infrastructure",
+    "skill_type": "Tool / Software",
+    "source": "Empirical Parenthetical Discovery"
+  },
+  "aeo": {
+    "acronym": "AEO",
+    "full_name": "Answer Engine Optimization",
+    "canonical_skill_name": "Answer Engine Optimization",
+    "domain": "Marketing & Sales",
+    "sub_category": "B2B Sales & Business Development",
+    "skill_type": "Hard Skill",
+    "source": "Empirical Parenthetical Discovery"
+  },
+  "ffi": {
+    "acronym": "FFI",
+    "full_name": "FF&E Implementation",
+    "canonical_skill_name": "FF&E Implementation",
+    "domain": "Engineering & Construction",
+    "sub_category": "Civil & Structural Engineering",
+    "skill_type": "Hard Skill",
+    "source": "Empirical Parenthetical Discovery"
+  },
+  "pms": {
+    "acronym": "PMS",
+    "full_name": "Opera Cloud",
+    "canonical_skill_name": "Opera Cloud",
+    "domain": "Software Engineering & IT",
+    "sub_category": "DevOps & Cloud Infrastructure",
+    "skill_type": "Hard Skill",
+    "source": "Empirical Parenthetical Discovery"
+  },
+  "ks3": {
+    "acronym": "KS3",
+    "full_name": "Secondary School Teaching",
+    "canonical_skill_name": "Secondary School Teaching",
+    "domain": "Education, Teaching & Training",
+    "sub_category": "K-12 School Teaching & Pedagogy",
+    "skill_type": "Hard Skill",
+    "source": "Empirical Parenthetical Discovery"
+  },
+  "bpmn/uml": {
+    "acronym": "BPMN/UML",
+    "full_name": "Process modeling",
+    "canonical_skill_name": "Process modeling",
+    "domain": "Business & Finance",
+    "sub_category": "Accounting & Financial Reporting",
+    "skill_type": "Hard Skill",
+    "source": "Empirical Parenthetical Discovery"
+  },
+  "cipp/m": {
+    "acronym": "CIPP/M",
+    "full_name": "Certified Information Privacy Professional",
+    "canonical_skill_name": "Certified Information Privacy Professional",
+    "domain": "Operations & Project Management",
+    "sub_category": "Project & Agile Management (PMP, Agile, Scrum)",
+    "skill_type": "Certification",
+    "source": "Empirical Parenthetical Discovery"
+  },
+  "cms": {
+    "acronym": "CMS",
+    "full_name": "Computerized Maintenance Systems",
+    "canonical_skill_name": "Computerized Maintenance Systems",
+    "domain": "Engineering & Construction",
+    "sub_category": "Civil & Structural Engineering",
+    "skill_type": "Hard Skill",
+    "source": "Empirical Parenthetical Discovery"
+  },
+  "od": {
+    "acronym": "OD",
+    "full_name": "Organizational Development",
+    "canonical_skill_name": "Organizational Development",
+    "domain": "Human Resources",
+    "sub_category": "Learning & Development (L&D)",
+    "skill_type": "Hard Skill",
+    "source": "Empirical Parenthetical Discovery"
+  },
+  "atpg": {
+    "acronym": "ATPG",
+    "full_name": "Automatic Test Pattern Generation",
+    "canonical_skill_name": "Automatic Test Pattern Generation",
+    "domain": "Engineering & Construction",
+    "sub_category": "Civil & Structural Engineering",
+    "skill_type": "Hard Skill",
+    "source": "Empirical Parenthetical Discovery"
+  },
+  "aop": {
+    "acronym": "AOP",
+    "full_name": "Spring Aspect-Oriented Programming",
+    "canonical_skill_name": "Spring Aspect-Oriented Programming",
+    "domain": "Software Engineering & IT",
+    "sub_category": "Backend Development",
+    "skill_type": "Hard Skill",
+    "source": "Empirical Parenthetical Discovery"
+  },
+  "capa": {
+    "acronym": "CAPA",
+    "full_name": "Corrective & Preventive Actions",
+    "canonical_skill_name": "Corrective & Preventive Actions",
+    "domain": "Operations & Project Management",
+    "sub_category": "Project & Agile Management (PMP, Agile, Scrum)",
+    "skill_type": "Hard Skill",
+    "source": "Empirical Parenthetical Discovery"
+  },
+  "umdf": {
+    "acronym": "UMDF",
+    "full_name": "Windows Driver Frameworks",
+    "canonical_skill_name": "Windows Driver Frameworks",
+    "domain": "Vocational Trades, Driving & Field Services",
+    "sub_category": "Professional Driving & Fleet Delivery",
+    "skill_type": "Hard Skill",
+    "source": "Empirical Parenthetical Discovery"
+  },
+  "vcp-vcf": {
+    "acronym": "VCP-VCF",
+    "full_name": "VMware Certified Professional – VMware Cloud Foundation",
+    "canonical_skill_name": "VMware Certified Professional – VMware Cloud Foundation",
+    "domain": "Software Engineering & IT",
+    "sub_category": "DevOps & Cloud Infrastructure",
+    "skill_type": "Certification",
+    "source": "Empirical Parenthetical Discovery"
+  },
+  "cpb": {
+    "acronym": "CPB",
+    "full_name": "Certified Professional in Business",
+    "canonical_skill_name": "Certified Professional in Business",
+    "domain": "Business & Finance",
+    "sub_category": "Accounting & Financial Reporting",
+    "skill_type": "Certification",
+    "source": "Empirical Parenthetical Discovery"
+  },
+  "aov": {
+    "acronym": "AOV",
+    "full_name": "Average Order Value",
+    "canonical_skill_name": "Average Order Value",
+    "domain": "Marketing & Sales",
+    "sub_category": "B2B Sales & Business Development",
+    "skill_type": "Hard Skill",
+    "source": "Empirical Parenthetical Discovery"
+  },
+  "gtw": {
+    "acronym": "GTW",
+    "full_name": "Go-to-Work",
+    "canonical_skill_name": "Go-to-Work",
+    "domain": "Business & Finance",
+    "sub_category": "Accounting & Financial Reporting",
+    "skill_type": "Tool / Software",
+    "source": "Empirical Parenthetical Discovery"
+  },
+  "sld": {
+    "acronym": "SLD",
+    "full_name": "Single Line Diagram",
+    "canonical_skill_name": "Single Line Diagram",
+    "domain": "Engineering & Construction",
+    "sub_category": "Electrical & Power Engineering",
+    "skill_type": "Hard Skill",
+    "source": "Empirical Parenthetical Discovery"
+  },
+  "clv": {
+    "acronym": "CLV",
+    "full_name": "Customer Lifetime Value",
+    "canonical_skill_name": "Customer Lifetime Value",
+    "domain": "Business & Finance",
+    "sub_category": "Accounting & Financial Reporting",
+    "skill_type": "Hard Skill",
+    "source": "Empirical Parenthetical Discovery"
+  },
+  "isv": {
+    "acronym": "ISV",
+    "full_name": "Independent Software Vendor",
+    "canonical_skill_name": "Independent Software Vendor",
+    "domain": "Software Engineering & IT",
+    "sub_category": "Frontend Development",
+    "skill_type": "Hard Skill",
+    "source": "Empirical Parenthetical Discovery"
+  },
+  "rbac": {
+    "acronym": "RBAC",
+    "full_name": "Role-Based Access Control",
+    "canonical_skill_name": "Role-Based Access Control",
+    "domain": "Software Engineering & IT",
+    "sub_category": "Frontend Development",
+    "skill_type": "Hard Skill",
+    "source": "Empirical Parenthetical Discovery"
+  },
+  "ics": {
+    "acronym": "ICS",
+    "full_name": "Threat Modeling & Risk Analysis",
+    "canonical_skill_name": "Threat Modeling & Risk Analysis",
+    "domain": "Software Engineering & IT",
+    "sub_category": "Frontend Development",
+    "skill_type": "Hard Skill",
+    "source": "Empirical Parenthetical Discovery"
+  },
+  "apex": {
+    "acronym": "APEX",
+    "full_name": "Oracle Application Express",
+    "canonical_skill_name": "Oracle Application Express",
+    "domain": "Software Engineering & IT",
+    "sub_category": "Backend Development",
+    "skill_type": "Tool / Software",
+    "source": "Empirical Parenthetical Discovery"
+  },
+  "rag": {
+    "acronym": "RAG",
+    "full_name": "Retrieval-Augmented Generation",
+    "canonical_skill_name": "Retrieval-Augmented Generation",
+    "domain": "Software Engineering & IT",
+    "sub_category": "Frontend Development",
+    "skill_type": "Hard Skill",
+    "source": "Empirical Parenthetical Discovery"
+  },
+  "poa&m": {
+    "acronym": "POA&M",
+    "full_name": "Plan of Action and Milestones",
+    "canonical_skill_name": "Plan of Action and Milestones",
+    "domain": "Operations & Project Management",
+    "sub_category": "Project & Agile Management (PMP, Agile, Scrum)",
+    "skill_type": "Hard Skill",
+    "source": "Empirical Parenthetical Discovery"
+  },
+  "alm": {
+    "acronym": "ALM",
+    "full_name": "HP Application Lifecycle Management",
+    "canonical_skill_name": "HP Application Lifecycle Management",
+    "domain": "Software Engineering & IT",
+    "sub_category": "Frontend Development",
+    "skill_type": "Hard Skill",
+    "source": "Empirical Parenthetical Discovery"
+  },
+  "cti": {
+    "acronym": "CTI",
+    "full_name": "Cyber Threat Intelligence",
+    "canonical_skill_name": "Cyber Threat Intelligence",
+    "domain": "Software Engineering & IT",
+    "sub_category": "Cybersecurity & Information Security",
+    "skill_type": "Hard Skill",
+    "source": "Empirical Parenthetical Discovery"
+  },
+  "pos": {
+    "acronym": "POS",
+    "full_name": "Point of Sale",
+    "canonical_skill_name": "Point of Sale",
+    "domain": "Marketing & Sales",
+    "sub_category": "Retail, B2C Sales & Account Management",
+    "skill_type": "Hard Skill",
+    "source": "Empirical Parenthetical Discovery"
+  },
+  "scms": {
+    "acronym": "SCMS",
+    "full_name": "Smart Charging Management Systems",
+    "canonical_skill_name": "Smart Charging Management Systems",
+    "domain": "Engineering & Construction",
+    "sub_category": "Civil & Structural Engineering",
+    "skill_type": "Hard Skill",
+    "source": "Empirical Parenthetical Discovery"
+  },
+  "cpt": {
+    "acronym": "CPT",
+    "full_name": "Certified Professional in Training",
+    "canonical_skill_name": "Certified Professional in Training",
+    "domain": "Human Resources",
+    "sub_category": "Learning & Development (L&D)",
+    "skill_type": "Certification",
+    "source": "Empirical Parenthetical Discovery"
+  },
+  "cogs": {
+    "acronym": "COGS",
+    "full_name": "Cost of Goods Sold",
+    "canonical_skill_name": "Cost of Goods Sold",
+    "domain": "Business & Finance",
+    "sub_category": "Accounting & Financial Reporting",
+    "skill_type": "Hard Skill",
+    "source": "Empirical Parenthetical Discovery"
+  },
+  "loa": {
+    "acronym": "LOA",
+    "full_name": "Letter of Agreement",
+    "canonical_skill_name": "Letter of Agreement",
+    "domain": "Operations & Project Management",
+    "sub_category": "Project & Agile Management (PMP, Agile, Scrum)",
+    "skill_type": "Hard Skill",
+    "source": "Empirical Parenthetical Discovery"
+  },
+  "lcl": {
+    "acronym": "LCL",
+    "full_name": "Lower Control Limit",
+    "canonical_skill_name": "Lower Control Limit",
+    "domain": "Operations & Project Management",
+    "sub_category": "Project & Agile Management (PMP, Agile, Scrum)",
+    "skill_type": "Hard Skill",
+    "source": "Empirical Parenthetical Discovery"
+  },
+  "rtl/ltr": {
+    "acronym": "RTL/LTR",
+    "full_name": "Bilingual Design",
+    "canonical_skill_name": "Bilingual Design",
+    "domain": "Operations & Project Management",
+    "sub_category": "Project & Agile Management (PMP, Agile, Scrum)",
+    "skill_type": "Hard Skill",
+    "source": "Empirical Parenthetical Discovery"
+  },
+  "frs": {
+    "acronym": "FRS",
+    "full_name": "Oracle BI Publisher (BIP) & Financial Reporting",
+    "canonical_skill_name": "Oracle BI Publisher (BIP) & Financial Reporting",
+    "domain": "Software Engineering & IT",
+    "sub_category": "Frontend Development",
+    "skill_type": "Tool / Software",
+    "source": "Empirical Parenthetical Discovery"
+  },
+  "en": {
+    "acronym": "EN",
+    "full_name": "European Standards",
+    "canonical_skill_name": "European Standards",
+    "domain": "Engineering & Construction",
+    "sub_category": "Civil & Structural Engineering",
+    "skill_type": "Hard Skill",
+    "source": "Empirical Parenthetical Discovery"
+  },
+  "lan": {
+    "acronym": "LAN",
+    "full_name": "Local Area Network",
+    "canonical_skill_name": "Local Area Network",
+    "domain": "Software Engineering & IT",
+    "sub_category": "DevOps & Cloud Infrastructure",
+    "skill_type": "Hard Skill",
+    "source": "Empirical Parenthetical Discovery"
+  },
+  "aem": {
+    "acronym": "AEM",
+    "full_name": "Adobe Experience Manager",
+    "canonical_skill_name": "Adobe Experience Manager",
+    "domain": "Software Engineering & IT",
+    "sub_category": "Frontend Development",
+    "skill_type": "Tool / Software",
+    "source": "Empirical Parenthetical Discovery"
+  },
+  "eia": {
+    "acronym": "EIA",
+    "full_name": "Environmental Impact Assessment",
+    "canonical_skill_name": "Environmental Impact Assessment",
+    "domain": "Engineering & Construction",
+    "sub_category": "Civil & Structural Engineering",
+    "skill_type": "Hard Skill",
+    "source": "Empirical Parenthetical Discovery"
+  },
+  "avd": {
+    "acronym": "AVD",
+    "full_name": "Azure Virtual Desktop",
+    "canonical_skill_name": "Azure Virtual Desktop",
+    "domain": "Software Engineering & IT",
+    "sub_category": "DevOps & Cloud Infrastructure",
+    "skill_type": "Tool / Software",
+    "source": "Empirical Parenthetical Discovery"
+  },
+  "ips": {
+    "acronym": "IPS",
+    "full_name": "Intrusion Prevention System",
+    "canonical_skill_name": "Intrusion Prevention System",
+    "domain": "Software Engineering & IT",
+    "sub_category": "Frontend Development",
+    "skill_type": "Hard Skill",
+    "source": "Empirical Parenthetical Discovery"
+  },
+  "ngfw": {
+    "acronym": "NGFW",
+    "full_name": "Next-Generation Firewall",
+    "canonical_skill_name": "Next-Generation Firewall",
+    "domain": "Software Engineering & IT",
+    "sub_category": "Cybersecurity & Information Security",
+    "skill_type": "Hard Skill",
+    "source": "Empirical Parenthetical Discovery"
+  },
+  "fim": {
+    "acronym": "FIM",
+    "full_name": "File Integrity Monitoring",
+    "canonical_skill_name": "File Integrity Monitoring",
+    "domain": "Software Engineering & IT",
+    "sub_category": "Frontend Development",
+    "skill_type": "Hard Skill",
+    "source": "Empirical Parenthetical Discovery"
+  },
+  "ssai": {
+    "acronym": "SSAI",
+    "full_name": "Server-Side Ad Insertion",
+    "canonical_skill_name": "Server-Side Ad Insertion",
+    "domain": "Marketing & Sales",
+    "sub_category": "B2B Sales & Business Development",
+    "skill_type": "Hard Skill",
+    "source": "Empirical Parenthetical Discovery"
+  },
+  "rds": {
+    "acronym": "RDS",
+    "full_name": "Remote Desktop Services",
+    "canonical_skill_name": "Remote Desktop Services",
+    "domain": "Software Engineering & IT",
+    "sub_category": "Frontend Development",
+    "skill_type": "Hard Skill",
+    "source": "Empirical Parenthetical Discovery"
+  },
+  "bip": {
+    "acronym": "BIP",
+    "full_name": "Business Intelligence Platforms",
+    "canonical_skill_name": "Business Intelligence Platforms",
+    "domain": "Data Science & Analytics",
+    "sub_category": "Business Intelligence & Data Analytics",
+    "skill_type": "Hard Skill",
+    "source": "Empirical Parenthetical Discovery"
+  },
+  "copc": {
+    "acronym": "COPC",
+    "full_name": "Customer Operations Performance Center",
+    "canonical_skill_name": "Customer Operations Performance Center",
+    "domain": "Operations & Project Management",
+    "sub_category": "Business Operations & Process Improvement",
+    "skill_type": "Hard Skill",
+    "source": "Empirical Parenthetical Discovery"
+  },
+  "ztna": {
+    "acronym": "ZTNA",
+    "full_name": "Zero Trust Network Access",
+    "canonical_skill_name": "Zero Trust Network Access",
+    "domain": "Software Engineering & IT",
+    "sub_category": "DevOps & Cloud Infrastructure",
+    "skill_type": "Hard Skill",
+    "source": "Empirical Parenthetical Discovery"
+  },
+  "gicsp": {
+    "acronym": "GICSP",
+    "full_name": "GIS Certification",
+    "canonical_skill_name": "GIS Certification",
+    "domain": "Data Science & Analytics",
+    "sub_category": "Artificial Intelligence & Deep Learning",
+    "skill_type": "Certification",
+    "source": "Empirical Parenthetical Discovery"
+  },
+  "css": {
+    "acronym": "CSS",
+    "full_name": "Cascading Style Sheets",
+    "canonical_skill_name": "Cascading Style Sheets",
+    "domain": "Software Engineering & IT",
+    "sub_category": "Frontend Development",
+    "skill_type": "Tool / Software",
+    "source": "Empirical Parenthetical Discovery"
+  },
+  "vfx": {
+    "acronym": "VFX",
+    "full_name": "Visual Effects",
+    "canonical_skill_name": "Visual Effects",
+    "domain": "Engineering & Construction",
+    "sub_category": "Civil & Structural Engineering",
+    "skill_type": "Hard Skill",
+    "source": "Empirical Parenthetical Discovery"
+  },
+  "epc": {
+    "acronym": "EPC",
+    "full_name": "Enterprise Process Control",
+    "canonical_skill_name": "Enterprise Process Control",
+    "domain": "Operations & Project Management",
+    "sub_category": "Project & Agile Management (PMP, Agile, Scrum)",
+    "skill_type": "Hard Skill",
+    "source": "Empirical Parenthetical Discovery"
+  },
+  "ia": {
+    "acronym": "IA",
+    "full_name": "Information Architecture",
+    "canonical_skill_name": "Information Architecture",
+    "domain": "Engineering & Construction",
+    "sub_category": "Architecture & Interior Design",
+    "skill_type": "Hard Skill",
+    "source": "Empirical Parenthetical Discovery"
+  },
+  "tol": {
+    "acronym": "TOL",
+    "full_name": "Test Object Lists",
+    "canonical_skill_name": "Test Object Lists",
+    "domain": "Engineering & Construction",
+    "sub_category": "Civil & Structural Engineering",
+    "skill_type": "Hard Skill",
+    "source": "Empirical Parenthetical Discovery"
+  },
+  "mbb": {
+    "acronym": "MBB",
+    "full_name": "Management Consulting",
+    "canonical_skill_name": "Management Consulting",
+    "domain": "Data Science & Analytics",
+    "sub_category": "Artificial Intelligence & Deep Learning",
+    "skill_type": "Hard Skill",
+    "source": "Empirical Parenthetical Discovery"
+  },
+  "obp/obma": {
+    "acronym": "OBP/OBMA",
+    "full_name": "Oracle Banking Customizations",
+    "canonical_skill_name": "Oracle Banking Customizations",
+    "domain": "Business & Finance",
+    "sub_category": "Banking & Treasury Operations",
+    "skill_type": "Tool / Software",
+    "source": "Empirical Parenthetical Discovery"
+  },
+  "mpos": {
+    "acronym": "MPOS",
+    "full_name": "Mobile Payment Operating System",
+    "canonical_skill_name": "Mobile Payment Operating System",
+    "domain": "Software Engineering & IT",
+    "sub_category": "Mobile Development",
+    "skill_type": "Hard Skill",
+    "source": "Empirical Parenthetical Discovery"
+  },
+  "cdb/pdb": {
+    "acronym": "CDB/PDB",
+    "full_name": "Database Consolidation & Multi-Tenancy",
+    "canonical_skill_name": "Database Consolidation & Multi-Tenancy",
+    "domain": "Software Engineering & IT",
+    "sub_category": "Frontend Development",
+    "skill_type": "Hard Skill",
+    "source": "Empirical Parenthetical Discovery"
+  },
+  "gam": {
+    "acronym": "GAM",
+    "full_name": "Go-to-Market Analytics",
+    "canonical_skill_name": "Go-to-Market Analytics",
+    "domain": "Business & Finance",
+    "sub_category": "Accounting & Financial Reporting",
+    "skill_type": "Tool / Software",
+    "source": "Empirical Parenthetical Discovery"
+  },
+  "crt": {
+    "acronym": "CRT",
+    "full_name": "Commerce Runtime",
+    "canonical_skill_name": "Commerce Runtime",
+    "domain": "Software Engineering & IT",
+    "sub_category": "Frontend Development",
+    "skill_type": "Hard Skill",
+    "source": "Empirical Parenthetical Discovery"
+  },
+  "ccna": {
+    "acronym": "CCNA",
+    "full_name": "Cisco Certified Network Associate",
+    "canonical_skill_name": "Cisco Certified Network Associate",
+    "domain": "Software Engineering & IT",
+    "sub_category": "DevOps & Cloud Infrastructure",
+    "skill_type": "Certification",
+    "source": "Empirical Parenthetical Discovery"
+  },
+  "csr": {
+    "acronym": "CSR",
+    "full_name": "Corporate Social Responsibility",
+    "canonical_skill_name": "Corporate Social Responsibility",
+    "domain": "Software Engineering & IT",
+    "sub_category": "Cybersecurity & Information Security",
+    "skill_type": "Hard Skill",
+    "source": "Empirical Parenthetical Discovery"
+  },
+  "tds": {
+    "acronym": "TDS",
+    "full_name": "Temenos Data Source",
+    "canonical_skill_name": "Temenos Data Source",
+    "domain": "Data Science & Analytics",
+    "sub_category": "Artificial Intelligence & Deep Learning",
+    "skill_type": "Hard Skill",
+    "source": "Empirical Parenthetical Discovery"
+  },
+  "wdm": {
+    "acronym": "WDM",
+    "full_name": "Windows Driver Frameworks",
+    "canonical_skill_name": "Windows Driver Frameworks",
+    "domain": "Vocational Trades, Driving & Field Services",
+    "sub_category": "Professional Driving & Fleet Delivery",
+    "skill_type": "Hard Skill",
+    "source": "Empirical Parenthetical Discovery"
+  },
+  "vas": {
+    "acronym": "VAS",
+    "full_name": "Value-Added Services",
+    "canonical_skill_name": "Value-Added Services",
+    "domain": "Business & Finance",
+    "sub_category": "Accounting & Financial Reporting",
+    "skill_type": "Hard Skill",
+    "source": "Empirical Parenthetical Discovery"
+  },
+  "rft": {
+    "acronym": "RFT",
+    "full_name": "Reliability Tools",
+    "canonical_skill_name": "Reliability Tools",
+    "domain": "Engineering & Construction",
+    "sub_category": "Civil & Structural Engineering",
+    "skill_type": "Hard Skill",
+    "source": "Empirical Parenthetical Discovery"
+  },
+  "roas": {
+    "acronym": "ROAS",
+    "full_name": "Return on Ad Spend",
+    "canonical_skill_name": "Return on Ad Spend",
+    "domain": "Marketing & Sales",
+    "sub_category": "B2B Sales & Business Development",
+    "skill_type": "Hard Skill",
+    "source": "Empirical Parenthetical Discovery"
+  },
+  "m&e": {
+    "acronym": "M&E",
+    "full_name": "Monitoring & Evaluation",
+    "canonical_skill_name": "Monitoring & Evaluation",
+    "domain": "Business & Finance",
+    "sub_category": "Corporate Finance & Financial Analysis",
+    "skill_type": "Hard Skill",
+    "source": "Empirical Parenthetical Discovery"
+  },
+  "hpe": {
+    "acronym": "HPE",
+    "full_name": "Hewlett Packard Enterprise",
+    "canonical_skill_name": "Hewlett Packard Enterprise",
+    "domain": "Software Engineering & IT",
+    "sub_category": "Frontend Development",
+    "skill_type": "Hard Skill",
+    "source": "Empirical Parenthetical Discovery"
+  },
+  "cipp/e": {
+    "acronym": "CIPP/E",
+    "full_name": "Certified Information Privacy Professional",
+    "canonical_skill_name": "Certified Information Privacy Professional",
+    "domain": "Operations & Project Management",
+    "sub_category": "Project & Agile Management (PMP, Agile, Scrum)",
+    "skill_type": "Certification",
+    "source": "Empirical Parenthetical Discovery"
+  },
+  "dfi": {
+    "acronym": "DFI",
+    "full_name": "DDR PHY Interface",
+    "canonical_skill_name": "DDR PHY Interface",
+    "domain": "Engineering & Construction",
+    "sub_category": "Civil & Structural Engineering",
+    "skill_type": "Hard Skill",
+    "source": "Empirical Parenthetical Discovery"
+  },
+  "ssas": {
+    "acronym": "SSAS",
+    "full_name": "SQL Server Analysis Services",
+    "canonical_skill_name": "SQL Server Analysis Services",
+    "domain": "Software Engineering & IT",
+    "sub_category": "Frontend Development",
+    "skill_type": "Tool / Software",
+    "source": "Empirical Parenthetical Discovery"
+  },
+  "cbtc": {
+    "acronym": "CBTC",
+    "full_name": "Certified Business Technology Consultant",
+    "canonical_skill_name": "Certified Business Technology Consultant",
+    "domain": "Operations & Project Management",
+    "sub_category": "Project & Agile Management (PMP, Agile, Scrum)",
+    "skill_type": "Certification",
+    "source": "Empirical Parenthetical Discovery"
+  },
+  "bs": {
+    "acronym": "BS",
+    "full_name": "British Standards",
+    "canonical_skill_name": "British Standards",
+    "domain": "Engineering & Construction",
+    "sub_category": "Civil & Structural Engineering",
+    "skill_type": "Hard Skill",
+    "source": "Empirical Parenthetical Discovery"
+  },
+  "gds": {
+    "acronym": "GDS",
+    "full_name": "Global Distribution System",
+    "canonical_skill_name": "Global Distribution System",
+    "domain": "Supply Chain & Logistics",
+    "sub_category": "Logistics, Freight & Fleet Operations",
+    "skill_type": "Hard Skill",
+    "source": "Empirical Parenthetical Discovery"
+  },
+  "r2r": {
+    "acronym": "R2R",
+    "full_name": "Record to Report",
+    "canonical_skill_name": "Record to Report",
+    "domain": "Business & Finance",
+    "sub_category": "Accounting & Financial Reporting",
+    "skill_type": "Hard Skill",
+    "source": "Empirical Parenthetical Discovery"
+  },
+  "s&op": {
+    "acronym": "S&OP",
+    "full_name": "Sales and Operations Planning",
+    "canonical_skill_name": "Sales and Operations Planning",
+    "domain": "Supply Chain & Logistics",
+    "sub_category": "Supply Chain Planning & Demand Forecasting",
+    "skill_type": "Hard Skill",
+    "source": "Empirical Parenthetical Discovery"
+  },
+  "cpm": {
+    "acronym": "CPM",
+    "full_name": "Customer Success Program Manager",
+    "canonical_skill_name": "Customer Success Program Manager",
+    "domain": "Marketing & Sales",
+    "sub_category": "Retail, B2C Sales & Account Management",
+    "skill_type": "Hard Skill",
+    "source": "Empirical Parenthetical Discovery"
+  },
+  "pcnsa": {
+    "acronym": "PCNSA",
+    "full_name": "Palo Alto Networks Certified Network Security Administrator",
+    "canonical_skill_name": "Palo Alto Networks Certified Network Security Administrator",
+    "domain": "Software Engineering & IT",
+    "sub_category": "DevOps & Cloud Infrastructure",
+    "skill_type": "Certification",
+    "source": "Empirical Parenthetical Discovery"
+  },
+  "iis": {
+    "acronym": "IIS",
+    "full_name": "Microsoft Internet Information Services",
+    "canonical_skill_name": "Microsoft Internet Information Services",
+    "domain": "Software Engineering & IT",
+    "sub_category": "Frontend Development",
+    "skill_type": "Tool / Software",
+    "source": "Empirical Parenthetical Discovery"
+  },
+  "sso": {
+    "acronym": "SSO",
+    "full_name": "Single Sign-On",
+    "canonical_skill_name": "Single Sign-On",
+    "domain": "Software Engineering & IT",
+    "sub_category": "Frontend Development",
+    "skill_type": "Hard Skill",
+    "source": "Empirical Parenthetical Discovery"
+  },
+  "cipt": {
+    "acronym": "CIPT",
+    "full_name": "Certified Information Privacy Technologist",
+    "canonical_skill_name": "Certified Information Privacy Technologist",
+    "domain": "Operations & Project Management",
+    "sub_category": "Project & Agile Management (PMP, Agile, Scrum)",
+    "skill_type": "Certification",
+    "source": "Empirical Parenthetical Discovery"
+  },
+  "mcc": {
+    "acronym": "MCC",
+    "full_name": "Motor Control Centers",
+    "canonical_skill_name": "Motor Control Centers",
+    "domain": "Engineering & Construction",
+    "sub_category": "Civil & Structural Engineering",
+    "skill_type": "Hard Skill",
+    "source": "Empirical Parenthetical Discovery"
+  },
+  "cpp": {
+    "acronym": "CPP",
+    "full_name": "Certified Purchasing Professional",
+    "canonical_skill_name": "Certified Purchasing Professional",
+    "domain": "Supply Chain & Logistics",
+    "sub_category": "Procurement & Purchasing",
+    "skill_type": "Certification",
+    "source": "Empirical Parenthetical Discovery"
+  },
+  "cve": {
+    "acronym": "CVE",
+    "full_name": "Common Vulnerabilities and Exposures",
+    "canonical_skill_name": "Common Vulnerabilities and Exposures",
+    "domain": "Software Engineering & IT",
+    "sub_category": "Frontend Development",
+    "skill_type": "Hard Skill",
+    "source": "Empirical Parenthetical Discovery"
+  },
+  "hdl": {
+    "acronym": "HDL",
+    "full_name": "HCM Data Loader",
+    "canonical_skill_name": "HCM Data Loader",
+    "domain": "Business & Finance",
+    "sub_category": "Accounting & Financial Reporting",
+    "skill_type": "Hard Skill",
+    "source": "Empirical Parenthetical Discovery"
+  },
+  "cmms": {
+    "acronym": "CMMS",
+    "full_name": "Computerized Maintenance Management System",
+    "canonical_skill_name": "Computerized Maintenance Management System",
+    "domain": "Manufacturing & Industrial Production",
+    "sub_category": "Industrial Machinery & Equipment Maintenance",
+    "skill_type": "Hard Skill",
+    "source": "Empirical Parenthetical Discovery"
+  },
+  "tco": {
+    "acronym": "TCO",
+    "full_name": "Total Cost of Ownership",
+    "canonical_skill_name": "Total Cost of Ownership",
+    "domain": "Supply Chain & Logistics",
+    "sub_category": "Procurement & Purchasing",
+    "skill_type": "Hard Skill",
+    "source": "Empirical Parenthetical Discovery"
+  },
+  "sit": {
+    "acronym": "SIT",
+    "full_name": "System Integration Testing",
+    "canonical_skill_name": "System Integration Testing",
+    "domain": "Business & Finance",
+    "sub_category": "Accounting & Financial Reporting",
+    "skill_type": "Hard Skill",
+    "source": "Empirical Parenthetical Discovery"
+  },
+  "sse": {
+    "acronym": "SSE",
+    "full_name": "Server-Sent Events",
+    "canonical_skill_name": "Server-Sent Events",
+    "domain": "Software Engineering & IT",
+    "sub_category": "Frontend Development",
+    "skill_type": "Hard Skill",
+    "source": "Empirical Parenthetical Discovery"
+  },
+  "idp": {
+    "acronym": "IDP",
+    "full_name": "Individual Development Plan",
+    "canonical_skill_name": "Individual Development Plan",
+    "domain": "Human Resources",
+    "sub_category": "Learning & Development (L&D)",
+    "skill_type": "Hard Skill",
+    "source": "Empirical Parenthetical Discovery"
+  },
+  "ssg": {
+    "acronym": "SSG",
+    "full_name": "Static Site Generation",
+    "canonical_skill_name": "Static Site Generation",
+    "domain": "Software Engineering & IT",
+    "sub_category": "Frontend Development",
+    "skill_type": "Hard Skill",
+    "source": "Empirical Parenthetical Discovery"
+  },
+  "fmea": {
+    "acronym": "FMEA",
+    "full_name": "Failure Modes and Effects Analysis",
+    "canonical_skill_name": "Failure Modes and Effects Analysis",
+    "domain": "Operations & Project Management",
+    "sub_category": "Project & Agile Management (PMP, Agile, Scrum)",
+    "skill_type": "Hard Skill",
+    "source": "Empirical Parenthetical Discovery"
+  },
+  "zpa": {
+    "acronym": "ZPA",
+    "full_name": "Zscaler Private Access",
+    "canonical_skill_name": "Zscaler Private Access",
+    "domain": "Software Engineering & IT",
+    "sub_category": "Frontend Development",
+    "skill_type": "Hard Skill",
+    "source": "Empirical Parenthetical Discovery"
+  },
+  "ugc": {
+    "acronym": "UGC",
+    "full_name": "User-Generated Content",
+    "canonical_skill_name": "User-Generated Content",
+    "domain": "Marketing & Sales",
+    "sub_category": "Content Marketing, SEO & Social Media",
+    "skill_type": "Hard Skill",
+    "source": "Empirical Parenthetical Discovery"
+  },
+  "dft": {
+    "acronym": "DFT",
+    "full_name": "Design for Test",
+    "canonical_skill_name": "Design for Test",
+    "domain": "Engineering & Construction",
+    "sub_category": "Civil & Structural Engineering",
+    "skill_type": "Hard Skill",
+    "source": "Empirical Parenthetical Discovery"
+  },
+  "nfv": {
+    "acronym": "NFV",
+    "full_name": "Network Functions Virtualization",
+    "canonical_skill_name": "Network Functions Virtualization",
+    "domain": "Software Engineering & IT",
+    "sub_category": "DevOps & Cloud Infrastructure",
+    "skill_type": "Hard Skill",
+    "source": "Empirical Parenthetical Discovery"
+  },
+  "glp": {
+    "acronym": "GLP",
+    "full_name": "Good Laboratory Practice",
+    "canonical_skill_name": "Good Laboratory Practice",
+    "domain": "Healthcare & Medical Sciences",
+    "sub_category": "Medical Laboratory & Diagnostic Imaging",
+    "skill_type": "Hard Skill",
+    "source": "Empirical Parenthetical Discovery"
+  },
+  "jsp": {
+    "acronym": "JSP",
+    "full_name": "JavaServer Pages",
+    "canonical_skill_name": "JavaServer Pages",
+    "domain": "Software Engineering & IT",
+    "sub_category": "Frontend Development",
+    "skill_type": "Hard Skill",
+    "source": "Empirical Parenthetical Discovery"
+  },
+  "fqhc": {
+    "acronym": "FQHC",
+    "full_name": "Federally Qualified Health Center",
+    "canonical_skill_name": "Federally Qualified Health Center",
+    "domain": "Operations & Project Management",
+    "sub_category": "Project & Agile Management (PMP, Agile, Scrum)",
+    "skill_type": "Hard Skill",
+    "source": "Empirical Parenthetical Discovery"
+  },
+  "stl": {
+    "acronym": "STL",
+    "full_name": "C++ Standard Template Library",
+    "canonical_skill_name": "C++ Standard Template Library",
+    "domain": "Software Engineering & IT",
+    "sub_category": "Backend Development",
+    "skill_type": "Hard Skill",
+    "source": "Empirical Parenthetical Discovery"
+  },
+  "cvr": {
+    "acronym": "CVR",
+    "full_name": "Conversion Rate",
+    "canonical_skill_name": "Conversion Rate",
+    "domain": "Marketing & Sales",
+    "sub_category": "Digital Marketing & Paid Ads (Performance Media)",
+    "skill_type": "Hard Skill",
+    "source": "Empirical Parenthetical Discovery"
+  },
+  "v6": {
+    "acronym": "V6",
+    "full_name": "FSSC 22000",
+    "canonical_skill_name": "FSSC 22000",
+    "domain": "Operations & Project Management",
+    "sub_category": "Project & Agile Management (PMP, Agile, Scrum)",
+    "skill_type": "Hard Skill",
+    "source": "Empirical Parenthetical Discovery"
+  },
+  "f&b": {
+    "acronym": "F&B",
+    "full_name": "HR Operations",
+    "canonical_skill_name": "HR Operations",
+    "domain": "Human Resources",
+    "sub_category": "HR Operations & People Analytics",
+    "skill_type": "Hard Skill",
+    "source": "Empirical Parenthetical Discovery"
+  },
+  "ppa": {
+    "acronym": "PPA",
+    "full_name": "Power Purchase Agreements",
+    "canonical_skill_name": "Power Purchase Agreements",
+    "domain": "Engineering & Construction",
+    "sub_category": "Civil & Structural Engineering",
+    "skill_type": "Hard Skill",
+    "source": "Empirical Parenthetical Discovery"
+  },
+  "obrh": {
+    "acronym": "OBRH",
+    "full_name": "Oracle Banking Routing Hub",
+    "canonical_skill_name": "Oracle Banking Routing Hub",
+    "domain": "Business & Finance",
+    "sub_category": "Banking & Treasury Operations",
+    "skill_type": "Tool / Software",
+    "source": "Empirical Parenthetical Discovery"
+  },
+  "fi": {
+    "acronym": "FI",
+    "full_name": "SAP Finance",
+    "canonical_skill_name": "SAP Finance",
+    "domain": "Business & Finance",
+    "sub_category": "Accounting & Financial Reporting",
+    "skill_type": "Tool / Software",
+    "source": "Empirical Parenthetical Discovery"
+  },
+  "aba": {
+    "acronym": "ABA",
+    "full_name": "Applied Behavior Analysis",
+    "canonical_skill_name": "Applied Behavior Analysis",
+    "domain": "Operations & Project Management",
+    "sub_category": "Project & Agile Management (PMP, Agile, Scrum)",
+    "skill_type": "Hard Skill",
+    "source": "Empirical Parenthetical Discovery"
+  },
+  "gc-ms": {
+    "acronym": "GC-MS",
+    "full_name": "Gas Chromatography-Mass Spectrometry",
+    "canonical_skill_name": "Gas Chromatography-Mass Spectrometry",
+    "domain": "Data Science & Analytics",
+    "sub_category": "Artificial Intelligence & Deep Learning",
+    "skill_type": "Hard Skill",
+    "source": "Empirical Parenthetical Discovery"
+  },
+  "qts": {
+    "acronym": "QTS",
+    "full_name": "Qualified Teacher Status",
+    "canonical_skill_name": "Qualified Teacher Status",
+    "domain": "Education, Teaching & Training",
+    "sub_category": "K-12 School Teaching & Pedagogy",
+    "skill_type": "Hard Skill",
+    "source": "Empirical Parenthetical Discovery"
+  },
+  "vsts": {
+    "acronym": "VSTS",
+    "full_name": "Visual Studio Team Services",
+    "canonical_skill_name": "Visual Studio Team Services",
+    "domain": "Software Engineering & IT",
+    "sub_category": "Frontend Development",
+    "skill_type": "Hard Skill",
+    "source": "Empirical Parenthetical Discovery"
+  },
+  "eps": {
+    "acronym": "EPS",
+    "full_name": "Oracle E-Business Suite",
+    "canonical_skill_name": "Oracle E-Business Suite",
+    "domain": "Software Engineering & IT",
+    "sub_category": "Frontend Development",
+    "skill_type": "Tool / Software",
+    "source": "Empirical Parenthetical Discovery"
+  },
+  "pmp": {
+    "acronym": "PMP",
+    "full_name": "Private Marketplace",
+    "canonical_skill_name": "Private Marketplace",
+    "domain": "Marketing & Sales",
+    "sub_category": "B2B Sales & Business Development",
+    "skill_type": "Hard Skill",
+    "source": "Empirical Parenthetical Discovery"
+  },
+  "edc": {
+    "acronym": "EDC",
+    "full_name": "Informatica Enterprise Data Catalog",
+    "canonical_skill_name": "Informatica Enterprise Data Catalog",
+    "domain": "Data Science & Analytics",
+    "sub_category": "Artificial Intelligence & Deep Learning",
+    "skill_type": "Hard Skill",
+    "source": "Empirical Parenthetical Discovery"
+  },
+  "pm": {
+    "acronym": "PM",
+    "full_name": "SAP Plant Maintenance",
+    "canonical_skill_name": "SAP Plant Maintenance",
+    "domain": "Software Engineering & IT",
+    "sub_category": "Frontend Development",
+    "skill_type": "Tool / Software",
+    "source": "Empirical Parenthetical Discovery"
+  },
+  "lod": {
+    "acronym": "LOD",
+    "full_name": "Level of Development",
+    "canonical_skill_name": "Level of Development",
+    "domain": "Engineering & Construction",
+    "sub_category": "Civil & Structural Engineering",
+    "skill_type": "Hard Skill",
+    "source": "Empirical Parenthetical Discovery"
+  },
+  "cdd": {
+    "acronym": "CDD",
+    "full_name": "Customer Due Diligence",
+    "canonical_skill_name": "Customer Due Diligence",
+    "domain": "Operations & Project Management",
+    "sub_category": "Project & Agile Management (PMP, Agile, Scrum)",
+    "skill_type": "Hard Skill",
+    "source": "Empirical Parenthetical Discovery"
+  },
+  "tpv": {
+    "acronym": "TPV",
+    "full_name": "Transaction Volume Growth",
+    "canonical_skill_name": "Transaction Volume Growth",
+    "domain": "Business & Finance",
+    "sub_category": "Accounting & Financial Reporting",
+    "skill_type": "Hard Skill",
+    "source": "Empirical Parenthetical Discovery"
+  },
+  "wfm": {
+    "acronym": "WFM",
+    "full_name": "Warehouse Floor Management System",
+    "canonical_skill_name": "Warehouse Floor Management System",
+    "domain": "Supply Chain & Logistics",
+    "sub_category": "Inventory & Warehouse Management",
+    "skill_type": "Hard Skill",
+    "source": "Empirical Parenthetical Discovery"
+  },
+  "pds": {
+    "acronym": "PDS",
+    "full_name": "Plasma Donor System",
+    "canonical_skill_name": "Plasma Donor System",
+    "domain": "Operations & Project Management",
+    "sub_category": "Project & Agile Management (PMP, Agile, Scrum)",
+    "skill_type": "Hard Skill",
+    "source": "Empirical Parenthetical Discovery"
+  },
+  "cdmp": {
+    "acronym": "CDMP",
+    "full_name": "Certified Data Management Professional",
+    "canonical_skill_name": "Certified Data Management Professional",
+    "domain": "Data Science & Analytics",
+    "sub_category": "Artificial Intelligence & Deep Learning",
+    "skill_type": "Certification",
+    "source": "Empirical Parenthetical Discovery"
+  },
+  "vrf": {
+    "acronym": "VRF",
+    "full_name": "Virtual Routing and Forwarding",
+    "canonical_skill_name": "Virtual Routing and Forwarding",
+    "domain": "Software Engineering & IT",
+    "sub_category": "Frontend Development",
+    "skill_type": "Hard Skill",
+    "source": "Empirical Parenthetical Discovery"
+  },
+  "rdp": {
+    "acronym": "RDP",
+    "full_name": "Remote Desktop Protocol",
+    "canonical_skill_name": "Remote Desktop Protocol",
+    "domain": "Operations & Project Management",
+    "sub_category": "Project & Agile Management (PMP, Agile, Scrum)",
+    "skill_type": "Tool / Software",
+    "source": "Empirical Parenthetical Discovery"
+  },
+  "ecs": {
+    "acronym": "ECS",
+    "full_name": "AWS Elastic Container Service",
+    "canonical_skill_name": "AWS Elastic Container Service",
+    "domain": "Software Engineering & IT",
+    "sub_category": "DevOps & Cloud Infrastructure",
+    "skill_type": "Tool / Software",
+    "source": "Empirical Parenthetical Discovery"
+  },
+  "edd": {
+    "acronym": "EDD",
+    "full_name": "Enhanced Due Diligence",
+    "canonical_skill_name": "Enhanced Due Diligence",
+    "domain": "Operations & Project Management",
+    "sub_category": "Project & Agile Management (PMP, Agile, Scrum)",
+    "skill_type": "Hard Skill",
+    "source": "Empirical Parenthetical Discovery"
+  },
+  "ps": {
+    "acronym": "PS",
+    "full_name": "SAP Project Systems",
+    "canonical_skill_name": "SAP Project Systems",
+    "domain": "Software Engineering & IT",
+    "sub_category": "Frontend Development",
+    "skill_type": "Tool / Software",
+    "source": "Empirical Parenthetical Discovery"
+  },
+  "pcf": {
+    "acronym": "PCF",
+    "full_name": "Power Platform Component Framework",
+    "canonical_skill_name": "Power Platform Component Framework",
+    "domain": "Software Engineering & IT",
+    "sub_category": "Frontend Development",
+    "skill_type": "Hard Skill",
+    "source": "Empirical Parenthetical Discovery"
+  },
+  "nas": {
+    "acronym": "NAS",
+    "full_name": "Network-Attached Storage",
+    "canonical_skill_name": "Network-Attached Storage",
+    "domain": "Software Engineering & IT",
+    "sub_category": "DevOps & Cloud Infrastructure",
+    "skill_type": "Hard Skill",
+    "source": "Empirical Parenthetical Discovery"
+  },
+  "okr": {
+    "acronym": "OKR",
+    "full_name": "Objectives and Key Results",
+    "canonical_skill_name": "Objectives and Key Results",
+    "domain": "Human Resources",
+    "sub_category": "Performance Management & Total Rewards",
+    "skill_type": "Hard Skill",
+    "source": "Empirical Parenthetical Discovery"
+  },
+  "gtm": {
+    "acronym": "GTM",
+    "full_name": "Go-to-Market",
+    "canonical_skill_name": "Go-to-Market",
+    "domain": "Marketing & Sales",
+    "sub_category": "B2B Sales & Business Development",
+    "skill_type": "Tool / Software",
+    "source": "Empirical Parenthetical Discovery"
+  },
+  "trt": {
+    "acronym": "TRT",
+    "full_name": "Testosterone Replacement Therapy",
+    "canonical_skill_name": "Testosterone Replacement Therapy",
+    "domain": "Software Engineering & IT",
+    "sub_category": "Quality Assurance & Testing",
+    "skill_type": "Hard Skill",
+    "source": "Empirical Parenthetical Discovery"
+  },
+  "kmdf": {
+    "acronym": "KMDF",
+    "full_name": "Windows Driver Frameworks",
+    "canonical_skill_name": "Windows Driver Frameworks",
+    "domain": "Vocational Trades, Driving & Field Services",
+    "sub_category": "Professional Driving & Fleet Delivery",
+    "skill_type": "Hard Skill",
+    "source": "Empirical Parenthetical Discovery"
+  },
+  "hsd": {
+    "acronym": "HSD",
+    "full_name": "High-Speed Design",
+    "canonical_skill_name": "High-Speed Design",
+    "domain": "Engineering & Construction",
+    "sub_category": "Civil & Structural Engineering",
+    "skill_type": "Hard Skill",
+    "source": "Empirical Parenthetical Discovery"
+  },
+  "prmg": {
+    "acronym": "PRMG",
+    "full_name": "Procurement Certification",
+    "canonical_skill_name": "Procurement Certification",
+    "domain": "Supply Chain & Logistics",
+    "sub_category": "Procurement & Purchasing",
+    "skill_type": "Certification",
+    "source": "Empirical Parenthetical Discovery"
+  },
+  "eas": {
+    "acronym": "EAS",
+    "full_name": "Enterprise Architecture Services",
+    "canonical_skill_name": "Enterprise Architecture Services",
+    "domain": "Software Engineering & IT",
+    "sub_category": "Frontend Development",
+    "skill_type": "Hard Skill",
+    "source": "Empirical Parenthetical Discovery"
+  },
+  "wfp": {
+    "acronym": "WFP",
+    "full_name": "Windows Filtering Platform",
+    "canonical_skill_name": "Windows Filtering Platform",
+    "domain": "Software Engineering & IT",
+    "sub_category": "Frontend Development",
+    "skill_type": "Hard Skill",
+    "source": "Empirical Parenthetical Discovery"
+  },
+  "cdc": {
+    "acronym": "CDC",
+    "full_name": "Clock Domain Crossing",
+    "canonical_skill_name": "Clock Domain Crossing",
+    "domain": "Engineering & Construction",
+    "sub_category": "Civil & Structural Engineering",
+    "skill_type": "Hard Skill",
+    "source": "Empirical Parenthetical Discovery"
+  },
+  "sop": {
+    "acronym": "SOP",
+    "full_name": "Standard Operating Procedures",
+    "canonical_skill_name": "Standard Operating Procedures",
+    "domain": "Operations & Project Management",
+    "sub_category": "Business Operations & Process Improvement",
+    "skill_type": "Hard Skill",
+    "source": "Empirical Parenthetical Discovery"
+  },
+  "cqe": {
+    "acronym": "CQE",
+    "full_name": "Certified Quality Engineer",
+    "canonical_skill_name": "Certified Quality Engineer",
+    "domain": "Engineering & Construction",
+    "sub_category": "Civil & Structural Engineering",
+    "skill_type": "Certification",
+    "source": "Empirical Parenthetical Discovery"
+  },
+  "mpgw": {
+    "acronym": "MPGW",
+    "full_name": "Multi-Protocol Gateway",
+    "canonical_skill_name": "Multi-Protocol Gateway",
+    "domain": "Software Engineering & IT",
+    "sub_category": "Frontend Development",
+    "skill_type": "Hard Skill",
+    "source": "Empirical Parenthetical Discovery"
+  },
+  "she": {
+    "acronym": "SHE",
+    "full_name": "Safety, Health & Environment",
+    "canonical_skill_name": "Safety, Health & Environment",
+    "domain": "Manufacturing & Industrial Production",
+    "sub_category": "Industrial Health, Safety & Environment (HSE)",
+    "skill_type": "Hard Skill",
+    "source": "Empirical Parenthetical Discovery"
+  },
+  "pdp": {
+    "acronym": "PDP",
+    "full_name": "Product Data Platforms",
+    "canonical_skill_name": "Product Data Platforms",
+    "domain": "Engineering & Construction",
+    "sub_category": "Mechanical & MEP Engineering",
+    "skill_type": "Hard Skill",
+    "source": "Empirical Parenthetical Discovery"
+  },
+  "mpls-tp": {
+    "acronym": "MPLS-TP",
+    "full_name": "MPLS-Transport Protocol",
+    "canonical_skill_name": "MPLS-Transport Protocol",
+    "domain": "Software Engineering & IT",
+    "sub_category": "Frontend Development",
+    "skill_type": "Hard Skill",
+    "source": "Empirical Parenthetical Discovery"
+  },
+  "ccnp": {
+    "acronym": "CCNP",
+    "full_name": "Cisco Certified Network Professional",
+    "canonical_skill_name": "Cisco Certified Network Professional",
+    "domain": "Software Engineering & IT",
+    "sub_category": "DevOps & Cloud Infrastructure",
+    "skill_type": "Certification",
+    "source": "Empirical Parenthetical Discovery"
+  },
+  "uft": {
+    "acronym": "UFT",
+    "full_name": "HP Unified Functional Testing",
+    "canonical_skill_name": "HP Unified Functional Testing",
+    "domain": "Software Engineering & IT",
+    "sub_category": "Quality Assurance & Testing",
+    "skill_type": "Hard Skill",
+    "source": "Empirical Parenthetical Discovery"
+  },
+  "abac": {
+    "acronym": "ABAC",
+    "full_name": "Attribute-Based Access Control",
+    "canonical_skill_name": "Attribute-Based Access Control",
+    "domain": "Software Engineering & IT",
+    "sub_category": "Frontend Development",
+    "skill_type": "Hard Skill",
+    "source": "Empirical Parenthetical Discovery"
+  },
+  "sta": {
+    "acronym": "STA",
+    "full_name": "Static Timing Analysis",
+    "canonical_skill_name": "Static Timing Analysis",
+    "domain": "Engineering & Construction",
+    "sub_category": "Civil & Structural Engineering",
+    "skill_type": "Hard Skill",
+    "source": "Empirical Parenthetical Discovery"
+  },
+  "mvc": {
+    "acronym": "MVC",
+    "full_name": "Model-View-Controller",
+    "canonical_skill_name": "Model-View-Controller",
+    "domain": "Software Engineering & IT",
+    "sub_category": "Frontend Development",
+    "skill_type": "Hard Skill",
+    "source": "Empirical Parenthetical Discovery"
+  },
+  "t-sql": {
+    "acronym": "T-SQL",
+    "full_name": "Transact-SQL",
+    "canonical_skill_name": "Transact-SQL",
+    "domain": "Data Science & Analytics",
+    "sub_category": "Artificial Intelligence & Deep Learning",
+    "skill_type": "Tool / Software",
+    "source": "Empirical Parenthetical Discovery"
+  },
+  "gri": {
+    "acronym": "GRI",
+    "full_name": "Global Reporting Initiative",
+    "canonical_skill_name": "Global Reporting Initiative",
+    "domain": "Data Science & Analytics",
+    "sub_category": "Business Intelligence & Data Analytics",
+    "skill_type": "Hard Skill",
+    "source": "Empirical Parenthetical Discovery"
+  },
+  "opt": {
+    "acronym": "OPT",
+    "full_name": "Oral-Pharyngeal Therapy",
+    "canonical_skill_name": "Oral-Pharyngeal Therapy",
+    "domain": "Operations & Project Management",
+    "sub_category": "Project & Agile Management (PMP, Agile, Scrum)",
+    "skill_type": "Hard Skill",
+    "source": "Empirical Parenthetical Discovery"
+  },
+  "mcp": {
+    "acronym": "MCP",
+    "full_name": "Model Context Protocol",
+    "canonical_skill_name": "Model Context Protocol",
+    "domain": "Data Science & Analytics",
+    "sub_category": "Artificial Intelligence & Deep Learning",
+    "skill_type": "Hard Skill",
+    "source": "Empirical Parenthetical Discovery"
+  },
+  "ids": {
+    "acronym": "IDS",
+    "full_name": "Intrusion Detection System",
+    "canonical_skill_name": "Intrusion Detection System",
+    "domain": "Software Engineering & IT",
+    "sub_category": "Frontend Development",
+    "skill_type": "Hard Skill",
+    "source": "Empirical Parenthetical Discovery"
+  },
+  "dtm": {
+    "acronym": "DTM",
+    "full_name": "Digital Transaction Management",
+    "canonical_skill_name": "Digital Transaction Management",
+    "domain": "Business & Finance",
+    "sub_category": "Accounting & Financial Reporting",
+    "skill_type": "Hard Skill",
+    "source": "Empirical Parenthetical Discovery"
+  },
+  "bmp/jpg": {
+    "acronym": "BMP/JPG",
+    "full_name": "Image Files",
+    "canonical_skill_name": "Image Files",
+    "domain": "Data Science & Analytics",
+    "sub_category": "Artificial Intelligence & Deep Learning",
+    "skill_type": "Hard Skill",
+    "source": "Empirical Parenthetical Discovery"
+  },
+  "cia": {
+    "acronym": "CIA",
+    "full_name": "Certified Internal Auditor",
+    "canonical_skill_name": "Certified Internal Auditor",
+    "domain": "Business & Finance",
+    "sub_category": "Auditing, Tax & Compliance",
+    "skill_type": "Certification",
+    "source": "Empirical Parenthetical Discovery"
+  },
+  "pci-dss": {
+    "acronym": "PCI-DSS",
+    "full_name": "Payment Card Industry Data Security Standard",
+    "canonical_skill_name": "Payment Card Industry Data Security Standard",
+    "domain": "Software Engineering & IT",
+    "sub_category": "Cybersecurity & Information Security",
+    "skill_type": "Hard Skill",
+    "source": "Empirical Parenthetical Discovery"
+  },
+  "da": {
+    "acronym": "DA",
+    "full_name": "Workflow Management",
+    "canonical_skill_name": "Workflow Management",
+    "domain": "Supply Chain & Logistics",
+    "sub_category": "Procurement & Purchasing",
+    "skill_type": "Hard Skill",
+    "source": "Empirical Parenthetical Discovery"
+  },
+  "csm": {
+    "acronym": "CSM",
+    "full_name": "Customer Success Manager",
+    "canonical_skill_name": "Customer Success Manager",
+    "domain": "Marketing & Sales",
+    "sub_category": "Retail, B2C Sales & Account Management",
+    "skill_type": "Hard Skill",
+    "source": "Empirical Parenthetical Discovery"
+  },
+  "hpc": {
+    "acronym": "HPC",
+    "full_name": "High-Performance Computing",
+    "canonical_skill_name": "High-Performance Computing",
+    "domain": "Software Engineering & IT",
+    "sub_category": "Frontend Development",
+    "skill_type": "Hard Skill",
+    "source": "Empirical Parenthetical Discovery"
+  },
+  "oum": {
+    "acronym": "OUM",
+    "full_name": "Oracle Unified Method",
+    "canonical_skill_name": "Oracle Unified Method",
+    "domain": "Software Engineering & IT",
+    "sub_category": "Frontend Development",
+    "skill_type": "Tool / Software",
+    "source": "Empirical Parenthetical Discovery"
+  },
+  "clm": {
+    "acronym": "CLM",
+    "full_name": "DocuSign Contract Lifecycle Management",
+    "canonical_skill_name": "DocuSign Contract Lifecycle Management",
+    "domain": "Operations & Project Management",
+    "sub_category": "Project & Agile Management (PMP, Agile, Scrum)",
+    "skill_type": "Hard Skill",
+    "source": "Empirical Parenthetical Discovery"
+  },
+  "mtpe": {
+    "acronym": "MTPE",
+    "full_name": "Machine Translation Post-Editing",
+    "canonical_skill_name": "Machine Translation Post-Editing",
+    "domain": "Operations & Project Management",
+    "sub_category": "Project & Agile Management (PMP, Agile, Scrum)",
+    "skill_type": "Hard Skill",
+    "source": "Empirical Parenthetical Discovery"
+  },
+  "tpm": {
+    "acronym": "TPM",
+    "full_name": "Total Productive Maintenance",
+    "canonical_skill_name": "Total Productive Maintenance",
+    "domain": "Manufacturing & Industrial Production",
+    "sub_category": "Industrial Machinery & Equipment Maintenance",
+    "skill_type": "Methodology",
+    "source": "Empirical Parenthetical Discovery"
+  },
+  "jda": {
+    "acronym": "JDA",
+    "full_name": "Blue Yonder",
+    "canonical_skill_name": "Blue Yonder",
+    "domain": "Supply Chain & Logistics",
+    "sub_category": "Procurement & Purchasing",
+    "skill_type": "Hard Skill",
+    "source": "Empirical Parenthetical Discovery"
+  },
+  "ciso": {
+    "acronym": "CISO",
+    "full_name": "Chief Information Security Officer",
+    "canonical_skill_name": "Chief Information Security Officer",
+    "domain": "Software Engineering & IT",
+    "sub_category": "Cybersecurity & Information Security",
+    "skill_type": "Hard Skill",
+    "source": "Empirical Parenthetical Discovery"
+  },
+  "gmaw": {
+    "acronym": "GMAW",
+    "full_name": "Gas Metal Arc Welding",
+    "canonical_skill_name": "Gas Metal Arc Welding",
+    "domain": "Engineering & Construction",
+    "sub_category": "Civil & Structural Engineering",
+    "skill_type": "Hard Skill",
+    "source": "Empirical Parenthetical Discovery"
+  },
+  "ltip": {
+    "acronym": "LTIP",
+    "full_name": "Long-Term Incentive Plans",
+    "canonical_skill_name": "Long-Term Incentive Plans",
+    "domain": "Human Resources",
+    "sub_category": "Talent Acquisition & Recruitment",
+    "skill_type": "Hard Skill",
+    "source": "Empirical Parenthetical Discovery"
+  },
+  "sbc": {
+    "acronym": "SBC",
+    "full_name": "Session Border Controller",
+    "canonical_skill_name": "Session Border Controller",
+    "domain": "Software Engineering & IT",
+    "sub_category": "Frontend Development",
+    "skill_type": "Hard Skill",
+    "source": "Empirical Parenthetical Discovery"
+  },
+  "pcs": {
+    "acronym": "PCS",
+    "full_name": "Power Conversion Systems",
+    "canonical_skill_name": "Power Conversion Systems",
+    "domain": "Engineering & Construction",
+    "sub_category": "Civil & Structural Engineering",
+    "skill_type": "Hard Skill",
+    "source": "Empirical Parenthetical Discovery"
+  },
+  "vcap": {
+    "acronym": "VCAP",
+    "full_name": "VMware Certified Advanced Professional",
+    "canonical_skill_name": "VMware Certified Advanced Professional",
+    "domain": "Software Engineering & IT",
+    "sub_category": "Frontend Development",
+    "skill_type": "Certification",
+    "source": "Empirical Parenthetical Discovery"
+  },
+  "atdd": {
+    "acronym": "ATDD",
+    "full_name": "Acceptance Test Driven Development",
+    "canonical_skill_name": "Acceptance Test Driven Development",
+    "domain": "Software Engineering & IT",
+    "sub_category": "Quality Assurance & Testing",
+    "skill_type": "Hard Skill",
+    "source": "Empirical Parenthetical Discovery"
+  },
+  "prpc": {
+    "acronym": "PRPC",
+    "full_name": "Pega Platform",
+    "canonical_skill_name": "Pega Platform",
+    "domain": "Software Engineering & IT",
+    "sub_category": "Frontend Development",
+    "skill_type": "Hard Skill",
+    "source": "Empirical Parenthetical Discovery"
+  },
+  "kone": {
+    "acronym": "KONE",
+    "full_name": "Key Opinion Network Engagement",
+    "canonical_skill_name": "Key Opinion Network Engagement",
+    "domain": "Marketing & Sales",
+    "sub_category": "B2B Sales & Business Development",
+    "skill_type": "Hard Skill",
+    "source": "Empirical Parenthetical Discovery"
+  },
+  "cbip": {
+    "acronym": "CBIP",
+    "full_name": "Certified Business Intelligence Professional",
+    "canonical_skill_name": "Certified Business Intelligence Professional",
+    "domain": "Data Science & Analytics",
+    "sub_category": "Business Intelligence & Data Analytics",
+    "skill_type": "Certification",
+    "source": "Empirical Parenthetical Discovery"
+  },
+  "tqm": {
+    "acronym": "TQM",
+    "full_name": "Total Quality Management",
+    "canonical_skill_name": "Total Quality Management",
+    "domain": "Operations & Project Management",
+    "sub_category": "Project & Agile Management (PMP, Agile, Scrum)",
+    "skill_type": "Hard Skill",
+    "source": "Empirical Parenthetical Discovery"
+  },
+  "dcim": {
+    "acronym": "DCIM",
+    "full_name": "Data Center Infrastructure Management",
+    "canonical_skill_name": "Data Center Infrastructure Management",
+    "domain": "Engineering & Construction",
+    "sub_category": "Civil & Structural Engineering",
+    "skill_type": "Hard Skill",
+    "source": "Empirical Parenthetical Discovery"
+  },
+  "cbap": {
+    "acronym": "CBAP",
+    "full_name": "Certified Business Analysis Professional",
+    "canonical_skill_name": "Certified Business Analysis Professional",
+    "domain": "Business & Finance",
+    "sub_category": "Accounting & Financial Reporting",
+    "skill_type": "Certification",
+    "source": "Empirical Parenthetical Discovery"
+  },
+  "gke": {
+    "acronym": "GKE",
+    "full_name": "Google Kubernetes Engine",
+    "canonical_skill_name": "Google Kubernetes Engine",
+    "domain": "Software Engineering & IT",
+    "sub_category": "DevOps & Cloud Infrastructure",
+    "skill_type": "Tool / Software",
+    "source": "Empirical Parenthetical Discovery"
+  },
+  "epm": {
+    "acronym": "EPM",
+    "full_name": "Enterprise Performance Management",
+    "canonical_skill_name": "Enterprise Performance Management",
+    "domain": "Human Resources",
+    "sub_category": "Performance Management & Total Rewards",
+    "skill_type": "Hard Skill",
+    "source": "Empirical Parenthetical Discovery"
+  },
+  "phr": {
+    "acronym": "PHR",
+    "full_name": "Professional in Human Resources",
+    "canonical_skill_name": "Professional in Human Resources",
+    "domain": "Human Resources",
+    "sub_category": "HR Operations & People Analytics",
+    "skill_type": "Hard Skill",
+    "source": "Empirical Parenthetical Discovery"
+  },
+  "csf": {
+    "acronym": "CSF",
+    "full_name": "NIST Cybersecurity Framework",
+    "canonical_skill_name": "NIST Cybersecurity Framework",
+    "domain": "Software Engineering & IT",
+    "sub_category": "Cybersecurity & Information Security",
+    "skill_type": "Hard Skill",
+    "source": "Empirical Parenthetical Discovery"
+  },
+  "vui": {
+    "acronym": "VUI",
+    "full_name": "Voice User Interface",
+    "canonical_skill_name": "Voice User Interface",
+    "domain": "Software Engineering & IT",
+    "sub_category": "Frontend Development",
+    "skill_type": "Hard Skill",
+    "source": "Empirical Parenthetical Discovery"
+  },
+  "cvss": {
+    "acronym": "CVSS",
+    "full_name": "Common Vulnerability Scoring System",
+    "canonical_skill_name": "Common Vulnerability Scoring System",
+    "domain": "Data Science & Analytics",
+    "sub_category": "Artificial Intelligence & Deep Learning",
+    "skill_type": "Hard Skill",
+    "source": "Empirical Parenthetical Discovery"
+  }
+}

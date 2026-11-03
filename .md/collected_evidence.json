@@ -1,0 +1,1573 @@
+{
+  "loader_all_entries_count": 3794,
+  "unique_standard_skills": 2756,
+  "multiset": {
+    "source_count": 3794,
+    "loaded_count": 3794,
+    "missing_count": 0,
+    "extra_count": 0,
+    "count_mismatches": 0,
+    "identical_duplicates_source": 0,
+    "identical_duplicates_loaded": 0
+  },
+  "api_preservation_samples": [
+    {
+      "skill": "SQL",
+      "expected": 8,
+      "entries_count": 8,
+      "assocs_count": 8,
+      "entries_match": true,
+      "assocs_match": true,
+      "associations": [
+        [
+          "Data Science & Analytics",
+          "Business Intelligence & Data Analytics",
+          "Tool / Software"
+        ],
+        [
+          "Data Science & Analytics",
+          "Data Engineering",
+          "Tool / Software"
+        ],
+        [
+          "Data Science & Analytics",
+          "Machine Learning & Data Science",
+          "Tool / Software"
+        ],
+        [
+          "Data Science & Analytics",
+          "Artificial Intelligence & Deep Learning",
+          "Tool / Software"
+        ],
+        [
+          "Data Science & Analytics",
+          "Data Governance, Quality & Architecture",
+          "Tool / Software"
+        ],
+        [
+          "Software Engineering & IT",
+          "Backend Development",
+          "Tool / Software"
+        ],
+        [
+          "Software Engineering & IT",
+          "Quality Assurance & Testing",
+          "Tool / Software"
+        ],
+        [
+          "Human Resources",
+          "HR Operations & People Analytics",
+          "Tool / Software"
+        ]
+      ]
+    },
+    {
+      "skill": "Python",
+      "expected": 10,
+      "entries_count": 10,
+      "assocs_count": 10,
+      "entries_match": true,
+      "assocs_match": true,
+      "associations": [
+        [
+          "Data Science & Analytics",
+          "Business Intelligence & Data Analytics",
+          "Tool / Software"
+        ],
+        [
+          "Data Science & Analytics",
+          "Data Engineering",
+          "Tool / Software"
+        ],
+        [
+          "Data Science & Analytics",
+          "Machine Learning & Data Science",
+          "Tool / Software"
+        ],
+        [
+          "Data Science & Analytics",
+          "Artificial Intelligence & Deep Learning",
+          "Tool / Software"
+        ],
+        [
+          "Data Science & Analytics",
+          "Data Governance, Quality & Architecture",
+          "Tool / Software"
+        ],
+        [
+          "Software Engineering & IT",
+          "Backend Development",
+          "Tool / Software"
+        ],
+        [
+          "Software Engineering & IT",
+          "DevOps & Cloud Infrastructure",
+          "Tool / Software"
+        ],
+        [
+          "Software Engineering & IT",
+          "Quality Assurance & Testing",
+          "Tool / Software"
+        ],
+        [
+          "Software Engineering & IT",
+          "Cybersecurity & Information Security",
+          "Tool / Software"
+        ],
+        [
+          "Human Resources",
+          "HR Operations & People Analytics",
+          "Tool / Software"
+        ]
+      ]
+    },
+    {
+      "skill": "Power BI",
+      "expected": 4,
+      "entries_count": 4,
+      "assocs_count": 4,
+      "entries_match": true,
+      "assocs_match": true,
+      "associations": [
+        [
+          "Data Science & Analytics",
+          "Business Intelligence & Data Analytics",
+          "Tool / Software"
+        ],
+        [
+          "Business & Finance",
+          "Corporate Finance & Financial Analysis",
+          "Tool / Software"
+        ],
+        [
+          "Human Resources",
+          "HR Operations & People Analytics",
+          "Tool / Software"
+        ],
+        [
+          "Operations & Project Management",
+          "Business Operations & Process Improvement",
+          "Tool / Software"
+        ]
+      ]
+    },
+    {
+      "skill": "Microsoft Excel",
+      "expected": 25,
+      "entries_count": 25,
+      "assocs_count": 25,
+      "entries_match": true,
+      "assocs_match": true,
+      "associations": [
+        [
+          "Data Science & Analytics",
+          "Business Intelligence & Data Analytics",
+          "Tool / Software"
+        ],
+        [
+          "Data Science & Analytics",
+          "Machine Learning & Data Science",
+          "Tool / Software"
+        ],
+        [
+          "Data Science & Analytics",
+          "Data Governance, Quality & Architecture",
+          "Tool / Software"
+        ],
+        [
+          "Software Engineering & IT",
+          "Quality Assurance & Testing",
+          "Tool / Software"
+        ],
+        [
+          "Business & Finance",
+          "Accounting & Financial Reporting",
+          "Tool / Software"
+        ],
+        [
+          "Business & Finance",
+          "Corporate Finance & Financial Analysis",
+          "Tool / Software"
+        ],
+        [
+          "Business & Finance",
+          "Auditing, Tax & Compliance",
+          "Tool / Software"
+        ],
+        [
+          "Business & Finance",
+          "Banking & Treasury Operations",
+          "Tool / Software"
+        ],
+        [
+          "Marketing & Sales",
+          "Digital Marketing & Paid Ads (Performance Media)",
+          "Tool / Software"
+        ],
+        [
+          "Marketing & Sales",
+          "Content Marketing, SEO & Social Media",
+          "Tool / Software"
+        ],
+        [
+          "Marketing & Sales",
+          "B2B Sales & Business Development",
+          "Tool / Software"
+        ],
+        [
+          "Marketing & Sales",
+          "Retail, B2C Sales & Account Management",
+          "Tool / Software"
+        ],
+        [
+          "Human Resources",
+          "Talent Acquisition & Recruitment",
+          "Tool / Software"
+        ],
+        [
+          "Human Resources",
+          "Personnel, Payroll & Egyptian Labor Law",
+          "Tool / Software"
+        ],
+        [
+          "Human Resources",
+          "Learning & Development (L&D)",
+          "Tool / Software"
+        ],
+        [
+          "Human Resources",
+          "Performance Management & Total Rewards",
+          "Tool / Software"
+        ],
+        [
+          "Human Resources",
+          "HR Operations & People Analytics",
+          "Tool / Software"
+        ],
+        [
+          "Supply Chain & Logistics",
+          "Procurement & Purchasing",
+          "Tool / Software"
+        ],
+        [
+          "Supply Chain & Logistics",
+          "Inventory & Warehouse Management",
+          "Tool / Software"
+        ],
+        [
+          "Supply Chain & Logistics",
+          "Logistics, Freight & Fleet Operations",
+          "Tool / Software"
+        ],
+        [
+          "Supply Chain & Logistics",
+          "Supply Chain Planning & Demand Forecasting",
+          "Tool / Software"
+        ],
+        [
+          "Operations & Project Management",
+          "Business Operations & Process Improvement",
+          "Tool / Software"
+        ],
+        [
+          "Operations & Project Management",
+          "Project & Agile Management (PMP, Agile, Scrum)",
+          "Tool / Software"
+        ],
+        [
+          "Operations & Project Management",
+          "Customer Service & Support Operations",
+          "Tool / Software"
+        ],
+        [
+          "Operations & Project Management",
+          "Office & Administrative Management",
+          "Tool / Software"
+        ]
+      ]
+    },
+    {
+      "skill": "JavaScript",
+      "expected": 4,
+      "entries_count": 4,
+      "assocs_count": 4,
+      "entries_match": true,
+      "assocs_match": true,
+      "associations": [
+        [
+          "Software Engineering & IT",
+          "Backend Development",
+          "Tool / Software"
+        ],
+        [
+          "Software Engineering & IT",
+          "Frontend Development",
+          "Tool / Software"
+        ],
+        [
+          "Software Engineering & IT",
+          "Mobile Development",
+          "Tool / Software"
+        ],
+        [
+          "Software Engineering & IT",
+          "Quality Assurance & Testing",
+          "Tool / Software"
+        ]
+      ]
+    }
+  ],
+  "invariant_failures_count": 0,
+  "invariant_failures": [],
+  "audit_rows_count": 90,
+  "audit_rows": [
+    [
+      3262,
+      "Egyptian Building Code (ECP)",
+      "Domain Knowledge",
+      "Hard Skill"
+    ],
+    [
+      3263,
+      "ACI 318 Standard",
+      "Domain Knowledge",
+      "Hard Skill"
+    ],
+    [
+      3264,
+      "Eurocodes",
+      "Domain Knowledge",
+      "Hard Skill"
+    ],
+    [
+      3265,
+      "Syndicate of Engineers Membership",
+      "Requirement",
+      "Hard Skill"
+    ],
+    [
+      3292,
+      "Egyptian Architectural Code",
+      "Domain Knowledge",
+      "Hard Skill"
+    ],
+    [
+      3294,
+      "Syndicate of Engineers Membership",
+      "Requirement",
+      "Hard Skill"
+    ],
+    [
+      3319,
+      "Egyptian Electrical Code",
+      "Domain Knowledge",
+      "Hard Skill"
+    ],
+    [
+      3320,
+      "NFPA 72 Standard",
+      "Domain Knowledge",
+      "Hard Skill"
+    ],
+    [
+      3321,
+      "Syndicate of Engineers Membership",
+      "Requirement",
+      "Hard Skill"
+    ],
+    [
+      3342,
+      "ASHRAE Standards",
+      "Domain Knowledge",
+      "Hard Skill"
+    ],
+    [
+      3343,
+      "NFPA 13 Standard",
+      "Domain Knowledge",
+      "Hard Skill"
+    ],
+    [
+      3344,
+      "NFPA 20 Standard",
+      "Domain Knowledge",
+      "Hard Skill"
+    ],
+    [
+      3345,
+      "Egyptian Plumbing Code",
+      "Domain Knowledge",
+      "Hard Skill"
+    ],
+    [
+      3346,
+      "Syndicate of Engineers Membership",
+      "Requirement",
+      "Hard Skill"
+    ],
+    [
+      3365,
+      "FIDIC Contracts Knowledge",
+      "Domain Knowledge",
+      "Hard Skill"
+    ],
+    [
+      3368,
+      "Syndicate of Engineers Membership",
+      "Requirement",
+      "Hard Skill"
+    ],
+    [
+      3369,
+      "Driver License for Engineers",
+      "Requirement",
+      "Hard Skill"
+    ],
+    [
+      3370,
+      "Own Car for Site Engineers",
+      "Requirement",
+      "Hard Skill"
+    ],
+    [
+      3377,
+      "Standard Operating Procedures (SOPs)",
+      "Methodology",
+      "Hard Skill"
+    ],
+    [
+      3378,
+      "Good Manufacturing Practice (GMP)",
+      "Methodology",
+      "Hard Skill"
+    ],
+    [
+      3379,
+      "Current Good Manufacturing Practice (cGMP)",
+      "Methodology",
+      "Hard Skill"
+    ],
+    [
+      3381,
+      "5S Methodology",
+      "Methodology",
+      "Hard Skill"
+    ],
+    [
+      3382,
+      "Kaizen Continuous Improvement",
+      "Methodology",
+      "Hard Skill"
+    ],
+    [
+      3383,
+      "Six Sigma",
+      "Methodology",
+      "Hard Skill"
+    ],
+    [
+      3384,
+      "Lean Manufacturing",
+      "Methodology",
+      "Hard Skill"
+    ],
+    [
+      3385,
+      "SMED Methodology",
+      "Methodology",
+      "Hard Skill"
+    ],
+    [
+      3386,
+      "Poka-Yoke",
+      "Methodology",
+      "Hard Skill"
+    ],
+    [
+      3393,
+      "Shift Flexibility Requirement",
+      "Requirement",
+      "Hard Skill"
+    ],
+    [
+      3394,
+      "Physical Stamina in Factories",
+      "Requirement",
+      "Hard Skill"
+    ],
+    [
+      3398,
+      "Total Productive Maintenance (TPM)",
+      "Methodology",
+      "Hard Skill"
+    ],
+    [
+      3461,
+      "Occupational Health & Safety (OHS)",
+      "Domain Knowledge",
+      "Hard Skill"
+    ],
+    [
+      3475,
+      "ISO 45001 Standard",
+      "Domain Knowledge",
+      "Hard Skill"
+    ],
+    [
+      3476,
+      "ISO 14001 Standard",
+      "Domain Knowledge",
+      "Hard Skill"
+    ],
+    [
+      3482,
+      "Professional Driving License Grade 2",
+      "Requirement",
+      "Hard Skill"
+    ],
+    [
+      3483,
+      "Professional Driving License Grade 3",
+      "Requirement",
+      "Hard Skill"
+    ],
+    [
+      3484,
+      "Professional Driving License Grade 1",
+      "Requirement",
+      "Hard Skill"
+    ],
+    [
+      3485,
+      "Private Driver License",
+      "Requirement",
+      "Hard Skill"
+    ],
+    [
+      3486,
+      "Motorcycle Driver License",
+      "Requirement",
+      "Hard Skill"
+    ],
+    [
+      3487,
+      "Forklift Operator License",
+      "Requirement",
+      "Hard Skill"
+    ],
+    [
+      3488,
+      "Own Car Requirement",
+      "Requirement",
+      "Hard Skill"
+    ],
+    [
+      3489,
+      "Own Motorcycle Requirement",
+      "Requirement",
+      "Hard Skill"
+    ],
+    [
+      3490,
+      "Clear Police Clearance Certificate",
+      "Requirement",
+      "Hard Skill"
+    ],
+    [
+      3491,
+      "Military Service Certificate",
+      "Requirement",
+      "Hard Skill"
+    ],
+    [
+      3502,
+      "Highway Regulations Compliance",
+      "Domain Knowledge",
+      "Hard Skill"
+    ],
+    [
+      3505,
+      "Geographic Area Knowledge",
+      "Domain Knowledge",
+      "Hard Skill"
+    ],
+    [
+      3525,
+      "Work Safety for Field Technicians",
+      "Domain Knowledge",
+      "Hard Skill"
+    ],
+    [
+      3526,
+      "Physical Stamina for Trades",
+      "Requirement",
+      "Hard Skill"
+    ],
+    [
+      3540,
+      "Physical Fitness for Security Personnel",
+      "Requirement",
+      "Hard Skill"
+    ],
+    [
+      3541,
+      "Military Service Completion Certificate",
+      "Requirement",
+      "Hard Skill"
+    ],
+    [
+      3542,
+      "Clear Police Clearance Certificate",
+      "Requirement",
+      "Hard Skill"
+    ],
+    [
+      3543,
+      "Shift Work Flexibility (12-Hour Shifts)",
+      "Requirement",
+      "Hard Skill"
+    ],
+    [
+      3557,
+      "Physical Stamina for Cleaning",
+      "Requirement",
+      "Hard Skill"
+    ],
+    [
+      3567,
+      "Medical Ethics & Confidentiality",
+      "Domain Knowledge",
+      "Hard Skill"
+    ],
+    [
+      3571,
+      "Egyptian Medical Syndicate License",
+      "Requirement",
+      "Hard Skill"
+    ],
+    [
+      3585,
+      "Egyptian Nursing Syndicate License",
+      "Requirement",
+      "Hard Skill"
+    ],
+    [
+      3586,
+      "Night Shift Flexibility in Hospitals",
+      "Requirement",
+      "Hard Skill"
+    ],
+    [
+      3587,
+      "Pharmacology Knowledge",
+      "Domain Knowledge",
+      "Hard Skill"
+    ],
+    [
+      3599,
+      "Egyptian Drug Authority (EDA) Regulations",
+      "Domain Knowledge",
+      "Hard Skill"
+    ],
+    [
+      3600,
+      "Egyptian Pharmacy Syndicate License",
+      "Requirement",
+      "Hard Skill"
+    ],
+    [
+      3601,
+      "Own Car for Medical Representatives",
+      "Requirement",
+      "Hard Skill"
+    ],
+    [
+      3618,
+      "Radiation Protection & Lead Shielding",
+      "Domain Knowledge",
+      "Hard Skill"
+    ],
+    [
+      3620,
+      "Medical Laboratory Practice License",
+      "Requirement",
+      "Hard Skill"
+    ],
+    [
+      3634,
+      "HACCP Food Safety Standards",
+      "Methodology",
+      "Hard Skill"
+    ],
+    [
+      3636,
+      "Valid Health Certificate for Food Handlers",
+      "Requirement",
+      "Hard Skill"
+    ],
+    [
+      3637,
+      "Physical Stamina in Hot Kitchens",
+      "Requirement",
+      "Hard Skill"
+    ],
+    [
+      3652,
+      "Valid Health Certificate for F&B Service",
+      "Requirement",
+      "Hard Skill"
+    ],
+    [
+      3653,
+      "Grooming & Clean Professional Appearance",
+      "Requirement",
+      "Hard Skill"
+    ],
+    [
+      3667,
+      "Fluency in English for Hospitality",
+      "Requirement",
+      "Hard Skill"
+    ],
+    [
+      3668,
+      "Second Foreign Language (Russian or German)",
+      "Requirement",
+      "Hard Skill"
+    ],
+    [
+      3669,
+      "Professional Hotel Grooming & Hospitality Attitude",
+      "Requirement",
+      "Hard Skill"
+    ],
+    [
+      3681,
+      "Egyptian Antiquities & History Knowledge",
+      "Domain Knowledge",
+      "Hard Skill"
+    ],
+    [
+      3682,
+      "Tour Guide License (Ministry of Tourism)",
+      "Requirement",
+      "Hard Skill"
+    ],
+    [
+      3686,
+      "Differentiated Instruction",
+      "Methodology",
+      "Hard Skill"
+    ],
+    [
+      3688,
+      "Interactive Teaching Methods",
+      "Methodology",
+      "Hard Skill"
+    ],
+    [
+      3695,
+      "Child and Adolescent Educational Psychology",
+      "Domain Knowledge",
+      "Hard Skill"
+    ],
+    [
+      3696,
+      "Collaborative Learning Grouping",
+      "Methodology",
+      "Hard Skill"
+    ],
+    [
+      3697,
+      "STEM Education Project Facilitation",
+      "Methodology",
+      "Hard Skill"
+    ],
+    [
+      3698,
+      "Egyptian National Curriculum Delivery",
+      "Domain Knowledge",
+      "Hard Skill"
+    ],
+    [
+      3699,
+      "Educational Degree or Diploma",
+      "Requirement",
+      "Hard Skill"
+    ],
+    [
+      3702,
+      "Communicative Language Teaching (CLT)",
+      "Methodology",
+      "Hard Skill"
+    ],
+    [
+      3716,
+      "Native-like English Fluency",
+      "Requirement",
+      "Hard Skill"
+    ],
+    [
+      3720,
+      "Bloom Taxonomy Cognitive Levels Application",
+      "Methodology",
+      "Hard Skill"
+    ],
+    [
+      3739,
+      "Multi-Sensory Teaching Techniques",
+      "Methodology",
+      "Hard Skill"
+    ],
+    [
+      3749,
+      "Egyptian Companies Law No. 159",
+      "Domain Knowledge",
+      "Hard Skill"
+    ],
+    [
+      3750,
+      "Egyptian Investment Law No. 72",
+      "Domain Knowledge",
+      "Hard Skill"
+    ],
+    [
+      3752,
+      "Corporate Governance Principles",
+      "Domain Knowledge",
+      "Hard Skill"
+    ],
+    [
+      3757,
+      "Egyptian Bar Association Membership",
+      "Requirement",
+      "Hard Skill"
+    ],
+    [
+      3770,
+      "Appellate and Cassation Court Bar Admission",
+      "Requirement",
+      "Hard Skill"
+    ],
+    [
+      3780,
+      "Egyptian Personal Data Protection Law No. 151",
+      "Domain Knowledge",
+      "Hard Skill"
+    ],
+    [
+      3783,
+      "Valid Driver License for Government Liaisons",
+      "Requirement",
+      "Hard Skill"
+    ]
+  ],
+  "unapproved_skill_types_count": 0,
+  "unapproved_skill_types": [],
+  "overlapping_results": [
+    {
+      "input": "PL/SQL",
+      "potential_conflict": "SQL",
+      "expected_behavior": "Preserve PL/SQL as independent skill",
+      "exact_matches": [],
+      "regex_matches": [],
+      "all_matched_names": [],
+      "is_protected_proper": false,
+      "is_protected_compound": true
+    },
+    {
+      "input": "T-SQL",
+      "potential_conflict": "SQL",
+      "expected_behavior": "Preserve intended skill identity",
+      "exact_matches": [
+        "Microsoft SQL Server (Data Science & Analytics)",
+        "Microsoft SQL Server (Data Science & Analytics)",
+        "Microsoft SQL Server (Software Engineering & IT)"
+      ],
+      "regex_matches": [
+        "Microsoft SQL Server (Data Science & Analytics)",
+        "Microsoft SQL Server (Data Science & Analytics)",
+        "Microsoft SQL Server (Software Engineering & IT)",
+        "SQL (Data Science & Analytics)",
+        "SQL (Data Science & Analytics)",
+        "SQL (Data Science & Analytics)",
+        "SQL (Data Science & Analytics)",
+        "SQL (Data Science & Analytics)",
+        "SQL (Software Engineering & IT)",
+        "SQL (Software Engineering & IT)",
+        "SQL (Human Resources)"
+      ],
+      "all_matched_names": [
+        "Microsoft SQL Server",
+        "SQL"
+      ],
+      "is_protected_proper": false,
+      "is_protected_compound": false
+    },
+    {
+      "input": "Oracle Database",
+      "potential_conflict": "PL/SQL",
+      "expected_behavior": "No incorrect PL/SQL mapping",
+      "exact_matches": [
+        "Oracle Database (Data Science & Analytics)",
+        "Oracle Database (Software Engineering & IT)"
+      ],
+      "regex_matches": [
+        "Oracle Database (Data Science & Analytics)",
+        "Oracle Database (Software Engineering & IT)"
+      ],
+      "all_matched_names": [
+        "Oracle Database"
+      ],
+      "is_protected_proper": false,
+      "is_protected_compound": false
+    },
+    {
+      "input": "GitHub Advanced Security",
+      "potential_conflict": "GitHub",
+      "expected_behavior": "Protect complete product name",
+      "exact_matches": [],
+      "regex_matches": [],
+      "all_matched_names": [],
+      "is_protected_proper": true,
+      "is_protected_compound": false
+    },
+    {
+      "input": "Python for Data Analysis",
+      "potential_conflict": "Python",
+      "expected_behavior": "Preserve intended ambiguity",
+      "exact_matches": [],
+      "regex_matches": [
+        "Data Analysis (Data Science & Analytics)",
+        "Python (Data Science & Analytics)",
+        "Python (Data Science & Analytics)",
+        "Python (Data Science & Analytics)",
+        "Python (Data Science & Analytics)",
+        "Python (Data Science & Analytics)",
+        "Python (Software Engineering & IT)",
+        "Python (Software Engineering & IT)",
+        "Python (Software Engineering & IT)",
+        "Python (Software Engineering & IT)",
+        "Python (Human Resources)"
+      ],
+      "all_matched_names": [
+        "Data Analysis",
+        "Python"
+      ],
+      "is_protected_proper": false,
+      "is_protected_compound": false
+    },
+    {
+      "input": "JavaScript",
+      "potential_conflict": "Java",
+      "expected_behavior": "No unintended partial match",
+      "exact_matches": [
+        "JavaScript (Software Engineering & IT)",
+        "JavaScript (Software Engineering & IT)",
+        "JavaScript (Software Engineering & IT)",
+        "JavaScript (Software Engineering & IT)"
+      ],
+      "regex_matches": [
+        "JavaScript (Software Engineering & IT)",
+        "JavaScript (Software Engineering & IT)",
+        "JavaScript (Software Engineering & IT)",
+        "JavaScript (Software Engineering & IT)"
+      ],
+      "all_matched_names": [
+        "JavaScript"
+      ],
+      "is_protected_proper": false,
+      "is_protected_compound": false
+    },
+    {
+      "input": "Node.js",
+      "potential_conflict": "JavaScript",
+      "expected_behavior": "No incorrect equivalence",
+      "exact_matches": [
+        "Node.js (Software Engineering & IT)",
+        "Node.js (Software Engineering & IT)"
+      ],
+      "regex_matches": [
+        "Node.js (Software Engineering & IT)",
+        "Node.js (Software Engineering & IT)"
+      ],
+      "all_matched_names": [
+        "Node.js"
+      ],
+      "is_protected_proper": false,
+      "is_protected_compound": false
+    },
+    {
+      "input": "Lead Generation",
+      "potential_conflict": "Lead",
+      "expected_behavior": "Preserve complete phrase",
+      "exact_matches": [
+        "Lead Generation (Marketing & Sales)"
+      ],
+      "regex_matches": [
+        "Lead Generation (Marketing & Sales)"
+      ],
+      "all_matched_names": [
+        "Lead Generation"
+      ],
+      "is_protected_proper": true,
+      "is_protected_compound": false
+    },
+    {
+      "input": "End User Support",
+      "potential_conflict": "Lead User",
+      "expected_behavior": "No false partial match",
+      "exact_matches": [],
+      "regex_matches": [],
+      "all_matched_names": [],
+      "is_protected_proper": false,
+      "is_protected_compound": false
+    },
+    {
+      "input": "Senior Living",
+      "potential_conflict": "Senior",
+      "expected_behavior": "Preserve complete phrase",
+      "exact_matches": [],
+      "regex_matches": [],
+      "all_matched_names": [],
+      "is_protected_proper": true,
+      "is_protected_compound": false
+    },
+    {
+      "input": "Senior Python Developer",
+      "potential_conflict": "Senior",
+      "expected_behavior": "Preserve seniority context",
+      "exact_matches": [],
+      "regex_matches": [
+        "Python (Data Science & Analytics)",
+        "Python (Data Science & Analytics)",
+        "Python (Data Science & Analytics)",
+        "Python (Data Science & Analytics)",
+        "Python (Data Science & Analytics)",
+        "Python (Software Engineering & IT)",
+        "Python (Software Engineering & IT)",
+        "Python (Software Engineering & IT)",
+        "Python (Software Engineering & IT)",
+        "Python (Human Resources)"
+      ],
+      "all_matched_names": [
+        "Python"
+      ],
+      "is_protected_proper": false,
+      "is_protected_compound": false
+    },
+    {
+      "input": "Master Data Management",
+      "potential_conflict": "Master",
+      "expected_behavior": "Preserve complete phrase",
+      "exact_matches": [
+        "Master Data Management (Data Science & Analytics)"
+      ],
+      "regex_matches": [
+        "Master Data Management (Data Science & Analytics)"
+      ],
+      "all_matched_names": [
+        "Master Data Management"
+      ],
+      "is_protected_proper": true,
+      "is_protected_compound": false
+    },
+    {
+      "input": "Scrum Master",
+      "potential_conflict": "Master",
+      "expected_behavior": "Preserve complete phrase",
+      "exact_matches": [],
+      "regex_matches": [],
+      "all_matched_names": [],
+      "is_protected_proper": true,
+      "is_protected_compound": false
+    },
+    {
+      "input": "Google Tag Manager (GTM)",
+      "potential_conflict": "Google Tag Manager / GTM",
+      "expected_behavior": "Preserve one logical skill",
+      "exact_matches": [],
+      "regex_matches": [
+        "Google Tag Manager (Marketing & Sales)",
+        "Google Tag Manager (Marketing & Sales)"
+      ],
+      "all_matched_names": [
+        "Google Tag Manager"
+      ],
+      "is_protected_proper": false,
+      "is_protected_compound": false
+    }
+  ],
+  "determinism_results": [
+    {
+      "input": "SQL",
+      "run_count": 10,
+      "membership_identical": true,
+      "ordering_identical": true,
+      "counts_identical": true,
+      "result": "PASS"
+    },
+    {
+      "input": "Python",
+      "run_count": 10,
+      "membership_identical": true,
+      "ordering_identical": true,
+      "counts_identical": true,
+      "result": "PASS"
+    },
+    {
+      "input": "Microsoft Excel",
+      "run_count": 10,
+      "membership_identical": true,
+      "ordering_identical": true,
+      "counts_identical": true,
+      "result": "PASS"
+    },
+    {
+      "input": "PL/SQL",
+      "run_count": 10,
+      "membership_identical": true,
+      "ordering_identical": true,
+      "counts_identical": true,
+      "result": "PASS"
+    },
+    {
+      "input": "GitHub Advanced Security",
+      "run_count": 10,
+      "membership_identical": true,
+      "ordering_identical": true,
+      "counts_identical": true,
+      "result": "PASS"
+    },
+    {
+      "input": "JavaScript",
+      "run_count": 10,
+      "membership_identical": true,
+      "ordering_identical": true,
+      "counts_identical": true,
+      "result": "PASS"
+    },
+    {
+      "input": "Scrum Master",
+      "run_count": 10,
+      "membership_identical": true,
+      "ordering_identical": true,
+      "counts_identical": true,
+      "result": "PASS"
+    },
+    {
+      "input": "Lead Generation",
+      "run_count": 10,
+      "membership_identical": true,
+      "ordering_identical": true,
+      "counts_identical": true,
+      "result": "PASS"
+    },
+    {
+      "input": "Senior Python Developer",
+      "run_count": 10,
+      "membership_identical": true,
+      "ordering_identical": true,
+      "counts_identical": true,
+      "result": "PASS"
+    }
+  ],
+  "call_sites": [
+    {
+      "file": "linguistic_intelligence\\catalog.py",
+      "line": 455,
+      "func": "get_exact_match",
+      "code": "def get_exact_match(self, text: str, context_domain: Optional[str] = None) -> Optional[StandardSkillEntry]:"
+    },
+    {
+      "file": "linguistic_intelligence\\catalog.py",
+      "line": 540,
+      "func": "get_regex_match",
+      "code": "def get_regex_match(self, text: str, context_domain: Optional[str] = None) -> Optional[StandardSkillEntry]:"
+    },
+    {
+      "file": "tests\\analyze_all_duplicates.py",
+      "line": 29,
+      "func": "get_exact_match",
+      "code": "entry = cat.get_exact_match(name)"
+    },
+    {
+      "file": "tests\\stress_test_catalog.py",
+      "line": 22,
+      "func": "get_exact_match",
+      "code": "res = cat.get_exact_match(inp)"
+    },
+    {
+      "file": "tests\\stress_test_catalog.py",
+      "line": 31,
+      "func": "get_regex_match",
+      "code": "res = cat.get_regex_match(inp)"
+    },
+    {
+      "file": "tests\\test_adversarial_m1_catalog.py",
+      "line": 128,
+      "func": "get_exact_match",
+      "code": "entry = self.loader.get_exact_match(name)"
+    },
+    {
+      "file": "tests\\test_adversarial_m1_catalog.py",
+      "line": 148,
+      "func": "get_exact_match",
+      "code": "resolved = self.loader.get_exact_match(name)"
+    },
+    {
+      "file": "tests\\test_adversarial_m1_catalog.py",
+      "line": 177,
+      "func": "get_exact_match",
+      "code": "entry = self.loader.get_exact_match(v)"
+    },
+    {
+      "file": "tests\\test_adversarial_m1_catalog.py",
+      "line": 191,
+      "func": "get_regex_match",
+      "code": "m = self.loader.get_regex_match(q)"
+    },
+    {
+      "file": "tests\\test_adversarial_m1_catalog.py",
+      "line": 201,
+      "func": "get_exact_match",
+      "code": "entry = self.loader.get_exact_match(\"SQL\")"
+    },
+    {
+      "file": "tests\\test_adversarial_m1_catalog.py",
+      "line": 217,
+      "func": "get_exact_match",
+      "code": "entry = self.loader.get_exact_match(q)"
+    },
+    {
+      "file": "tests\\test_adversarial_m1_catalog.py",
+      "line": 226,
+      "func": "get_exact_match",
+      "code": "entry = self.loader.get_exact_match(g)"
+    },
+    {
+      "file": "tests\\test_adversarial_m1_catalog.py",
+      "line": 232,
+      "func": "get_exact_match",
+      "code": "entry = self.loader.get_exact_match(j)"
+    },
+    {
+      "file": "tests\\test_adversarial_m1_catalog.py",
+      "line": 248,
+      "func": "get_exact_match",
+      "code": "self.assertIsNone(self.loader.get_exact_match(s))"
+    },
+    {
+      "file": "tests\\test_adversarial_m1_catalog.py",
+      "line": 249,
+      "func": "get_regex_match",
+      "code": "self.assertIsNone(self.loader.get_regex_match(s))"
+    },
+    {
+      "file": "tests\\test_adversarial_m1_catalog.py",
+      "line": 254,
+      "func": "get_exact_match",
+      "code": "self.assertIsNone(self.loader.get_exact_match(num))"
+    },
+    {
+      "file": "tests\\test_adversarial_m1_catalog.py",
+      "line": 255,
+      "func": "get_regex_match",
+      "code": "self.assertIsNone(self.loader.get_regex_match(num))"
+    },
+    {
+      "file": "tests\\test_adversarial_m1_catalog.py",
+      "line": 260,
+      "func": "get_exact_match",
+      "code": "self.assertIsNone(self.loader.get_exact_match(em))"
+    },
+    {
+      "file": "tests\\test_adversarial_m1_catalog.py",
+      "line": 261,
+      "func": "get_regex_match",
+      "code": "self.assertIsNone(self.loader.get_regex_match(em))"
+    },
+    {
+      "file": "tests\\test_adversarial_m1_catalog.py",
+      "line": 265,
+      "func": "get_exact_match",
+      "code": "entry = self.loader.get_exact_match(\"\\u0628\\u0627\\u064a\\u062b\\u0648\\u0646\")  # Python in Arabic"
+    },
+    {
+      "file": "tests\\test_adversarial_m1_catalog.py",
+      "line": 270,
+      "func": "get_exact_match",
+      "code": "self.assertIsNone(self.loader.get_exact_match(\"\\u0625\\u062f\\u0627\\u0631\\u0629 \\u0627\\u0644\\u0645\\u0634\\u0627\\u0631\\u064a\\u0639 \\u0627\\u0644\\u0639\\u0627\\u0645\\u0629\"))"
+    },
+    {
+      "file": "tests\\test_adversarial_m1_catalog.py",
+      "line": 278,
+      "func": "get_exact_match",
+      "code": "self.loader.get_exact_match(s)"
+    },
+    {
+      "file": "tests\\test_adversarial_m1_catalog.py",
+      "line": 284,
+      "func": "get_regex_match",
+      "code": "self.loader.get_regex_match(s)"
+    },
+    {
+      "file": "tests\\test_adversarial_m1_catalog.py",
+      "line": 292,
+      "func": "get_exact_match",
+      "code": "res_exact = self.loader.get_exact_match(huge)"
+    },
+    {
+      "file": "tests\\test_adversarial_m1_catalog.py",
+      "line": 293,
+      "func": "get_regex_match",
+      "code": "res_regex = self.loader.get_regex_match(huge)"
+    },
+    {
+      "file": "tests\\test_adversarial_m1_catalog.py",
+      "line": 304,
+      "func": "get_exact_match",
+      "code": "self.assertIsNone(self.loader.get_exact_match(None))  # type: ignore"
+    },
+    {
+      "file": "tests\\test_adversarial_m1_catalog.py",
+      "line": 305,
+      "func": "get_regex_match",
+      "code": "self.assertIsNone(self.loader.get_regex_match(None))  # type: ignore"
+    },
+    {
+      "file": "tests\\test_adversarial_m1_catalog.py",
+      "line": 322,
+      "func": "get_regex_match",
+      "code": "m_node = self.loader.get_regex_match(\"Node.js Developer\")"
+    },
+    {
+      "file": "tests\\test_adversarial_m1_catalog.py",
+      "line": 332,
+      "func": "get_exact_match",
+      "code": "entry = self.loader.get_exact_match(\"IT\")"
+    },
+    {
+      "file": "tests\\test_adversarial_m1_catalog.py",
+      "line": 355,
+      "func": "get_exact_match",
+      "code": "res = self.loader.get_exact_match(s)"
+    },
+    {
+      "file": "tests\\test_adversarial_m1_catalog.py",
+      "line": 370,
+      "func": "get_regex_match",
+      "code": "res = self.loader.get_regex_match(p)"
+    },
+    {
+      "file": "tests\\test_adversarial_m1_catalog.py",
+      "line": 384,
+      "func": "get_regex_match",
+      "code": "res = self.loader.get_regex_match(p)"
+    },
+    {
+      "file": "tests\\test_milestone1_lexicon.py",
+      "line": 185,
+      "func": "get_exact_match",
+      "code": "entry = self.loader.get_exact_match(\"Python\")"
+    },
+    {
+      "file": "tests\\test_milestone1_lexicon.py",
+      "line": 193,
+      "func": "get_exact_match",
+      "code": "entry = self.loader.get_exact_match(\"SQL\")"
+    },
+    {
+      "file": "tests\\test_milestone1_lexicon.py",
+      "line": 199,
+      "func": "get_exact_match",
+      "code": "entry = self.loader.get_exact_match(\"Microsoft Excel\")"
+    },
+    {
+      "file": "tests\\test_milestone1_lexicon.py",
+      "line": 205,
+      "func": "get_exact_match",
+      "code": "entry = self.loader.get_exact_match(\"Git\")"
+    },
+    {
+      "file": "tests\\test_milestone1_lexicon.py",
+      "line": 211,
+      "func": "get_exact_match",
+      "code": "entry = self.loader.get_exact_match(\"Docker\")"
+    },
+    {
+      "file": "tests\\test_milestone1_lexicon.py",
+      "line": 217,
+      "func": "get_exact_match",
+      "code": "entry = self.loader.get_exact_match(\"Py\")"
+    },
+    {
+      "file": "tests\\test_milestone1_lexicon.py",
+      "line": 224,
+      "func": "get_exact_match",
+      "code": "entry = self.loader.get_exact_match(\"PBI\")"
+    },
+    {
+      "file": "tests\\test_milestone1_lexicon.py",
+      "line": 229,
+      "func": "get_exact_match",
+      "code": "entry_upper = self.loader.get_exact_match(\"PYTHON\")"
+    },
+    {
+      "file": "tests\\test_milestone1_lexicon.py",
+      "line": 230,
+      "func": "get_exact_match",
+      "code": "entry_lower = self.loader.get_exact_match(\"python\")"
+    },
+    {
+      "file": "tests\\test_multi_domain_associations.py",
+      "line": 170,
+      "func": "get_exact_match",
+      "code": "se_entry = self.loader.get_exact_match(\"SQL\", context_domain=\"Software Engineering & IT\")"
+    },
+    {
+      "file": "tests\\test_multi_domain_associations.py",
+      "line": 176,
+      "func": "get_exact_match",
+      "code": "hr_entry = self.loader.get_exact_match(\"SQL\", context_domain=\"Human Resources\")"
+    },
+    {
+      "file": "tests\\test_multi_domain_associations.py",
+      "line": 182,
+      "func": "get_exact_match",
+      "code": "ds_entry = self.loader.get_exact_match(\"SQL\", context_domain=\"Data Science & Analytics\")"
+    },
+    {
+      "file": "tests\\test_multi_domain_associations.py",
+      "line": 187,
+      "func": "get_exact_match",
+      "code": "default_entry = self.loader.get_exact_match(\"SQL\")"
+    },
+    {
+      "file": "tests\\test_multi_domain_associations.py",
+      "line": 199,
+      "func": "get_exact_match",
+      "code": "exact = self.loader.get_exact_match(\"PL/SQL\")"
+    },
+    {
+      "file": "tests\\test_multi_domain_associations.py",
+      "line": 205,
+      "func": "get_regex_match",
+      "code": "regex = self.loader.get_regex_match(\"PL/SQL\")"
+    },
+    {
+      "file": "tests\\test_multi_domain_associations.py",
+      "line": 213,
+      "func": "get_exact_match",
+      "code": "exact = self.loader.get_exact_match(\"GitHub Advanced Security\")"
+    },
+    {
+      "file": "tests\\test_multi_domain_associations.py",
+      "line": 216,
+      "func": "get_regex_match",
+      "code": "regex = self.loader.get_regex_match(\"GitHub Advanced Security\")"
+    },
+    {
+      "file": "tests\\test_multi_domain_associations.py",
+      "line": 256,
+      "func": "get_exact_match",
+      "code": "self.assertIsNone(self.loader.get_exact_match(\"PL/SQL\"))"
+    },
+    {
+      "file": "tests\\test_multi_domain_associations.py",
+      "line": 257,
+      "func": "get_regex_match",
+      "code": "self.assertIsNone(self.loader.get_regex_match(\"PL/SQL\"))"
+    },
+    {
+      "file": "tests\\test_multi_domain_associations.py",
+      "line": 260,
+      "func": "get_exact_match",
+      "code": "tsql = self.loader.get_exact_match(\"T-SQL\")"
+    },
+    {
+      "file": "tests\\test_multi_domain_associations.py",
+      "line": 265,
+      "func": "get_exact_match",
+      "code": "pg = self.loader.get_exact_match(\"PostgreSQL\")"
+    },
+    {
+      "file": "tests\\test_multi_domain_associations.py",
+      "line": 276,
+      "func": "get_exact_match",
+      "code": "nodejs = self.loader.get_exact_match(\"Node.js\")"
+    },
+    {
+      "file": "tests\\test_multi_domain_associations.py",
+      "line": 279,
+      "func": "get_regex_match",
+      "code": "nodejs_regex = self.loader.get_regex_match(\"Node.js\")"
+    },
+    {
+      "file": "tests\\test_multi_domain_associations.py",
+      "line": 283,
+      "func": "get_exact_match",
+      "code": "vuejs = self.loader.get_exact_match(\"Vue.js\")"
+    },
+    {
+      "file": "tests\\test_multi_domain_associations.py",
+      "line": 288,
+      "func": "get_exact_match",
+      "code": "lg = self.loader.get_exact_match(\"Lead Generation\")"
+    },
+    {
+      "file": "tests\\test_multi_domain_associations.py",
+      "line": 295,
+      "func": "get_exact_match",
+      "code": "self.assertIsNone(self.loader.get_exact_match(\"Lead User Support\"))"
+    },
+    {
+      "file": "tests\\test_multi_domain_associations.py",
+      "line": 299,
+      "func": "get_exact_match",
+      "code": "self.assertIsNone(self.loader.get_exact_match(\"End User Support\"))"
+    },
+    {
+      "file": "tests\\test_multi_domain_associations.py",
+      "line": 309,
+      "func": "get_exact_match",
+      "code": "self.assertIsNone(self.loader.get_exact_match(\"GitHub Advanced Security\"))"
+    },
+    {
+      "file": "tests\\test_multi_domain_associations.py",
+      "line": 310,
+      "func": "get_regex_match",
+      "code": "self.assertIsNone(self.loader.get_regex_match(\"GitHub Advanced Security\"))"
+    },
+    {
+      "file": "tests\\test_multi_domain_associations.py",
+      "line": 317,
+      "func": "get_exact_match",
+      "code": "mdm = self.loader.get_exact_match(\"Master Data Management\")"
+    },
+    {
+      "file": "tests\\test_multi_domain_associations.py",
+      "line": 325,
+      "func": "get_exact_match",
+      "code": "gtm = self.loader.get_exact_match(\"Google Tag Manager\")"
+    },
+    {
+      "file": "tests\\test_tier1_feature_coverage.py",
+      "line": 48,
+      "func": "get_exact_match",
+      "code": "entry = self.catalog.get_exact_match(\"SQL\")"
+    },
+    {
+      "file": "tests\\test_tier1_feature_coverage.py",
+      "line": 54,
+      "func": "get_exact_match",
+      "code": "entry = self.catalog.get_exact_match(\"Python\")"
+    },
+    {
+      "file": "tests\\test_tier1_feature_coverage.py",
+      "line": 79,
+      "func": "get_exact_match",
+      "code": "entry = self.catalog.get_exact_match(alias)"
+    }
+  ]
+}

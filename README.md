@@ -122,6 +122,34 @@ The AI Worker operates as an autonomous background pipeline responsible for pars
 
 ---
 
+## 🔬 Deterministic Linguistic Intelligence & Multi-Domain Skill Engine (Milestone 1)
+
+The platform incorporates an in-memory, deterministic **Linguistic Intelligence Foundation** (`linguistic_intelligence/`) engineered to process messy, multi-token skill expressions extracted from Egyptian job postings while strictly preserving real-world labor-market cross-domain associations.
+
+```mermaid
+flowchart TD
+    Raw["Raw Skill Expression<br/>(e.g., 'Senior PL/SQL & Python Developer')"] --> Prep["1. Pre-Processing & Token Sanitization<br/>(Unicode NFC, Whitespace, Punctuation)"]
+    Prep --> Shield["2. Proper Noun & Compound Shield<br/>(Protects 'PL/SQL', 'GitHub Advanced Security', 'Senior Living')"]
+    Shield --> Acronym["3. Bidirectional Acronym Resolver<br/>(386 Mappings, e.g., 'GTM' <-> 'Google Tag Manager')"]
+    Acronym --> Level["4. Two-Column Level & Seniority Governance<br/>(Extracted Level vs. Normalized Proficiency Level)"]
+    Level --> Match["5. Exact & Regex Multi-Domain Catalog Match<br/>(3,794 Rows, 2,756 Unique Standard Skills)"]
+    Match --> Assoc["6. Multi-Domain Association Expansion<br/>(Preserves all 1,319 associations across 281 multi-domain skills)"]
+    Assoc --> Out["Atomic Skill Components<br/>(14-Column Output Contract + Sidecar Metadata)"]
+```
+
+### Key Architectural Capabilities
+1. **Multi-Domain Skills Preservation:** No skill is constrained to an artificial single-category silo. A skill like `SQL` or `Python` exists simultaneously across its legitimate professional domains (`Data Science & Analytics`, `Software Engineering & IT`, `Human Resources`). All **3,794 catalog rows** and **1,319 multi-domain associations** are preserved with **0 discards** (100% row-level invariant verified).
+2. **Proper Noun & Compound Shielding:** Protects sensitive technical and business phrases (`PL/SQL`, `GitHub Advanced Security`, `Scrum Master`, `Master Data Management`, `Lead Generation`, `Senior Living`) against false token-swallowing and incorrect seniority/level stripping.
+3. **Deterministic Skill Type Taxonomy:** Enforces a closed, approved 5-category vocabulary (`Hard Skill`, `Soft Skill`, `Tool / Software`, `Language`, `Certification`), with 90 legacy prototype rows deterministically normalized to `Hard Skill` with complete audit logging.
+4. **Sub-Millisecond In-Memory Performance:**
+   - Exact Lookups: **0.63 &mu;s / lookup**
+   - Regex Scans: **3.98 ms / search**
+   - Determinism: **100% bit-for-bit identical outputs** across repeated runs in membership, ordering, and association counts.
+5. **Read-Only Database Safety:** Strict zero-mutation protocol against PostgreSQL (`localhost:5432/egypt_jobs_db`).
+6. **Comprehensive Verification & Evidence:** Fully audited across 102 passing automated tests with zero failures. Complete 15-section technical audit report available at [`.md/milestone_1_final_verification_evidence_package.md`](.md/milestone_1_final_verification_evidence_package.md).
+
+---
+
 ## 🗄️ Database Architecture & Knowledge Graph
 
 The data foundation is built on **PostgreSQL** with relational integrity and vector capabilities:

@@ -179,6 +179,8 @@ output_process.txt
 scripts_archive/
 scratch/
 page_backup.tsx
+legacy_archive/
+archive_old_catalogs/
 
 # ------------------------------------------------------------------------------
 # 11. IDE & OS Specific Files

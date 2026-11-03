@@ -1,0 +1,712 @@
+<USER_REQUEST>
+# M1 FINAL VERIFICATION
+
+## Mandatory Evidence Package & Markdown Deliverable Contract
+
+**Project:** Egypt Career Map
+**Milestone:** Milestone 1 — Linguistic Intelligence Foundation
+**Current Status:** Milestone 2 STRICTLY ON HOLD
+**Task Type:** Independent Technical Verification and Evidence-Based Final Audit
+
+---
+
+# PART 1 — YOUR MISSION
+
+You previously declared Milestone 1 as PASS.
+
+Your task now is to produce a final, independently verifiable technical evidence package that allows an external reviewer to evaluate your conclusions directly, without repeatedly asking you for missing information.
+
+This is NOT a request to produce another executive summary.
+
+This is NOT a request to repeat your previous claims.
+
+This is NOT a request to defend your implementation.
+
+Your task is to establish, with reproducible evidence, whether the previous PASS verdict is technically justified.
+
+## The most important requirement
+
+You MUST produce one comprehensive Markdown report at this exact location:
+
+`d:\Hire Q Project\.md\milestone_1_final_verification_evidence_package.md`
+
+This file is the primary deliverable.
+
+It must contain all the information, evidence, code references, test results, comparisons, and final decisions specified in this document.
+
+The report must be sufficiently detailed for an independent senior engineer to review the work without asking you to explain what you did.
+
+Do not create a short summary and claim that the details are available somewhere else.
+
+Do not refer to undocumented evidence.
+
+Do not use statements such as "verified successfully" without showing exactly how verification was performed and what the actual result was.
+
+---
+
+# PART 2 — MANDATORY REPORT STRUCTURE
+
+The Markdown file MUST contain the following sections in the exact order.
+
+# 0. DOCUMENT CONTROL & EXECUTION METADATA
+
+Include:
+
+| Field                   | Required Information                 |
+| ----------------------- | ------------------------------------ |
+| Project                 | Egypt Career Map                     |
+| Milestone               | M1                                   |
+| Report Version          | Version number                       |
+| Execution Date          | Actual date and time                 |
+| Repository/Project Path | Actual path                          |
+| Git Commit              | Actual commit hash, or NOT AVAILABLE |
+| Python Version          | Actual version                       |
+| Operating System        | Actual OS                            |
+| Active Catalog Path     | Exact path                           |
+| Catalog SHA-256         | Actual computed hash                 |
+| Report Author           | Agent/team identifier                |
+| Verification Status     | Actual status                        |
+
+Also provide:
+
+* Exact list of files inspected.
+* Exact list of files modified.
+* Exact list of commands executed.
+* Any unavailable tools, permissions, or files.
+
+Do not invent metadata.
+
+If a field cannot be determined, explicitly write `NOT AVAILABLE` and explain why.
+
+# 1. EXECUTIVE VERDICT
+
+Start with a concise verdict table:
+
+| Verification Area         | Result                                             | Evidence Section | Blocking Issue |
+| ------------------------- | -------------------------------------------------- | ---------------- | -------------- |
+| Catalog Integrity         | PASS/FAIL/BLOCKED/NOT VERIFIED                     | Section X        | Details        |
+| Multi-Domain Preservation | PASS/FAIL/BLOCKED/NOT VERIFIED                     | Section X        | Details        |
+| Exact Matching            | PASS/FAIL/BLOCKED/NOT VERIFIED                     | Section X        | Details        |
+| Regex Matching            | PASS/FAIL/BLOCKED/NOT VERIFIED                     | Section X        | Details        |
+| Proper Noun Protection    | PASS/FAIL/BLOCKED/NOT VERIFIED                     | Section X        | Details        |
+| Skill Type Normalization  | PASS/FAIL/BLOCKED/NOT VERIFIED                     | Section X        | Details        |
+| Determinism               | PASS/FAIL/BLOCKED/NOT VERIFIED                     | Section X        | Details        |
+| Test Accounting           | PASS/FAIL/BLOCKED/NOT VERIFIED                     | Section X        | Details        |
+| Database Safety           | PASS/FAIL/BLOCKED/NOT VERIFIED                     | Section X        | Details        |
+| Overall M1                | PASS/FAIL/BLOCKED/PASS WITH DOCUMENTED LIMITATIONS | Final Section    | Details        |
+
+Rules:
+
+* A section cannot be marked PASS if its required evidence is missing.
+* NOT VERIFIED is not equivalent to PASS.
+* BLOCKED is not equivalent to PASS.
+* The overall verdict must respect the weakest mandatory acceptance criterion.
+* Do not issue an overall PASS if a mandatory criterion is unresolved.
+
+# 2. SOURCE CATALOG IDENTIFICATION
+
+Identify the exact authoritative catalog used by the implementation.
+
+Provide:
+
+* Exact file path.
+* File size in bytes.
+* SHA-256.
+* Encoding.
+* Delimiter.
+* Header columns.
+* Total data rows.
+* Unique standard skill names.
+* Unique association tuples.
+* Multi-association skill count.
+* Identical duplicate tuple count.
+* Domain count.
+* Subcategory count.
+* Skill type vocabulary.
+
+Include the exact command or script used to calculate these statistics.
+
+Include the actual terminal output.
+
+IMPORTANT:
+
+Do not assume that a file named `standard_skills_catalog.csv` is authoritative merely because of its filename.
+
+If multiple similar catalogs exist, identify each one and explain which exact version is loaded by the running implementation.
+
+If the authoritative source cannot be established, report this as an unresolved issue.
+
+# 3. CATALOG INTEGRITY — ROW-LEVEL PROOF
+
+This is one of the most important sections.
+
+The previous report claimed that all 3,794 catalog rows and all multi-domain associations were preserved.
+
+You must prove this with a reproducible comparison.
+
+## 3.1 Source and Loaded Statistics
+
+Provide:
+
+| Metric                    | Source Catalog | Loaded Catalog | Difference |
+| ------------------------- | -------------: | -------------: | ---------: |
+| Total Rows                |                |                |            |
+| Unique Skill Names        |                |                |            |
+| Unique Association Tuples |                |                |            |
+| Multi-Association Skills  |                |                |            |
+| Domain Count              |                |                |            |
+| Subcategory Count         |                |                |            |
+
+## 3.2 Multiset Comparison
+
+Compare these exact fields:
+
+`(standard_skill_name, domain, sub_category, skill_type)`
+
+Use a multiset comparison such as Python `collections.Counter`.
+
+Set equality alone is NOT acceptable.
+
+Provide:
+
+* Number of source tuples.
+* Number of loaded tuples.
+* Number of missing tuples.
+* Number of unexpected tuples.
+* Number of count mismatches.
+* Number of identical duplicates.
+
+Include the actual verification code directly in the Markdown report.
+
+Include the actual execution output.
+
+If differences exist, list every difference or provide a complete machine-readable artifact and explain its exact location.
+
+## 3.3 Association Preservation Through APIs
+
+Verify preservation through each relevant API:
+
+| API                      | Input           | Expected Associations | Actual Associations | Missing | Extra | Result |
+| ------------------------ | --------------- | --------------------: | ------------------: | ------: | ----: | ------ |
+| get_all_entries_by_skill | SQL             |                     8 |                     |         |       |        |
+| get_all_associations     | SQL             |                     8 |                     |         |       |        |
+| get_all_entries_by_skill | Python          |                    10 |                     |         |       |        |
+| get_all_entries_by_skill | Power BI        |                     4 |                     |         |       |        |
+| get_all_entries_by_skill | Microsoft Excel |                    25 |                     |         |       |        |
+| get_all_entries_by_skill | JavaScript      |                     4 |                     |         |       |        |
+
+Also perform a GENERAL INVARIANT TEST across every catalog skill.
+
+Do not test only the six examples above.
+
+The objective is to prove that no valid association disappears through loading, normalization, deduplication, lookup, matching, or association expansion.
+
+# 4. MULTI-DOMAIN ARCHITECTURE REVIEW
+
+Inspect the actual implementation of:
+
+* `all_entries_by_name`
+* `CANONICAL_SKILL_HOMES`
+* `exact_canonical_map`
+* `_resolve_duplicate_entries()`
+* `get_exact_match()`
+* `get_all_exact_matches()`
+* `get_regex_match()`
+* `get_all_regex_matches()`
+* `get_all_associations()`
+
+For every component, provide:
+
+| Component | Actual Responsibility | Relevant File and Lines | Potential Data Loss Risk | Verification Result |
+| --------- | --------------------- | ----------------------- | ------------------------ | ------------------- |
+
+Include the actual relevant code snippets.
+
+Do not merely describe what the function is supposed to do.
+
+Explain what the implementation actually does.
+
+## Mandatory questions
+
+1. Can one skill belong to multiple domains?
+2. Can one skill belong to multiple subcategories?
+3. Does any dictionary overwrite one association with another?
+4. Does any deduplication operation discard valid associations?
+5. Does any canonical mapping act as an exclusive filter?
+6. Does any API return only one association where multiple associations are required?
+7. Do downstream callers preserve all associations?
+8. Is there any path where an exact match succeeds but its additional associations are lost?
+9. Is there any path where regex matching succeeds but its additional associations are lost?
+
+Answer every question explicitly.
+
+# 5. EXACT MATCHING AND REGEX MATCHING AUDIT
+
+Review the actual matching implementation.
+
+Provide the matching flow as an ordered sequence:
+
+1. Input handling.
+2. Normalization.
+3. Exact matching.
+4. Alias handling.
+5. Regex matching.
+6. Overlap resolution.
+7. Proper noun protection.
+8. Association expansion.
+9. Result ordering.
+10. Final output.
+
+For each stage, identify:
+
+* Function name.
+* Source file.
+* Relevant line numbers.
+* Actual behavior.
+* Failure modes.
+* Tests covering the behavior.
+
+## 5.1 Overlapping Match Test Matrix
+
+Run the following cases:
+
+| Input                    | Potential Conflict       | Expected Behavior                       | Actual Behavior | Result |
+| ------------------------ | ------------------------ | --------------------------------------- | --------------- | ------ |
+| PL/SQL                   | SQL                      | Preserve PL/SQL as an independent skill |                 |        |
+| T-SQL                    | SQL                      | Preserve intended skill identity        |                 |        |
+| Oracle Database          | PL/SQL                   | No incorrect PL/SQL mapping             |                 |        |
+| GitHub Advanced Security | GitHub                   | Protect complete product name           |                 |        |
+| Python for Data Analysis | Python                   | Preserve intended ambiguity             |                 |        |
+| JavaScript               | Java                     | No unintended partial match             |                 |        |
+| Node.js                  | JavaScript               | No incorrect equivalence                |                 |        |
+| Lead Generation          | Lead                     | Preserve complete phrase                |                 |        |
+| End User Support         | Lead User                | No false partial match                  |                 |        |
+| Senior Living            | Senior                   | Preserve complete phrase                |                 |        |
+| Senior Python Developer  | Senior                   | Preserve seniority context              |                 |        |
+| Master Data Management   | Master                   | Preserve complete phrase                |                 |        |
+| Scrum Master             | Master                   | Preserve complete phrase                |                 |        |
+| Google Tag Manager (GTM) | Google Tag Manager / GTM | Preserve one logical skill              |                 |        |
+
+For each test, show the actual matched skill names and all returned associations.
+
+Do not report only `True` or `False`.
+
+## 5.2 Single-Match API Audit
+
+Search the entire relevant codebase for usages of:
+
+* `get_exact_match(`
+* `get_regex_match(`
+
+Provide every relevant call site.
+
+For each call site, explain whether returning a single entry is correct in that context.
+
+A single-match API is not inherently defective. However, using it where all valid associations are required is a data integrity defect.
+
+# 6. SKILL TYPE NORMALIZATION AUDIT
+
+The previous report claimed that 90 legacy entries were normalized.
+
+Produce the complete 90-row audit.
+
+Required columns:
+
+| Original Skill Name | Original Type | Normalized Type | Domain | Subcategory | Applied Rule | Justification |
+| ------------------- | ------------- | --------------- | ------ | ----------- | ------------ | ------------- |
+
+Do not provide a sample of 10 rows.
+
+Include all 90 entries.
+
+Verify:
+
+* Original values are preserved.
+* No meaningful distinction is silently erased.
+* Every normalized type belongs to the approved vocabulary.
+* The normalization rules are deterministic.
+* The transformation is semantically defensible.
+
+If any mapping is questionable, identify it.
+
+# 7. DETERMINISM AND REPRODUCIBILITY
+
+Run the same test inputs multiple times.
+
+Use at least 10 repeated executions.
+
+Compare the complete outputs.
+
+Include:
+
+| Test Input | Run Count | Membership Identical | Ordering Identical | Association Counts Identical | Result |
+| ---------- | --------: | -------------------- | ------------------ | ---------------------------- | ------ |
+
+Explain the difference between:
+
+* Deterministic membership.
+* Deterministic ordering.
+* Deterministic final output.
+
+If the engine guarantees only membership determinism, do not claim complete output determinism.
+
+Include the actual comparison code and terminal output.
+
+# 8. PROPER NOUN AND COMPOUND PROTECTION
+
+Inspect the actual protection logic in:
+
+* `proper_nouns.py`
+* `config.py`
+* `catalog.py`
+
+Provide a table:
+
+| Protected Phrase | Expected Protection | Actual Implementation | Regression Test | Result |
+| ---------------- | ------------------- | --------------------- | --------------- | ------ |
+
+Include:
+
+* PL/SQL.
+* GitHub Advanced Security.
+* Advanced Threat Protection.
+* Master Data Management.
+* Scrum Master.
+* Google Tag Manager.
+* Adobe Experience Manager.
+* Other relevant protected phrases already present in the project.
+
+Check for both false positives and false negatives.
+
+# 9. TEST ACCOUNTING — COMPLETE INVENTORY
+
+This section must account for every discovered test.
+
+Provide a complete table:
+
+| Test File | Discovered | Passed | Failed | Errors | Skipped | Not Run | Blocked | Not Applicable |
+| --------- | ---------: | -----: | -----: | -----: | ------: | ------: | ------: | -------------: |
+
+For every suite, the sum of all classifications must equal the number of discovered tests.
+
+Investigate the previously reported discrepancy where some suites had many discovered tests but zero executed and only one skipped.
+
+Specifically inspect:
+
+* `test_benchmark_spec_traces.py`
+* `test_tier2_boundary_corner.py`
+* `test_tier3_pairwise_combinations.py`
+* `test_tier4_real_world_workloads.py`
+
+For each test that was not executed, explain why.
+
+Do not omit tests from the accounting.
+
+Do not classify an unexecuted test as skipped unless the test runner actually reported it as skipped.
+
+## 9.1 Raw Terminal Evidence
+
+Include actual terminal outputs for:
+
+* Full M1 test suite.
+* Multi-domain tests.
+* Adversarial tests.
+* Lexicon tests.
+* Challenger tests.
+* Relevant regression tests.
+
+The report must show the exact commands executed and their outputs.
+
+Do not replace logs with manually rewritten summaries.
+
+You may truncate irrelevant environmental noise, but do not omit failures, warnings, errors, skipped tests, or summary lines.
+
+## 9.2 Previous Failures Investigation
+
+For each previously reported failure:
+
+| Test | Previous Result | Actual Root Cause | Evidence | Current Result | Resolution |
+| ---- | --------------- | ----------------- | -------- | -------------- | ---------- |
+
+Distinguish between:
+
+* Code defect.
+* Catalog version mismatch.
+* Missing fixture.
+* Environment issue.
+* Invalid test expectation.
+* Dependency issue.
+
+A test failure caused by a catalog version mismatch is still a failed execution. Explain the cause separately.
+
+# 10. DATABASE SAFETY AUDIT
+
+Verify that no database mutation occurred.
+
+Include:
+
+* Database name.
+* Connection mode.
+* Actual query execution mechanism.
+* Relevant code references.
+* Evidence of read-only enforcement.
+* Actual commands or logs supporting the claim.
+
+Distinguish between:
+
+* Application-level intention to use SELECT only.
+* Actual connection-level read-only enforcement.
+* Verified absence of mutation operations.
+
+Do not claim that the database is pristine unless you have sufficient evidence to support that statement.
+
+No DDL or DML operations are authorized.
+
+# 11. CODE CHANGE INVENTORY
+
+Provide a complete inventory of all files modified during this verification task.
+
+| File | Change Type | Exact Changes | Reason | Regression Risk |
+| ---- | ----------- | ------------- | ------ | --------------- |
+
+If no code changes were made, explicitly state:
+
+`No source code changes were made during this verification run.`
+
+If changes were made, include:
+
+* Before/after code snippets for relevant changes.
+* Why the change was necessary.
+* Tests executed afterward.
+* Any remaining limitations.
+
+# 12. UNRESOLVED ISSUES AND LIMITATIONS
+
+This section is mandatory even if you believe no issues remain.
+
+List every:
+
+* Confirmed defect.
+* Potential defect.
+* Unverified behavior.
+* Missing evidence.
+* Environmental limitation.
+* Incomplete test.
+* Architectural risk.
+
+Use:
+
+| ID | Issue | Severity | Evidence | Impact | Required Action | Blocking? |
+| -- | ----- | -------- | -------- | ------ | --------------- | --------- |
+
+If no issues are identified, explain the scope of the investigation and its limitations.
+
+Do not write "No issues" without explaining what was actually examined.
+
+# 13. SIX MILESTONE READINESS QUESTIONS
+
+Answer the original six readiness questions.
+
+For each answer, use this exact structure:
+
+### Question
+
+[Original question]
+
+**Verdict:** YES / NO / PARTIALLY / NOT VERIFIED
+
+**Evidence:**
+
+* Specific test.
+* Actual output.
+* Relevant source code.
+* Relevant report section.
+
+**Limitations:**
+
+* Explicit limitations or NONE IDENTIFIED WITHIN THE TESTED SCOPE.
+
+**Reasoning:**
+
+* Concise technical explanation.
+
+Do not answer "YES, 100%" without directly linking the answer to the evidence above.
+
+# 14. FINAL ACCEPTANCE GATE
+
+Provide the final decision using:
+
+* PASS
+* PASS WITH DOCUMENTED LIMITATIONS
+* FAIL
+* BLOCKED
+
+Then provide:
+
+| Acceptance Criterion | Required Condition | Actual Evidence | Result |
+| -------------------- | ------------------ | --------------- | ------ |
+
+The final verdict must be logically consistent with all previous sections.
+
+Examples:
+
+* If a mandatory association is missing, FAIL.
+* If a mandatory test was not executed and no accepted alternative evidence exists, do not claim complete verification.
+* If an important behavior cannot be inspected because source files are inaccessible, BLOCKED or NOT VERIFIED as appropriate.
+* If all mandatory requirements are met and evidence is reproducible, PASS is acceptable.
+
+Do not issue PASS because a previous report issued PASS.
+
+## Milestone 2 Authorization
+
+Regardless of the final verdict:
+
+`Milestone 2 remains STRICTLY ON HOLD.`
+
+Do not begin M2.
+
+Only the project owner can authorize the transition.
+
+---
+
+# PART 3 — DELIVERABLE QUALITY REQUIREMENTS
+
+The Markdown report must follow these requirements.
+
+## A. Evidence Must Be Inspectable
+
+Whenever possible, include:
+
+* Actual code snippets.
+* Exact file paths.
+* Line numbers.
+* Exact commands.
+* Raw terminal output.
+* Actual test results.
+* Before/after comparisons.
+* Reproducible scripts.
+
+A sentence claiming that something was verified is not evidence by itself.
+
+## B. No Placeholder Evidence
+
+Do not write:
+
+* "See terminal output."
+* "Already verified."
+* "All tests passed."
+* "The code is correct."
+* "No issues found."
+* "The catalog is preserved."
+
+Unless the relevant evidence is included directly in the report or linked to a clearly identified, accessible artifact.
+
+If evidence is too large to embed, provide:
+
+1. Exact artifact filename.
+2. Exact path.
+3. SHA-256.
+4. Description of contents.
+5. Exact command used to generate it.
+
+The primary Markdown report must still include the essential results and a representative amount of raw evidence.
+
+## C. Evidence Integrity
+
+Never fabricate:
+
+* Terminal output.
+* Test results.
+* File paths.
+* Line numbers.
+* Checksums.
+* Catalog statistics.
+* Execution dates.
+* Source code.
+
+If something was not executed, say so.
+
+If something was inferred, label it as an inference.
+
+## D. Reproducibility
+
+For every major verification, provide the exact command or script necessary to reproduce it.
+
+Prefer commands that work directly within the existing project environment.
+
+Do not introduce unnecessary dependencies.
+
+## E. Report Readability
+
+Use:
+
+* Clear Markdown headings.
+* Tables.
+* Code blocks.
+* Numbered test cases.
+* Explicit PASS/FAIL statuses.
+
+Avoid:
+
+* Repeated executive summaries.
+* Marketing language.
+* Unsupported adjectives such as "rock-solid", "perfect", "100% reliable", or "fully stable".
+* Long explanations that do not add evidence.
+
+The report should be comprehensive but not repetitive.
+
+---
+
+# PART 4 — EXECUTION INSTRUCTIONS
+
+Follow this order:
+
+1. Inspect the actual project files.
+2. Identify the authoritative catalog.
+3. Inspect the actual implementation.
+4. Inspect all relevant API call sites.
+5. Run catalog integrity comparisons.
+6. Run association preservation tests.
+7. Run matching and adversarial tests.
+8. Run skill type normalization audit.
+9. Run determinism tests.
+10. Audit all test accounting.
+11. Verify database safety.
+12. Compile the evidence.
+13. Write the final Markdown report.
+14. Re-read the completed report and verify that every required section exists and contains actual evidence.
+15. Check that all reported statistics are internally consistent.
+
+Do not begin by writing the conclusion.
+
+Do not modify code just to produce a PASS result.
+
+Do not start M2.
+
+# PART 5 — FINAL DELIVERY MESSAGE
+
+When finished, provide a concise delivery message containing:
+
+1. Exact Markdown report path.
+2. Report SHA-256.
+3. Number of sections completed.
+4. Number of mandatory verification areas passed.
+5. Number of failed or blocked areas.
+6. Final verdict.
+7. Whether any code was modified.
+8. Confirmation that M2 remains ON HOLD.
+
+The full evidence must be in the Markdown file, not in the delivery message.
+
+**Your objective is to produce one final, self-contained, independently auditable M1 verification package.**
+
+The report must make it possible for an external reviewer to inspect the evidence and reach a conclusion without requesting another round of explanations.
+
+Do not optimize for a positive verdict.
+
+Optimize for technical truth and reproducibility.
+
+</USER_REQUEST>
+<ADDITIONAL_METADATA>
+The current local time is: 2026-11-03T21:12:54+02:00.
+</ADDITIONAL_METADATA>

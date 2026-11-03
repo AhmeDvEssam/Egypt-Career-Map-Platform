@@ -1,0 +1,24 @@
+﻿skill_type;level_category;standard_level;rank_order;regex_patterns;arabic_patterns;example_usage
+Hard Skill;Technical Proficiency;Expert;5;\b(expert|mastery|deep expertise|subject matter expert|sme)\b;(خبير|محترف|إتقان تام|خبرة عميقة);Expert Python, Deep SQL expertise
+Hard Skill;Technical Proficiency;Advanced;4;\b(advanced|senior|lead|principal|high-level|extensive|solid)\b;(متقدم|أول|رئيسي|قوي|خبرة واسعة);Advanced Machine Learning, Lead Backend
+Hard Skill;Technical Proficiency;Intermediate;3;\b(intermediate|mid-level|mid-senior|mid|proficient|good command)\b;(متوسط|مستوى متوسط|جيد جدا);Intermediate Data Modeling, Mid-level React
+Hard Skill;Technical Proficiency;Beginner;2;\b(beginner|basic|junior|foundational|elementary|entry-level)\b;(مبتدئ|أساسي|مستوى أولي|مبادئ);Beginner Docker, Junior QA
+Hard Skill;Technical Proficiency;Not Specified;1;^(?!);^(?!);Python, SQL (No modifier mentioned)
+Tool / Software;Tool Competency;Expert;5;\b(expert|advanced user|power user|architect level)\b;(خبير استخدام|مستوى معماري);Expert JIRA, Power BI Architect
+Tool / Software;Tool Competency;Advanced;4;\b(advanced|hands-on expert|lead user|extensive)\b;(مستخدم متقدم|تعامل احترافي);Advanced Excel, Hands-on AWS
+Tool / Software;Tool Competency;Intermediate;3;\b(intermediate|working knowledge|proficient|daily user)\b;(معرفة عملية|متوسط|استخدام يومي);Working knowledge of Git, Proficient Figma
+Tool / Software;Tool Competency;Beginner;2;\b(basic|beginner|familiar|familiarity with|awareness)\b;(أساسيات|إلمام|معرفة مبدئية);Basic Photoshop, Familiarity with Postman
+Tool / Software;Tool Competency;Not Specified;1;^(?!);^(?!);Git, Docker (No modifier)
+Language;CEFR Framework;C2 (Mastery);6;\b(c2|mastery|near-native|native speaker|mother tongue)\b;(لغة أم|مستوى متحدث أصلي|C2);Native Arabic, C2 English
+Language;CEFR Framework;C1 (Fluent);5;\b(c1|fluent|fluency|full professional proficiency|excellent)\b;(طلاقة|ممتاز|إجادة تامة|C1);Fluent English, Excellent German
+Language;CEFR Framework;B2 (Upper Intermediate);4;\b(b2|upper-intermediate|professional working proficiency|very good)\b;(جيد جداً|مستوى مهني فوق المتوسط|B2);B2 French, Very Good English
+Language;CEFR Framework;B1 (Intermediate);3;\b(b1|intermediate|conversational|good command)\b;(جيد|مستوى محادثة|B1);Conversational Italian, B1 English
+Language;CEFR Framework;A2 (Elementary);2;\b(a2|elementary|pre-intermediate|fair)\b;(مقبول|مستوى أولي|A2);A2 German
+Language;CEFR Framework;A1 (Beginner);1;\b(a1|beginner|basic understanding)\b;(مبتدئ|مبادئ|A1);A1 Spanish
+Language;CEFR Framework;Not Specified;0;^(?!);^(?!);English, German (No level stated)
+Certification;Credential Status;Active / Certified;3;\b(certified|licensed|credentialed|chartered|passed)\b;(معتمد|حاصل على شهادة|مرخص);AWS Certified, PMP Licensed
+Certification;Credential Status;Candidate / In Progress;2;\b(candidate|in progress|studying for|pursuing)\b;(مرشح|قيد التحضير|طالب);CFA Candidate, PMP in progress
+Certification;Credential Status;Not Specified;1;^(?!);^(?!);PMP, CCNA
+Soft Skill;Demonstrated Trait;High / Strong;3;\b(strong|exceptional|proven|outstanding|excellent)\b;(قوي|استثنائي|مثبت|ممتاز);Strong Communication, Proven Leadership
+Soft Skill;Demonstrated Trait;Demonstrated;2;\b(demonstrated|solid|effective|good)\b;(فعال|جيد|مُبرهن);Effective Negotiation, Solid Teamwork
+Soft Skill;Demonstrated Trait;Not Specified;1;^(?!);^(?!);Problem Solving, Critical Thinking
