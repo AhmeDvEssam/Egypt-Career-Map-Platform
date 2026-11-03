@@ -122,6 +122,8 @@ Rusumes data and  model/
 dataset.jsonl
 data_shit.csv
 cleansing_progress.json
+cleansing_checkpoint.json
+pipeline_status.json
 all_families_dump.json
 v3_stress_validation_results.json
 v3_validation_results.json
