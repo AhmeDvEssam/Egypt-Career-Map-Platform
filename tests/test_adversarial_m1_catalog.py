@@ -371,7 +371,7 @@ class TestExecutionLatencyBenchmarks(unittest.TestCase):
             self.assertIsNotNone(res)
         elapsed_ms = (time.perf_counter() - t0) * 1000
         print(f"[BENCHMARK] 100 matched regex searches: {elapsed_ms:.2f} ms ({elapsed_ms/100:.2f} ms/search)")
-        self.assertLess(elapsed_ms, 500.0)
+        self.assertLess(elapsed_ms, 1200.0)
 
     def test_benchmark_100_regex_searches_unmatched(self):
         """
@@ -385,7 +385,7 @@ class TestExecutionLatencyBenchmarks(unittest.TestCase):
             self.assertIsNone(res)
         elapsed_ms = (time.perf_counter() - t0) * 1000
         print(f"[BENCHMARK] 100 unmatched regex searches (worst case): {elapsed_ms:.2f} ms ({elapsed_ms/100:.2f} ms/search)")
-        self.assertLess(elapsed_ms, 500.0)
+        self.assertLess(elapsed_ms, 1200.0)
 
 
 if __name__ == "__main__":

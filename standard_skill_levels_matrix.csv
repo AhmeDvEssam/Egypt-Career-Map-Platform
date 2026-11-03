@@ -1,11 +1,11 @@
 ﻿skill_type;level_category;standard_level;rank_order;regex_patterns;arabic_patterns;example_usage
 Hard Skill;Technical Proficiency;Expert;5;\b(expert|mastery|deep expertise|subject matter expert|sme)\b;(خبير|محترف|إتقان تام|خبرة عميقة);Expert Python, Deep SQL expertise
-Hard Skill;Technical Proficiency;Advanced;4;\b(advanced|senior|lead|principal|high-level|extensive|solid)\b;(متقدم|أول|رئيسي|قوي|خبرة واسعة);Advanced Machine Learning, Lead Backend
+Hard Skill;Technical Proficiency;Advanced;4;\b(advanced|principal|high-level|extensive|solid)\b;(متقدم|خبرة واسعة);Advanced Machine Learning
 Hard Skill;Technical Proficiency;Intermediate;3;\b(intermediate|mid-level|mid-senior|mid|proficient|good command)\b;(متوسط|مستوى متوسط|جيد جدا);Intermediate Data Modeling, Mid-level React
 Hard Skill;Technical Proficiency;Beginner;2;\b(beginner|basic|junior|foundational|elementary|entry-level)\b;(مبتدئ|أساسي|مستوى أولي|مبادئ);Beginner Docker, Junior QA
 Hard Skill;Technical Proficiency;Not Specified;1;^(?!);^(?!);Python, SQL (No modifier mentioned)
 Tool / Software;Tool Competency;Expert;5;\b(expert|advanced user|power user|architect level)\b;(خبير استخدام|مستوى معماري);Expert JIRA, Power BI Architect
-Tool / Software;Tool Competency;Advanced;4;\b(advanced|hands-on expert|lead user|extensive)\b;(مستخدم متقدم|تعامل احترافي);Advanced Excel, Hands-on AWS
+Tool / Software;Tool Competency;Advanced;4;\b(advanced|hands-on expert|extensive)\b;(مستخدم متقدم|تعامل احترافي);Advanced Excel, Hands-on AWS
 Tool / Software;Tool Competency;Intermediate;3;\b(intermediate|working knowledge|proficient|daily user)\b;(معرفة عملية|متوسط|استخدام يومي);Working knowledge of Git, Proficient Figma
 Tool / Software;Tool Competency;Beginner;2;\b(basic|beginner|familiar|familiarity with|awareness)\b;(أساسيات|إلمام|معرفة مبدئية);Basic Photoshop, Familiarity with Postman
 Tool / Software;Tool Competency;Not Specified;1;^(?!);^(?!);Git, Docker (No modifier)
@@ -19,6 +19,6 @@ Language;CEFR Framework;Not Specified;0;^(?!);^(?!);English, German (No level st
 Certification;Credential Status;Active / Certified;3;\b(certified|licensed|credentialed|chartered|passed)\b;(معتمد|حاصل على شهادة|مرخص);AWS Certified, PMP Licensed
 Certification;Credential Status;Candidate / In Progress;2;\b(candidate|in progress|studying for|pursuing)\b;(مرشح|قيد التحضير|طالب);CFA Candidate, PMP in progress
 Certification;Credential Status;Not Specified;1;^(?!);^(?!);PMP, CCNA
-Soft Skill;Demonstrated Trait;High / Strong;3;\b(strong|exceptional|proven|outstanding|excellent)\b;(قوي|استثنائي|مثبت|ممتاز);Strong Communication, Proven Leadership
+Soft Skill;Demonstrated Trait;High / Strong;3;\b(exceptional|proven|outstanding|excellent)\b;(استثنائي|مثبت|ممتاز);Proven Leadership, Outstanding Communication
 Soft Skill;Demonstrated Trait;Demonstrated;2;\b(demonstrated|solid|effective|good)\b;(فعال|جيد|مُبرهن);Effective Negotiation, Solid Teamwork
 Soft Skill;Demonstrated Trait;Not Specified;1;^(?!);^(?!);Problem Solving, Critical Thinking
