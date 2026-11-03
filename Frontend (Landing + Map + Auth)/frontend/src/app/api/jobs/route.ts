@@ -19,6 +19,9 @@ export async function GET(request: Request) {
     const sources = searchParams.get("sources");
     const educationLevels = searchParams.get("educationLevels");
     const salaryMin = searchParams.get("salaryMin");
+    const categories = searchParams.get("categories");
+    const skillTypes = searchParams.get("skillTypes");
+    const skillsParam = searchParams.get("skills");
 
     // Build the where clause
     const whereClause: any = {
@@ -34,9 +37,26 @@ export async function GET(request: Request) {
     }
 
     if (locations) {
-      const locList = locations.split(",").map(l => l.trim());
+      const locList = locations.split(",").map(l => l.trim()).filter(Boolean);
+      // Map common Arabic governorate names to English normalized equivalents
+      const expandedLocs: string[] = [];
+      locList.forEach(loc => {
+        expandedLocs.push(loc);
+        const lower = loc.toLowerCase();
+        if (lower === "cairo" || loc === "القاهرة") { expandedLocs.push("Cairo", "القاهرة"); }
+        if (lower === "giza" || loc === "الجيزة") { expandedLocs.push("Giza", "الجيزة"); }
+        if (lower === "alexandria" || loc === "الاسكندرية" || loc === "الإسكندرية") { expandedLocs.push("Alexandria", "الاسكندرية", "الإسكندرية"); }
+        if (lower === "port said" || loc === "بورسعيد") { expandedLocs.push("Port Said", "بورسعيد"); }
+        if (lower === "mansoura" || lower === "dakahlia" || loc === "المنصورة" || loc === "الدقهلية") { expandedLocs.push("Mansoura", "Dakahlia", "المنصورة", "الدقهلية"); }
+        if (lower === "suez" || loc === "السويس") { expandedLocs.push("Suez", "السويس"); }
+        if (lower === "asyut" || loc === "أسيوط") { expandedLocs.push("Asyut", "أسيوط"); }
+      });
+      const uniqueLocs = Array.from(new Set(expandedLocs));
       AND.push({
-        OR: locList.map(l => ({ locationRaw: { contains: l, mode: "insensitive" } }))
+        OR: uniqueLocs.flatMap(l => [
+          { locationRaw: { contains: l, mode: "insensitive" } },
+          { locationNormalized: { contains: l, mode: "insensitive" } }
+        ])
       });
     }
 
@@ -84,6 +104,117 @@ export async function GET(request: Request) {
       }
     }
 
+    if (categories) {
+      const catList = categories.split(",").map(c => c.trim()).filter(Boolean);
+      if (catList.length > 0) {
+        const catConditions: any[] = [];
+        catList.forEach(c => {
+          const lower = c.toLowerCase();
+          if (lower.includes("market") || lower.includes("sale")) {
+            catConditions.push(
+              { internal_category: { contains: "Marketing", mode: "insensitive" } },
+              { internal_category: { contains: "Sales", mode: "insensitive" } },
+              { jobCategory: { contains: "Sales", mode: "insensitive" } }
+            );
+          } else if (lower.includes("data") || lower.includes("analytic")) {
+            catConditions.push(
+              { internal_category: { contains: "Data", mode: "insensitive" } },
+              { titleRaw: { contains: "Data", mode: "insensitive" } },
+              { titleRaw: { contains: "Analyst", mode: "insensitive" } },
+              { titleRaw: { contains: "Analytics", mode: "insensitive" } }
+            );
+          } else if (lower.includes("software") || lower.includes("it") || lower.includes("tech")) {
+            catConditions.push(
+              { internal_category: { contains: "Software", mode: "insensitive" } },
+              { internal_category: { contains: "IT", mode: "insensitive" } },
+              { jobCategory: { contains: "Information Technology", mode: "insensitive" } },
+              { jobCategory: { contains: "Software", mode: "insensitive" } }
+            );
+          } else if (lower.includes("finance") || lower.includes("business") || lower.includes("accounting")) {
+            catConditions.push(
+              { internal_category: { contains: "Finance", mode: "insensitive" } },
+              { internal_category: { contains: "Business", mode: "insensitive" } },
+              { internal_category: { contains: "Accounting", mode: "insensitive" } },
+              { jobCategory: { contains: "Accounting", mode: "insensitive" } },
+              { jobCategory: { contains: "Finance", mode: "insensitive" } }
+            );
+          } else if (lower.includes("engineer") || lower.includes("construct")) {
+            catConditions.push(
+              { internal_category: { contains: "Engineering", mode: "insensitive" } },
+              { internal_category: { contains: "Construction", mode: "insensitive" } },
+              { jobCategory: { contains: "Engineering", mode: "insensitive" } }
+            );
+          } else if (lower.includes("customer") || lower.includes("support")) {
+            catConditions.push(
+              { internal_category: { contains: "Customer", mode: "insensitive" } },
+              { internal_category: { contains: "Support", mode: "insensitive" } },
+              { jobCategory: { contains: "Customer", mode: "insensitive" } }
+            );
+          } else if (lower.includes("hr") || lower.includes("human")) {
+            catConditions.push(
+              { internal_category: { contains: "Human Resources", mode: "insensitive" } },
+              { internal_category: { contains: "HR", mode: "insensitive" } },
+              { jobCategory: { contains: "Human Resources", mode: "insensitive" } }
+            );
+          } else if (lower.includes("supply") || lower.includes("logistic")) {
+            catConditions.push(
+              { internal_category: { contains: "Supply Chain", mode: "insensitive" } },
+              { internal_category: { contains: "Logistics", mode: "insensitive" } }
+            );
+          } else if (lower.includes("health") || lower.includes("medic")) {
+            catConditions.push(
+              { internal_category: { contains: "Healthcare", mode: "insensitive" } },
+              { internal_category: { contains: "Medical", mode: "insensitive" } }
+            );
+          } else if (lower.includes("project")) {
+            catConditions.push(
+              { internal_category: { contains: "Project", mode: "insensitive" } },
+              { titleRaw: { contains: "Project Manager", mode: "insensitive" } }
+            );
+          } else {
+            catConditions.push(
+              { internal_category: { contains: c, mode: "insensitive" } },
+              { jobCategory: { contains: c, mode: "insensitive" } }
+            );
+          }
+        });
+
+        if (catConditions.length > 0) {
+          AND.push({ OR: catConditions });
+        }
+      }
+    }
+
+    if (skillTypes) {
+      const stList = skillTypes.split(",").map(st => st.trim()).filter(Boolean);
+      if (stList.length > 0) {
+        AND.push({
+          skills: {
+            some: {
+              skill: {
+                skill_type: { in: stList, mode: "insensitive" }
+              }
+            }
+          }
+        });
+      }
+    }
+
+    if (skillsParam) {
+      const sList = skillsParam.split(",").map(s => s.trim()).filter(Boolean);
+      if (sList.length > 0) {
+        AND.push({
+          skills: {
+            some: {
+              skill: {
+                name: { in: sList, mode: "insensitive" }
+              }
+            }
+          }
+        });
+      }
+    }
+
     if (AND.length > 0) {
       whereClause.AND = AND;
     }
@@ -121,6 +252,7 @@ export async function GET(request: Request) {
       description: "", // Can fetch description if needed, but not required for feed
       source: job.source,
       url: job.jobUrl,
+      logo_url: (job as any).logo_url || (job as any).logoUrl || null,
     }));
 
     return NextResponse.json({ jobs: formattedJobs, total }, {

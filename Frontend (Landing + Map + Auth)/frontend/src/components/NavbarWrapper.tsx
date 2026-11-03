@@ -3,8 +3,8 @@
 import { usePathname } from "next/navigation";
 import Navbar from "./Navbar";
 
-// Pages that should NOT show the navbar
-const HIDDEN_NAVBAR_ROUTES = ["/login"];
+// Pages that should NOT show the default navbar
+const HIDDEN_NAVBAR_ROUTES = ["/login", "/intelligence"];
 
 export default function NavbarWrapper() {
   const pathname = usePathname();

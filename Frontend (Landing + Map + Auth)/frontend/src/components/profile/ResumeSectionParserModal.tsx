@@ -91,7 +91,10 @@ export default function ResumeSectionParserModal({
 
       const data = await res.json();
       if (!res.ok || !data.success) {
-        throw new Error(data.error || "Failed to parse resume");
+        throw new Error(
+          data.error ||
+            "Could not extract selectable text from this PDF. If your PDF is an image or scan, please switch to the 'Paste CV Text' tab to parse your resume directly!"
+        );
       }
 
       setParsed(data.parsed);

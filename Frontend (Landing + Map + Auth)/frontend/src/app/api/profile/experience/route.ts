@@ -22,6 +22,34 @@ export async function POST(request: Request) {
       );
     }
 
+    // Deduplication check: If an experience with the same role and company already exists, update it instead of creating duplicates
+    const existing = await prisma.userExperience.findFirst({
+      where: {
+        profileId: user.profile.id,
+        company: { equals: company.trim(), mode: "insensitive" },
+        role: { equals: role.trim(), mode: "insensitive" },
+      },
+    });
+
+    if (existing) {
+      const updatedExp = await prisma.userExperience.update({
+        where: { id: existing.id },
+        data: {
+          location: location ? location.trim() : existing.location,
+          startDate: new Date(startDate),
+          endDate: isCurrent ? null : (endDate ? new Date(endDate) : null),
+          isCurrent: Boolean(isCurrent),
+          description: description ? description.trim() : existing.description,
+        },
+      });
+
+      return NextResponse.json({
+        success: true,
+        message: "Existing experience updated successfully",
+        experience: updatedExp,
+      });
+    }
+
     const newExp = await prisma.userExperience.create({
       data: {
         profileId: user.profile.id,

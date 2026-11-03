@@ -1,0 +1,25 @@
+# Egypt ATS Company Boards Registry
+# ats: lever | workable | greenhouse | ashby | smartrecruiters | breezy
+# token: case-sensitive company identifier in the ATS endpoint URL
+# company: official display name
+# country: company headquarters / primary location (used to validate remote roles)
+# website: company official domain
+# enabled: true | false
+ats,token,company,country,website,enabled
+lever,Bosta,Bosta,Egypt,https://bosta.co,true
+workable,robusta,Robusta Studio,Egypt,https://robusta.studio,true
+workable,egyptian-banks-company-4,Egyptian Banks Company (EBC),Egypt,https://ebc-egypt.com,true
+workable,arpu-telecommunication-services,ARPU Plus,Egypt,https://arpuplus.com,true
+workable,dsquares-loyalty-dmcc,Dsquares,Egypt,https://dsquares.com,true
+ashby,thndr,Thndr,Egypt,https://thndr.app,true
+greenhouse,careem,Careem,UAE,https://careem.com,true
+greenhouse,canonical,Canonical,Global,https://canonical.com,true
+smartrecruiters,DeliveryHero,Delivery Hero (Talabat),Global,https://deliveryhero.com,true
+workable,instabug,Instabug,Egypt,https://instabug.com,true
+workable,swvl,Swvl,Egypt,https://swvl.com,true
+workable,breadfast,Breadfast,Egypt,https://breadfast.com,true
+workable,paymob,Paymob,Egypt,https://paymob.com,true
+workable,trella,Trella,Egypt,https://trella.app,true
+workable,mylo-btech,Mylo (B.TECH),Egypt,https://btech.com,true
+workable,buildinglink,BuildingLink,Egypt,https://buildinglink.com,true
+lever,Yassir,Yassir,Algeria,https://yassir.com,true

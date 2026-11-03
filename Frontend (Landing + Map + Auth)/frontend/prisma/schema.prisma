@@ -74,6 +74,7 @@ model Skill {
   domain           String?           @db.VarChar(100)
   sub_category     String?           @db.VarChar(255)
   normalized_name  String?           @db.VarChar(255)
+  skill_type       String?           @map("skill_type") @db.VarChar(255)
   jobs             JobSkill[]
   skill_aliases    skill_aliases[]
   skill_embeddings skill_embeddings?

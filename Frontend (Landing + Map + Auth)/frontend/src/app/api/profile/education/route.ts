@@ -22,6 +22,31 @@ export async function POST(request: Request) {
       );
     }
 
+    // Deduplication: If education record already exists for institution, update it
+    const existing = await prisma.userEducation.findFirst({
+      where: {
+        profileId: user.profile.id,
+        institution: { equals: institution.trim(), mode: "insensitive" },
+      },
+    });
+
+    if (existing) {
+      const updatedEdu = await prisma.userEducation.update({
+        where: { id: existing.id },
+        data: {
+          degree: degree.trim(),
+          fieldOfStudy: fieldOfStudy ? fieldOfStudy.trim() : existing.fieldOfStudy,
+          startYear: startYear ? Number(startYear) : existing.startYear,
+          endYear: endYear ? Number(endYear) : existing.endYear,
+        },
+      });
+      return NextResponse.json({
+        success: true,
+        message: "Existing education updated successfully",
+        education: updatedEdu,
+      });
+    }
+
     const newEdu = await prisma.userEducation.create({
       data: {
         profileId: user.profile.id,

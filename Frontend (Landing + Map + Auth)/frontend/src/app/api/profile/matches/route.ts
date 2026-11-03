@@ -106,8 +106,8 @@ export async function GET() {
     }
 
     const profile = user.profile;
-    const userSkills = profile.skills.map((s) => s.skillName.toLowerCase());
-    const userSkillsSet = new Set(userSkills);
+    const userSkills = profile.skills.map((s: any) => (s.skillName || s.skill?.name || "").toLowerCase()).filter(Boolean);
+    const userSkillsSet = new Set<string>(userSkills);
     const targetRole = (profile.targetRole || profile.headline || "").trim();
     const userCategory = profile.category || "";
 
@@ -162,7 +162,7 @@ export async function GET() {
         : Promise.resolve([]);
 
     // Query 3: Specific Domain Technical Skills Matches (ignoring ultra-generic stop skills)
-    const specificUserSkills = userSkills.filter((s) => !LOW_SPECIFICITY_SKILLS.has(s)).slice(0, 8);
+    const specificUserSkills = userSkills.filter((s: string) => !LOW_SPECIFICITY_SKILLS.has(s)).slice(0, 8);
     const skillJobsPromise =
       specificUserSkills.length > 0
         ? prisma.job.findMany({

@@ -3,9 +3,7 @@
 :root {
   --background: #090514;
   --foreground: #ffffff;
-
 }
-
 
 @theme inline {
   --spacing-margin-mobile: 1.5rem;
@@ -25,9 +23,6 @@
   --color-outline-variant: #49306b;
 }
 
-
-
-
 body {
   background: var(--background);
   color: var(--foreground);
@@ -36,3 +31,19 @@ body {
 
 .maplibregl-popup-content { background: transparent !important; box-shadow: none !important; padding: 0 !important; }
 .maplibregl-popup-tip { border-top-color: rgba(11,19,38,0.95) !important; border-bottom-color: rgba(11,19,38,0.95) !important; }
+
+/* Custom Thin Neon Scrollbar */
+.custom-scrollbar::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: #172a44;
+  border-radius: 9999px;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: #00e5ff;
+}
