@@ -7,14 +7,20 @@ Verifies that:
 2. Technical Proficiency levels (Expert, Advanced, Intermediate, Beginner) only match genuine
    proficiency modifiers (e.g. extensive, proficient, foundational), NEVER job seniority titles.
 3. Ambiguous modifier 'Strong' / 'قوي' is removed from Soft Skill level patterns to prevent
-   dashboard filter pollution; 'Strong Communication' preserves 'Strong' in extracted_skill_level
-   while defaulting canonical skill_level to 'Not Specified'.
+   dashboard filter pollution; 'Strong Communication' does not match High / Strong proficiency pattern.
 4. Specific adversarial career phrases evaluate deterministically:
-   - 'Senior Python Developer' -> Senior is career seniority, NOT Advanced proficiency.
-   - 'Principal Engineer' -> Principal is career seniority, NOT Advanced proficiency.
-   - 'Mid-senior Developer' -> Mid-senior is career seniority, NOT Intermediate proficiency.
-   - 'Junior QA' -> Junior is career seniority, NOT Beginner proficiency.
-   - 'Strong Communication' -> Strong is ambiguous; Soft Skill level defaults to Not Specified.
+   - 'Senior Python Developer' -> 'Senior' does NOT match Advanced proficiency.
+   - 'Principal Engineer' -> 'Principal' does NOT match Advanced proficiency.
+   - 'Mid-senior Developer' -> 'Mid-senior' does NOT match Intermediate proficiency.
+   - 'Junior QA' -> 'Junior' does NOT match Beginner proficiency.
+   - 'Strong Communication' -> 'Strong' does NOT match High / Strong soft skill trait.
+
+ARCHITECTURAL VERIFICATION SCOPE NOTE:
+This test suite verifies the Milestone 1 Lexical and Pattern Decoupling boundary:
+- Regex Decoupling: VERIFIED (Job titles do not pollute skill proficiency regex).
+- Sidecar Extraction: NOT INDEPENDENTLY VERIFIED in M1 (Extracting 'Senior' to the
+  'intra_string_seniority' Sidecar column is a Milestone 4 SidecarMetadataEngine contract
+  and will be verified upon M4 implementation).
 """
 
 import sys
