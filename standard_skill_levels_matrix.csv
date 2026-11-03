@@ -1,8 +1,8 @@
 ﻿skill_type;level_category;standard_level;rank_order;regex_patterns;arabic_patterns;example_usage
 Hard Skill;Technical Proficiency;Expert;5;\b(expert|mastery|deep expertise|subject matter expert|sme)\b;(خبير|محترف|إتقان تام|خبرة عميقة);Expert Python, Deep SQL expertise
-Hard Skill;Technical Proficiency;Advanced;4;\b(advanced|principal|high-level|extensive|solid)\b;(متقدم|خبرة واسعة);Advanced Machine Learning
-Hard Skill;Technical Proficiency;Intermediate;3;\b(intermediate|mid-level|mid-senior|mid|proficient|good command)\b;(متوسط|مستوى متوسط|جيد جدا);Intermediate Data Modeling, Mid-level React
-Hard Skill;Technical Proficiency;Beginner;2;\b(beginner|basic|junior|foundational|elementary|entry-level)\b;(مبتدئ|أساسي|مستوى أولي|مبادئ);Beginner Docker, Junior QA
+Hard Skill;Technical Proficiency;Advanced;4;\b(advanced|high-level|extensive|solid)\b;(متقدم|خبرة واسعة);Advanced Machine Learning
+Hard Skill;Technical Proficiency;Intermediate;3;\b(intermediate|proficient|good command)\b;(متوسط|مستوى متوسط|جيد جدا);Intermediate Data Modeling, Proficient React
+Hard Skill;Technical Proficiency;Beginner;2;\b(beginner|basic|foundational|elementary)\b;(مبتدئ|أساسي|مستوى أولي|مبادئ);Beginner Docker, Basic QA
 Hard Skill;Technical Proficiency;Not Specified;1;^(?!);^(?!);Python, SQL (No modifier mentioned)
 Tool / Software;Tool Competency;Expert;5;\b(expert|advanced user|power user|architect level)\b;(خبير استخدام|مستوى معماري);Expert JIRA, Power BI Architect
 Tool / Software;Tool Competency;Advanced;4;\b(advanced|hands-on expert|extensive)\b;(مستخدم متقدم|تعامل احترافي);Advanced Excel, Hands-on AWS

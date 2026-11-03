@@ -30,6 +30,7 @@ SUITE_MAP = {
     "tier3": "test_tier3_pairwise_combinations",
     "tier4": "test_tier4_real_world_workloads",
     "multidomain": "test_multi_domain_associations",
+    "seniority": "test_seniority_vs_proficiency",
 }
 
 
