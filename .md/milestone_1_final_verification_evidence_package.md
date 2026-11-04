@@ -574,7 +574,7 @@ Profiling was executed strictly via the reproducible standalone script `tests/be
 
 ## 8.4 Separation of Career Seniority from Technical Proficiency & Soft Skill Ambiguity
 
-> [!IMPORTANT]
+> [!NOTE]
 > **Architectural Verification Boundary Distinction:**
 > - **Seniority Regex Decoupling:** **VERIFIED (PASS)**. Proven via `standard_skill_levels_matrix.csv` inspection and 9 dedicated unit tests. Career seniority tokens (`Senior`, `Principal`, `Mid-senior`, `Junior`) never match technical proficiency levels or pollute canonical skill levels.
 > - **Sidecar Seniority Extraction:** **NOT INDEPENDENTLY VERIFIED (Pending Milestone 4 Implementation)**. The architectural requirement to route extracted job seniority into the Sidecar metadata column `intra_string_seniority` belongs to `SidecarMetadataEngine` (Milestone 4) and `AtomicDecompositionPipeline` (Milestone 5). Because Milestones 2 through 5 are strictly ON HOLD, end-to-end Sidecar extraction is specified in design contracts but cannot be verified at runtime until M4 is authorized and built.
@@ -891,14 +891,14 @@ aliases = [
 
 ## Milestone 2 Authorization Notice
 
-> [!IMPORTANT]
+> [!NOTE]
 > **MILESTONE 2 STATUS: AUTHORIZED & UNDERWAY**
 > 
 > In compliance with user instructions and project governance protocol:
-> * Milestone 2 implementation has NOT been started.
-> * No Milestone 2 modules or files have been created.
-> * No Milestone 2 pipeline operations have been executed.
-> * Transition to Milestone 2 requires explicit authorization from the project owner.
+> * Milestone 1 is technically verified, closed, and preserved.
+> * Milestone 2 has been officially authorized by the user.
+> * Phase 2.1 (ParenthesesTypologyEngine) is in active implementation and testing.
+> * Zero database mutations (PostgreSQL remains 100% strictly READ-ONLY).
 
 ---
 *End of Milestone 1 Final Verification Evidence Package*

@@ -16,11 +16,15 @@ Plus edge-case handlers for:
 
 CRITICAL ARCHITECTURAL PRINCIPLES:
 1. Strictly separates classification from Sidecar data persistence.
-2. Protected compounds (PL/SQL, CI/CD, UI/UX, etc.) are shielded prior to delimiter splitting.
-3. Acronym resolution is strictly Dictionary-Verified (zero unverified letter guessing).
-4. Skill levels are sourced directly from M1 standard_skill_levels_matrix.csv via CatalogLoader.
-5. Linear O(n) algorithmic parser with safe boundary guards (no silent truncation).
-6. Multi-parenthesis inputs (Python (Advanced) & Docker (Intermediate)) supported via classify_all().
+2. Clean data structures: Zero circular references (fully serializable via dataclasses.asdict).
+3. Protected compounds (PL/SQL, CI/CD, UI/UX, C/C++, etc.) are shielded prior to delimiter splitting.
+4. Delimiter splitting on '/' works with or without whitespace while compounds remain protected.
+5. Acronym resolution is strictly Dictionary-Verified (zero unverified letter guessing).
+6. Skill levels are sourced directly from M1 standard_skill_levels_matrix.csv via CatalogLoader.
+7. Both verbatim extracted level and canonical governed level are populated.
+8. Industry context requires actual sector verification (no false positives from 'Experience' suffix).
+9. Linear O(n) algorithmic parser with safe boundary guards (no silent truncation).
+10. Multi-parenthesis inputs supported via classify_all().
 """
 
 from __future__ import annotations
@@ -82,12 +86,14 @@ class TypologyClassification:
     """
     Structured classification payload produced by ParenthesesTypologyEngine.
     Preserves all textual evidence and separates classification from downstream persistence.
+    Completely non-circular: guaranteed 100% serializable via dataclasses.asdict and json.
     """
     typology: ParenthesisTypology
     raw_content: str
     base_text: str
     cleaned_base_skill: str
     extracted_level: Optional[str] = None
+    canonical_level: Optional[str] = None
     extracted_duration: Optional[str] = None
     acronym_token: Optional[str] = None
     expanded_token: Optional[str] = None
@@ -102,16 +108,16 @@ class TypologyClassification:
     raw_input: str = ""
     span_index: int = 0
     total_spans: int = 1
-    all_classifications: List["TypologyClassification"] = field(default_factory=list)
 
     def to_dict(self) -> Dict[str, Any]:
-        """Converts classification result to a standard dictionary."""
+        """Converts classification result to a standard dictionary without circular references."""
         return {
             "typology": self.typology.value,
             "raw_content": self.raw_content,
             "base_text": self.base_text,
             "cleaned_base_skill": self.cleaned_base_skill,
             "extracted_level": self.extracted_level,
+            "canonical_level": self.canonical_level,
             "extracted_duration": self.extracted_duration,
             "acronym_token": self.acronym_token,
             "expanded_token": self.expanded_token,
@@ -191,7 +197,7 @@ class ParenthesesTypologyEngine:
         "insurance", "general insurance", "life insurance",
     }
 
-    # Experience indicator suffixes in base_text
+    # Experience indicator suffixes in base_text (used to clean base skill when inner IS an industry)
     EXPERIENCE_SUFFIXES: Tuple[str, ...] = (
         "experience", "background", "sector", "industry", "domain",
         "field", "knowledge", "skills", "خبرة", "مجال", "قطاع",
@@ -314,7 +320,8 @@ class ParenthesesTypologyEngine:
         """
         Splits delimited tokens (by , ; | / and or و) while strictly shielding
         protected compounds (PL/SQL, CI/CD, UI/UX, C/C++, R&D, P&L, FP&A, TCP/IP, etc.).
-        Prevents PL/SQL from breaking into PL and SQL.
+        Handles '/' with or without surrounding whitespace (e.g. Java/Python and Java / Python)
+        while ensuring PL/SQL and CI/CD remain 100% shielded as single items.
         """
         if not text or not isinstance(text, str):
             return []
@@ -335,8 +342,8 @@ class ParenthesesTypologyEngine:
                 masked_text = masked_text[: m.start()] + placeholder + masked_text[m.end() :]
                 counter += 1
 
-        # Split on standard delimiters
-        raw_tokens = re.split(r"[,;|]|\s+/\s+|\band\b|\bor\b|\s+و\s+", masked_text, flags=re.IGNORECASE)
+        # Split on standard delimiters: comma, semicolon, pipe, slash (with/without space), and, or, Arabic و
+        raw_tokens = re.split(r"[,;|]|\s*/\s*|\band\b|\bor\b|\s+و\s+", masked_text, flags=re.IGNORECASE)
 
         # Restore shielded compound placeholders
         clean_tokens: List[str] = []
@@ -355,21 +362,21 @@ class ParenthesesTypologyEngine:
     # ─── PRIMARY CLASSIFICATION INTERFACES ────────────────────────────────────────
     def classify(self, text: str) -> TypologyClassification:
         """
-        Classifies parenthetical content from a skill string.
-        For multi-parenthesis strings, returns the primary classification and attaches
-        all individual classifications in the 'all_classifications' field.
+        Classifies parenthetical content from a single skill string.
+        For strings with multiple parentheses, returns the primary (first) classification.
+        Guaranteed non-circular: fully serializable via dataclasses.asdict and json.
+        To retrieve all individual classifications independently, call classify_all().
         """
         all_res = self.classify_all(text)
-        primary = all_res[0]
-        primary.all_classifications = all_res
-        return primary
+        return all_res[0]
 
     def classify_all(self, text: str) -> List[TypologyClassification]:
         """
         Extracts and classifies ALL parenthetical clauses in text independently.
         For 'Python (Advanced) & Docker (Intermediate)', returns 2 distinct classifications:
-          1. base='Python', level='Advanced'
-          2. base='Docker', level='Intermediate'
+          1. base='Python', level='Advanced', canonical_level='Advanced'
+          2. base='Docker', level='Intermediate', canonical_level='Intermediate'
+        Each returned object is independent with zero circular references.
         """
         if not text or not isinstance(text, str) or not text.strip():
             return [
@@ -487,7 +494,7 @@ class ParenthesesTypologyEngine:
           Step 3: Acronym Expansion (Strictly Dictionary-Verified via AcronymResolver)
           Step 4: Level or Experience Duration (Directly sourced from M1 Level Matrix)
           Step 5: Category Container (Generic tool header decomposing to shielded leaf items)
-          Step 6: Industry Context (Closed domain / subcategory / sector)
+          Step 6: Industry Context (Strictly verified against industry lookup / sector terms)
           Step 7: Version or Technical Detail
           Step 8: Sub-skill Specification (Default fallthrough with compound shielding)
         """
@@ -569,7 +576,8 @@ class ParenthesesTypologyEngine:
                 raw_content=inner_clean,
                 base_text=base_clean,
                 cleaned_base_skill=base_clean,
-                extracted_level=inner_clean,  # Verbatim extraction per Spec v3!
+                extracted_level=inner_clean,     # Exact verbatim original text per Spec v3!
+                canonical_level=level_val,       # Governed canonical standard level from matrix!
                 is_malformed=is_malformed,
                 malformed_reason=malformed_reason,
                 raw_input=raw_input,
@@ -594,7 +602,7 @@ class ParenthesesTypologyEngine:
                 total_spans=total_spans,
             )
 
-        # ── Step 6: Industry Context Check ────────────────────────────────────
+        # ── Step 6: Industry Context Check (Strict Industry Lookup) ───────────
         if self._is_industry_context(base_clean, inner_clean):
             cleaned_base = self._clean_experience_suffix(base_clean)
             return TypologyClassification(
@@ -689,15 +697,30 @@ class ParenthesesTypologyEngine:
         """
         Checks if text matches any governed skill level modifier
         sourced directly from standard_skill_levels_matrix.csv via CatalogLoader.
+        Applies word boundary and standalone token constraints so that words inside
+        longer sub-skill phrases are not falsely extracted as pure level modifiers.
         """
         if not text:
             return None
         text_clean = text.strip()
+
+        # A level modifier in parens is typically a standalone descriptor (<= 3 words)
+        words = text_clean.split()
+        if len(words) > 3:
+            return None
+
         for row in self.level_matrix_rows:
-            if row.compiled_pattern and row.compiled_pattern.search(text_clean):
-                return row.standard_level
-            if row.compiled_arabic_regex and row.compiled_arabic_regex.search(text_clean):
-                return row.standard_level
+            if row.compiled_pattern:
+                m = row.compiled_pattern.search(text_clean)
+                if m:
+                    # Matched string must cover the whole token or represent the core modifier
+                    matched_str = m.group(0).strip().lower()
+                    if matched_str == text_clean.lower() or len(words) <= 2:
+                        return row.standard_level
+            if row.compiled_arabic_regex:
+                m_ar = row.compiled_arabic_regex.search(text_clean)
+                if m_ar:
+                    return row.standard_level
         return None
 
     def _check_category_container(
@@ -727,28 +750,28 @@ class ParenthesesTypologyEngine:
         return None
 
     def _is_industry_context(self, base: str, inner: str) -> bool:
-        """Determines if inner_content represents an industry sector or domain context."""
+        """
+        Determines if inner_content represents a verified industry sector or domain context.
+        STRICT POLICY: Requires actual industry verification. The mere presence of an
+        'Experience' suffix on the base skill does NOT automatically make arbitrary content
+        an industry context.
+        """
         if not inner:
             return False
 
         inner_lower = inner.lower().strip()
 
-        # Direct match in industry lookup (domains, subcategories, additional sectors)
+        # 1. Direct match in industry lookup (closed domains, subcategories, additional sectors)
         if inner_lower in self._industry_lookup:
             return True
 
-        # Check for sector slash e.g. "Hospitality/Leisure"
+        # 2. Check for sector slash e.g. "Hospitality/Leisure"
         parts = [p.strip() for p in re.split(r"[/,&]", inner_lower) if p.strip()]
-        if any(p in self._industry_lookup for p in parts):
+        if len(parts) > 1 and any(p in self._industry_lookup for p in parts):
             return True
 
-        # Check if base ends with experience suffix (e.g. "Sales Experience")
-        base_lower = base.lower()
-        has_exp_suffix = any(
-            base_lower.endswith(sfx) for sfx in self.EXPERIENCE_SUFFIXES
-        )
-
-        if has_exp_suffix:
+        # 3. Check for explicit sector/industry qualifier keywords
+        if re.search(r"\b(?:sector|industry|field|قطاع|صناعة)\b", inner_lower):
             return True
 
         return False

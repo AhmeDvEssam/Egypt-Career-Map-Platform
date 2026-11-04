@@ -3,11 +3,15 @@ Unit Tests for Milestone 2: Parentheses Typology Engine
 =======================================================
 Validates the 5-way parenthetical classification, priority decision matrix,
 linear O(n) algorithmic parsing, protected compound shielding inside parens,
-strict dictionary-only acronym policy, M1 matrix level sourcing,
+strict dictionary-only acronym policy, M1 matrix level sourcing (both verbatim
+and canonical), Arabic levels, word boundary safety, non-circular serialization,
 multi-parenthesis parsing, and boundary safety.
 """
 
+import dataclasses
+import json
 import unittest
+
 from linguistic_intelligence.parentheses import (
     ParenthesesTypologyEngine,
     ParenthesisSpan,
@@ -23,12 +27,42 @@ class TestMilestone2ParenthesesTypology(unittest.TestCase):
     def setUpClass(cls):
         cls.engine = ParenthesesTypologyEngine()
 
-    # ─── 1. CASE 1: LEVEL OR EXPERIENCE (Proficiency from M1 Matrix) ──────────
+    # ─── 1. CIRCULAR REFERENCE & SERIALIZATION SAFETY ─────────────────────────
+    def test_00a_no_circular_reference_asdict(self):
+        """TypologyClassification must be 100% serializable via dataclasses.asdict without recursion."""
+        res = self.engine.classify("Python (Advanced)")
+        d = dataclasses.asdict(res)
+        self.assertIsInstance(d, dict)
+        self.assertEqual(d["extracted_level"], "Advanced")
+        self.assertEqual(d["canonical_level"], "Advanced")
+        # Ensure json serialization also succeeds
+        json_str = json.dumps(d)
+        self.assertIn('"extracted_level": "Advanced"', json_str)
+
+    def test_00b_no_circular_reference_multi_clause(self):
+        """Multi-clause classify_all results must all be independently serializable without recursion."""
+        results = self.engine.classify_all("Python (Advanced) & Docker (Intermediate)")
+        self.assertEqual(len(results), 2)
+        for r in results:
+            d = dataclasses.asdict(r)
+            self.assertIsInstance(d, dict)
+            json_str = json.dumps(d)
+            self.assertIsInstance(json_str, str)
+
+    def test_00c_no_circular_reference_plain_text(self):
+        """Plain skill without parentheses must be cleanly serializable."""
+        res = self.engine.classify("PostgreSQL")
+        d = dataclasses.asdict(res)
+        self.assertIsInstance(d, dict)
+        self.assertEqual(d["typology"], "NONE")
+
+    # ─── 2. CASE 1: LEVEL OR EXPERIENCE (Proficiency from M1 Matrix) ──────────
     def test_01_level_advanced(self):
-        """'Microsoft Office (Advanced)' extracts Advanced level and preserves base."""
+        """'Microsoft Office (Advanced)' extracts verbatim Advanced and canonical Advanced."""
         res = self.engine.classify("Microsoft Office (Advanced)")
         self.assertEqual(res.typology, ParenthesisTypology.LEVEL_OR_EXPERIENCE)
         self.assertEqual(res.extracted_level, "Advanced")
+        self.assertEqual(res.canonical_level, "Advanced")
         self.assertEqual(res.base_text, "Microsoft Office")
         self.assertEqual(res.cleaned_base_skill, "Microsoft Office")
         self.assertFalse(res.is_malformed)
@@ -38,6 +72,7 @@ class TestMilestone2ParenthesesTypology(unittest.TestCase):
         res = self.engine.classify("SQL (Intermediate)")
         self.assertEqual(res.typology, ParenthesisTypology.LEVEL_OR_EXPERIENCE)
         self.assertEqual(res.extracted_level, "Intermediate")
+        self.assertEqual(res.canonical_level, "Intermediate")
         self.assertEqual(res.base_text, "SQL")
 
     def test_03_level_beginner(self):
@@ -45,6 +80,7 @@ class TestMilestone2ParenthesesTypology(unittest.TestCase):
         res = self.engine.classify("Python (Beginner)")
         self.assertEqual(res.typology, ParenthesisTypology.LEVEL_OR_EXPERIENCE)
         self.assertEqual(res.extracted_level, "Beginner")
+        self.assertEqual(res.canonical_level, "Beginner")
         self.assertEqual(res.base_text, "Python")
 
     def test_04_level_expert(self):
@@ -52,6 +88,7 @@ class TestMilestone2ParenthesesTypology(unittest.TestCase):
         res = self.engine.classify("Linux (Expert)")
         self.assertEqual(res.typology, ParenthesisTypology.LEVEL_OR_EXPERIENCE)
         self.assertEqual(res.extracted_level, "Expert")
+        self.assertEqual(res.canonical_level, "Expert")
         self.assertEqual(res.base_text, "Linux")
 
     def test_05_level_cefr_b2(self):
@@ -59,6 +96,7 @@ class TestMilestone2ParenthesesTypology(unittest.TestCase):
         res = self.engine.classify("English (B2)")
         self.assertEqual(res.typology, ParenthesisTypology.LEVEL_OR_EXPERIENCE)
         self.assertEqual(res.extracted_level, "B2")
+        self.assertEqual(res.canonical_level, "B2 (Upper Intermediate)")
         self.assertEqual(res.base_text, "English")
 
     def test_06_level_certification_status_certified(self):
@@ -66,23 +104,71 @@ class TestMilestone2ParenthesesTypology(unittest.TestCase):
         res = self.engine.classify("PMP (Certified)")
         self.assertEqual(res.typology, ParenthesisTypology.LEVEL_OR_EXPERIENCE)
         self.assertEqual(res.extracted_level, "Certified")
+        self.assertEqual(res.canonical_level, "Active / Certified")
         self.assertEqual(res.base_text, "PMP")
 
+    def test_06b_level_certification_status_candidate(self):
+        """'CPA (Candidate)' extracts Candidate / In Progress from M1 matrix."""
+        res = self.engine.classify("CPA (Candidate)")
+        self.assertEqual(res.typology, ParenthesisTypology.LEVEL_OR_EXPERIENCE)
+        self.assertEqual(res.extracted_level, "Candidate")
+        self.assertEqual(res.canonical_level, "Candidate / In Progress")
+
     def test_07_level_verbatim_casing_preserved(self):
-        """Verbatim original casing preserved in extracted_level per Spec v3."""
+        """Verbatim original casing preserved in extracted_level per Spec v3, canonical mapped."""
         res = self.engine.classify("Docker (working knowledge)")
         self.assertEqual(res.typology, ParenthesisTypology.LEVEL_OR_EXPERIENCE)
         self.assertEqual(res.extracted_level, "working knowledge")
+        self.assertEqual(res.canonical_level, "Intermediate")
 
     def test_07b_level_matrix_sourcing_verified(self):
         """Level matching is sourced directly from M1 standard_skill_levels_matrix.csv."""
         self.assertGreaterEqual(len(self.engine.level_matrix_rows), 15)
-        # Test that 'proficient' matches via M1 matrix
         res = self.engine.classify("Excel (proficient)")
         self.assertEqual(res.typology, ParenthesisTypology.LEVEL_OR_EXPERIENCE)
         self.assertEqual(res.extracted_level, "proficient")
+        self.assertEqual(res.canonical_level, "Intermediate")
 
-    # ─── 2. CASE 1: LEVEL OR EXPERIENCE (Duration) ────────────────────────────
+    def test_07c_arabic_level_matrix_matching(self):
+        """Arabic level terms from M1 matrix are recognized accurately."""
+        res_adv = self.engine.classify("بايثون (متقدم)")
+        self.assertEqual(res_adv.typology, ParenthesisTypology.LEVEL_OR_EXPERIENCE)
+        self.assertEqual(res_adv.canonical_level, "Advanced")
+
+        res_mid = self.engine.classify("إكسيل (متوسط)")
+        self.assertEqual(res_mid.typology, ParenthesisTypology.LEVEL_OR_EXPERIENCE)
+        self.assertEqual(res_mid.canonical_level, "Intermediate")
+
+        res_beg = self.engine.classify("سيكويل (مبتدئ)")
+        self.assertEqual(res_beg.typology, ParenthesisTypology.LEVEL_OR_EXPERIENCE)
+        self.assertEqual(res_beg.canonical_level, "Beginner")
+
+        res_exp = self.engine.classify("لينكس (خبير)")
+        self.assertEqual(res_exp.typology, ParenthesisTypology.LEVEL_OR_EXPERIENCE)
+        self.assertEqual(res_exp.canonical_level, "Expert")
+
+    def test_07d_senior_and_lead_never_extracted_as_levels(self):
+        """Senior and Lead are role hierarchies, NEVER technical skill levels."""
+        res_sr = self.engine.classify("Python (Senior)")
+        self.assertNotEqual(res_sr.typology, ParenthesisTypology.LEVEL_OR_EXPERIENCE)
+
+        res_lead = self.engine.classify("Developer (Lead)")
+        self.assertNotEqual(res_lead.typology, ParenthesisTypology.LEVEL_OR_EXPERIENCE)
+
+        res_princ = self.engine.classify("Architect (Principal)")
+        self.assertNotEqual(res_princ.typology, ParenthesisTypology.LEVEL_OR_EXPERIENCE)
+
+    def test_07e_word_boundary_safety_in_parentheses(self):
+        """Words inside longer domain specifications must NOT trigger false level extraction."""
+        res = self.engine.classify("Cloud Architecture (Expertise in Kubernetes)")
+        self.assertEqual(res.typology, ParenthesisTypology.SUB_SKILL_SPECIFICATION)
+        self.assertIsNone(res.canonical_level)
+
+        res2 = self.engine.classify("Management (Leadership Skills)")
+        self.assertEqual(res2.typology, ParenthesisTypology.SUB_SKILL_SPECIFICATION)
+        self.assertIsNone(res2.canonical_level)
+
+    # ─── 3. CASE 1: LEVEL OR EXPERIENCE (Duration) ────────────────────────────
     def test_08_duration_years(self):
         """'Java (5+ years)' extracts duration without corrupting skill."""
         res = self.engine.classify("Java (5+ years)")
@@ -104,7 +190,7 @@ class TestMilestone2ParenthesesTypology(unittest.TestCase):
         self.assertEqual(res.typology, ParenthesisTypology.LEVEL_OR_EXPERIENCE)
         self.assertEqual(res.extracted_duration, "3-5 years")
 
-    # ─── 3. CASE 2: ACRONYM EXPANSION (Dictionary-Verified Only) ──────────────
+    # ─── 4. CASE 2: ACRONYM EXPANSION (Dictionary-Verified Only) ──────────────
     def test_11_acronym_full_to_acronym(self):
         """'Amazon Web Services (AWS)' resolves via verified AcronymResolver dictionary."""
         res = self.engine.classify("Amazon Web Services (AWS)")
@@ -142,7 +228,7 @@ class TestMilestone2ParenthesesTypology(unittest.TestCase):
         res = self.engine.classify("Service (AWS)")
         self.assertNotEqual(res.typology, ParenthesisTypology.ACRONYM_EXPANSION)
 
-    # ─── 4. CASE 3: CATEGORY CONTAINER (Compound-Shielded) ────────────────────
+    # ─── 5. CASE 3: CATEGORY CONTAINER & COMPOUND SHIELDING ───────────────────
     def test_14_category_container_dev_tools(self):
         """'Development Tools (Git, Jira)' decomposes into leaf items with container preserved."""
         res = self.engine.classify("Development Tools (Git, Jira)")
@@ -173,6 +259,23 @@ class TestMilestone2ParenthesesTypology(unittest.TestCase):
         self.assertIn("C/C++", res.leaf_tokens)
         self.assertNotIn("C++", res.leaf_tokens)
 
+    def test_14d_split_tokens_safely_slash_with_and_without_spaces(self):
+        """
+        Tests splitting on slash with/without whitespace while compounds remain shielded:
+          PL/SQL       -> ['PL/SQL']
+          CI/CD        -> ['CI/CD']
+          Java/Python  -> ['Java', 'Python']
+          Java / Python-> ['Java', 'Python']
+          UI/UX        -> ['UI/UX']
+          C/Python     -> ['C', 'Python']
+        """
+        self.assertEqual(self.engine.split_tokens_safely("PL/SQL"), ["PL/SQL"])
+        self.assertEqual(self.engine.split_tokens_safely("CI/CD"), ["CI/CD"])
+        self.assertEqual(self.engine.split_tokens_safely("Java/Python"), ["Java", "Python"])
+        self.assertEqual(self.engine.split_tokens_safely("Java / Python"), ["Java", "Python"])
+        self.assertEqual(self.engine.split_tokens_safely("UI/UX"), ["UI/UX"])
+        self.assertEqual(self.engine.split_tokens_safely("C/Python"), ["C", "Python"])
+
     def test_15_category_container_programming_languages(self):
         """'Programming Languages (Python, Java, Go)' extracts 3 leaf tokens."""
         res = self.engine.classify("Programming Languages (Python, Java, Go)")
@@ -188,7 +291,7 @@ class TestMilestone2ParenthesesTypology(unittest.TestCase):
         self.assertIn("PostgreSQL", res.leaf_tokens)
         self.assertIn("MySQL", res.leaf_tokens)
 
-    # ─── 5. CASE 4: INDUSTRY CONTEXT ──────────────────────────────────────────
+    # ─── 6. CASE 4: INDUSTRY CONTEXT (Strict Sector Verification) ─────────────
     def test_17_industry_context_transportation(self):
         """'Sales Experience (Transportation & Logistics)' isolates sector and cleans base."""
         res = self.engine.classify("Sales Experience (Transportation & Logistics)")
@@ -209,7 +312,16 @@ class TestMilestone2ParenthesesTypology(unittest.TestCase):
         self.assertEqual(res.typology, ParenthesisTypology.INDUSTRY_CONTEXT)
         self.assertEqual(res.industry_context, "Healthcare & Medical Sciences")
 
-    # ─── 6. CASE 5: SUB-SKILL SPECIFICATION (Compound-Shielded) ───────────────
+    def test_19b_industry_context_false_positive_elimination(self):
+        """
+        'Sales Experience (Cost & Quantity Tracking)' must NOT be classified as INDUSTRY_CONTEXT.
+        Cost & Quantity Tracking is a functional sub-skill, not an industry sector.
+        """
+        res = self.engine.classify("Sales Experience (Cost & Quantity Tracking)")
+        self.assertEqual(res.typology, ParenthesisTypology.SUB_SKILL_SPECIFICATION)
+        self.assertIsNone(res.industry_context)
+
+    # ─── 7. CASE 5: SUB-SKILL SPECIFICATION (Compound-Shielded) ───────────────
     def test_20_subskill_specification_excel_cost_tracking(self):
         """'Advanced Excel (Cost & Quantity Tracking)' retains specification."""
         res = self.engine.classify("Advanced Excel (Cost & Quantity Tracking)")
@@ -236,7 +348,7 @@ class TestMilestone2ParenthesesTypology(unittest.TestCase):
         self.assertIn("CI/CD", res.sub_skills)
         self.assertIn("Kubernetes", res.sub_skills)
 
-    # ─── 7. REGULATORY FORMS & STATUTORY SPECIFICATIONS ───────────────────────
+    # ─── 8. REGULATORY FORMS & STATUTORY SPECIFICATIONS ───────────────────────
     def test_23_regulatory_form_english(self):
         """'Social Insurance (Forms 1, 2, 6)' detected as regulatory form, not noise numbers."""
         res = self.engine.classify("Social Insurance (Forms 1, 2, 6)")
@@ -251,7 +363,7 @@ class TestMilestone2ParenthesesTypology(unittest.TestCase):
         self.assertEqual(res.typology, ParenthesisTypology.REGULATORY_FORM)
         self.assertTrue(res.is_regulatory_form)
 
-    # ─── 8. VERSION & TECHNICAL DETAILS ───────────────────────────────────────
+    # ─── 9. VERSION & TECHNICAL DETAILS ───────────────────────────────────────
     def test_25_version_detail_python_3x(self):
         """'Python (3.x)' detected as technical version detail."""
         res = self.engine.classify("Python (3.x)")
@@ -264,7 +376,7 @@ class TestMilestone2ParenthesesTypology(unittest.TestCase):
         self.assertEqual(res.typology, ParenthesisTypology.VERSION_OR_TECH_DETAIL)
         self.assertEqual(res.cleaned_base_skill, "Angular")
 
-    # ─── 9. EMPTY & NOISE PARENTHESES ─────────────────────────────────────────
+    # ─── 10. EMPTY & NOISE PARENTHESES ────────────────────────────────────────
     def test_27_empty_parentheses(self):
         """'Python ()' is classified as EMPTY_OR_NOISE and base skill cleaned."""
         res = self.engine.classify("Python ()")
@@ -277,7 +389,7 @@ class TestMilestone2ParenthesesTypology(unittest.TestCase):
         self.assertEqual(res.typology, ParenthesisTypology.EMPTY_OR_NOISE)
         self.assertEqual(res.cleaned_base_skill, "DevOps")
 
-    # ─── 10. MALFORMED & UNBALANCED PARENTHESES (Linear O(n) Scanner) ─────────
+    # ─── 11. MALFORMED & UNBALANCED PARENTHESES (Linear O(n) Scanner) ────────
     def test_29_unclosed_opening_parenthesis(self):
         """'Python (Advanced' flagged as malformed without crashing or catastrophic backtracking."""
         res = self.engine.classify("Python (Advanced")
@@ -305,7 +417,7 @@ class TestMilestone2ParenthesesTypology(unittest.TestCase):
         self.assertEqual(spans[0].inner_content, "Advanced")
         self.assertEqual(spans[1].inner_content, "Intermediate")
 
-    # ─── 11. MULTI-PARENTHESIS CLASSIFY_ALL INTERFACE ─────────────────────────
+    # ─── 12. MULTI-PARENTHESIS CLASSIFY_ALL INTERFACE ─────────────────────────
     def test_33_classify_all_multiple_clauses(self):
         """'Python (Advanced) & Docker (Intermediate)' classifies BOTH clauses independently."""
         results = self.engine.classify_all("Python (Advanced) & Docker (Intermediate)")
@@ -314,6 +426,7 @@ class TestMilestone2ParenthesesTypology(unittest.TestCase):
         # Clause 1: Python (Advanced)
         self.assertEqual(results[0].base_text, "Python")
         self.assertEqual(results[0].extracted_level, "Advanced")
+        self.assertEqual(results[0].canonical_level, "Advanced")
         self.assertEqual(results[0].typology, ParenthesisTypology.LEVEL_OR_EXPERIENCE)
         self.assertEqual(results[0].span_index, 0)
         self.assertEqual(results[0].total_spans, 2)
@@ -321,17 +434,12 @@ class TestMilestone2ParenthesesTypology(unittest.TestCase):
         # Clause 2: Docker (Intermediate)
         self.assertEqual(results[1].base_text, "Docker")
         self.assertEqual(results[1].extracted_level, "Intermediate")
+        self.assertEqual(results[1].canonical_level, "Intermediate")
         self.assertEqual(results[1].typology, ParenthesisTypology.LEVEL_OR_EXPERIENCE)
         self.assertEqual(results[1].span_index, 1)
         self.assertEqual(results[1].total_spans, 2)
 
-    def test_33b_classify_attaches_all_classifications(self):
-        """classify() on multi-parenthesis string attaches all_classifications list."""
-        res = self.engine.classify("Python (Advanced) & Docker (Intermediate)")
-        self.assertEqual(len(res.all_classifications), 2)
-        self.assertEqual(res.all_classifications[1].base_text, "Docker")
-
-    # ─── 12. LENGTH GUARD & BOUNDARY SAFETY (No Silent Truncation) ────────────
+    # ─── 13. LENGTH GUARD & BOUNDARY SAFETY (No Silent Truncation) ────────────
     def test_34_extreme_length_guard_5000_chars_no_silent_truncation(self):
         """
         Strings exceeding 5000 chars are NOT silently truncated.
