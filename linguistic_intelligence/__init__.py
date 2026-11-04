@@ -60,6 +60,30 @@ from linguistic_intelligence.catalog import (
     StandardSkillEntry,
 )
 
+from linguistic_intelligence.parentheses import (
+    ParenthesesTypologyEngine,
+    ParenthesisSpan,
+    ParenthesisTypology,
+    TypologyClassification,
+)
+
+from linguistic_intelligence.delimiters import (
+    DelimiterTier,
+    HierarchicalDelimiterSplitter,
+    SplitToken,
+)
+
+from linguistic_intelligence.pipeline import (
+    IntegratedSkillToken,
+    LinguisticPipeline,
+    ProvenanceRecord,
+    SidecarLinguisticMetadata,
+)
+
+from linguistic_intelligence.engine import (
+    AtomicDecompositionPipeline,
+)
+
 __all__ = [
     # Classes & Dataclasses
     "CatalogLoader",
@@ -71,6 +95,19 @@ __all__ = [
     "AcronymEngine",
     "Pass0ShieldResult",
     "ProtectedProperNoun",
+    # Milestone 2 Classes
+    "ParenthesesTypologyEngine",
+    "ParenthesisTypology",
+    "ParenthesisSpan",
+    "TypologyClassification",
+    "HierarchicalDelimiterSplitter",
+    "SplitToken",
+    "DelimiterTier",
+    "LinguisticPipeline",
+    "AtomicDecompositionPipeline",
+    "IntegratedSkillToken",
+    "ProvenanceRecord",
+    "SidecarLinguisticMetadata",
     # Functions
     "is_protected_proper_noun",
     "is_protected_compound",
