@@ -284,6 +284,41 @@ class TestMilestone2ParenthesesTypology(unittest.TestCase):
         self.assertIsNone(res_exc.canonical_level)
         self.assertIsNone(res_exc.level_category)
 
+    def test_07k_cross_type_level_contamination_rejected(self):
+        """
+        Validates that cross-type level contamination and synthetic category pairing are strictly barred:
+        1. Leadership (Advanced): 'Advanced' belongs to Hard Skill / Tool, NOT Soft Skill -> SUB_SKILL_SPECIFICATION
+        2. English (Advanced): 'Advanced' belongs to Hard Skill / Tool, NOT Language CEFR -> SUB_SKILL_SPECIFICATION
+        3. Python (Demonstrated): 'Demonstrated' belongs to Soft Skill, NOT Tool -> SUB_SKILL_SPECIFICATION
+        4. Leadership (B2): 'B2' belongs to Language CEFR, NOT Soft Skill -> SUB_SKILL_SPECIFICATION
+        5. English (Demonstrated): 'Demonstrated' belongs to Soft Skill, NOT Language -> SUB_SKILL_SPECIFICATION
+        Zero synthetic pairing like ('Advanced', 'Demonstrated Trait') or ('Advanced', 'CEFR Framework').
+        """
+        cases = [
+            "Leadership (Advanced)",
+            "English (Advanced)",
+            "Python (Demonstrated)",
+            "Leadership (B2)",
+            "English (Demonstrated)",
+            "Leadership (Certified)",
+            "English (Certified)",
+        ]
+        for input_text in cases:
+            res = self.engine.classify(input_text)
+            self.assertEqual(
+                res.typology,
+                ParenthesisTypology.SUB_SKILL_SPECIFICATION,
+                f"Expected SUB_SKILL_SPECIFICATION for {input_text}, got {res.typology}",
+            )
+            self.assertIsNone(
+                res.canonical_level,
+                f"Canonical level must be None for {input_text}, got {res.canonical_level}",
+            )
+            self.assertIsNone(
+                res.level_category,
+                f"Level category must be None for {input_text}, got {res.level_category}",
+            )
+
     # ─── 3. CASE 1: LEVEL OR EXPERIENCE (Duration) ────────────────────────────
     def test_08_duration_years(self):
         """'Java (5+ years)' extracts duration without corrupting skill."""

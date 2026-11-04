@@ -792,39 +792,63 @@ class ParenthesesTypologyEngine:
         if not candidates:
             return None
 
-        # 2. Check for category uniformity across all matching candidates
-        distinct_categories = set(c.level_category for c in candidates)
-        if len(distinct_categories) == 1:
-            # Unambiguous category across all matching rows (e.g. 'B2', 'working knowledge', 'Certified', 'Demonstrated')
-            return (candidates[0].standard_level, candidates[0].level_category)
-
-        # 3. Multiple categories conflict (len > 1): Disambiguate using base_skill context
+        # 2. If base_skill context is known, resolve strictly against base_type
         base_type = self._resolve_base_skill_type(base_skill) if base_skill else None
         if base_type:
-            # Filter candidates directly matching base_type
+            # 2a. Direct match on candidates with identical skill_type
             filtered = [c for c in candidates if c.skill_type == base_type]
             if filtered:
-                return (filtered[0].standard_level, filtered[0].level_category)
+                distinct_levels = set(c.standard_level for c in filtered)
+                if len(distinct_levels) == 1:
+                    return (filtered[0].standard_level, filtered[0].level_category)
+                # Ambiguity guard: If matching rows conflict in standard_level, reject
+                return None
 
-            # Map to governed category of base_type
-            expected_cat = self.SKILL_TYPE_TO_LEVEL_CATEGORY.get(base_type)
-            if expected_cat:
-                return (candidates[0].standard_level, expected_cat)
+            # 2b. Technical & Credential compatibility:
+            # - Hard Skill and Tool / Software share technical proficiency levels (Expert, Advanced, Intermediate, Beginner).
+            #   Example: 'بايثون (متقدم)' where 'بايثون' is Tool / Software but 'متقدم' row is Hard Skill.
+            # - Credential Status (Certification) legitimately applies to Technical / Tool skills per matrix example 'AWS Certified'.
+            #   Example: 'AWS Solutions Architect (Certified)' where base is Tool / Software and level is Active / Certified.
+            if base_type in ("Tool / Software", "Hard Skill"):
+                compat = [
+                    c for c in candidates
+                    if c.skill_type in ("Tool / Software", "Hard Skill")
+                    or c.skill_type == "Certification"
+                ]
+                if compat:
+                    distinct_levels = set(c.standard_level for c in compat)
+                    if len(distinct_levels) == 1:
+                        return (compat[0].standard_level, compat[0].level_category)
+                    return None
 
-        # 4. Base is uncataloged / unknown: Preserve ambiguity!
-        # If base is not verified Language, exclude CEFR candidates from technical standard levels
-        non_lang = [c for c in candidates if c.skill_type != "Language"]
-        if non_lang:
-            non_lang_levels = set(c.standard_level for c in non_lang)
-            if len(non_lang_levels) == 1 and all(c.skill_type in ("Hard Skill", "Tool / Software") for c in non_lang):
-                return (non_lang[0].standard_level, None)
+            # 2c. Base type is known but NO compatible matrix row matches:
+            # Strict rejection: Never synthesize artificial category pairings (e.g. Leadership (Advanced), English (Advanced)).
+            # Falls through to Step 8 (SUB_SKILL_SPECIFICATION).
+            return None
 
+        # 3. Base skill is uncataloged / unknown (base_type is None)
+        distinct_categories = set(c.level_category for c in candidates)
         distinct_levels = set(c.standard_level for c in candidates)
+
+        # 3a. Unambiguous category across all matching candidates (e.g. 'B2' -> CEFR, 'Certified' -> Credential Status)
+        if len(distinct_categories) == 1:
+            if len(distinct_levels) == 1:
+                return (candidates[0].standard_level, candidates[0].level_category)
+            return None
+
+        # 3b. Multiple categories conflict: Preserve ambiguity!
+        # If candidate levels are unanimous across technical categories (Hard Skill / Tool)
+        tech_candidates = [c for c in candidates if c.skill_type in ("Hard Skill", "Tool / Software")]
+        if tech_candidates:
+            tech_levels = set(c.standard_level for c in tech_candidates)
+            if len(tech_levels) == 1:
+                return (tech_candidates[0].standard_level, None)
+
+        # 3c. Unanimous standard level across all candidates: return canonical level with None category
         if len(distinct_levels) == 1:
-            # Standard level is unanimous (e.g. 'Advanced' or 'Expert'), but category is ambiguous
             return (candidates[0].standard_level, None)
 
-        # Candidates conflict in both category and standard level without context:
+        # 3d. Candidates conflict in both category and standard level without context:
         # Reject match to prevent false classification (e.g. UnknownSkill (Excellent))
         return None
 
