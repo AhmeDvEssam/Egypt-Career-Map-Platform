@@ -795,30 +795,37 @@ class ParenthesesTypologyEngine:
         # 2. If base_skill context is known, resolve strictly against base_type
         base_type = self._resolve_base_skill_type(base_skill) if base_skill else None
         if base_type:
-            # 2a. Direct match on candidates with identical skill_type
+            # 2a. Direct match on candidates with identical skill_type:
+            # Verify agreement on BOTH standard_level and level_category together!
             filtered = [c for c in candidates if c.skill_type == base_type]
             if filtered:
-                distinct_levels = set(c.standard_level for c in filtered)
-                if len(distinct_levels) == 1:
-                    return (filtered[0].standard_level, filtered[0].level_category)
-                # Ambiguity guard: If matching rows conflict in standard_level, reject
+                distinct_pairs = {(c.standard_level, c.level_category) for c in filtered}
+                if len(distinct_pairs) == 1:
+                    return next(iter(distinct_pairs))
+                # Ambiguity guard: If matching rows conflict in level or category, reject
                 return None
 
             # 2b. Technical & Credential compatibility:
-            # - Hard Skill and Tool / Software share technical proficiency levels (Expert, Advanced, Intermediate, Beginner).
-            #   Example: 'بايثون (متقدم)' where 'بايثون' is Tool / Software but 'متقدم' row is Hard Skill.
-            # - Credential Status (Certification) legitimately applies to Technical / Tool skills per matrix example 'AWS Certified'.
-            #   Example: 'AWS Solutions Architect (Certified)' where base is Tool / Software and level is Active / Certified.
             if base_type in ("Tool / Software", "Hard Skill"):
-                compat = [
-                    c for c in candidates
-                    if c.skill_type in ("Tool / Software", "Hard Skill")
-                    or c.skill_type == "Certification"
-                ]
-                if compat:
-                    distinct_levels = set(c.standard_level for c in compat)
+                # Credential Status (Certification) legitimately applies to Technical / Tool skills per matrix example 'AWS Certified'.
+                # Example: 'AWS Solutions Architect (Certified)' where base is Tool / Software and level is Active / Certified.
+                cert_compat = [c for c in candidates if c.skill_type == "Certification"]
+                if cert_compat:
+                    distinct_cert_pairs = {(c.standard_level, c.level_category) for c in cert_compat}
+                    if len(distinct_cert_pairs) == 1:
+                        return next(iter(distinct_cert_pairs))
+                    return None
+
+                # Technical cross-type matching (Hard Skill <-> Tool / Software):
+                # Hard Skill and Tool / Software share technical proficiency levels (Expert, Advanced, Intermediate, Beginner).
+                # Example: 'بايثون (متقدم)' where 'بايثون' is Tool / Software but 'متقدم' row is Hard Skill.
+                # GOVERNANCE RULE: If standard_level is agreed upon, but level_category is not from base_type,
+                # preserve ambiguity (level_category=None). NEVER pick an arbitrary category based on row order!
+                tech = [c for c in candidates if c.skill_type in ("Tool / Software", "Hard Skill")]
+                if tech:
+                    distinct_levels = set(c.standard_level for c in tech)
                     if len(distinct_levels) == 1:
-                        return (compat[0].standard_level, compat[0].level_category)
+                        return (next(iter(distinct_levels)), None)
                     return None
 
             # 2c. Base type is known but NO compatible matrix row matches:
@@ -827,28 +834,25 @@ class ParenthesesTypologyEngine:
             return None
 
         # 3. Base skill is uncataloged / unknown (base_type is None)
-        distinct_categories = set(c.level_category for c in candidates)
-        distinct_levels = set(c.standard_level for c in candidates)
+        distinct_pairs = {(c.standard_level, c.level_category) for c in candidates}
+        if len(distinct_pairs) == 1:
+            # Unambiguous level and category across all matching candidates (e.g. 'B2' -> CEFR, 'Certified' -> Credential Status)
+            return next(iter(distinct_pairs))
 
-        # 3a. Unambiguous category across all matching candidates (e.g. 'B2' -> CEFR, 'Certified' -> Credential Status)
-        if len(distinct_categories) == 1:
-            if len(distinct_levels) == 1:
-                return (candidates[0].standard_level, candidates[0].level_category)
-            return None
-
-        # 3b. Multiple categories conflict: Preserve ambiguity!
-        # If candidate levels are unanimous across technical categories (Hard Skill / Tool)
+        # Multiple candidates conflict across categories:
+        # 3a. If candidate levels are unanimous across technical categories (Hard Skill / Tool)
         tech_candidates = [c for c in candidates if c.skill_type in ("Hard Skill", "Tool / Software")]
         if tech_candidates:
             tech_levels = set(c.standard_level for c in tech_candidates)
             if len(tech_levels) == 1:
-                return (tech_candidates[0].standard_level, None)
+                return (next(iter(tech_levels)), None)
 
-        # 3c. Unanimous standard level across all candidates: return canonical level with None category
+        # 3b. Unanimous standard level across all candidates: return canonical level with None category
+        distinct_levels = set(c.standard_level for c in candidates)
         if len(distinct_levels) == 1:
-            return (candidates[0].standard_level, None)
+            return (next(iter(distinct_levels)), None)
 
-        # 3d. Candidates conflict in both category and standard level without context:
+        # 3c. Candidates conflict in both category and standard level without context:
         # Reject match to prevent false classification (e.g. UnknownSkill (Excellent))
         return None
 

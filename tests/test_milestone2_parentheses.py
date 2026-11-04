@@ -319,6 +319,82 @@ class TestMilestone2ParenthesesTypology(unittest.TestCase):
                 f"Level category must be None for {input_text}, got {res.level_category}",
             )
 
+    def test_07l_matrix_row_order_invariance_and_no_arbitrary_category_selection(self):
+        """
+        Validates row-order invariance and eliminates arbitrary category selection:
+        1. Candidates sharing standard_level ('Advanced') but differing in level_category
+           ('Technical Proficiency' vs 'Tool Competency') must resolve strictly by skill_type,
+           never by row ordering in the matrix.
+        2. Tool / Software ('Python') must NEVER receive 'Technical Proficiency' just because
+           Hard Skill appears first in the matrix.
+        3. Hard Skill ('Programming') must NEVER receive 'Tool Competency' just because
+           Tool / Software appears first.
+        4. Reversing matrix row order yields 100% identical classifications across all cases.
+        5. Cross-matched technical skills without their own category row (e.g. 'بايثون (متقدم)')
+           preserve standard_level='Advanced' while keeping level_category=None (no guessing).
+        6. Continued success of core cases:
+           - Python (Advanced) -> ('Advanced', 'Tool Competency')
+           - English (B2) -> ('B2 (Upper Intermediate)', 'CEFR Framework')
+           - Leadership (Excellent) -> ('High / Strong', 'Demonstrated Trait')
+           - AWS Solutions Architect (Certified) -> ('Active / Certified', 'Credential Status')
+        """
+        # A. Normal order test
+        res_py = self.engine.classify("Python (Advanced)")
+        self.assertEqual(res_py.canonical_level, "Advanced")
+        self.assertEqual(res_py.level_category, "Tool Competency")
+
+        res_prog = self.engine.classify("Programming (Advanced)")
+        self.assertEqual(res_prog.canonical_level, "Advanced")
+        self.assertEqual(res_prog.level_category, "Technical Proficiency")
+
+        res_cert = self.engine.classify("AWS Solutions Architect (Certified)")
+        self.assertEqual(res_cert.canonical_level, "Active / Certified")
+        self.assertEqual(res_cert.level_category, "Credential Status")
+
+        res_eng = self.engine.classify("English (B2)")
+        self.assertEqual(res_eng.canonical_level, "B2 (Upper Intermediate)")
+        self.assertEqual(res_eng.level_category, "CEFR Framework")
+
+        res_lead = self.engine.classify("Leadership (Excellent)")
+        self.assertEqual(res_lead.canonical_level, "High / Strong")
+        self.assertEqual(res_lead.level_category, "Demonstrated Trait")
+
+        # B. Cross-matched technical skill keeps level but preserves category ambiguity (None)
+        res_ar_py = self.engine.classify("بايثون (متقدم)")
+        self.assertEqual(res_ar_py.canonical_level, "Advanced")
+        self.assertIsNone(res_ar_py.level_category, "Must not assign Technical Proficiency to Tool")
+
+        # C. Invariance under reversed matrix rows
+        orig_rows = list(self.engine.level_matrix_rows)
+        try:
+            self.engine.level_matrix_rows = list(reversed(orig_rows))
+
+            res_py_rev = self.engine.classify("Python (Advanced)")
+            self.assertEqual(res_py_rev.canonical_level, "Advanced")
+            self.assertEqual(res_py_rev.level_category, "Tool Competency")
+
+            res_prog_rev = self.engine.classify("Programming (Advanced)")
+            self.assertEqual(res_prog_rev.canonical_level, "Advanced")
+            self.assertEqual(res_prog_rev.level_category, "Technical Proficiency")
+
+            res_cert_rev = self.engine.classify("AWS Solutions Architect (Certified)")
+            self.assertEqual(res_cert_rev.canonical_level, "Active / Certified")
+            self.assertEqual(res_cert_rev.level_category, "Credential Status")
+
+            res_eng_rev = self.engine.classify("English (B2)")
+            self.assertEqual(res_eng_rev.canonical_level, "B2 (Upper Intermediate)")
+            self.assertEqual(res_eng_rev.level_category, "CEFR Framework")
+
+            res_lead_rev = self.engine.classify("Leadership (Excellent)")
+            self.assertEqual(res_lead_rev.canonical_level, "High / Strong")
+            self.assertEqual(res_lead_rev.level_category, "Demonstrated Trait")
+
+            res_ar_py_rev = self.engine.classify("بايثون (متقدم)")
+            self.assertEqual(res_ar_py_rev.canonical_level, "Advanced")
+            self.assertIsNone(res_ar_py_rev.level_category)
+        finally:
+            self.engine.level_matrix_rows = orig_rows
+
     # ─── 3. CASE 1: LEVEL OR EXPERIENCE (Duration) ────────────────────────────
     def test_08_duration_years(self):
         """'Java (5+ years)' extracts duration without corrupting skill."""
