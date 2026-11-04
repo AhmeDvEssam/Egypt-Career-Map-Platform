@@ -351,18 +351,22 @@ class TestMilestone2DelimiterSplitter(unittest.TestCase):
     def test_40_oversized_input_guardrail(self):
         """
         BLOCKER 1: Inputs exceeding MAX_INPUT_LENGTH must NEVER be truncated or lose data.
-        The full original text is preserved verbatim with status OVERSIZED_INPUT.
+        Note 1: Oversized input is NOT malformed. It is a valid text exceeding processing limit.
+        Note 2: raw_token preserves the verbatim raw text, while atomic_skill is cleaned.
         """
-        huge_input = ("Python, " * 5_000).strip()
-        res = self.splitter.split(huge_input)
+        raw_huge_input = "   " + ("Python, " * 5_000) + "   "
+        res = self.splitter.split(raw_huge_input)
         self.assertEqual(len(res), 1)
-        # Strict zero data loss: exact string equality and exact character length
-        self.assertEqual(res[0].atomic_skill, huge_input)
-        self.assertEqual(res[0].raw_token, huge_input)
-        self.assertEqual(len(res[0].atomic_skill), len(huge_input))
+        # Strict zero data loss: raw_token preserves verbatim input including whitespace
+        self.assertEqual(res[0].raw_token, raw_huge_input)
+        self.assertEqual(len(res[0].raw_token), len(raw_huge_input))
+        # atomic_skill contains the clean, normalized, non-truncated text
+        self.assertEqual(res[0].atomic_skill, raw_huge_input.strip())
+        self.assertEqual(len(res[0].atomic_skill), len(raw_huge_input.strip()))
+        # Reviewer Note 1: Disentangle oversized from malformed
         self.assertTrue(res[0].is_oversized)
-        self.assertTrue(res[0].is_malformed)
-        self.assertEqual(res[0].malformed_reason, "OVERSIZED_INPUT")
+        self.assertFalse(res[0].is_malformed)
+        self.assertIsNone(res[0].malformed_reason)
         self.assertEqual(res[0].separated_by, "OVERSIZED_INPUT")
         self.assertEqual(res[0].hierarchy_level, DelimiterTier.NONE)
 
@@ -528,6 +532,37 @@ class TestMilestone2DelimiterSplitter(unittest.TestCase):
             [t.atomic_skill for t in res],
             ["تطوير واجهات المستخدم (UI/UX)", "Python", "Django", "إدارة المشاريع والتخطيط"],
         )
+
+    def test_55_verbatim_raw_token_whitespace_preservation_policy(self):
+        """
+        Reviewer Note 2: Verbatim raw_token preservation policy.
+        raw_token preserves exact verbatim characters and whitespace as received by the engine.
+        atomic_skill holds the cleaned, trimmed, and normalized skill text.
+        """
+        raw_single = "   Python Programming   "
+        res = self.splitter.split(raw_single)
+        self.assertEqual(len(res), 1)
+        # raw_token retains unstripped string exactly
+        self.assertEqual(res[0].raw_token, raw_single)
+        # atomic_skill retains clean normalized skill
+        self.assertEqual(res[0].atomic_skill, "Python Programming")
+        self.assertFalse(res[0].is_oversized)
+        self.assertFalse(res[0].is_malformed)
+
+    def test_56_oversized_input_disentangled_from_malformed(self):
+        """
+        Reviewer Note 1: Oversized inputs are valid semantic text that exceed processing limit.
+        They must have is_oversized=True and is_malformed=False, preserving raw text verbatim.
+        """
+        raw_input = "  " + ("Docker, " * 4_000) + "Kubernetes  "
+        res = self.splitter.split(raw_input)
+        self.assertEqual(len(res), 1)
+        self.assertEqual(res[0].raw_token, raw_input)
+        self.assertEqual(res[0].atomic_skill, raw_input.strip())
+        self.assertTrue(res[0].is_oversized)
+        self.assertFalse(res[0].is_malformed)
+        self.assertIsNone(res[0].malformed_reason)
+        self.assertEqual(res[0].separated_by, "OVERSIZED_INPUT")
 
     def test_43_sub_millisecond_benchmark(self):
         """1,000 splits execute in well under 2,000 ms (< 2 ms per split; budget is 50 ms)."""

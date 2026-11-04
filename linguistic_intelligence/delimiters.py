@@ -293,11 +293,13 @@ class HierarchicalDelimiterSplitter:
         text_clean = text.strip()
 
         # BLOCKER 1 GUARDRAIL: Strict zero-truncation on oversized input
+        # Note: Oversized input is NOT malformed. It is a valid text that exceeds max processing limit.
+        # raw_token preserves the verbatim input text as received (including all whitespace).
         if len(text_clean) > self.MAX_INPUT_LENGTH:
             return [
                 SplitToken(
-                    atomic_skill=text_clean,  # ZERO TRUNCATION: preserve full verbatim string
-                    raw_token=text_clean,
+                    atomic_skill=text_clean,  # Cleaned, normalized skill text
+                    raw_token=text,           # Verbatim input as received (zero character or whitespace loss)
                     separated_by="OVERSIZED_INPUT",
                     separated_from_before="",
                     separated_from_after="",
@@ -306,18 +308,20 @@ class HierarchicalDelimiterSplitter:
                     total_tokens=1,
                     is_compound_shielded=self.is_compound_protected(text_clean),
                     is_oversized=True,
-                    is_malformed=True,
-                    malformed_reason="OVERSIZED_INPUT",
+                    is_malformed=False,       # Oversized is NOT malformed!
+                    malformed_reason=None,
                 )
             ]
 
         # BLOCKER 2 GUARDRAIL: Strict unbalanced / malformed parentheses detection
+        # Malformed parentheses represent genuine syntax corruption.
+        # raw_token preserves verbatim input text as received.
         is_balanced, malformed_reason = self.check_parentheses_balance(text_clean)
         if not is_balanced:
             return [
                 SplitToken(
                     atomic_skill=text_clean,  # Retain entire text intact without corrupting split
-                    raw_token=text_clean,
+                    raw_token=text,           # Verbatim input as received
                     separated_by=malformed_reason or "MALFORMED_PARENTHESES",
                     separated_from_before="",
                     separated_from_after="",
@@ -326,7 +330,7 @@ class HierarchicalDelimiterSplitter:
                     total_tokens=1,
                     is_compound_shielded=self.is_compound_protected(text_clean),
                     is_oversized=False,
-                    is_malformed=True,
+                    is_malformed=True,        # Genuinely malformed syntax
                     malformed_reason=malformed_reason,
                 )
             ]
@@ -369,11 +373,13 @@ class HierarchicalDelimiterSplitter:
             # If total_tokens > 1, token records its separating delimiter.
             sep_by = delim if total_tokens > 1 else ""
             hier_lvl = tier if total_tokens > 1 else DelimiterTier.NONE
+            # When text is a single atomic token, raw_token preserves verbatim input text as received
+            actual_raw = text if total_tokens == 1 else raw_tok
 
             results.append(
                 SplitToken(
                     atomic_skill=cleaned_skill,
-                    raw_token=raw_tok,
+                    raw_token=actual_raw,
                     separated_by=sep_by,
                     separated_from_before=before,
                     separated_from_after=after,
