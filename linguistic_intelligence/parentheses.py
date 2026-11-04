@@ -3,20 +3,24 @@ Linguistic Intelligence — Pass 2 Parentheses Typology Engine
 ============================================================
 Deterministic 5-way parenthetical classification engine.
 Classifies parentheses content into:
-  1. LEVEL_OR_EXPERIENCE: Proficiency level or experience duration
-  2. ACRONYM_EXPANSION: Acronym vs full name resolution via AcronymResolver
-  3. CATEGORY_CONTAINER: Generic tool/technology container decomposing to leaf skills
+  1. LEVEL_OR_EXPERIENCE: Proficiency level (sourced from M1 Level Matrix) or experience duration
+  2. ACRONYM_EXPANSION: Acronym vs full name resolution via AcronymResolver (Dictionary-Verified Only)
+  3. CATEGORY_CONTAINER: Generic tool/technology container decomposing to compound-shielded leaf skills
   4. INDUSTRY_CONTEXT: Sector or domain restrictions mapped to Sidecar metadata
   5. SUB_SKILL_SPECIFICATION: Domain sub-specialties and module specifications
 Plus edge-case handlers for:
   - REGULATORY_FORM: Egyptian/international statutory forms (e.g. Forms 1, 2, 6)
   - VERSION_OR_TECH_DETAIL: Software versioning (e.g. v14+, 3.x)
   - EMPTY_OR_NOISE: Empty parens '()' or meaningless filler
-  - MALFORMED: Linear O(n) detection of unclosed or unopened parentheses
+  - MALFORMED: Linear O(n) detection of unclosed, unopened, or oversized parentheses
 
-CRITICAL ARCHITECTURAL PRINCIPLE:
-Strictly separates classification from Sidecar data persistence.
-Produces a pure, typed TypologyClassification dataclass; does NOT write to sidecar.
+CRITICAL ARCHITECTURAL PRINCIPLES:
+1. Strictly separates classification from Sidecar data persistence.
+2. Protected compounds (PL/SQL, CI/CD, UI/UX, etc.) are shielded prior to delimiter splitting.
+3. Acronym resolution is strictly Dictionary-Verified (zero unverified letter guessing).
+4. Skill levels are sourced directly from M1 standard_skill_levels_matrix.csv via CatalogLoader.
+5. Linear O(n) algorithmic parser with safe boundary guards (no silent truncation).
+6. Multi-parenthesis inputs (Python (Advanced) & Docker (Intermediate)) supported via classify_all().
 """
 
 from __future__ import annotations
@@ -43,6 +47,7 @@ from linguistic_intelligence.proper_nouns import (
 )
 from linguistic_intelligence.catalog import (
     CatalogLoader,
+    LevelMatrixEntry,
 )
 
 
@@ -95,6 +100,9 @@ class TypologyClassification:
     is_malformed: bool = False
     malformed_reason: Optional[str] = None
     raw_input: str = ""
+    span_index: int = 0
+    total_spans: int = 1
+    all_classifications: List["TypologyClassification"] = field(default_factory=list)
 
     def to_dict(self) -> Dict[str, Any]:
         """Converts classification result to a standard dictionary."""
@@ -116,6 +124,8 @@ class TypologyClassification:
             "is_malformed": self.is_malformed,
             "malformed_reason": self.malformed_reason,
             "raw_input": self.raw_input,
+            "span_index": self.span_index,
+            "total_spans": self.total_spans,
         }
 
 
@@ -123,7 +133,7 @@ class ParenthesesTypologyEngine:
     """
     Pass 2 Parentheses Typology Engine:
     Classifies parenthetical expressions using linear O(n) algorithmic parsing,
-    strict length boundaries, and a deterministic priority decision matrix.
+    strict length boundaries, protected compound shielding, and dynamic level matrix sourcing.
     """
 
     MAX_INPUT_LENGTH: int = 5000
@@ -148,34 +158,7 @@ class ParenthesesTypologyEngine:
         re.IGNORECASE,
     )
 
-    # ─── 4. LEVEL MODIFIER PATTERNS ───────────────────────────────────────────────
-    # Governed level modifiers from standard_skill_levels_matrix.csv
-    LEVEL_PATTERNS: List[Tuple[str, re.Pattern]] = [
-        # Explicit Advanced
-        ("Advanced", re.compile(r"^(?:advanced|expert|mastery|sme|architect\s+level|high-level)$", re.IGNORECASE)),
-        # Explicit Intermediate
-        ("Intermediate", re.compile(r"^(?:intermediate|proficient|proficiency|working\s+knowledge|good\s+command)$", re.IGNORECASE)),
-        # Explicit Beginner
-        ("Beginner", re.compile(r"^(?:beginner|basic|basics|foundational|elementary|familiar|familiarity)$", re.IGNORECASE)),
-        # Language CEFR
-        ("C2", re.compile(r"^(?:c2|near-native|native(?:\s+speaker)?|mother\s+tongue)$", re.IGNORECASE)),
-        ("C1", re.compile(r"^(?:c1|fluent|fluency|full\s+professional\s+proficiency)$", re.IGNORECASE)),
-        ("B2", re.compile(r"^(?:b2|upper-intermediate|professional\s+working\s+proficiency)$", re.IGNORECASE)),
-        ("B1", re.compile(r"^(?:b1|conversational)$", re.IGNORECASE)),
-        ("A2", re.compile(r"^(?:a2|pre-intermediate)$", re.IGNORECASE)),
-        ("A1", re.compile(r"^(?:a1|basic\s+understanding)$", re.IGNORECASE)),
-        # Certification Status
-        ("Certified", re.compile(r"^(?:certified|licensed|credentialed|chartered|passed)$", re.IGNORECASE)),
-        ("Candidate", re.compile(r"^(?:candidate|in\s+progress|studying\s+for|pursuing)$", re.IGNORECASE)),
-        # Ambiguous modifiers that are still level indicators
-        ("Solid", re.compile(r"^solid(?:\s+understanding)?$", re.IGNORECASE)),
-        ("Strong", re.compile(r"^strong(?:\s+knowledge)?$", re.IGNORECASE)),
-        ("Extensive", re.compile(r"^extensive(?:\s+experience)?$", re.IGNORECASE)),
-        ("Hands-on", re.compile(r"^hands-on(?:\s+experience)?$", re.IGNORECASE)),
-    ]
-
-    # ─── 5. CATEGORY CONTAINER KEYWORDS ───────────────────────────────────────────
-    # Words in base_text that indicate a generic parent category
+    # ─── 4. CATEGORY CONTAINER KEYWORDS ───────────────────────────────────────────
     CONTAINER_BASE_KEYWORDS: Set[str] = {
         "tools", "development tools", "ai tools", "ai development tools",
         "software", "technologies", "tech stack", "stack", "platforms",
@@ -186,7 +169,7 @@ class ParenthesesTypologyEngine:
         "أدوات", "برامج", "لغات برمجة", "تقنيات", "أنظمة", "قواعد بيانات", "مهارات",
     }
 
-    # ─── 6. INDUSTRY SECTORS & CONTEXTS ───────────────────────────────────────────
+    # ─── 5. INDUSTRY SECTORS & CONTEXTS ───────────────────────────────────────────
     ADDITIONAL_INDUSTRY_SECTORS: Set[str] = {
         "transportation & logistics", "transportation", "logistics", "freight",
         "hospitality & leisure", "hospitality", "leisure", "tourism",
@@ -233,19 +216,39 @@ class ParenthesesTypologyEngine:
         for ind in self.ADDITIONAL_INDUSTRY_SECTORS:
             self._industry_lookup.add(ind.strip().lower())
 
+        # Load level matrix rows directly from M1 CatalogLoader (Single Source of Truth)
+        self.level_matrix_rows: List[LevelMatrixEntry] = [
+            row for row in self.catalog.get_level_matrix_rows()
+            if row.standard_level != LEVEL_NOT_SPECIFIED and (row.compiled_pattern or row.compiled_arabic_regex)
+        ]
+
+        # Protected compounds for safe splitting (reused from M1 ProperNounShield)
+        self.protected_compounds: Set[str] = set(self.proper_noun_shield.PROTECTED_COMPOUNDS)
+        self.protected_compounds.add("fp&a")
+
     # ─── LINEAR O(n) PARENTHESES SCANNER ──────────────────────────────────────────
     def parse_spans(self, text: str) -> List[ParenthesisSpan]:
         """
         Parses all top-level parenthetical spans in text using a linear O(n) stack.
         Correctly balances nested parentheses and detects unclosed/unopened clauses.
-        Guarded against excessive length (MAX_INPUT_LENGTH).
+        Safe against excessive length without silent truncation.
         """
         if not text or not isinstance(text, str):
             return []
 
-        # Length guard
+        # Safe length guard: do NOT silently truncate. Flag as malformed if oversized.
         if len(text) > self.MAX_INPUT_LENGTH:
-            text = text[: self.MAX_INPUT_LENGTH]
+            return [
+                ParenthesisSpan(
+                    start_index=0,
+                    end_index=len(text),
+                    raw_clause="",
+                    inner_content="",
+                    depth=0,
+                    is_malformed=True,
+                    malformed_reason=f"Input length ({len(text)}) exceeds maximum safe limit ({self.MAX_INPUT_LENGTH})",
+                )
+            ]
 
         spans: List[ParenthesisSpan] = []
         stack: List[Tuple[int, int]] = []  # (start_index, current_depth)
@@ -306,62 +309,151 @@ class ParenthesesTypologyEngine:
         spans.sort(key=lambda s: s.start_index)
         return spans
 
-    # ─── PRIMARY CLASSIFICATION INTERFACE ─────────────────────────────────────────
+    # ─── COMPOUND-SHIELDED TOKEN SPLITTER ─────────────────────────────────────────
+    def split_tokens_safely(self, text: str) -> List[str]:
+        """
+        Splits delimited tokens (by , ; | / and or و) while strictly shielding
+        protected compounds (PL/SQL, CI/CD, UI/UX, C/C++, R&D, P&L, FP&A, TCP/IP, etc.).
+        Prevents PL/SQL from breaking into PL and SQL.
+        """
+        if not text or not isinstance(text, str):
+            return []
+
+        masked_text = text
+        placeholder_map: Dict[str, str] = {}
+        counter = 0
+
+        # Sort compounds by length descending to match longest first (e.g. c/c++ before c)
+        compounds = sorted(self.protected_compounds, key=len, reverse=True)
+        for comp in compounds:
+            pattern = rf"(?<![a-zA-Z0-9_]){re.escape(comp)}(?![a-zA-Z0-9_])"
+            matches = list(re.finditer(pattern, masked_text, flags=re.IGNORECASE))
+            for m in reversed(matches):
+                placeholder = f"__PROTECTED_COMPOUND_{counter}__"
+                original_substr = m.group(0)
+                placeholder_map[placeholder] = original_substr
+                masked_text = masked_text[: m.start()] + placeholder + masked_text[m.end() :]
+                counter += 1
+
+        # Split on standard delimiters
+        raw_tokens = re.split(r"[,;|]|\s+/\s+|\band\b|\bor\b|\s+و\s+", masked_text, flags=re.IGNORECASE)
+
+        # Restore shielded compound placeholders
+        clean_tokens: List[str] = []
+        for tok in raw_tokens:
+            t = tok.strip()
+            if not t:
+                continue
+            for ph, orig in placeholder_map.items():
+                t = t.replace(ph, orig)
+            t = t.strip()
+            if t:
+                clean_tokens.append(t)
+
+        return clean_tokens
+
+    # ─── PRIMARY CLASSIFICATION INTERFACES ────────────────────────────────────────
     def classify(self, text: str) -> TypologyClassification:
         """
-        Extracts and classifies parenthetical content from a single raw skill string.
-        Follows the deterministic priority decision matrix (Principle 2).
+        Classifies parenthetical content from a skill string.
+        For multi-parenthesis strings, returns the primary classification and attaches
+        all individual classifications in the 'all_classifications' field.
+        """
+        all_res = self.classify_all(text)
+        primary = all_res[0]
+        primary.all_classifications = all_res
+        return primary
+
+    def classify_all(self, text: str) -> List[TypologyClassification]:
+        """
+        Extracts and classifies ALL parenthetical clauses in text independently.
+        For 'Python (Advanced) & Docker (Intermediate)', returns 2 distinct classifications:
+          1. base='Python', level='Advanced'
+          2. base='Docker', level='Intermediate'
         """
         if not text or not isinstance(text, str) or not text.strip():
-            return TypologyClassification(
-                typology=ParenthesisTypology.NONE,
-                raw_content="",
-                base_text="",
-                cleaned_base_skill="",
-                raw_input=text or "",
-            )
+            return [
+                TypologyClassification(
+                    typology=ParenthesisTypology.NONE,
+                    raw_content="",
+                    base_text="",
+                    cleaned_base_skill="",
+                    raw_input=text or "",
+                )
+            ]
+
+        # Guard against oversized inputs without silent truncation
+        if len(text) > self.MAX_INPUT_LENGTH:
+            return [
+                TypologyClassification(
+                    typology=ParenthesisTypology.MALFORMED,
+                    raw_content="",
+                    base_text="",
+                    cleaned_base_skill="",
+                    is_malformed=True,
+                    malformed_reason=f"Input length ({len(text)}) exceeds maximum safe limit ({self.MAX_INPUT_LENGTH})",
+                    raw_input=text,
+                )
+            ]
 
         text_clean = text.strip()
         spans = self.parse_spans(text_clean)
 
         if not spans:
-            # Zero parentheses found
-            return TypologyClassification(
-                typology=ParenthesisTypology.NONE,
-                raw_content="",
-                base_text=text_clean,
-                cleaned_base_skill=text_clean,
-                raw_input=text_clean,
+            return [
+                TypologyClassification(
+                    typology=ParenthesisTypology.NONE,
+                    raw_content="",
+                    base_text=text_clean,
+                    cleaned_base_skill=text_clean,
+                    raw_input=text_clean,
+                )
+            ]
+
+        results: List[TypologyClassification] = []
+        num_spans = len(spans)
+
+        for idx, span in enumerate(spans):
+            if span.is_malformed:
+                base = text_clean[: span.start_index].strip()
+                if not base:
+                    base = text_clean[span.end_index :].strip()
+                results.append(
+                    self._classify_clause(
+                        base_text=base or text_clean,
+                        inner_content=span.inner_content,
+                        raw_input=text_clean,
+                        is_malformed=True,
+                        malformed_reason=span.malformed_reason,
+                        span_index=idx,
+                        total_spans=num_spans,
+                    )
+                )
+                continue
+
+            # Contextual base text for this specific span
+            prev_end = spans[idx - 1].end_index if idx > 0 else 0
+            local_context = text_clean[prev_end : span.start_index].strip()
+            # Clean leading/trailing conjunctions (&, /, and, or)
+            local_base = re.sub(r"^[\s,;&/]+|\b(?:and|or)\b[\s]*", "", local_context, flags=re.IGNORECASE).strip()
+            local_base = re.sub(r"[\s,;&/]+$", "", local_base).strip()
+
+            if not local_base:
+                local_base = self._strip_spans(text_clean, spans)
+
+            results.append(
+                self._classify_clause(
+                    base_text=local_base,
+                    inner_content=span.inner_content,
+                    raw_input=text_clean,
+                    is_malformed=False,
+                    malformed_reason=None,
+                    span_index=idx,
+                    total_spans=num_spans,
+                )
             )
 
-        # Check for malformed spans
-        malformed_spans = [s for s in spans if s.is_malformed]
-        if malformed_spans:
-            first_malformed = malformed_spans[0]
-            # Salvage whatever base text exists
-            base = text_clean[: first_malformed.start_index].strip()
-            if not base:
-                base = text_clean[first_malformed.end_index :].strip()
-            return self._classify_clause(
-                base_text=base or text_clean,
-                inner_content=first_malformed.inner_content,
-                raw_input=text_clean,
-                is_malformed=True,
-                malformed_reason=first_malformed.malformed_reason,
-            )
-
-        # In case of multiple valid spans, analyze the first outermost span
-        # while removing all parenthesis spans from the base text
-        primary_span = spans[0]
-        base_text = self._strip_spans(text_clean, spans)
-
-        return self._classify_clause(
-            base_text=base_text,
-            inner_content=primary_span.inner_content,
-            raw_input=text_clean,
-            is_malformed=False,
-            malformed_reason=None,
-        )
+        return results
 
     def classify_clause(
         self,
@@ -385,17 +477,19 @@ class ParenthesesTypologyEngine:
         raw_input: str,
         is_malformed: bool,
         malformed_reason: Optional[str],
+        span_index: int = 0,
+        total_spans: int = 1,
     ) -> TypologyClassification:
         """
         Internal implementation of the 8-step deterministic priority decision matrix:
           Step 1: Empty or Noise
           Step 2: Regulatory Form (Statutory numbers / forms)
-          Step 3: Acronym Expansion (Verified via AcronymResolver)
-          Step 4: Level or Experience Duration
-          Step 5: Category Container (Generic tool header decomposing to children)
+          Step 3: Acronym Expansion (Strictly Dictionary-Verified via AcronymResolver)
+          Step 4: Level or Experience Duration (Directly sourced from M1 Level Matrix)
+          Step 5: Category Container (Generic tool header decomposing to shielded leaf items)
           Step 6: Industry Context (Closed domain / subcategory / sector)
           Step 7: Version or Technical Detail
-          Step 8: Sub-skill Specification (Default fallthrough)
+          Step 8: Sub-skill Specification (Default fallthrough with compound shielding)
         """
         inner_clean = inner_content.strip()
         base_clean = base_text.strip()
@@ -410,6 +504,8 @@ class ParenthesesTypologyEngine:
                 is_malformed=is_malformed,
                 malformed_reason=malformed_reason,
                 raw_input=raw_input,
+                span_index=span_index,
+                total_spans=total_spans,
             )
 
         # ── Step 2: Egyptian / Regulatory Form Check ──────────────────────────
@@ -423,10 +519,11 @@ class ParenthesesTypologyEngine:
                 is_malformed=is_malformed,
                 malformed_reason=malformed_reason,
                 raw_input=raw_input,
+                span_index=span_index,
+                total_spans=total_spans,
             )
 
-        # ── Step 3: Acronym Expansion Check (Principle 2) ─────────────────────
-        # Must be verified against AcronymResolver dictionary, not naive letter guessing
+        # ── Step 3: Acronym Expansion Check (Strict Dictionary-Verified Only) ──
         acronym_res = self._check_acronym_expansion(base_clean, inner_clean)
         if acronym_res is not None:
             acronym_tok, expanded_tok, canonical_name = acronym_res
@@ -441,9 +538,11 @@ class ParenthesesTypologyEngine:
                 is_malformed=is_malformed,
                 malformed_reason=malformed_reason,
                 raw_input=raw_input,
+                span_index=span_index,
+                total_spans=total_spans,
             )
 
-        # ── Step 4: Level or Experience Duration Check ────────────────────────
+        # ── Step 4: Level or Experience Duration Check (M1 Level Matrix) ──────
         # 4a. Experience Duration
         dur_match = self.EXPERIENCE_DURATION_PATTERN.match(inner_clean)
         if dur_match:
@@ -458,9 +557,11 @@ class ParenthesesTypologyEngine:
                 is_malformed=is_malformed,
                 malformed_reason=malformed_reason,
                 raw_input=raw_input,
+                span_index=span_index,
+                total_spans=total_spans,
             )
 
-        # 4b. Proficiency Level Modifier
+        # 4b. Governed Proficiency Level Modifier from M1 Matrix
         level_val = self._match_level_modifier(inner_clean)
         if level_val is not None:
             return TypologyClassification(
@@ -472,9 +573,11 @@ class ParenthesesTypologyEngine:
                 is_malformed=is_malformed,
                 malformed_reason=malformed_reason,
                 raw_input=raw_input,
+                span_index=span_index,
+                total_spans=total_spans,
             )
 
-        # ── Step 5: Category Container Check ──────────────────────────────────
+        # ── Step 5: Category Container Check (Compound-Shielded) ──────────────
         container_tokens = self._check_category_container(base_clean, inner_clean)
         if container_tokens is not None:
             return TypologyClassification(
@@ -487,6 +590,8 @@ class ParenthesesTypologyEngine:
                 is_malformed=is_malformed,
                 malformed_reason=malformed_reason,
                 raw_input=raw_input,
+                span_index=span_index,
+                total_spans=total_spans,
             )
 
         # ── Step 6: Industry Context Check ────────────────────────────────────
@@ -501,6 +606,8 @@ class ParenthesesTypologyEngine:
                 is_malformed=is_malformed,
                 malformed_reason=malformed_reason,
                 raw_input=raw_input,
+                span_index=span_index,
+                total_spans=total_spans,
             )
 
         # ── Step 7: Version or Technical Detail Check ─────────────────────────
@@ -514,19 +621,23 @@ class ParenthesesTypologyEngine:
                 is_malformed=is_malformed,
                 malformed_reason=malformed_reason,
                 raw_input=raw_input,
+                span_index=span_index,
+                total_spans=total_spans,
             )
 
-        # ── Step 8: Default Sub-skill Specification ───────────────────────────
-        sub_skills = self._split_specification_tokens(inner_clean)
+        # ── Step 8: Default Sub-skill Specification (Compound-Shielded) ───────
+        sub_skills = self.split_tokens_safely(inner_clean)
         return TypologyClassification(
             typology=ParenthesisTypology.SUB_SKILL_SPECIFICATION,
             raw_content=inner_clean,
             base_text=base_clean,
             cleaned_base_skill=base_clean,
-            sub_skills=sub_skills,
+            sub_skills=sub_skills if sub_skills else [inner_clean],
             is_malformed=is_malformed,
             malformed_reason=malformed_reason,
             raw_input=raw_input,
+            span_index=span_index,
+            total_spans=total_spans,
         )
 
     # ─── HELPER METHODS ───────────────────────────────────────────────────────────
@@ -544,54 +655,49 @@ class ParenthesesTypologyEngine:
     ) -> Optional[Tuple[str, str, Optional[str]]]:
         """
         Verifies whether (base, inner) forms an acronym expansion pair.
-        Returns (acronym_token, expanded_token, canonical_name) or None.
-        Relies strictly on AcronymResolver.
+        STRICT POLICY: Dictionary-Verified Only via skills_acronym_dictionary.json.
+        Zero algorithmic letter guessing. Exact normalized string matching (no loose substring).
         """
         if not base or not inner:
             return None
 
-        # Check if they form an acronym expansion pair
-        if self.acronym_resolver.is_acronym_expansion_pair(base, inner):
-            entry_inner = self.acronym_resolver.get_acronym(inner)
-            entry_base = self.acronym_resolver.get_acronym(base)
-            if entry_inner and not entry_base:
-                # inner is the acronym: e.g. "Amazon Web Services (AWS)"
-                return (inner, base, entry_inner.canonical_skill_name)
-            elif entry_base and not entry_inner:
-                # base is the acronym: e.g. "GTM (Google Tag Manager)"
-                return (base, inner, entry_base.canonical_skill_name)
-            elif len(inner) <= len(base):
-                canon = (entry_inner or entry_base).canonical_skill_name if (entry_inner or entry_base) else None
-                return (inner, base, canon)
-            else:
-                canon = (entry_base or entry_inner).canonical_skill_name if (entry_base or entry_inner) else None
-                return (base, inner, canon)
+        base_clean = base.strip()
+        inner_clean = inner.strip()
+        base_lower = base_clean.lower()
+        inner_lower = inner_clean.lower()
 
-        # 3. Direct dictionary check: inner is acronym whose full name or canonical matches base
-        entry_inner = self.acronym_resolver.get_acronym(inner)
+        # 1. Inner is verified acronym in dictionary
+        entry_inner = self.acronym_resolver.get_acronym(inner_clean)
         if entry_inner:
-            inner_full = entry_inner.full_name.strip().lower()
-            inner_canon = entry_inner.canonical_skill_name.strip().lower()
-            base_lower = base.lower()
-            if base_lower == inner_full or base_lower == inner_canon or base_lower in inner_full:
-                return (inner, base, entry_inner.canonical_skill_name)
+            full_clean = re.sub(r"\s*\([^)]*\)\s*$", "", entry_inner.full_name).strip().lower()
+            canon_clean = re.sub(r"\s*\([^)]*\)\s*$", "", entry_inner.canonical_skill_name).strip().lower()
+            if base_lower == full_clean or base_lower == canon_clean:
+                return (entry_inner.acronym, base_clean, entry_inner.canonical_skill_name)
 
-        # 4. Direct dictionary check: base is acronym whose full name or canonical matches inner
-        entry_base = self.acronym_resolver.get_acronym(base)
+        # 2. Base is verified acronym in dictionary
+        entry_base = self.acronym_resolver.get_acronym(base_clean)
         if entry_base:
-            base_full = entry_base.full_name.strip().lower()
-            base_canon = entry_base.canonical_skill_name.strip().lower()
-            inner_lower = inner.lower()
-            if inner_lower == base_full or inner_lower == base_canon or inner_lower in base_full:
-                return (base, inner, entry_base.canonical_skill_name)
+            full_clean = re.sub(r"\s*\([^)]*\)\s*$", "", entry_base.full_name).strip().lower()
+            canon_clean = re.sub(r"\s*\([^)]*\)\s*$", "", entry_base.canonical_skill_name).strip().lower()
+            if inner_lower == full_clean or inner_lower == canon_clean:
+                return (entry_base.acronym, inner_clean, entry_base.canonical_skill_name)
 
+        # If neither is in the verified dictionary with exact normalized expansion match, reject
         return None
 
     def _match_level_modifier(self, text: str) -> Optional[str]:
-        """Checks if text matches any governed skill level modifier."""
-        for level_name, pat in self.LEVEL_PATTERNS:
-            if pat.match(text):
-                return level_name
+        """
+        Checks if text matches any governed skill level modifier
+        sourced directly from standard_skill_levels_matrix.csv via CatalogLoader.
+        """
+        if not text:
+            return None
+        text_clean = text.strip()
+        for row in self.level_matrix_rows:
+            if row.compiled_pattern and row.compiled_pattern.search(text_clean):
+                return row.standard_level
+            if row.compiled_arabic_regex and row.compiled_arabic_regex.search(text_clean):
+                return row.standard_level
         return None
 
     def _check_category_container(
@@ -599,13 +705,12 @@ class ParenthesesTypologyEngine:
     ) -> Optional[List[str]]:
         """
         Detects if base is a generic category container (e.g. 'Development Tools')
-        and inner contains multiple leaf items (e.g. 'Git, Jira').
+        and inner contains leaf items, shielding protected compounds (PL/SQL, CI/CD).
         """
         if not base or not inner:
             return None
 
         base_lower = base.lower()
-        # Check if base contains a container keyword
         is_container_header = any(
             re.search(rf"\b{re.escape(kw)}\b", base_lower)
             for kw in self.CONTAINER_BASE_KEYWORDS
@@ -614,10 +719,8 @@ class ParenthesesTypologyEngine:
         if not is_container_header:
             return None
 
-        # Split inner into potential child tokens
-        tokens = [t.strip() for t in re.split(r"[,;/]|\band\b|\bor\b", inner, flags=re.IGNORECASE) if t.strip()]
-
-        # Must have at least 1 distinct leaf token
+        # Split inner tokens with compound shielding
+        tokens = self.split_tokens_safely(inner)
         if tokens:
             return tokens
 
@@ -646,7 +749,6 @@ class ParenthesesTypologyEngine:
         )
 
         if has_exp_suffix:
-            # If base indicates experience/field, inner is strongly biased toward industry/specialty
             return True
 
         return False
@@ -662,10 +764,3 @@ class ParenthesesTypologyEngine:
             flags=re.IGNORECASE,
         ).strip()
         return cleaned or base
-
-    def _split_specification_tokens(self, inner: str) -> List[str]:
-        """Splits sub-skill specifications into logical parts if delimited, or retains as single."""
-        if not inner:
-            return []
-        tokens = [t.strip() for t in re.split(r"[,;]|\b(?:and|or)\b", inner, flags=re.IGNORECASE) if t.strip()]
-        return tokens if len(tokens) > 1 else [inner.strip()]

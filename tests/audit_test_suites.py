@@ -49,9 +49,12 @@ for tf in test_files:
 
     notes = ""
     if skipped_classes > 0:
-        notes = f"{skipped_classes} downstream class(es) skipped (M2-M5 on hold)"
+        notes = f"{skipped_classes} downstream class(es) skipped (Pending M2.2-M5 pipeline integration)"
     elif passed == discovered and discovered > 0:
-        notes = "100% passed (M1 pure suite)"
+        if "milestone2" in tf or "m2" in tf:
+            notes = "100% passed (M2 pure suite)"
+        else:
+            notes = "100% passed (M1 pure suite)"
 
     suite_results.append({
         "file": tf,
@@ -64,7 +67,7 @@ for tf in test_files:
         "notes": notes
     })
 
-print("| Test File | Discovered Methods | Executed & Passed | Failed | Errors | Skipped Classes | Not Run (Pending M2-M5) | Notes |")
+print("| Test File | Discovered Methods | Executed & Passed | Failed | Errors | Skipped Classes | Not Run (Pending M2.2-M5) | Notes |")
 print("| --------- | -----------------: | ----------------: | -----: | -----: | --------------: | -----------------------: | ----- |")
 
 tot_disc = tot_pass = tot_fail = tot_err = tot_skip_cls = tot_not_run = 0

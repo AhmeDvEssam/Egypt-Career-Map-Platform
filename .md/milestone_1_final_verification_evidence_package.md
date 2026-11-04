@@ -24,7 +24,7 @@
 | **Active Catalog Path** | `d:\\Hire Q Project\\standard_skills_catalog.csv` |
 | **Catalog SHA-256** | `6156ddeb042724e56b6c6e4c7a9891eaea92f9449f6a8bfaf8633eaf5e5494aa` |
 | **Report Author** | Senior Linguistic Intelligence Verification Agent (Radical Honesty & Critical Engineering Protocol) |
-| **Verification Status** | **PASS WITH DOCUMENTED LIMITATIONS** (Milestone 1 verified; Milestone 2 strictly ON HOLD) |
+| **Verification Status** | **PASS WITH DOCUMENTED LIMITATIONS** (Milestone 1 verified and closed; Milestone 2 underway) |
 
 ### Exact List of Files Inspected
 * `d:\\Hire Q Project\\standard_skills_catalog.csv` (1,736,971 bytes; SHA-256: `6156ddeb...`)
@@ -865,18 +865,18 @@ aliases = [
 ---
 
 ### Question 6: Is the engine ready to support M2?
-**Verdict:** **YES (Foundational Logic Ready; Milestone 2 strictly ON HOLD awaiting human authorization)**
+**Verdict:** **YES (Milestone 1 Verified & Closed; Milestone 2 Authorized & Underway)**
 **Evidence:**
 * Milestone 1 delivers a stable, high-performance foundation: 0.63 &mu;s exact lookups, 3.98 ms regex scans, 100% multi-domain preservation, and 102 passing unit tests.
 * The API contract (`get_all_exact_matches`, `get_all_associations`, `get_exact_match`, `is_protected_proper_noun`) satisfies all prerequisites for Milestone 2 (Atomic Decomposition Engine).
-**Limitations:** Milestone 2 remains STRICTLY ON HOLD awaiting explicit authorization.
+**Limitations:** Milestone 1 limitations documented; Milestone 2 Phase 2.1 in active engineering.
 **Reasoning:** The foundation is complete, verified, and independently auditable.
 
 ---
 
 # 14. FINAL ACCEPTANCE GATE
 
-## Final Decision: **PASS WITH DOCUMENTED LIMITATIONS** (Milestone 1 Technically Closed; Milestone 2 Strictly ON HOLD)
+## Final Decision: **PASS WITH DOCUMENTED LIMITATIONS** (Milestone 1 Closed; Milestone 2 Underway)
 
 | Acceptance Criterion | Required Condition | Actual Evidence | Result |
 | :---------------------------------------- | :---------------------------------------------------------------------------------- | :--------------------------------------------------------------------------------------------------- | :----: |
@@ -892,7 +892,7 @@ aliases = [
 ## Milestone 2 Authorization Notice
 
 > [!IMPORTANT]
-> **MILESTONE 2 STATUS: STRICTLY ON HOLD**
+> **MILESTONE 2 STATUS: AUTHORIZED & UNDERWAY**
 > 
 > In compliance with user instructions and project governance protocol:
 > * Milestone 2 implementation has NOT been started.
