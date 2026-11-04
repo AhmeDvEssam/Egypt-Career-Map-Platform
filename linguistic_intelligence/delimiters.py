@@ -22,11 +22,15 @@ STRICT CONTRACT:
     - Never split on mere whitespace.
     - Never drop unmatched skills (novel skills receive UNMATCHED_NOVEL).
     - Linear O(n) performance: safe regexes, bounded execution well under 50ms.
+    - Zero data loss: oversized inputs are never truncated.
+    - Malformed input safety: unbalanced parentheses are detected and preserved without corrupting split.
+    - 100% collision-proof dynamic sentinels for shielding.
 """
 
 from __future__ import annotations
 
 import re
+import uuid
 from dataclasses import dataclass, field
 from enum import IntEnum
 from typing import Any, Dict, List, Optional, Set, Tuple, Union
@@ -58,6 +62,9 @@ class SplitToken:
     span_index: int = 0                 # 0-based index of this token in decomposition
     total_tokens: int = 1               # Total count of tokens from this decomposition
     is_compound_shielded: bool = False  # True if token contains or is a shielded compound
+    is_oversized: bool = False          # True if token exceeded maximum input length limit
+    is_malformed: bool = False          # True if token has malformed syntax (e.g. unbalanced parens)
+    malformed_reason: Optional[str] = None  # Description of why token is malformed
 
     def to_dict(self) -> Dict[str, Any]:
         """Returns JSON-serializable dictionary representation with zero circular references."""
@@ -71,6 +78,9 @@ class SplitToken:
             "span_index": self.span_index,
             "total_tokens": self.total_tokens,
             "is_compound_shielded": self.is_compound_shielded,
+            "is_oversized": self.is_oversized,
+            "is_malformed": self.is_malformed,
+            "malformed_reason": self.malformed_reason,
         }
 
 
@@ -84,7 +94,7 @@ class HierarchicalDelimiterSplitter:
     MAX_INPUT_LENGTH: int = 20_000
 
     # ─── 1. PROTECTED COMPOUNDS REGISTRY ──────────────────────────────────────────
-    # Slash and ampersand technical/business acronyms that must NEVER be split.
+    # Slash and ampersand technical/business acronyms and domain phrases that must NEVER be split.
     PROTECTED_COMPOUNDS: Set[str] = {
         # Core Technical Compounds
         "pl/sql", "ci/cd", "ui/ux", "ai/ml", "c/c++", "r&d", "p&l", "fp&a",
@@ -99,6 +109,11 @@ class HierarchicalDelimiterSplitter:
         # Language & Framework Specifics
         "c++", "c#", ".net", "node.js", "vue.js", "react.js", "next.js",
         "nest.js", "express.js", "three.js", "angular.js", "asp.net", "vb.net",
+        # Multi-word Catalog / Technical Phrases containing Soft Delimiters
+        "search and recommendation systems",
+        "sales and operations planning",
+        "research and development",
+        "planning and control",
     }
 
     # ─── 2. HIERARCHICAL DELIMITER REGEX PATTERNS ─────────────────────────────────
@@ -113,10 +128,14 @@ class HierarchicalDelimiterSplitter:
     )
 
     # Tier 3: Soft Separators (&, /, and, or, -, +, isolated Arabic waw)
-    # Note: Soft delimiters require whitespace or word boundary guards to avoid
-    # breaking normal words or unshielded terms.
     SOFT_DELIMITER_PATTERN: re.Pattern = re.compile(
         r"(?:\s+&\s+|\s*&\s*|\s+/\s+|\b/\b|\b(?:and|or)\b|(?<=\s)و(?=\s)|(?<=[,،])\s*و\s*|\s+[\-\–\—]\s+|\s+\+\s+)",
+        re.IGNORECASE,
+    )
+
+    # Delimiter intersection pattern for detecting catalog skills requiring shielding
+    DELIMITER_INTERSECT_PATTERN: re.Pattern = re.compile(
+        r"([&/+\t|•*;,،]|\s+[\-\–\—]\s+|\b(?:and|or)\b|(?<=\s)و(?=\s)|\bأو\b)",
         re.IGNORECASE,
     )
 
@@ -130,45 +149,87 @@ class HierarchicalDelimiterSplitter:
         self.acronym_resolver = acronym_resolver or AcronymResolver()
         self.proper_noun_shield = proper_noun_shield or ProperNounShield()
 
-        # Build set of protected phrases (compounds, acronyms, catalog skills with & or /)
+        # Build set of protected phrases (compounds, acronyms, catalog skills intersecting delimiters)
         self.protected_phrases: Set[str] = set()
         for c in self.PROTECTED_COMPOUNDS:
             self.protected_phrases.add(c.lower())
         for c in self.proper_noun_shield.PROTECTED_COMPOUNDS:
             self.protected_phrases.add(c.lower())
 
-        # Add all catalog skills containing & or / or - as protected phrases
+        # BLOCKER 3: Dynamically protect all catalog skills and aliases intersecting ANY delimiter
         for row in self.catalog.all_entries:
             name = row.standard_skill_name.strip()
             name_lower = name.lower()
-            if any(char in name for char in ("&", "/", " - ")):
+            if self.DELIMITER_INTERSECT_PATTERN.search(name):
                 self.protected_phrases.add(name_lower)
             for alias in row.known_aliases:
-                alias_lower = alias.strip().lower()
-                if any(char in alias for char in ("&", "/", " - ")):
+                alias_clean = alias.strip()
+                alias_lower = alias_clean.lower()
+                if self.DELIMITER_INTERSECT_PATTERN.search(alias_clean):
                     self.protected_phrases.add(alias_lower)
 
-        # Pre-compile multi-phrase regex for fast scanning (longest phrases first)
+        self._recompile_shield_regex()
+
+    def register_protected_phrase(self, phrase: str) -> None:
+        """Dynamically registers an additional protected phrase or catalog skill."""
+        if not phrase or not isinstance(phrase, str):
+            return
+        p_clean = phrase.strip().lower()
+        if p_clean and p_clean not in self.protected_phrases:
+            self.protected_phrases.add(p_clean)
+            self._recompile_shield_regex()
+
+    def _recompile_shield_regex(self) -> None:
+        """Pre-compiles multi-phrase regex for fast scanning (longest phrases first) with boundary safety."""
         sorted_phrases = sorted(self.protected_phrases, key=len, reverse=True)
-        # Escape phrases safely
-        phrase_patterns = [r"\b" + re.escape(p) + r"\b" for p in sorted_phrases if p.isalnum()]
-        # Non-alphanumeric phrases (like C/C++, R&D, PL/SQL) require custom boundaries
+        phrase_patterns: List[str] = []
         for p in sorted_phrases:
-            if not p.isalnum():
-                escaped = re.escape(p)
+            escaped = re.escape(p)
+            if re.match(r"^[\w\s]+$", p):
+                phrase_patterns.append(rf"\b{escaped}\b")
+            else:
                 phrase_patterns.append(rf"(?<![\w/&]){escaped}(?![\w/&])")
-        self._compiled_shield_regex: re.Pattern = re.compile(
+
+        self._compiled_shield_regex = re.compile(
             "|".join(phrase_patterns), re.IGNORECASE
         )
 
-    # ─── 3. SHIELDING MECHANISM (PLACEHOLDER MASKING) ─────────────────────────────
+    # ─── 3. SHIELDING & VALIDATION MECHANISMS ─────────────────────────────────────
+    def check_parentheses_balance(self, text: str) -> Tuple[bool, Optional[str]]:
+        """
+        Validates that parentheses in text are strictly balanced and well-formed.
+        Detects unclosed open parentheses, extra close parentheses, and malformed structures.
+        Returns (is_balanced, malformed_reason).
+        """
+        if not text:
+            return True, None
+        stack: List[int] = []
+        for i, ch in enumerate(text):
+            if ch == "(":
+                stack.append(i)
+            elif ch == ")":
+                if not stack:
+                    return False, "UNBALANCED_EXTRA_CLOSE_PARENTHESIS"
+                stack.pop()
+        if stack:
+            return False, "UNBALANCED_UNCLOSED_OPEN_PARENTHESIS"
+        return True, None
+
     def mask_protected_spans(self, text: str) -> Tuple[str, Dict[str, str]]:
         """
         Masks top-level parenthetical blocks, protected compounds, and catalog phrases
-        with collision-proof sentinels so delimiter passes cannot fragment them.
+        with collision-proof, dynamically salted sentinels so delimiter passes cannot fragment them.
         """
         if not text:
             return "", {}
+
+        # BLOCKER 4: Generate dynamic salt guaranteed NOT to appear anywhere in input text
+        salt_base = uuid.uuid4().hex[:12]
+        salt = salt_base
+        salt_counter = 0
+        while salt in text:
+            salt_counter += 1
+            salt = f"{salt_base}_{salt_counter}"
 
         shield_map: Dict[str, str] = {}
         masked_text = text
@@ -189,7 +250,7 @@ class HierarchicalDelimiterSplitter:
         # Replace top-level parentheses in reverse order to preserve string indices
         for start, end in reversed(paren_spans):
             original = masked_text[start:end]
-            placeholder = f"__SHIELD_PAREN_{placeholder_idx}__"
+            placeholder = f"__SHIELD_{salt}_PAREN_{placeholder_idx}__"
             placeholder_idx += 1
             shield_map[placeholder] = original
             masked_text = masked_text[:start] + placeholder + masked_text[end:]
@@ -198,7 +259,9 @@ class HierarchicalDelimiterSplitter:
         def replace_compound(m: re.Match) -> str:
             nonlocal placeholder_idx
             matched_str = m.group(0)
-            placeholder = f"__SHIELD_COMP_{placeholder_idx}__"
+            if matched_str.startswith("__SHIELD_"):
+                return matched_str
+            placeholder = f"__SHIELD_{salt}_COMP_{placeholder_idx}__"
             placeholder_idx += 1
             shield_map[placeholder] = matched_str
             return placeholder
@@ -212,8 +275,8 @@ class HierarchicalDelimiterSplitter:
         if not text or not shield_map:
             return text
         result = text
-        # Unmask in reverse order
-        for placeholder, original in shield_map.items():
+        # Unmask in reverse insertion order
+        for placeholder, original in reversed(list(shield_map.items())):
             result = result.replace(placeholder, original)
         return result
 
@@ -222,23 +285,49 @@ class HierarchicalDelimiterSplitter:
         """
         Decomposes composite skill text into a list of atomic SplitToken objects
         following the 3-tier delimiter hierarchy while shielding protected spans.
+        Enforces zero truncation and malformed syntax safety.
         """
         if not text or not isinstance(text, str) or not text.strip():
             return []
 
         text_clean = text.strip()
+
+        # BLOCKER 1 GUARDRAIL: Strict zero-truncation on oversized input
         if len(text_clean) > self.MAX_INPUT_LENGTH:
             return [
                 SplitToken(
-                    atomic_skill=text_clean[:self.MAX_INPUT_LENGTH].strip(),
+                    atomic_skill=text_clean,  # ZERO TRUNCATION: preserve full verbatim string
                     raw_token=text_clean,
-                    separated_by="",
+                    separated_by="OVERSIZED_INPUT",
                     separated_from_before="",
                     separated_from_after="",
                     hierarchy_level=DelimiterTier.NONE,
                     span_index=0,
                     total_tokens=1,
-                    is_compound_shielded=False,
+                    is_compound_shielded=self.is_compound_protected(text_clean),
+                    is_oversized=True,
+                    is_malformed=True,
+                    malformed_reason="OVERSIZED_INPUT",
+                )
+            ]
+
+        # BLOCKER 2 GUARDRAIL: Strict unbalanced / malformed parentheses detection
+        is_balanced, malformed_reason = self.check_parentheses_balance(text_clean)
+        if not is_balanced:
+            return [
+                SplitToken(
+                    atomic_skill=text_clean,  # Retain entire text intact without corrupting split
+                    raw_token=text_clean,
+                    separated_by=malformed_reason or "MALFORMED_PARENTHESES",
+                    separated_from_before="",
+                    separated_from_after="",
+                    hierarchy_level=DelimiterTier.NONE,
+                    span_index=0,
+                    total_tokens=1,
+                    is_compound_shielded=self.is_compound_protected(text_clean),
+                    is_oversized=False,
+                    is_malformed=True,
+                    malformed_reason=malformed_reason,
                 )
             ]
 
@@ -262,9 +351,6 @@ class HierarchicalDelimiterSplitter:
             cleaned = re.sub(r"[\s,،;•|*&/\-]+$", "", cleaned).strip()
 
             if cleaned:
-                is_shielded = any(
-                    comp in cleaned.lower() for comp in self.PROTECTED_COMPOUNDS
-                )
                 tokens.append((cleaned, unmasked, delimiter_used, tier_used))
 
         if not tokens:
@@ -295,6 +381,9 @@ class HierarchicalDelimiterSplitter:
                     span_index=idx,
                     total_tokens=total_tokens,
                     is_compound_shielded=self.is_compound_protected(cleaned_skill),
+                    is_oversized=False,
+                    is_malformed=False,
+                    malformed_reason=None,
                 )
             )
 
@@ -362,10 +451,10 @@ class HierarchicalDelimiterSplitter:
         return [t.atomic_skill for t in self.split(text)]
 
     def is_compound_protected(self, text: str) -> bool:
-        """Checks whether text represents or contains a protected compound."""
+        """Checks whether text represents or contains a protected compound using token-aware boundary matching."""
         if not text or not isinstance(text, str):
             return False
-        clean_lower = text.strip().lower()
+        clean_lower = " ".join(text.strip().lower().split())
         if clean_lower in self.protected_phrases:
             return True
-        return any(p in clean_lower for p in self.PROTECTED_COMPOUNDS)
+        return bool(self._compiled_shield_regex.search(clean_lower))

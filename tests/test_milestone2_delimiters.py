@@ -349,10 +349,22 @@ class TestMilestone2DelimiterSplitter(unittest.TestCase):
         self.assertEqual([t.atomic_skill for t in res], ["Front-End", "Back-End", "Full-Stack"])
 
     def test_40_oversized_input_guardrail(self):
-        """Inputs exceeding MAX_INPUT_LENGTH do not cause memory errors or catastrophic backtrack."""
-        huge_input = "Python, " * 5_000
+        """
+        BLOCKER 1: Inputs exceeding MAX_INPUT_LENGTH must NEVER be truncated or lose data.
+        The full original text is preserved verbatim with status OVERSIZED_INPUT.
+        """
+        huge_input = ("Python, " * 5_000).strip()
         res = self.splitter.split(huge_input)
-        self.assertGreaterEqual(len(res), 1)
+        self.assertEqual(len(res), 1)
+        # Strict zero data loss: exact string equality and exact character length
+        self.assertEqual(res[0].atomic_skill, huge_input)
+        self.assertEqual(res[0].raw_token, huge_input)
+        self.assertEqual(len(res[0].atomic_skill), len(huge_input))
+        self.assertTrue(res[0].is_oversized)
+        self.assertTrue(res[0].is_malformed)
+        self.assertEqual(res[0].malformed_reason, "OVERSIZED_INPUT")
+        self.assertEqual(res[0].separated_by, "OVERSIZED_INPUT")
+        self.assertEqual(res[0].hierarchy_level, DelimiterTier.NONE)
 
     def test_41_mixed_hierarchy_nested_delimiters(self):
         """
@@ -383,7 +395,139 @@ class TestMilestone2DelimiterSplitter(unittest.TestCase):
         self.assertEqual(d["separated_by"], "&")
         self.assertEqual(d["separated_from_after"], "SQL")
         self.assertEqual(d["hierarchy_level"], DelimiterTier.SOFT)
+        self.assertFalse(d["is_oversized"])
+        self.assertFalse(d["is_malformed"])
+        self.assertIsNone(d["malformed_reason"])
         self.assertIsInstance(d, dict)
+
+    # ─── 9. BLOCKER REGRESSION & ADVERSARIAL TEST SUITE ───────────────────────
+    def test_44_unbalanced_open_parenthesis_preserved(self):
+        """
+        BLOCKER 2: Unclosed opening parenthesis must NOT cause corrupt splitting on internal commas.
+        Entire text is preserved intact with clear malformed status.
+        """
+        raw = "Python (Flask, Django"
+        res = self.splitter.split(raw)
+        self.assertEqual(len(res), 1)
+        self.assertEqual(res[0].atomic_skill, raw)
+        self.assertEqual(res[0].raw_token, raw)
+        self.assertTrue(res[0].is_malformed)
+        self.assertEqual(res[0].malformed_reason, "UNBALANCED_UNCLOSED_OPEN_PARENTHESIS")
+        self.assertEqual(res[0].separated_by, "UNBALANCED_UNCLOSED_OPEN_PARENTHESIS")
+
+    def test_45_unbalanced_extra_close_parenthesis_preserved(self):
+        """
+        BLOCKER 2: Extra unopened closing parenthesis must NOT cause corrupt splitting.
+        """
+        raw = "Python) Flask, Django"
+        res = self.splitter.split(raw)
+        self.assertEqual(len(res), 1)
+        self.assertEqual(res[0].atomic_skill, raw)
+        self.assertTrue(res[0].is_malformed)
+        self.assertEqual(res[0].malformed_reason, "UNBALANCED_EXTRA_CLOSE_PARENTHESIS")
+
+    def test_46_nested_unbalanced_parentheses_preserved(self):
+        """
+        BLOCKER 2: Nested unclosed parenthesis must be detected and preserved without fragmentation.
+        """
+        raw = "Python ((Flask), Django"
+        res = self.splitter.split(raw)
+        self.assertEqual(len(res), 1)
+        self.assertEqual(res[0].atomic_skill, raw)
+        self.assertTrue(res[0].is_malformed)
+        self.assertEqual(res[0].malformed_reason, "UNBALANCED_UNCLOSED_OPEN_PARENTHESIS")
+
+    def test_47_catalog_phrase_with_and_protected(self):
+        """
+        BLOCKER 3: Multi-word technical and catalog phrases containing word 'and'
+        (e.g. 'Search and Recommendation Systems') must NEVER be split by soft delimiter.
+        """
+        raw = "Search and Recommendation Systems, Python & Docker"
+        res = self.splitter.split(raw)
+        self.assertEqual(len(res), 3)
+        skills = [t.atomic_skill for t in res]
+        self.assertEqual(skills, ["Search and Recommendation Systems", "Python", "Docker"])
+        self.assertTrue(res[0].is_compound_shielded)
+
+    def test_48_catalog_phrases_with_and_from_catalog_matrix(self):
+        """
+        BLOCKER 3: Existing catalog entries containing 'and' (e.g. 'Planning and Control',
+        'Water Pump Installation and Repair') are shielded while outer delimiters split.
+        """
+        raw = "Planning and Control, Water Pump Installation and Repair & PLC"
+        res = self.splitter.split(raw)
+        self.assertEqual(len(res), 3)
+        self.assertEqual(
+            [t.atomic_skill for t in res],
+            ["Planning and Control", "Water Pump Installation and Repair", "PLC"],
+        )
+        self.assertTrue(res[0].is_compound_shielded)
+        self.assertTrue(res[1].is_compound_shielded)
+
+    def test_49_conjunction_and_splitting_when_not_catalog_phrase(self):
+        """
+        BLOCKER 3: When 'and' is a true coordinating conjunction between independent skills,
+        it must split cleanly without false shielding.
+        """
+        raw = "Python and Docker"
+        res = self.splitter.split(raw)
+        self.assertEqual(len(res), 2)
+        self.assertEqual([t.atomic_skill for t in res], ["Python", "Docker"])
+        self.assertEqual(res[0].separated_by, "and")
+
+    def test_50_placeholder_collision_proof(self):
+        """
+        BLOCKER 4: User input intentionally containing placeholder sentinel tokens
+        (e.g. '__SHIELD_COMP_0__') must NEVER collide or be corrupted by shielding unmasking.
+        """
+        raw = "Python __SHIELD_COMP_0__ & SQL; CI/CD"
+        res = self.splitter.split(raw)
+        self.assertEqual(len(res), 3)
+        skills = [t.atomic_skill for t in res]
+        self.assertEqual(skills, ["Python __SHIELD_COMP_0__", "SQL", "CI/CD"])
+        self.assertEqual(res[0].atomic_skill, "Python __SHIELD_COMP_0__")
+        self.assertEqual(res[2].atomic_skill, "CI/CD")
+        self.assertTrue(res[2].is_compound_shielded)
+
+    def test_51_compound_token_aware_boundary_no_false_positive(self):
+        """
+        Reviewer Note: is_compound_protected() must be token/boundary-aware and avoid
+        substring false positives (e.g. 'e2e' inside 'create2event').
+        """
+        self.assertFalse(self.splitter.is_compound_protected("create2event"))
+        self.assertTrue(self.splitter.is_compound_protected("e2e"))
+        self.assertTrue(self.splitter.is_compound_protected("E2E Testing"))
+        self.assertTrue(self.splitter.is_compound_protected("CI/CD Pipeline"))
+
+    def test_52_adversarial_deeply_nested_balanced_parentheses(self):
+        """Adversarial balanced multi-level parentheses are cleanly shielded."""
+        raw = "Python (Flask (REST API (v1))), Docker"
+        res = self.splitter.split(raw)
+        self.assertEqual(len(res), 2)
+        self.assertEqual(
+            [t.atomic_skill for t in res],
+            ["Python (Flask (REST API (v1)))", "Docker"],
+        )
+
+    def test_53_adversarial_sentinel_tampering_multiple(self):
+        """Multiple sentinel tampering attempts in single string are 100% collision-proof."""
+        raw = "__SHIELD_PAREN_0__ & __SHIELD_COMP_1__; UI/UX & R&D"
+        res = self.splitter.split(raw)
+        self.assertEqual(len(res), 4)
+        self.assertEqual(
+            [t.atomic_skill for t in res],
+            ["__SHIELD_PAREN_0__", "__SHIELD_COMP_1__", "UI/UX", "R&D"],
+        )
+
+    def test_54_adversarial_mixed_arabic_english_delimiters(self):
+        """Arabic semicolons, commas, English ampersands, and compound shielding in mixed input."""
+        raw = "تطوير واجهات المستخدم (UI/UX)؛ Python & Django، إدارة المشاريع والتخطيط"
+        res = self.splitter.split(raw)
+        self.assertEqual(len(res), 4)
+        self.assertEqual(
+            [t.atomic_skill for t in res],
+            ["تطوير واجهات المستخدم (UI/UX)", "Python", "Django", "إدارة المشاريع والتخطيط"],
+        )
 
     def test_43_sub_millisecond_benchmark(self):
         """1,000 splits execute in well under 2,000 ms (< 2 ms per split; budget is 50 ms)."""
@@ -397,6 +541,9 @@ class TestMilestone2DelimiterSplitter(unittest.TestCase):
             "R&D / FP&A / P&L",
             "C/C++ • Linux • TCP/IP",
             "Python (Flask, Django), Docker & Kubernetes",
+            "Search and Recommendation Systems, Python & Docker",
+            "Python __SHIELD_COMP_0__ & SQL; CI/CD",
+            "Python (Flask, Django",
             "بايثون، جافا، وسيكويل",
         ]
         t0 = time.perf_counter()
@@ -405,13 +552,13 @@ class TestMilestone2DelimiterSplitter(unittest.TestCase):
                 self.splitter.split(inp)
         elapsed_ms = (time.perf_counter() - t0) * 1000
 
-        # Assert 1,000 splits completed in < 2,000 ms
+        # Assert 1,300 splits completed in < 2,000 ms
         self.assertLess(
             elapsed_ms,
             2000.0,
-            f"Expected 1,000 splits to take < 2000 ms, took {elapsed_ms:.2f} ms",
+            f"Expected splits to take < 2000 ms, took {elapsed_ms:.2f} ms",
         )
-        print(f"\n[BENCHMARK] 1,000 delimiter splits: {elapsed_ms:.2f} ms ({elapsed_ms/1000:.3f} ms/split)")
+        print(f"\n[BENCHMARK] 1,300 delimiter splits: {elapsed_ms:.2f} ms ({elapsed_ms/1300:.3f} ms/split)")
 
 
 if __name__ == "__main__":
