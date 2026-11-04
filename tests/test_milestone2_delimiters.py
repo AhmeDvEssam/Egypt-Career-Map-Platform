@@ -564,6 +564,44 @@ class TestMilestone2DelimiterSplitter(unittest.TestCase):
         self.assertIsNone(res[0].malformed_reason)
         self.assertEqual(res[0].separated_by, "OVERSIZED_INPUT")
 
+    def test_57_verbatim_raw_token_preservation_for_multiple_tokens(self):
+        """
+        Reviewer Requirement: raw_token must preserve the exact verbatim source substring
+        (including surrounding whitespace) for multi-token inputs.
+        Example input: '  Python  ,  SQL  ,  Docker  '
+        """
+        raw_input = "  Python  ,  SQL  ,  Docker  "
+        res = self.splitter.split(raw_input)
+        self.assertEqual(len(res), 3)
+        # raw_token retains exact verbatim slices with surrounding spaces
+        self.assertEqual(res[0].raw_token, "  Python  ")
+        self.assertEqual(res[1].raw_token, "  SQL  ")
+        self.assertEqual(res[2].raw_token, "  Docker  ")
+        # atomic_skill is cleaned and normalized
+        self.assertEqual(res[0].atomic_skill, "Python")
+        self.assertEqual(res[1].atomic_skill, "SQL")
+        self.assertEqual(res[2].atomic_skill, "Docker")
+        # separated_by is independent delimiter token
+        self.assertEqual(res[0].separated_by, ",")
+        self.assertEqual(res[1].separated_by, ",")
+        self.assertEqual(res[2].separated_by, ",")
+
+    def test_58_verbatim_raw_token_preservation_mixed_delimiters(self):
+        """
+        Multi-token preservation across mixed delimiter tiers with asymmetric whitespace:
+        '  HTML  ;  CSS  &  JavaScript  '
+        """
+        raw_input = "  HTML  ;  CSS  &  JavaScript  "
+        res = self.splitter.split(raw_input)
+        self.assertEqual(len(res), 3)
+        self.assertEqual(res[0].raw_token, "  HTML  ")
+        self.assertEqual(res[1].raw_token, "  CSS  ")
+        self.assertEqual(res[2].raw_token, "  JavaScript  ")
+        self.assertEqual([t.atomic_skill for t in res], ["HTML", "CSS", "JavaScript"])
+        self.assertEqual(res[0].separated_by, ";")
+        self.assertEqual(res[1].separated_by, "&")
+        self.assertEqual(res[2].separated_by, "&")
+
     def test_43_sub_millisecond_benchmark(self):
         """1,000 splits execute in well under 2,000 ms (< 2 ms per split; budget is 50 ms)."""
         test_inputs = [

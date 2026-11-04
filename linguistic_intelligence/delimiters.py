@@ -128,8 +128,9 @@ class HierarchicalDelimiterSplitter:
     )
 
     # Tier 3: Soft Separators (&, /, and, or, -, +, isolated Arabic waw)
+    # Uses zero-width lookaround for whitespace guards to avoid consuming token whitespace.
     SOFT_DELIMITER_PATTERN: re.Pattern = re.compile(
-        r"(?:\s+&\s+|\s*&\s*|\s+/\s+|\b/\b|\b(?:and|or)\b|(?<=\s)و(?=\s)|(?<=[,،])\s*و\s*|\s+[\-\–\—]\s+|\s+\+\s+)",
+        r"(?:&|(?<=\s)/(?=\s)|\b/\b|\b(?:and|or)\b|(?<=\s)و(?=\s)|(?<=[,،])\s*و(?=\s)|(?<=\s)[\-\–\—](?=\s)|(?<=\s)\+(?=\s))",
         re.IGNORECASE,
     )
 
@@ -336,7 +337,8 @@ class HierarchicalDelimiterSplitter:
             ]
 
         # 1. Mask protected spans (parentheses, compounds, catalog phrases)
-        masked_text, shield_map = self.mask_protected_spans(text_clean)
+        # Process the full verbatim text directly so original offsets and whitespace are preserved
+        masked_text, shield_map = self.mask_protected_spans(text)
 
         # 2. Hierarchical multi-tier decomposition
         # Tier 1 (Hard) -> Tier 2 (Comma) -> Tier 3 (Soft)
@@ -347,15 +349,17 @@ class HierarchicalDelimiterSplitter:
         # 3. Clean segments and restore shielded placeholders
         tokens: List[Tuple[str, str, str, int]] = []
         for segment_text, delimiter_used, tier_used in raw_segments:
-            # Unmask placeholder
-            unmasked = self.unmask_text(segment_text, shield_map)
-            cleaned = " ".join(unmasked.strip().split())
+            # Unmask placeholder in the unstripped source segment
+            unmasked_raw = self.unmask_text(segment_text, shield_map)
+            cleaned = " ".join(unmasked_raw.strip().split())
             # Clean leading/trailing punctuation leftover from split (except parentheses or +, #)
             cleaned = re.sub(r"^[\s,،;•|*&/\-]+", "", cleaned).strip()
             cleaned = re.sub(r"[\s,،;•|*&/\-]+$", "", cleaned).strip()
 
             if cleaned:
-                tokens.append((cleaned, unmasked, delimiter_used, tier_used))
+                # unmasked_raw contains the exact verbatim slice from original text (including surrounding whitespace)
+                # cleaned contains the normalized atomic skill text
+                tokens.append((cleaned, unmasked_raw, delimiter_used, tier_used))
 
         if not tokens:
             return []
@@ -373,7 +377,7 @@ class HierarchicalDelimiterSplitter:
             # If total_tokens > 1, token records its separating delimiter.
             sep_by = delim if total_tokens > 1 else ""
             hier_lvl = tier if total_tokens > 1 else DelimiterTier.NONE
-            # When text is a single atomic token, raw_token preserves verbatim input text as received
+            # When total_tokens == 1, raw_token preserves verbatim input text as received
             actual_raw = text if total_tokens == 1 else raw_tok
 
             results.append(
@@ -400,6 +404,7 @@ class HierarchicalDelimiterSplitter:
     ) -> List[Tuple[str, str, int]]:
         """
         Recursive hierarchical split across Tier 1 (Hard), Tier 2 (Comma), Tier 3 (Soft).
+        Preserves original unstripped source substrings for every segment.
         Returns list of (segment_text, delimiter_token, tier_level).
         """
         if tier > DelimiterTier.SOFT:
@@ -426,11 +431,11 @@ class HierarchicalDelimiterSplitter:
         last_end = 0
 
         for m in matches:
-            segment = text[last_end:m.start()].strip()
+            segment = text[last_end:m.start()]
             delim = m.group(0).strip()
             last_end = m.end()
 
-            if segment:
+            if segment.strip():
                 # Recurse sub-segment on next tier
                 sub_segments = self._hierarchical_split(segment, next_tier)
                 for sub_text, sub_delim, sub_tier in sub_segments:
@@ -440,8 +445,8 @@ class HierarchicalDelimiterSplitter:
                     segments.append((sub_text, final_delim, final_tier))
 
         # Tail segment after last delimiter
-        tail = text[last_end:].strip()
-        if tail:
+        tail = text[last_end:]
+        if tail.strip():
             sub_tail = self._hierarchical_split(tail, next_tier)
             last_delim = matches[-1].group(0).strip()
             for sub_text, sub_delim, sub_tier in sub_tail:
