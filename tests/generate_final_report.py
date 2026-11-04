@@ -580,7 +580,7 @@ Profiling was executed strictly via the reproducible standalone script `tests/be
 > [!NOTE]
 > **Architectural Verification Boundary Distinction:**
 > - **Seniority Regex Decoupling:** **VERIFIED (PASS)**. Proven via `standard_skill_levels_matrix.csv` inspection and 9 dedicated unit tests. Career seniority tokens (`Senior`, `Principal`, `Mid-senior`, `Junior`) never match technical proficiency levels or pollute canonical skill levels.
-> - **Sidecar Seniority Extraction:** **NOT INDEPENDENTLY VERIFIED (Pending Milestone 4 Implementation)**. The architectural requirement to route extracted job seniority into the Sidecar metadata column `intra_string_seniority` belongs to `SidecarMetadataEngine` (Milestone 4) and `AtomicDecompositionPipeline` (Milestone 5). Because Milestones 2 through 5 are strictly ON HOLD, end-to-end Sidecar extraction is specified in design contracts but cannot be verified at runtime until M4 is authorized and built.
+> - **Sidecar Seniority Extraction:** **NOT INDEPENDENTLY VERIFIED (Pending Milestone 4 Implementation)**. The architectural requirement to route extracted job seniority into the Sidecar metadata column `intra_string_seniority` belongs to `SidecarMetadataEngine` (Milestone 4) and `AtomicDecompositionPipeline` (Milestone 5). Because Milestone 2 is currently underway and Milestones 3 through 5 have not yet started, end-to-end Sidecar extraction is specified in design contracts and will be verified when Milestone 4 (Sidecar Engine) and Milestone 5 (Pipeline) are implemented.
 
 ### 1. Matrix Purge Summary (`standard_skill_levels_matrix.csv`)
 Following the architectural review, all job seniority titles and ambiguous modifiers were strictly excised from `standard_skill_levels_matrix.csv`:

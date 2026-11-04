@@ -168,6 +168,78 @@ class TestMilestone2ParenthesesTypology(unittest.TestCase):
         self.assertEqual(res2.typology, ParenthesisTypology.SUB_SKILL_SPECIFICATION)
         self.assertIsNone(res2.canonical_level)
 
+    def test_07f_level_false_positives_with_skill_nouns_rejected(self):
+        """
+        Phrases containing a skill noun (e.g. 'Advanced Excel', 'Expert Python Programming',
+        'Intermediate SQL Queries') must NOT match as pure level modifiers.
+        They must be classified as SUB_SKILL_SPECIFICATION.
+        """
+        res_excel = self.engine.classify("Data Analysis (Advanced Excel)")
+        self.assertEqual(res_excel.typology, ParenthesisTypology.SUB_SKILL_SPECIFICATION)
+        self.assertIsNone(res_excel.canonical_level)
+        self.assertIsNone(res_excel.extracted_level)
+        self.assertIn("Advanced Excel", res_excel.sub_skills)
+
+        res_py = self.engine.classify("Computer Science (Expert Python Programming)")
+        self.assertEqual(res_py.typology, ParenthesisTypology.SUB_SKILL_SPECIFICATION)
+        self.assertIsNone(res_py.canonical_level)
+        self.assertIsNone(res_py.extracted_level)
+        self.assertIn("Expert Python Programming", res_py.sub_skills)
+
+        res_sql = self.engine.classify("Database Management (Intermediate SQL Queries)")
+        self.assertEqual(res_sql.typology, ParenthesisTypology.SUB_SKILL_SPECIFICATION)
+        self.assertIsNone(res_sql.canonical_level)
+        self.assertIsNone(res_sql.extracted_level)
+        self.assertIn("Intermediate SQL Queries", res_sql.sub_skills)
+
+    def test_07g_arabic_level_false_positives_with_skill_nouns_rejected(self):
+        """
+        Arabic phrases containing skill nouns with level adjectives (e.g. 'إكسيل متقدم',
+        'برمجة بايثون متقدمة') must NOT match as pure level modifiers.
+        They must fall through to SUB_SKILL_SPECIFICATION.
+        """
+        res_ar_excel = self.engine.classify("تحليل بيانات (إكسيل متقدم)")
+        self.assertEqual(res_ar_excel.typology, ParenthesisTypology.SUB_SKILL_SPECIFICATION)
+        self.assertIsNone(res_ar_excel.canonical_level)
+        self.assertIsNone(res_ar_excel.extracted_level)
+        self.assertIn("إكسيل متقدم", res_ar_excel.sub_skills)
+
+        res_ar_py = self.engine.classify("هندسة برمجيات (برمجة بايثون متقدمة)")
+        self.assertEqual(res_ar_py.typology, ParenthesisTypology.SUB_SKILL_SPECIFICATION)
+        self.assertIsNone(res_ar_py.canonical_level)
+        self.assertIsNone(res_ar_py.extracted_level)
+        self.assertIn("برمجة بايثون متقدمة", res_ar_py.sub_skills)
+
+    def test_07h_level_category_preservation_for_m3(self):
+        """
+        TypologyClassification must preserve level_category from M1 matrix
+        to prevent downstream M3 from confusing Credential Status with Technical Proficiency.
+        """
+        res_tech = self.engine.classify("Python (Advanced)")
+        self.assertEqual(res_tech.typology, ParenthesisTypology.LEVEL_OR_EXPERIENCE)
+        self.assertEqual(res_tech.canonical_level, "Advanced")
+        self.assertEqual(res_tech.level_category, "Technical Proficiency")
+
+        res_cert = self.engine.classify("AWS Solutions Architect (Certified)")
+        self.assertEqual(res_cert.typology, ParenthesisTypology.LEVEL_OR_EXPERIENCE)
+        self.assertEqual(res_cert.canonical_level, "Active / Certified")
+        self.assertEqual(res_cert.level_category, "Credential Status")
+
+        res_cefr = self.engine.classify("English (B2)")
+        self.assertEqual(res_cefr.typology, ParenthesisTypology.LEVEL_OR_EXPERIENCE)
+        self.assertEqual(res_cefr.canonical_level, "B2 (Upper Intermediate)")
+        self.assertEqual(res_cefr.level_category, "CEFR Framework")
+
+        res_tool = self.engine.classify("Docker (working knowledge)")
+        self.assertEqual(res_tool.typology, ParenthesisTypology.LEVEL_OR_EXPERIENCE)
+        self.assertEqual(res_tool.canonical_level, "Intermediate")
+        self.assertEqual(res_tool.level_category, "Tool Competency")
+
+        res_trait = self.engine.classify("Problem Solving (Demonstrated)")
+        self.assertEqual(res_trait.typology, ParenthesisTypology.LEVEL_OR_EXPERIENCE)
+        self.assertEqual(res_trait.canonical_level, "Demonstrated")
+        self.assertEqual(res_trait.level_category, "Demonstrated Trait")
+
     # ─── 3. CASE 1: LEVEL OR EXPERIENCE (Duration) ────────────────────────────
     def test_08_duration_years(self):
         """'Java (5+ years)' extracts duration without corrupting skill."""

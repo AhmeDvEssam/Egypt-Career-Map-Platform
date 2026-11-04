@@ -94,6 +94,7 @@ class TypologyClassification:
     cleaned_base_skill: str
     extracted_level: Optional[str] = None
     canonical_level: Optional[str] = None
+    level_category: Optional[str] = None
     extracted_duration: Optional[str] = None
     acronym_token: Optional[str] = None
     expanded_token: Optional[str] = None
@@ -118,6 +119,7 @@ class TypologyClassification:
             "cleaned_base_skill": self.cleaned_base_skill,
             "extracted_level": self.extracted_level,
             "canonical_level": self.canonical_level,
+            "level_category": self.level_category,
             "extracted_duration": self.extracted_duration,
             "acronym_token": self.acronym_token,
             "expanded_token": self.expanded_token,
@@ -569,15 +571,17 @@ class ParenthesesTypologyEngine:
             )
 
         # 4b. Governed Proficiency Level Modifier from M1 Matrix
-        level_val = self._match_level_modifier(inner_clean)
-        if level_val is not None:
+        level_res = self._match_level_modifier(inner_clean)
+        if level_res is not None:
+            std_level, lvl_cat = level_res
             return TypologyClassification(
                 typology=ParenthesisTypology.LEVEL_OR_EXPERIENCE,
                 raw_content=inner_clean,
                 base_text=base_clean,
                 cleaned_base_skill=base_clean,
                 extracted_level=inner_clean,     # Exact verbatim original text per Spec v3!
-                canonical_level=level_val,       # Governed canonical standard level from matrix!
+                canonical_level=std_level,       # Governed canonical standard level from matrix!
+                level_category=lvl_cat,          # Governed level category (M3 contract: Technical Proficiency vs Credential Status)
                 is_malformed=is_malformed,
                 malformed_reason=malformed_reason,
                 raw_input=raw_input,
@@ -693,34 +697,39 @@ class ParenthesesTypologyEngine:
         # If neither is in the verified dictionary with exact normalized expansion match, reject
         return None
 
-    def _match_level_modifier(self, text: str) -> Optional[str]:
+    def _match_level_modifier(self, text: str) -> Optional[Tuple[str, str]]:
         """
-        Checks if text matches any governed skill level modifier
-        sourced directly from standard_skill_levels_matrix.csv via CatalogLoader.
-        Applies word boundary and standalone token constraints so that words inside
-        longer sub-skill phrases are not falsely extracted as pure level modifiers.
+        Checks if text matches any governed skill level modifier from M1 matrix.
+        STRICT REQUIREMENT: The match must cover the ENTIRE inner content.
+        Phrases containing skill nouns (e.g. 'Advanced Excel', 'Expert Python Programming',
+        'Intermediate SQL Queries', 'برمجة بايثون متقدمة', 'إكسيل متقدم')
+        must NOT match as level modifiers and fall through to sub-skill specifications.
+        Returns (standard_level, level_category) or None.
         """
         if not text:
             return None
-        text_clean = text.strip()
+        text_clean = " ".join(text.strip().strip(".,;:").split())
+        if not text_clean:
+            return None
 
-        # A level modifier in parens is typically a standalone descriptor (<= 3 words)
+        # A level modifier in parens is typically a standalone descriptor (<= 4 words)
         words = text_clean.split()
-        if len(words) > 3:
+        if len(words) > 4:
             return None
 
         for row in self.level_matrix_rows:
             if row.compiled_pattern:
                 m = row.compiled_pattern.search(text_clean)
                 if m:
-                    # Matched string must cover the whole token or represent the core modifier
-                    matched_str = m.group(0).strip().lower()
-                    if matched_str == text_clean.lower() or len(words) <= 2:
-                        return row.standard_level
+                    # Match must cover the ENTIRE text (exact full match)
+                    if (m.start() == 0 and m.end() == len(text_clean)) or m.group(0).strip().lower() == text_clean.lower():
+                        return (row.standard_level, row.level_category)
             if row.compiled_arabic_regex:
                 m_ar = row.compiled_arabic_regex.search(text_clean)
                 if m_ar:
-                    return row.standard_level
+                    # Match must cover the ENTIRE text (exact full match)
+                    if (m_ar.start() == 0 and m_ar.end() == len(text_clean)) or m_ar.group(0).strip() == text_clean:
+                        return (row.standard_level, row.level_category)
         return None
 
     def _check_category_container(
