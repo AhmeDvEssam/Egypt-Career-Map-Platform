@@ -251,3 +251,12 @@ Evidence package fully aligned on origin/main (commit 435d35020233e6977c4b2e9fa5
 - Clarified Section 7.3 benchmark SLA scope: 2,000 ms batch assertion threshold for 100 searches (< 20 ms/search operational bound vs 8.04 ms empirical mean).
 - Reconciled Document Control table with Audited Codebase Commit cc7d22986a3027db169735ab5b2595027c5a8443 and release commits.
 - Milestone 2 remains STRICTLY ON HOLD. Remain in silent standby.
+
+
+## Follow-up — 2026-11-04T03:45:00Z
+
+Milestone 1 Official Closure & Milestone 2 Kickoff Authorized:
+• M1 Document Control finalized: `435d35020233e6977c4b2e9fa50e85a72cc42c1a` recorded as Prior Closing Commit; `27f2147fb54c31972d4b8d5fb7b6832a509aed93` recorded as Published Closing Commit.
+• Milestone 1 officially closed and verified with documented limitations.
+• Milestone 2 Kickoff AUTHORIZED: Proceeding to pre-implementation review (scope, deliverables, risks, test criteria) before writing code.
+• Constraint Reaffirmed: PostgreSQL database `egypt_jobs_db` remains strictly READ-ONLY. No DDL/DML operations permitted.

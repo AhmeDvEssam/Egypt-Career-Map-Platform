@@ -135,8 +135,9 @@ report_template = r"""# MILESTONE 1 FINAL VERIFICATION & EVIDENCE PACKAGE
 | **Pre-Review Sentinel Commit** | `fd218879ec3e3011a0d331405e3230a1bf8bf6e4` (Baseline test track and teamwork sentinels) |
 | **Governance Alignment Commit** | `7cf9d27222aa519ceb622e7534e5670fdc816d29` (Initial level matrix alignment, M2 hold harmonization) |
 | **Audited Codebase Commit** | `cc7d22986a3027db169735ab5b2595027c5a8443` (Verified on GitHub: full seniority purge, 9 dedicated tests, 111 passed tests) |
-| **Evidence Package Release Commit** | `2d98e27805f8eadf398035682902155b1e9ab318` (Published GitHub release: SLA scope precision, non-additive accounting) |
-| **Final Documentation & Closing Commit** | `435d35020233e6977c4b2e9fa50e85a72cc42c1a` (Closed audit release: SLA wording precision, verified non-guaranteed budget bounds) |
+| **Evidence Package Release Commit** | `2d98e27805f8eadf398035682902155b1e9ab318` (Prior release: SLA scope precision, non-additive accounting) |
+| **Prior Closing & Review Commit** | `435d35020233e6977c4b2e9fa50e85a72cc42c1a` (Prior review baseline: seniority regex descriptions, Tier 1 notes) |
+| **Current Published Closing Commit** | `27f2147fb54c31972d4b8d5fb7b6832a509aed93` (Final M1 closure: Document Control alignment, calibrated SLA budget bounds) |
 | **Python Version** | `3.14.0 (tags/v3.14.0:ebf955d, Oct  7 2025, 10:15:03) [MSC v.1944 64 bit (AMD64)]` |
 | **Operating System** | `Windows 10 / Windows Server (win32, Code Page cp1252)` |
 | **Active Catalog Path** | `d:\\Hire Q Project\\standard_skills_catalog.csv` |
@@ -202,7 +203,7 @@ report_template = r"""# MILESTONE 1 FINAL VERIFICATION & EVIDENCE PACKAGE
 | **Benchmark SLA Threshold** | **PASS WITH LIMITATIONS** | Section 7.3 | Measured Environment Batch SLA: 2,000 ms batch assertion threshold for 100 searches (implied average budget: 20 ms/search vs 8.04 ms observed mean latency). |
 | **Test Accounting** | **PASS** | Section 9 | Closed equation: 270 discovered = 111 passed + 159 not run (explained by 19 skipped classes). |
 | **Database Safety** | **PASS** | Section 10 | None. Zero database connections, zero queries, zero DDL/DML executed. |
-| **Overall M1 Verdict** | **PASS WITH DOCUMENTED LIMITATIONS** | Section 14 | **Milestone 1 verified; Milestone 2 strictly ON HOLD awaiting human authorization.** |
+| **Overall M1 Verdict** | **PASS WITH DOCUMENTED LIMITATIONS** | Section 14 | **Milestone 1 officially CLOSED and verified; Milestone 2 Kickoff AUTHORIZED.** |
 
 ---
 
