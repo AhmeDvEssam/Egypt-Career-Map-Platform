@@ -215,10 +215,15 @@ class TestMilestone2ParenthesesTypology(unittest.TestCase):
         TypologyClassification must preserve level_category from M1 matrix
         to prevent downstream M3 from confusing Credential Status with Technical Proficiency.
         """
-        res_tech = self.engine.classify("Python (Advanced)")
-        self.assertEqual(res_tech.typology, ParenthesisTypology.LEVEL_OR_EXPERIENCE)
-        self.assertEqual(res_tech.canonical_level, "Advanced")
-        self.assertEqual(res_tech.level_category, "Technical Proficiency")
+        res_hard = self.engine.classify("Programming (Advanced)")
+        self.assertEqual(res_hard.typology, ParenthesisTypology.LEVEL_OR_EXPERIENCE)
+        self.assertEqual(res_hard.canonical_level, "Advanced")
+        self.assertEqual(res_hard.level_category, "Technical Proficiency")
+
+        res_py = self.engine.classify("Python (Advanced)")
+        self.assertEqual(res_py.typology, ParenthesisTypology.LEVEL_OR_EXPERIENCE)
+        self.assertEqual(res_py.canonical_level, "Advanced")
+        self.assertEqual(res_py.level_category, "Tool Competency")
 
         res_cert = self.engine.classify("AWS Solutions Architect (Certified)")
         self.assertEqual(res_cert.typology, ParenthesisTypology.LEVEL_OR_EXPERIENCE)
@@ -239,6 +244,45 @@ class TestMilestone2ParenthesesTypology(unittest.TestCase):
         self.assertEqual(res_trait.typology, ParenthesisTypology.LEVEL_OR_EXPERIENCE)
         self.assertEqual(res_trait.canonical_level, "Demonstrated")
         self.assertEqual(res_trait.level_category, "Demonstrated Trait")
+
+    def test_07i_context_aware_level_category_resolution(self):
+        """
+        Validates context-aware level_category resolution using catalog skill_type:
+        1. Leadership (Excellent) -> Demonstrated Trait / High / Strong (not CEFR C1)
+        2. English (Intermediate) -> CEFR Framework / B1 (Intermediate) (not Hard Skill Intermediate)
+        3. Excel (Advanced) -> Tool Competency / Advanced (not Hard Skill Advanced)
+        """
+        res_lead = self.engine.classify("Leadership (Excellent)")
+        self.assertEqual(res_lead.typology, ParenthesisTypology.LEVEL_OR_EXPERIENCE)
+        self.assertEqual(res_lead.canonical_level, "High / Strong")
+        self.assertEqual(res_lead.level_category, "Demonstrated Trait")
+
+        res_eng = self.engine.classify("English (Intermediate)")
+        self.assertEqual(res_eng.typology, ParenthesisTypology.LEVEL_OR_EXPERIENCE)
+        self.assertEqual(res_eng.canonical_level, "B1 (Intermediate)")
+        self.assertEqual(res_eng.level_category, "CEFR Framework")
+
+        res_excel = self.engine.classify("Excel (Advanced)")
+        self.assertEqual(res_excel.typology, ParenthesisTypology.LEVEL_OR_EXPERIENCE)
+        self.assertEqual(res_excel.canonical_level, "Advanced")
+        self.assertEqual(res_excel.level_category, "Tool Competency")
+
+    def test_07j_ambiguity_preservation_when_context_insufficient(self):
+        """
+        When context is insufficient or uncataloged:
+        - If standard levels agree across candidates, canonical_level is preserved but level_category is None.
+        - If standard levels conflict across candidates without context, match is rejected to prevent false classification.
+        """
+        res_adv = self.engine.classify("UnknownSkill (Advanced)")
+        self.assertEqual(res_adv.typology, ParenthesisTypology.LEVEL_OR_EXPERIENCE)
+        self.assertEqual(res_adv.canonical_level, "Advanced")
+        self.assertIsNone(res_adv.level_category)
+
+        res_exc = self.engine.classify("UnknownSkill (Excellent)")
+        # 'Excellent' conflicts between CEFR C1 and Demonstrated Trait High/Strong; rejected to prevent false classification
+        self.assertEqual(res_exc.typology, ParenthesisTypology.SUB_SKILL_SPECIFICATION)
+        self.assertIsNone(res_exc.canonical_level)
+        self.assertIsNone(res_exc.level_category)
 
     # ─── 3. CASE 1: LEVEL OR EXPERIENCE (Duration) ────────────────────────────
     def test_08_duration_years(self):

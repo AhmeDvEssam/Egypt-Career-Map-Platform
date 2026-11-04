@@ -205,6 +205,15 @@ class ParenthesesTypologyEngine:
         "field", "knowledge", "skills", "خبرة", "مجال", "قطاع",
     )
 
+    # ─── 6. CATALOG SKILL TYPE TO GOVERNED LEVEL CATEGORY MAPPING ───────────────
+    SKILL_TYPE_TO_LEVEL_CATEGORY: Dict[str, str] = {
+        "Hard Skill": "Technical Proficiency",
+        "Tool / Software": "Tool Competency",
+        "Language": "CEFR Framework",
+        "Certification": "Credential Status",
+        "Soft Skill": "Demonstrated Trait",
+    }
+
     def __init__(
         self,
         catalog: Optional[CatalogLoader] = None,
@@ -571,7 +580,7 @@ class ParenthesesTypologyEngine:
             )
 
         # 4b. Governed Proficiency Level Modifier from M1 Matrix
-        level_res = self._match_level_modifier(inner_clean)
+        level_res = self._match_level_modifier(inner_clean, base_skill=base_clean)
         if level_res is not None:
             std_level, lvl_cat = level_res
             return TypologyClassification(
@@ -697,13 +706,63 @@ class ParenthesesTypologyEngine:
         # If neither is in the verified dictionary with exact normalized expansion match, reject
         return None
 
-    def _match_level_modifier(self, text: str) -> Optional[Tuple[str, str]]:
+    def _resolve_base_skill_type(self, base_text: Optional[str]) -> Optional[str]:
+        """
+        Resolves the skill_type of base_text by querying the reference catalog and acronym dictionary.
+        Returns one of: 'Hard Skill', 'Tool / Software', 'Language', 'Soft Skill', 'Certification', or None.
+        """
+        if not base_text or not self.catalog:
+            return None
+
+        clean_base = self._clean_experience_suffix(base_text.strip())
+        if not clean_base:
+            return None
+
+        # 1. Exact catalog match (checks standard names and known aliases case-insensitively)
+        entry = self.catalog.get_exact_match(clean_base)
+        if entry:
+            return entry.skill_type
+
+        # 2. Acronym lookup -> catalog match
+        if self.acronym_resolver:
+            acronym_entry = self.acronym_resolver.get_acronym(clean_base)
+            if acronym_entry:
+                target_name = acronym_entry.canonical_skill_name or acronym_entry.full_name
+                entry_acronym = self.catalog.get_exact_match(target_name)
+                if entry_acronym:
+                    return entry_acronym.skill_type
+                if "cert" in (acronym_entry.full_name or "").lower():
+                    return "Certification"
+
+        # 3. Regex catalog match
+        reg_entry = self.catalog.get_regex_match(clean_base)
+        if reg_entry:
+            return reg_entry.skill_type
+
+        return None
+
+    def _match_level_modifier(
+        self,
+        text: str,
+        base_skill: Optional[str] = None,
+    ) -> Optional[Tuple[str, Optional[str]]]:
         """
         Checks if text matches any governed skill level modifier from M1 matrix.
-        STRICT REQUIREMENT: The match must cover the ENTIRE inner content.
-        Phrases containing skill nouns (e.g. 'Advanced Excel', 'Expert Python Programming',
-        'Intermediate SQL Queries', 'برمجة بايثون متقدمة', 'إكسيل متقدم')
-        must NOT match as level modifiers and fall through to sub-skill specifications.
+        STRICT REQUIREMENTS:
+        1. Exact Full-Match: The match must cover the ENTIRE inner content.
+           Phrases containing skill nouns (e.g. 'Advanced Excel', 'Expert Python Programming',
+           'Intermediate SQL Queries', 'برمجة بايثون متقدمة', 'إكسيل متقدم')
+           must NOT match as level modifiers and fall through to sub-skill specifications.
+        2. Unambiguous Category Preservation: If all matching rows in the matrix agree on the exact
+           same category (e.g. 'Certified' -> Credential Status, 'B2' -> CEFR, 'working knowledge' -> Tool Competency),
+           that category is strictly preserved.
+        3. Context-Aware Level Category Disambiguation: When a modifier word matches across multiple
+           matrix categories (e.g. 'Excellent' in CEFR vs Demonstrated Trait, or 'Intermediate'
+           in Hard Skill vs Tool vs Language), resolves the category using base_skill's type
+           from the reference catalog.
+        4. Ambiguity Preservation: If context is absent/insufficient and candidates conflict in
+           level category or standard level, does NOT randomly pick the first match.
+           Preserves ambiguity (level_category=None if levels agree; returns None if levels conflict).
         Returns (standard_level, level_category) or None.
         """
         if not text:
@@ -717,19 +776,56 @@ class ParenthesesTypologyEngine:
         if len(words) > 4:
             return None
 
+        # 1. Collect all candidates from level matrix that match the ENTIRE text
+        candidates: List[LevelMatrixEntry] = []
         for row in self.level_matrix_rows:
             if row.compiled_pattern:
                 m = row.compiled_pattern.search(text_clean)
-                if m:
-                    # Match must cover the ENTIRE text (exact full match)
-                    if (m.start() == 0 and m.end() == len(text_clean)) or m.group(0).strip().lower() == text_clean.lower():
-                        return (row.standard_level, row.level_category)
+                if m and ((m.start() == 0 and m.end() == len(text_clean)) or m.group(0).strip().lower() == text_clean.lower()):
+                    candidates.append(row)
+                    continue
             if row.compiled_arabic_regex:
                 m_ar = row.compiled_arabic_regex.search(text_clean)
-                if m_ar:
-                    # Match must cover the ENTIRE text (exact full match)
-                    if (m_ar.start() == 0 and m_ar.end() == len(text_clean)) or m_ar.group(0).strip() == text_clean:
-                        return (row.standard_level, row.level_category)
+                if m_ar and ((m_ar.start() == 0 and m_ar.end() == len(text_clean)) or m_ar.group(0).strip() == text_clean):
+                    candidates.append(row)
+
+        if not candidates:
+            return None
+
+        # 2. Check for category uniformity across all matching candidates
+        distinct_categories = set(c.level_category for c in candidates)
+        if len(distinct_categories) == 1:
+            # Unambiguous category across all matching rows (e.g. 'B2', 'working knowledge', 'Certified', 'Demonstrated')
+            return (candidates[0].standard_level, candidates[0].level_category)
+
+        # 3. Multiple categories conflict (len > 1): Disambiguate using base_skill context
+        base_type = self._resolve_base_skill_type(base_skill) if base_skill else None
+        if base_type:
+            # Filter candidates directly matching base_type
+            filtered = [c for c in candidates if c.skill_type == base_type]
+            if filtered:
+                return (filtered[0].standard_level, filtered[0].level_category)
+
+            # Map to governed category of base_type
+            expected_cat = self.SKILL_TYPE_TO_LEVEL_CATEGORY.get(base_type)
+            if expected_cat:
+                return (candidates[0].standard_level, expected_cat)
+
+        # 4. Base is uncataloged / unknown: Preserve ambiguity!
+        # If base is not verified Language, exclude CEFR candidates from technical standard levels
+        non_lang = [c for c in candidates if c.skill_type != "Language"]
+        if non_lang:
+            non_lang_levels = set(c.standard_level for c in non_lang)
+            if len(non_lang_levels) == 1 and all(c.skill_type in ("Hard Skill", "Tool / Software") for c in non_lang):
+                return (non_lang[0].standard_level, None)
+
+        distinct_levels = set(c.standard_level for c in candidates)
+        if len(distinct_levels) == 1:
+            # Standard level is unanimous (e.g. 'Advanced' or 'Expert'), but category is ambiguous
+            return (candidates[0].standard_level, None)
+
+        # Candidates conflict in both category and standard level without context:
+        # Reject match to prevent false classification (e.g. UnknownSkill (Excellent))
         return None
 
     def _check_category_container(
