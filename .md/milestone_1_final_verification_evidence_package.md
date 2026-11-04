@@ -17,6 +17,7 @@
 | **Governance Alignment Commit** | `7cf9d27222aa519ceb622e7534e5670fdc816d29` (Initial level matrix alignment, M2 hold harmonization) |
 | **Audited Codebase Commit** | `cc7d22986a3027db169735ab5b2595027c5a8443` (Verified on GitHub: full seniority purge, 9 dedicated tests, 111 passed tests) |
 | **Evidence Package Release Commit** | `2d98e27805f8eadf398035682902155b1e9ab318` (Published GitHub release: SLA scope precision, non-additive accounting) |
+| **Final Documentation & Closing Commit** | `435d35020233e6977c4b2e9fa50e85a72cc42c1a` (Closed audit release: SLA wording precision, verified non-guaranteed budget bounds) |
 | **Python Version** | `3.14.0 (tags/v3.14.0:ebf955d, Oct  7 2025, 10:15:03) [MSC v.1944 64 bit (AMD64)]` |
 | **Operating System** | `Windows 10 / Windows Server (win32, Code Page cp1252)` |
 | **Active Catalog Path** | `d:\\Hire Q Project\\standard_skills_catalog.csv` |
@@ -79,7 +80,7 @@
 | **Determinism** | **PASS** | Section 7 | None. 10/10 repeated runs verified 100% identical in membership, ordering, counts. |
 | **Seniority Regex Decoupling**| **PASS (VERIFIED)** | Section 8.4 | Career seniority tokens completely purged from skill level matrix regexes. |
 | **Sidecar Seniority Extraction**| **NOT INDEPENDENTLY VERIFIED** | Section 8.4 | Extraction to Sidecar column `intra_string_seniority` belongs to Milestone 4; pending M4 pipeline. |
-| **Benchmark SLA Threshold** | **PASS WITH LIMITATIONS** | Section 7.3 | Measured Environment Batch SLA: 2,000 ms assertion ceiling for 100 searches (< 20 ms/search bound vs 8.04 ms empirical mean). |
+| **Benchmark SLA Threshold** | **PASS WITH LIMITATIONS** | Section 7.3 | Measured Environment Batch SLA: 2,000 ms batch assertion threshold for 100 searches (implied average budget: 20 ms/search vs 8.04 ms observed mean latency). |
 | **Test Accounting** | **PASS** | Section 9 | Closed equation: 270 discovered = 111 passed + 159 not run (explained by 19 skipped classes). |
 | **Database Safety** | **PASS** | Section 10 | None. Zero database connections, zero queries, zero DDL/DML executed. |
 | **Overall M1 Verdict** | **PASS WITH DOCUMENTED LIMITATIONS** | Section 14 | **Milestone 1 verified; Milestone 2 strictly ON HOLD awaiting human authorization.** |
@@ -539,16 +540,16 @@ Profiling was executed strictly via the reproducible standalone script `tests/be
 
 ### 3. Precise Scope & Definition of the Measured Environment SLA (2,000 ms)
 * **Clarification of Threshold Scope (Batch Test vs Single Search):**
-  - **Empirical Baseline (Per Search):** In `tests/benchmark_investigation.py`, the empirical mean worst-case search latency across 10 rounds is **8.04 ms / search** (batch mean: 804.09 ms for 100 searches).
-  - **Batch Test Assertion Threshold (2,000 ms):** The 2,000 ms threshold in `tests/test_adversarial_m1_catalog.py` applies to the **entire test method executing 100 sequential searches** ($100 \times 2,756 = 275,600$ pattern evaluations), NOT to a single search.
-  - **Implied Operational Search Bound (< 20 ms / search):** Dividing the 2,000 ms batch ceiling by 100 searches establishes an implied upper bound of **< 20 ms per full-catalog regex scan**, providing an intentional $2.48\times$ engineering safety margin above the 8.04 ms measured mean.
-* **Why the Original 500 ms Batch Threshold was Unrealistic:**
-  Completing 100 searches (275,600 sequential pattern evaluations) in under 500 ms required $< 1.81 \mu\text{s}$ per evaluation. In single-threaded CPython on Windows, the measured evaluation latency averages $2.918 \mu\text{s}$, making a 500 ms batch threshold physically unviable regardless of system load.
-* **Operational Boundaries of the Calibrated Batch SLA:**
-  - **Batch Benchmark SLA:** 100 worst-case unmatched searches complete in $< 2,000\text{ ms}$ total execution time.
-  - **Per-Search Upper Bound:** Worst-case regex search latency $< 20\text{ ms / search}$ across all 2,756 patterns.
-  - **Per-Evaluation Bound:** $< 7.25 \mu\text{s} / \text{pattern evaluation}$.
-  - **Minimum Guaranteed Throughput:** $\ge 50$ full-catalog regex scans per second on a single CPU core.
+  - **Observed Mean Latency (Empirical Baseline):** In `tests/benchmark_investigation.py`, the observed mean worst-case search latency across 10 rounds is **8.04 ms / search** (batch mean: 804.09 ms for 100 searches).
+  - **Batch Assertion Threshold (2,000 ms):** The 2,000 ms threshold in `tests/test_adversarial_m1_catalog.py` is a **Batch Assertion Threshold** that applies to the entire test method executing 100 sequential searches ($100 \times 2,756 = 275,600$ pattern evaluations), NOT a single search guarantee.
+  - **Implied Average Budget per Search (~20 ms / search):** Dividing the 2,000 ms batch assertion ceiling by 100 searches yields an **implied average budget of ~20 ms per search across the batch** (providing a $2.48\times$ engineering safety margin above the 8.04 ms observed mean latency). This is an average budget allocation across the test run, not a per-query latency guarantee for every individual search.
+* **Why the Baseline Differs from the Original 500 ms Threshold:**
+  Completing 100 searches (275,600 sequential pattern evaluations) within 500 ms requires an average evaluation time under $1.81 \mu\text{s}$. Empirical measurements on the tested environment show that single-threaded Python evaluation across 2,756 compiled patterns averages $2.918 \mu\text{s}$ per pattern evaluation (yielding an observed batch baseline of ~804 ms), making the 500 ms threshold significantly below the actual observed performance of the test environment.
+* **Theoretically Derived Nominal Estimates (Non-Guaranteed):**
+  - **Batch Assertion SLA Ceiling:** 100 worst-case unmatched searches complete in $< 2,000\text{ ms}$ total execution time.
+  - **Implied Average Budget per Search:** Nominally $\approx 20\text{ ms / search}$ across the 100-search batch.
+  - **Theoretically Derived Nominal Evaluation Cost:** $\approx 7.25 \mu\text{s} / \text{pattern evaluation}$ at the 2,000 ms threshold.
+  - **Theoretically Derived Nominal Throughput:** Approximately $\ge 50$ full-catalog regex scans per second on a single CPU core based on the 20 ms nominal budget.
 
 ---
 

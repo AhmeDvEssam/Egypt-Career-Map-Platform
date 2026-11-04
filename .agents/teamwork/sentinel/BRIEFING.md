@@ -1,7 +1,7 @@
-# BRIEFING — 2026-11-03T21:36:00Z
+# BRIEFING — 2026-11-03T21:44:00Z
 
 ## Mission
-Sentinel overseeing Egypt Career Map Atomic Skill Decomposition & Skill Graph pipeline. Milestone 1 audit evidence finalized on origin/main (Commit `cc7d22986a3027db169735ab5b2595027c5a8443`). Milestone 2 held on pause per user directive. Silent standby mode active.
+Sentinel overseeing Egypt Career Map Atomic Skill Decomposition & Skill Graph pipeline. Evidence package fully aligned on origin/main (Commit `435d35020233e6977c4b2e9fa50e85a72cc42c1a`). Milestone 2 held on pause per user directive. Silent standby mode active.
 
 ## 🔒 My Identity
 - Archetype: sentinel
@@ -20,12 +20,12 @@ Sentinel overseeing Egypt Career Map Atomic Skill Decomposition & Skill Graph pi
 - SILENT STANDBY: Periodic crons suspended. Remain silent until explicitly messaged.
 
 ## User Context
-- **Last user request**: Audit evidence finalized on origin/main. Commit `cc7d22986a3027db169735ab5b2595027c5a8443`. Closed accounting equation: 270 discovered = 111 passed + 159 not run (19 skipped classes). Benchmark SLA calibrated (< 20 ms/search; 2000 ms ceiling). Regex decoupling verified; sidecar extraction pending M4. Milestone 2 remains STRICTLY ON HOLD. Remain in silent standby.
+- **Last user request**: Evidence package fully aligned on origin/main (commit `435d35020233e6977c4b2e9fa50e85a72cc42c1a`). Section 8.4 regression regex assertions corrected, Tier 1 notes reconciled (Features 1, 2, 17 passed), Section 7.3 benchmark SLA clarified (< 20 ms/search operational bound, 8.04 ms empirical mean), Document Control table reconciled with Audited Codebase Commit `cc7d22986a3027db169735ab5b2595027c5a8443`. Milestone 2 remains STRICTLY ON HOLD. Remain in silent standby.
 - **Pending clarifications**: Standing by silently for resumption instructions
-- **Delivered results**: Milestone 1 audit evidence finalized and verified; test accounting reconciled; SQL cross-domain report delivered
+- **Delivered results**: Evidence package aligned; Milestone 1 audit evidence finalized; test accounting reconciled; SQL cross-domain report delivered
 
 ## Project Status
-- **Phase**: on hold / silent standby (evidence finalized; awaiting explicit message to proceed)
+- **Phase**: on hold / silent standby (evidence package aligned; awaiting explicit message to proceed)
 
 ## Victory Audit Status
 - **Triggered**: no
@@ -34,7 +34,7 @@ Sentinel overseeing Egypt Career Map Atomic Skill Decomposition & Skill Graph pi
 
 ## Artifact Index
 - .agents/teamwork/ORIGINAL_REQUEST.md — Authoritative user intent record
-- .md/milestone_1_final_verification_evidence_package.md — Milestone 1 authoritative verification package
+- .md/milestone_1_final_verification_evidence_package.md — Milestone 1 authoritative verification package (aligned to commit `435d350`)
 - standard_skill_levels_matrix.csv — Cleaned canonical level matrix (seniority purged)
 - tests/test_seniority_vs_proficiency.py — Seniority vs proficiency test suite (9/9 passed)
 - tests/benchmark_investigation.py — Benchmark SLA forensic analysis

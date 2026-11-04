@@ -233,12 +233,21 @@ Final Evidence Documentation Audit Resolution:
 • Milestone 2 remains STRICTLY ON HOLD. Remain in silent standby.
 
 
-## Follow-up — 2026-11-03T21:35:13Z
+## Follow-up — 2026-11-04T03:18:00Z
+
+Final Audit Evidence Polishing:
+• Document Control Table finalized: explicitly cites Audited Codebase Commit `cc7d22986a3027db169735ab5b2595027c5a8443`, Evidence Release Commit `2d98e27805f8eadf398035682902155b1e9ab318`, and Final Documentation & Closing Commit `435d35020233e6977c4b2e9fa50e85a72cc42c1a`.
+• Calibrated Benchmark SLA wording: designated as Batch Assertion Threshold (2,000 ms for 100 searches), implied average budget (~20 ms/search across batch), and theoretically derived nominal estimates (non-guaranteed).
+• Test suite verification: 96 pure M1 unit tests pass 100% (OK).
+• Milestone 2 remains STRICTLY ON HOLD. Continue in silent standby.
+
+
+## Follow-up — 2026-11-03T21:43:20Z
 
 [Team Sentinel Sync]
-Audit evidence finalized on origin/main:
-- Documented verified codebase commit cc7d22986a3027db169735ab5b2595027c5a8443.
-- Closed accounting equation: 270 discovered = 111 passed + 159 not run (explained by 19 skipped classes).
-- Calibrated benchmark SLA as Measured Environment SLA (< 20 ms/search; 2000 ms ceiling).
-- Separated Regex decoupling (VERIFIED) from Sidecar extraction (NOT INDEPENDENTLY VERIFIED; pending M4 pipeline).
+Evidence package fully aligned on origin/main (commit 435d35020233e6977c4b2e9fa50e85a72cc42c1a):
+- Corrected Section 8.4 regression test descriptions to regex pattern assertions (yielding None against Advanced/Intermediate/Beginner patterns).
+- Reconciled Tier 1 notes in Section 9 table to Features 1, 2, 17 passed (15 tests).
+- Clarified Section 7.3 benchmark SLA scope: 2,000 ms batch assertion threshold for 100 searches (< 20 ms/search operational bound vs 8.04 ms empirical mean).
+- Reconciled Document Control table with Audited Codebase Commit cc7d22986a3027db169735ab5b2595027c5a8443 and release commits.
 - Milestone 2 remains STRICTLY ON HOLD. Remain in silent standby.

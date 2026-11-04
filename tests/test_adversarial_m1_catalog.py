@@ -359,7 +359,7 @@ class TestExecutionLatencyBenchmarks(unittest.TestCase):
         self.assertLess(elapsed_ms, 100.0)
 
     def test_benchmark_100_regex_searches_matched(self):
-        """100 regex pattern searches on matching strings (< 20 ms/search SLA)."""
+        """100 regex pattern searches on matching strings (Batch Assertion Threshold: 2000 ms)."""
         test_phrases = [
             "Senior Python Developer", "Proficient in SQL and R", "Advanced Microsoft Excel User",
             "Git version control", "Jira sprint tracking", "Docker containers",
@@ -376,7 +376,8 @@ class TestExecutionLatencyBenchmarks(unittest.TestCase):
     def test_benchmark_100_regex_searches_unmatched(self):
         """
         100 regex pattern searches on unmatched strings (worst case: iterates all 2,756 patterns).
-        275,600 pattern evaluations total. Evaluates in ~800-1270 ms; threshold set to 2000 ms (< 20 ms/search SLA).
+        275,600 pattern evaluations total. Observed mean latency ~804 ms across 10 rounds.
+        Batch Assertion Threshold set to 2000 ms (implied average budget: 20 ms/search across the batch).
         """
         unmatched_phrases = [f"UnmatchedNovelSkillExpression_{i}" for i in range(100)]
         t0 = time.perf_counter()
