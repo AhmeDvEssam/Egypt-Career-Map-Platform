@@ -122,15 +122,16 @@ class HierarchicalDelimiterSplitter:
         r"[\r\n]+|[;\u061b\t|•\u2022\u25cf\u25e6\u2219]+|(?<=\s)\*(?=\s)"
     )
 
-    # Tier 2: Commas (Western comma, Arabic comma \u060c, including optional attached conjunctions ', and' or '، و')
+    # Tier 2: Commas (Western comma, Arabic comma \u060c, including repeated commas and optional attached conjunctions)
     COMMA_DELIMITER_PATTERN: re.Pattern = re.compile(
-        r"[,،](?:\s*و|\s*and\b)?"
+        r"[,،]+(?:\s*و|\s*and\b)?"
     )
 
     # Tier 3: Soft Separators (&, /, and, or, -, +, isolated Arabic waw)
     # Uses zero-width lookaround for whitespace guards to avoid consuming token whitespace.
+    # Matches clustered soft delimiters (e.g. ///, &&&, ---) directly while protecting whitespace.
     SOFT_DELIMITER_PATTERN: re.Pattern = re.compile(
-        r"(?:&|(?<=\s)/(?=\s)|\b/\b|\b(?:and|or)\b|(?<=\s)و(?=\s)|(?<=[,،])\s*و(?=\s)|(?<=\s)[\-\–\—](?=\s)|(?<=\s)\+(?=\s))",
+        r"(?:&+|(?<=\s)/+(?=\s)|\b/+\b|\b(?:and|or)\b|(?<=\s)و(?=\s)|(?<=[,،])\s*و(?=\s)|(?<=\s)[\-\–\—]+(?=\s)|(?<=\s)\++(?=\s))",
         re.IGNORECASE,
     )
 

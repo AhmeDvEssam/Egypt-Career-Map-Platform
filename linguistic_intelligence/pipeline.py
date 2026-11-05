@@ -98,7 +98,7 @@ class ProvenanceRecord:
 class IntegratedSkillToken:
     """
     Represents an atomic skill token produced by the M2.3 Integration Layer.
-    Implements the 14-column Main Output Contract with provenance.
+    Implements the 14-column Main Output Contract with provenance and multi-domain associations.
     """
     raw_skill: str
     atomic_skill: str
@@ -120,6 +120,7 @@ class IntegratedSkillToken:
     is_malformed: bool = False
     malformed_reason: Optional[str] = None
     provenance: Optional[ProvenanceRecord] = None
+    associations: List[StandardSkillEntry] = field(default_factory=list)
 
     def to_14_column_dict(self) -> Dict[str, Any]:
         """Serializes exactly to the 14-column Master Main Output Schema v3."""
@@ -154,6 +155,14 @@ class SidecarLinguisticMetadata:
     """
     Represents the 11-column Sidecar metadata payload for a raw skill input.
     Complies with Master Specification v3 Sidecar Schema.
+
+    Architectural Scope Notice (Milestone 2.3 vs Milestone 4):
+      - Schema Compliance: All 11 columns are present and conform strictly to the Master Schema.
+      - Data Completeness: The following fields are linguistic placeholders intentionally deferred
+        to Milestone 4 database-level aggregation:
+          * job_count (int): Default 0 in linguistic layer; populated via SQL COUNT(*) in M4.
+          * posting_career_level_distribution (str): Default None; populated via SQL aggregation in M4.
+          * top_associated_job_titles (str): Default None; populated via co-occurrence SQL queries in M4.
     """
     raw_skill: str
     job_count: int = 0
@@ -211,12 +220,23 @@ class LinguisticPipeline:
         "service", "process", "processes", "operations", "engineering",
     }
 
-    # Seniority keywords that belong to sidecar intra_string_seniority
-    SENIORITY_KEYWORDS: Set[str] = {
-        "senior", "principal", "lead", "junior", "mid-senior",
-        "mid-level", "mid", "entry-level", "executive", "head",
-        "director", "staff", "associate",
-    }
+    # Seniority keywords that belong to sidecar intra_string_seniority.
+    # Ordered strictly by descending phrase length for deterministic, greedy matching.
+    SENIORITY_KEYWORDS: Tuple[str, ...] = (
+        "mid-senior",
+        "entry-level",
+        "mid-level",
+        "principal",
+        "associate",
+        "director",
+        "executive",
+        "senior",
+        "junior",
+        "staff",
+        "head",
+        "lead",
+        "mid",
+    )
 
     # Common role/suffix words stripped when extracting pure skill
     ROLE_SUFFIXES: List[str] = [
@@ -305,14 +325,30 @@ class LinguisticPipeline:
     def decompose(self, raw_skill: str) -> List[Dict[str, Any]]:
         """
         Decomposes raw skill into atomic skills compliant with Main Output Schema v3.
-        Returns a list of 14-column dictionaries.
+        Returns a list of 14-column dictionaries, preserving all legitimate catalog associations.
         """
         tokens = self.decompose_to_tokens(raw_skill)
-        return [t.to_14_column_dict() for t in tokens]
+        rows: List[Dict[str, Any]] = []
+        for t in tokens:
+            if t.associations and len(t.associations) > 1:
+                # Multi-domain catalog associations: produce a row for EACH legitimate association
+                for entry in t.associations:
+                    row = t.to_14_column_dict()
+                    row["domain"] = entry.domain
+                    row["sub_category"] = entry.sub_category
+                    row["skill_type"] = entry.skill_type
+                    row["matched_atomic_skill"] = entry.name
+                    rows.append(row)
+            else:
+                rows.append(t.to_14_column_dict())
+        return rows
 
-    def decompose_to_tokens(self, raw_skill: str) -> List[IntegratedSkillToken]:
+    def decompose_to_tokens(
+        self, raw_skill: str, expand_associations: bool = False
+    ) -> List[IntegratedSkillToken]:
         """
         Decomposes raw skill into IntegratedSkillToken objects preserving full provenance.
+        When expand_associations is True, clones tokens across all legitimate catalog associations.
         """
         if raw_skill is None:
             return []
@@ -401,16 +437,9 @@ class LinguisticPipeline:
             if special_tokens is not None:
                 return special_tokens
 
-        # 7. Delimiter Pre-processing: collapse repeated identical delimiters (e.g. /// -> /, &&& -> &)
-        norm_for_split = re.sub(r"/{2,}", " / ", raw_str)
-        norm_for_split = re.sub(r"&{2,}", " & ", norm_for_split)
-        norm_for_split = re.sub(r"[-–—]{2,}", " - ", norm_for_split)
-        norm_for_split = re.sub(r";{2,}", " ; ", norm_for_split)
-        norm_for_split = re.sub(r",{2,}", " , ", norm_for_split)
-        norm_for_split = re.sub(r"\|{2,}", " | ", norm_for_split)
-
         # Feature 07: Hierarchical Delimiter Splitting
-        split_tokens = self.splitter.split(norm_for_split)
+        # Directly pass verbatim raw_str to splitter without string mutation or pre-normalization
+        split_tokens = self.splitter.split(raw_str)
         if not split_tokens:
             return []
 
@@ -438,6 +467,40 @@ class LinguisticPipeline:
 
         # Context graph linking for the final result list
         self._link_context_graph(results)
+
+        if expand_associations:
+            expanded: List[IntegratedSkillToken] = []
+            for t in results:
+                if t.associations and len(t.associations) > 1:
+                    for entry in t.associations:
+                        clone = IntegratedSkillToken(
+                            raw_skill=t.raw_skill,
+                            atomic_skill=t.atomic_skill,
+                            raw_token=t.raw_token,
+                            separated_by=t.separated_by,
+                            separated_from_before=t.separated_from_before,
+                            separated_from_after=t.separated_from_after,
+                            extracted_skill_level=t.extracted_skill_level,
+                            skill_level=t.skill_level,
+                            skill_type=entry.skill_type,
+                            domain=entry.domain,
+                            sub_category=entry.sub_category,
+                            job_count=t.job_count,
+                            match_status=t.match_status,
+                            rejection_reason=t.rejection_reason,
+                            matched_atomic_skill=entry.name,
+                            is_compound_shielded=t.is_compound_shielded,
+                            is_oversized=t.is_oversized,
+                            is_malformed=t.is_malformed,
+                            malformed_reason=t.malformed_reason,
+                            provenance=t.provenance,
+                            associations=t.associations,
+                        )
+                        expanded.append(clone)
+                else:
+                    expanded.append(t)
+            return expanded
+
         return results
 
     # ──────────────────────────────────────────────────────────────────────────
@@ -448,6 +511,10 @@ class LinguisticPipeline:
         """
         Extracts 11-column sidecar linguistic metadata for the raw skill.
         Returns a dictionary conforming to Sidecar Schema v3.
+
+        Notice: job_count (0), posting_career_level_distribution (None), and
+        top_associated_job_titles (None) are linguistic placeholders explicitly deferred
+        to Milestone 4 database-level aggregation queries.
         """
         raw_str = str(raw_skill) if raw_skill is not None else ""
         trimmed = raw_str.strip()
@@ -469,13 +536,15 @@ class LinguisticPipeline:
             if any(k in container_name.lower() for k in ["language", "tool", "skill", "technolog", "framework"]):
                 category_container = container_name
 
-        # 2. Seniority word extraction from raw string
-        for word in trimmed.split():
-            clean_word = word.strip("(),;:-")
-            if clean_word.lower() in self.SENIORITY_KEYWORDS:
-                if clean_word.lower() == "lead" and any(p in trimmed.lower() for p in ["lead generation", "lead time"]):
+        # 2. Seniority phrase extraction from raw string (ordered descending by length)
+        for s_phrase in self.SENIORITY_KEYWORDS:
+            s_pat = re.compile(rf"\b{re.escape(s_phrase)}\b", re.IGNORECASE)
+            m = s_pat.search(trimmed)
+            if m:
+                # Protect domain proper nouns containing seniority words like 'Lead Generation'
+                if s_phrase == "lead" and any(p in trimmed.lower() for p in ["lead generation", "lead time"]):
                     continue
-                intra_string_seniority = clean_word.capitalize()
+                intra_string_seniority = m.group(0).title()
                 break
 
         # 3. Certification track or status check
@@ -539,10 +608,11 @@ class LinguisticPipeline:
     def _create_whole_compound_token(
         self, raw_str: str, trimmed: str, is_oversized: bool
     ) -> IntegratedSkillToken:
-        """Builds an atomic token for a whole protected compound."""
+        """Builds an atomic token for a whole protected compound preserving all associations."""
         canonical = self._get_canonical_compound_name(trimmed)
 
-        entry = self.catalog.get_exact_match(canonical) or self.catalog.get_exact_match(trimmed)
+        all_matches = self.catalog.get_all_exact_matches(canonical) or self.catalog.get_all_exact_matches(trimmed)
+        entry = all_matches[0] if all_matches else None
         domain = entry.domain if entry else UNKNOWN_DOMAIN
         sub_cat = entry.sub_category if entry else UNKNOWN_SUBCATEGORY
         skill_type = entry.skill_type if entry else "Hard Skill"
@@ -570,12 +640,14 @@ class LinguisticPipeline:
             is_compound_shielded=True,
             is_oversized=is_oversized,
             provenance=prov,
+            associations=all_matches or [],
         )
 
     def _create_shielded_proper_noun_token(
         self, raw_str: str, trimmed: str, pass0: Any, is_oversized: bool
     ) -> IntegratedSkillToken:
-        """Builds an atomic token for a shielded proper noun."""
+        """Builds an atomic token for a shielded proper noun preserving all associations."""
+        all_matches = self.catalog.get_all_exact_matches(pass0.canonical_name)
         prov = ProvenanceRecord(
             raw_input=raw_str,
             raw_token=raw_str,
@@ -595,6 +667,7 @@ class LinguisticPipeline:
             is_compound_shielded=True,
             is_oversized=is_oversized,
             provenance=prov,
+            associations=all_matches or [],
         )
 
     def _handle_top_level_parentheses_or_container(
@@ -761,9 +834,14 @@ class LinguisticPipeline:
 
             if base_clean not in self.CANONICAL_COMPOUNDS.values():
                 for s_word in self.SENIORITY_KEYWORDS:
-                    s_pat = re.compile(rf"\b{s_word}\b", re.IGNORECASE)
+                    s_pat = re.compile(rf"\b{re.escape(s_word)}\b", re.IGNORECASE)
                     if s_pat.search(base_clean):
+                        if s_word == "lead" and any(p in base_clean.lower() for p in ["lead generation", "lead time"]):
+                            continue
+                        if self.catalog.get_exact_match(base_clean):
+                            break
                         base_clean = s_pat.sub("", base_clean).strip()
+                        base_clean = re.sub(r"^[\s\-–—]+|[\s\-–—]+$", "", base_clean).strip()
 
                 for sfx in self.ROLE_SUFFIXES:
                     sfx_pat = re.compile(rf"\b{sfx}\b", re.IGNORECASE)
@@ -849,7 +927,8 @@ class LinguisticPipeline:
         lower_tok = token_text.lower()
         if lower_tok in self.CANONICAL_COMPOUNDS:
             canonical_comp = self.CANONICAL_COMPOUNDS[lower_tok]
-            entry = self.catalog.get_exact_match(canonical_comp)
+            all_matches = self.catalog.get_all_exact_matches(canonical_comp)
+            entry = all_matches[0] if all_matches else None
             domain = entry.domain if entry else UNKNOWN_DOMAIN
             sub_cat = entry.sub_category if entry else UNKNOWN_SUBCATEGORY
             skill_type = entry.skill_type if entry else "Tool / Software"
@@ -878,6 +957,7 @@ class LinguisticPipeline:
                 is_compound_shielded=True,
                 is_oversized=is_oversized or st.is_oversized,
                 provenance=prov,
+                associations=all_matches or [],
             )
 
         for comp_key, canonical_comp in self.CANONICAL_COMPOUNDS.items():
@@ -892,7 +972,8 @@ class LinguisticPipeline:
                         if governed_level == LEVEL_EXPERT:
                             governed_level = LEVEL_ADVANCED
 
-                entry = self.catalog.get_exact_match(canonical_comp)
+                all_matches = self.catalog.get_all_exact_matches(canonical_comp)
+                entry = all_matches[0] if all_matches else None
                 domain = entry.domain if entry else UNKNOWN_DOMAIN
                 sub_cat = entry.sub_category if entry else UNKNOWN_SUBCATEGORY
                 skill_type = entry.skill_type if entry else "Tool / Software"
@@ -923,11 +1004,13 @@ class LinguisticPipeline:
                     is_compound_shielded=True,
                     is_oversized=is_oversized or st.is_oversized,
                     provenance=prov,
+                    associations=all_matches or [],
                 )
 
         # Check protected proper noun (e.g. Lead Generation, Lead Time Reduction)
         pass0 = self.shield.evaluate_pass_0(token_text)
         if pass0.is_shielded and pass0.match_status == PROTECTED_PROPER_NOUN:
+            all_matches = self.catalog.get_all_exact_matches(pass0.canonical_name)
             prov = ProvenanceRecord(
                 raw_input=raw_str,
                 raw_token=raw_token,
@@ -949,6 +1032,7 @@ class LinguisticPipeline:
                 is_compound_shielded=True,
                 is_oversized=is_oversized or st.is_oversized,
                 provenance=prov,
+                associations=all_matches or [],
             )
 
         # Check certification exam track suffix (e.g. "ISTQB Advanced Level")
@@ -1026,24 +1110,55 @@ class LinguisticPipeline:
                     token_text = m.group(2).strip()
                     break
 
-        # Strip seniority keywords (e.g. "Senior Python Developer")
+        # Strip seniority keywords (e.g. "Senior Python Developer", "Mid-Senior Python Developer")
         for s_word in self.SENIORITY_KEYWORDS:
-            s_pat = re.compile(rf"\b{s_word}\b", re.IGNORECASE)
+            s_pat = re.compile(rf"\b{re.escape(s_word)}\b", re.IGNORECASE)
             if s_pat.search(token_text):
+                # Protect domain proper nouns/disciplines like "Lead Generation"
+                if s_word == "lead" and any(p in token_text.lower() for p in ["lead generation", "lead time"]):
+                    continue
+                # If the entire token is already a known catalog entry (e.g. don't corrupt if catalog has it)
+                if self.catalog.get_exact_match(token_text):
+                    break
                 token_text = s_pat.sub("", token_text).strip()
+                # Clean dangling hyphens and excessive whitespace left by phrase removal
+                token_text = re.sub(r"^[\s\-–—]+|[\s\-–—]+$", "", token_text).strip()
 
-        # Strip redundant role suffixes (e.g. "Excel skills", "Docker technologies")
+        # Strip redundant role suffixes (e.g. "Excel skills", "Docker technologies", "Python Developer")
         for sfx in self.ROLE_SUFFIXES:
             sfx_pat = re.compile(rf"\b{sfx}\b", re.IGNORECASE)
             if sfx_pat.search(token_text):
-                if not self.catalog.get_exact_match(token_text):
-                    token_text = sfx_pat.sub("", token_text).strip()
+                candidate = sfx_pat.sub("", token_text).strip()
+                if self.catalog.get_exact_match(candidate) or not self.catalog.get_exact_match(token_text):
+                    token_text = candidate
 
         token_text = " ".join(token_text.split())
 
-        # Exact catalog lookup
-        entry = self.catalog.get_exact_match(token_text)
-        if entry:
+        # Guard against empty token after stripping role titles / seniority keywords (e.g. "Lead Developer")
+        if not token_text or not token_text.strip():
+            prov = ProvenanceRecord(
+                raw_input=raw_str,
+                raw_token=raw_token,
+                cleaned_skill=st.atomic_skill,
+                delimiter_tier=st.hierarchy_level,
+                delimiter_used=st.separated_by,
+                transformation_log=["Role title without identifiable skill; rejected as noise."],
+            )
+            return IntegratedSkillToken(
+                raw_skill=raw_str,
+                atomic_skill=st.atomic_skill,
+                raw_token=raw_token,
+                separated_by=st.separated_by,
+                match_status=REJECTED_NOISE,
+                rejection_reason="Generic job title without skill",
+                is_oversized=is_oversized or st.is_oversized,
+                provenance=prov,
+            )
+
+        # Exact catalog lookup preserving all associations
+        all_exact = self.catalog.get_all_exact_matches(token_text)
+        if all_exact:
+            entry = all_exact[0]
             if token_text.lower() == entry.name.lower():
                 canonical_name = entry.name
             else:
@@ -1053,6 +1168,7 @@ class LinguisticPipeline:
             skill_type = entry.skill_type
             match_status = CATALOG_EXACT_MATCH
             matched_skill = entry.name
+            associations = all_exact
         else:
             if token_text.lower() in self.GENERIC_WORDS:
                 canonical_name = token_text
@@ -1061,15 +1177,18 @@ class LinguisticPipeline:
                 skill_type = "Hard Skill"
                 match_status = UNMATCHED_NOVEL
                 matched_skill = None
+                associations = []
             else:
-                reg_entry = self.catalog.get_regex_match(token_text)
-                if reg_entry:
-                    canonical_name = token_text
-                    domain = reg_entry.domain
-                    sub_category = reg_entry.sub_category
-                    skill_type = reg_entry.skill_type
+                all_reg = self.catalog.get_all_regex_matches(token_text)
+                if all_reg:
+                    entry = all_reg[0]
+                    canonical_name = entry.name
+                    domain = entry.domain
+                    sub_category = entry.sub_category
+                    skill_type = entry.skill_type
                     match_status = CATALOG_REGEX_MATCH
-                    matched_skill = reg_entry.name
+                    matched_skill = entry.name
+                    associations = all_reg
                 else:
                     canonical_name = token_text
                     if canonical_name in ("Civil Engineering", "Structural Engineering"):
@@ -1082,6 +1201,7 @@ class LinguisticPipeline:
                         skill_type = "Certification" if "istqb" in token_text.lower() else "Hard Skill"
                     match_status = UNMATCHED_NOVEL
                     matched_skill = None
+                    associations = []
 
         if skill_type == "Soft Skill":
             governed_level = LEVEL_NOT_SPECIFIED
@@ -1113,6 +1233,7 @@ class LinguisticPipeline:
             is_malformed=st.is_malformed,
             malformed_reason=st.malformed_reason,
             provenance=prov,
+            associations=associations,
         )
 
     def _create_classified_token(
@@ -1127,47 +1248,60 @@ class LinguisticPipeline:
         transformation_note: str,
         match_status_override: Optional[str] = None,
     ) -> IntegratedSkillToken:
-        """Helper to create and catalog-align a classified token."""
-        entry = self.catalog.get_exact_match(atomic_skill)
-        if entry:
+        """Helper to create and catalog-align a classified token preserving all associations."""
+        all_exact = self.catalog.get_all_exact_matches(atomic_skill)
+        if all_exact:
+            entry = all_exact[0]
+            if atomic_skill.lower() == entry.name.lower():
+                canonical_name = entry.name
+            else:
+                canonical_name = atomic_skill
             domain = entry.domain
             sub_cat = entry.sub_category
             skill_type = entry.skill_type
             status = match_status_override or CATALOG_EXACT_MATCH
             matched = entry.name
+            associations = all_exact
         else:
             if atomic_skill.lower() in self.GENERIC_WORDS:
+                canonical_name = atomic_skill
                 domain = UNKNOWN_DOMAIN
                 sub_cat = UNKNOWN_SUBCATEGORY
                 skill_type = "Hard Skill"
                 status = match_status_override or UNMATCHED_NOVEL
                 matched = None
+                associations = []
             else:
-                reg_entry = self.catalog.get_regex_match(atomic_skill)
-                if reg_entry:
-                    domain = reg_entry.domain
-                    sub_cat = reg_entry.sub_category
-                    skill_type = reg_entry.skill_type
+                all_reg = self.catalog.get_all_regex_matches(atomic_skill)
+                if all_reg:
+                    entry = all_reg[0]
+                    canonical_name = entry.name
+                    domain = entry.domain
+                    sub_cat = entry.sub_category
+                    skill_type = entry.skill_type
                     status = match_status_override or CATALOG_REGEX_MATCH
-                    matched = reg_entry.name
+                    matched = entry.name
+                    associations = all_reg
                 else:
+                    canonical_name = atomic_skill
                     domain = UNKNOWN_DOMAIN
                     sub_cat = UNKNOWN_SUBCATEGORY
                     skill_type = "Certification" if "istqb" in atomic_skill.lower() else "Hard Skill"
                     status = match_status_override or UNMATCHED_NOVEL
                     matched = None
+                    associations = []
 
         prov = ProvenanceRecord(
             raw_input=raw_str,
             raw_token=raw_token,
-            cleaned_skill=atomic_skill,
+            cleaned_skill=canonical_name,
             delimiter_used=separated_by,
             transformation_log=[transformation_note],
         )
 
         return IntegratedSkillToken(
             raw_skill=raw_str,
-            atomic_skill=atomic_skill,
+            atomic_skill=canonical_name,
             raw_token=raw_token,
             separated_by=separated_by,
             extracted_skill_level=extracted_level,
@@ -1179,6 +1313,7 @@ class LinguisticPipeline:
             matched_atomic_skill=matched,
             is_oversized=is_oversized,
             provenance=prov,
+            associations=associations,
         )
 
     def _link_context_graph(self, tokens: List[IntegratedSkillToken]) -> None:

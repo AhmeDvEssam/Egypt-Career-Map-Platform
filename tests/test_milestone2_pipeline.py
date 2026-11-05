@@ -212,10 +212,15 @@ class TestMilestone2PipelineIntegration(OpaqueBoxTestCase):
     def test_14_ci_cd_pipelines_intermediate(self):
         """'CI/CD Pipelines (Intermediate)' strips suffix Pipelines, protects compound, and extracts level."""
         raw = "CI/CD Pipelines (Intermediate)"
+        tokens = self.pipeline.decompose_to_tokens(raw)
+        self.assertEqual(len(tokens), 1)
+        self.assertEqual(tokens[0].atomic_skill, "CI/CD")
+        self.assertEqual(tokens[0].skill_level, "Intermediate")
+
         res = self.pipeline.decompose(raw)
-        self.assertEqual(len(res), 1)
-        self.assertEqual(res[0]["atomic_skill"], "CI/CD")
-        self.assertEqual(res[0]["skill_level"], "Intermediate")
+        self.assertEqual(len(res), 6)  # CI/CD has 6 legitimate catalog associations
+        self.assertTrue(all(r["atomic_skill"] == "CI/CD" for r in res))
+        self.assertTrue(all(r["skill_level"] == "Intermediate" for r in res))
 
     def test_15_ui_ux_design_expert_collapsed(self):
         """'UI/UX Design (Expert)' strips suffix Design, protects compound, collapses expert to advanced."""
@@ -294,13 +299,21 @@ class TestMilestone2PipelineIntegration(OpaqueBoxTestCase):
     def test_23_subskill_specification_rows(self):
         """'Advanced Excel (Cost & Quantity Tracking)' emits main row + specification rows."""
         raw = "Advanced Excel (Cost & Quantity Tracking)"
+        tokens = self.pipeline.decompose_to_tokens(raw)
+        self.assertEqual(len(tokens), 3)
+        self.assertEqual(tokens[0].atomic_skill, "Excel")
+        self.assertEqual(tokens[0].skill_level, "Advanced")
+        self.assertEqual(tokens[1].match_status, PARENTHESIS_SPECIFICATION)
+        self.assertEqual(tokens[2].match_status, PARENTHESIS_SPECIFICATION)
+
         res = self.pipeline.decompose(raw)
         self.assertGreaterEqual(len(res), 2)
         self.assertEqual(res[0]["atomic_skill"], "Excel")
         self.assertEqual(res[0]["skill_level"], "Advanced")
 
-        spec_statuses = [r["match_status"] for r in res[1:]]
-        self.assertTrue(all(s == PARENTHESIS_SPECIFICATION for s in spec_statuses))
+        spec_rows = [r for r in res if r["match_status"] == PARENTHESIS_SPECIFICATION]
+        self.assertEqual(len(spec_rows), 2)
+        self.assertEqual([r["atomic_skill"] for r in spec_rows], ["Cost", "Quantity Tracking"])
 
     def test_24_regulatory_form_consolidation(self):
         """'Social Insurance (Forms 1, 2, 6)' protects statutory form numbers from fragmentation."""
@@ -315,11 +328,13 @@ class TestMilestone2PipelineIntegration(OpaqueBoxTestCase):
     def test_25_dual_parentheses_acronyms_delimited(self):
         """'AWS (Amazon Web Services) & GCP (Google Cloud Platform)' resolves both pairs."""
         raw = "AWS (Amazon Web Services) & GCP (Google Cloud Platform)"
+        tokens = self.pipeline.decompose_to_tokens(raw)
+        self.assertEqual(len(tokens), 2)
         res = self.pipeline.decompose(raw)
-        self.assertEqual(len(res), 2)
-        skills = [r["atomic_skill"] for r in res]
+        skills = list(dict.fromkeys(r["atomic_skill"] for r in res))
         self.assertIn("AWS", skills)
         self.assertIn("GCP", skills)
+        self.assertEqual(len(res), 14)  # 7 AWS + 7 GCP associations
 
     def test_26_dual_parentheses_industry_contexts(self):
         """'Sales (Real Estate) & Marketing (Hospitality)' splits on & and preserves both skills."""
@@ -336,59 +351,94 @@ class TestMilestone2PipelineIntegration(OpaqueBoxTestCase):
 
     def test_27_ampersand_splitting(self):
         """'Python & SQL' splits into 2 atomic skills with separated_by='&'."""
+        tokens = self.pipeline.decompose_to_tokens("Python & SQL")
+        self.assertEqual(len(tokens), 2)
+        self.assertEqual(tokens[0].atomic_skill, "Python")
+        self.assertEqual(tokens[1].atomic_skill, "SQL")
+        self.assertEqual(tokens[0].separated_by, "&")
+
         res = self.pipeline.decompose("Python & SQL")
-        self.assertEqual(len(res), 2)
-        self.assertEqual(res[0]["atomic_skill"], "Python")
-        self.assertEqual(res[1]["atomic_skill"], "SQL")
-        self.assertEqual(res[0]["separated_by"], "&")
+        distinct_skills = list(dict.fromkeys(r["atomic_skill"] for r in res))
+        self.assertEqual(distinct_skills, ["Python", "SQL"])
+        self.assertEqual(len(res), 18)  # 10 Python + 8 SQL associations
 
     def test_28_slash_splitting(self):
         """'Docker / Kubernetes' splits into 2 atomic skills with separated_by='/'."""
+        tokens = self.pipeline.decompose_to_tokens("Docker / Kubernetes")
+        self.assertEqual(len(tokens), 2)
+        self.assertEqual(tokens[0].atomic_skill, "Docker")
+        self.assertEqual(tokens[1].atomic_skill, "Kubernetes")
+        self.assertEqual(tokens[0].separated_by, "/")
+
         res = self.pipeline.decompose("Docker / Kubernetes")
-        self.assertEqual(len(res), 2)
-        self.assertEqual(res[0]["atomic_skill"], "Docker")
-        self.assertEqual(res[1]["atomic_skill"], "Kubernetes")
-        self.assertEqual(res[0]["separated_by"], "/")
+        distinct_skills = list(dict.fromkeys(r["atomic_skill"] for r in res))
+        self.assertEqual(distinct_skills, ["Docker", "Kubernetes"])
+        self.assertEqual(len(res), 12)  # 7 Docker + 5 Kubernetes associations
 
     def test_29_comma_splitting(self):
         """'HTML, CSS, JavaScript' splits into 3 atomic skills."""
+        tokens = self.pipeline.decompose_to_tokens("HTML, CSS, JavaScript")
+        self.assertEqual(len(tokens), 3)
+        self.assertEqual([t.atomic_skill for t in tokens], ["HTML", "CSS", "JavaScript"])
+
         res = self.pipeline.decompose("HTML, CSS, JavaScript")
-        self.assertEqual(len(res), 3)
-        self.assertEqual([r["atomic_skill"] for r in res], ["HTML", "CSS", "JavaScript"])
+        distinct_skills = list(dict.fromkeys(r["atomic_skill"] for r in res))
+        self.assertEqual(distinct_skills, ["HTML", "CSS", "JavaScript"])
+        self.assertEqual(len(res), 6)  # 1 HTML + 1 CSS + 4 JavaScript associations
 
     def test_30_hyphen_splitting(self):
         """'Jira - Confluence' splits on hyphen delimiter."""
+        tokens = self.pipeline.decompose_to_tokens("Jira - Confluence")
+        self.assertEqual(len(tokens), 2)
+        self.assertEqual(tokens[0].atomic_skill, "Jira")
+        self.assertEqual(tokens[1].atomic_skill, "Confluence")
+
         res = self.pipeline.decompose("Jira - Confluence")
-        self.assertEqual(len(res), 2)
-        self.assertEqual(res[0]["atomic_skill"], "Jira")
-        self.assertEqual(res[1]["atomic_skill"], "Confluence")
+        distinct_skills = list(dict.fromkeys(r["atomic_skill"] for r in res))
+        self.assertEqual(distinct_skills, ["Jira", "Confluence"])
+        self.assertEqual(len(res), 16)  # 10 Jira + 6 Confluence associations
 
     def test_31_word_and_splitting(self):
         """'Accounting and Auditing' splits on word 'and' delimiter."""
+        tokens = self.pipeline.decompose_to_tokens("Accounting and Auditing")
+        self.assertEqual(len(tokens), 2)
+        self.assertEqual(tokens[0].atomic_skill, "Accounting")
+        self.assertEqual(tokens[1].atomic_skill, "Auditing")
+
         res = self.pipeline.decompose("Accounting and Auditing")
-        self.assertEqual(len(res), 2)
-        self.assertEqual(res[0]["atomic_skill"], "Accounting")
-        self.assertEqual(res[1]["atomic_skill"], "Auditing")
+        distinct_skills = list(dict.fromkeys(r["atomic_skill"] for r in res))
+        self.assertEqual(distinct_skills, ["Accounting", "Auditing"])
+        self.assertEqual(len(res), 5)  # 4 Accounting + 1 Auditing associations
 
     def test_32_context_graph_preservation(self):
         """Context graph correctly connects separated_from_before and separated_from_after."""
-        res = self.pipeline.decompose("Python, SQL, Docker")
-        self.assertEqual(len(res), 3)
+        tokens = self.pipeline.decompose_to_tokens("Python, SQL, Docker")
+        self.assertEqual(len(tokens), 3)
         # First
-        self.assertEqual(res[0]["separated_from_before"], "")
-        self.assertEqual(res[0]["separated_from_after"], "SQL")
+        self.assertEqual(tokens[0].separated_from_before, "")
+        self.assertEqual(tokens[0].separated_from_after, "SQL")
         # Middle
-        self.assertEqual(res[1]["separated_from_before"], "Python")
-        self.assertEqual(res[1]["separated_from_after"], "Docker")
+        self.assertEqual(tokens[1].separated_from_before, "Python")
+        self.assertEqual(tokens[1].separated_from_after, "Docker")
         # Last
-        self.assertEqual(res[2]["separated_from_before"], "SQL")
-        self.assertEqual(res[2]["separated_from_after"], "")
+        self.assertEqual(tokens[2].separated_from_before, "SQL")
+        self.assertEqual(tokens[2].separated_from_after, "")
+
+        res = self.pipeline.decompose("Python, SQL, Docker")
+        distinct_skills = list(dict.fromkeys(r["atomic_skill"] for r in res))
+        self.assertEqual(distinct_skills, ["Python", "SQL", "Docker"])
+        self.assertEqual(len(res), 25)  # 10 Python + 8 SQL + 7 Docker associations
 
     def test_33_pipe_delimiter_splitting(self):
         """'Python | SQL | Docker' splits cleanly on pipes."""
+        tokens = self.pipeline.decompose_to_tokens("Python | SQL | Docker")
+        self.assertEqual(len(tokens), 3)
+        self.assertEqual([t.atomic_skill for t in tokens], ["Python", "SQL", "Docker"])
+
         res = self.pipeline.decompose("Python | SQL | Docker")
-        self.assertEqual(len(res), 3)
-        self.assertEqual([r["atomic_skill"] for r in res], ["Python", "SQL", "Docker"])
+        distinct_skills = list(dict.fromkeys(r["atomic_skill"] for r in res))
+        self.assertEqual(distinct_skills, ["Python", "SQL", "Docker"])
+        self.assertEqual(len(res), 25)
 
     def test_34_hierarchical_precedence_semicolon_over_comma(self):
         """Hard delimiter ';' takes precedence over soft delimiters."""
@@ -456,9 +506,12 @@ class TestMilestone2PipelineIntegration(OpaqueBoxTestCase):
     def test_42_whitelisted_single_characters(self):
         """C and R are whitelisted single character programming languages."""
         for ch in ["C", "R"]:
+            tokens = self.pipeline.decompose_to_tokens(ch)
+            self.assertEqual(len(tokens), 1)
+            self.assertNotEqual(tokens[0].match_status, REJECTED_NOISE)
             res = self.pipeline.decompose(ch)
-            self.assertEqual(len(res), 1)
-            self.assertNotEqual(res[0]["match_status"], REJECTED_NOISE)
+            distinct = list(dict.fromkeys(r["atomic_skill"] for r in res))
+            self.assertEqual(distinct, [ch])
 
     def test_43_oversized_input_no_truncation(self):
         """Input exceeding 20,000 characters sets is_oversized without truncation."""
@@ -476,9 +529,13 @@ class TestMilestone2PipelineIntegration(OpaqueBoxTestCase):
 
     def test_45_empty_parentheses_cleanup(self):
         """Empty parentheses 'Python ()' cleans to 'Python' without noise error."""
+        tokens = self.pipeline.decompose_to_tokens("Python ()")
+        self.assertEqual(len(tokens), 1)
+        self.assertEqual(tokens[0].atomic_skill, "Python")
         res = self.pipeline.decompose("Python ()")
-        self.assertEqual(len(res), 1)
-        self.assertEqual(res[0]["atomic_skill"], "Python")
+        distinct = list(dict.fromkeys(r["atomic_skill"] for r in res))
+        self.assertEqual(distinct, ["Python"])
+        self.assertEqual(len(res), 10)
 
     def test_46_clustered_delimiters_cleaned(self):
         """Clustered delimiters like '///' or '&&&' are handled cleanly without empty tokens."""
@@ -492,9 +549,13 @@ class TestMilestone2PipelineIntegration(OpaqueBoxTestCase):
 
     def test_47_smart_quotes_stripped(self):
         """Smart quotes around skill are stripped cleanly."""
+        tokens = self.pipeline.decompose_to_tokens("“Python”")
+        self.assertEqual(len(tokens), 1)
+        self.assertEqual(tokens[0].atomic_skill, "Python")
         res = self.pipeline.decompose("“Python”")
-        self.assertEqual(len(res), 1)
-        self.assertEqual(res[0]["atomic_skill"], "Python")
+        distinct = list(dict.fromkeys(r["atomic_skill"] for r in res))
+        self.assertEqual(distinct, ["Python"])
+        self.assertEqual(len(res), 10)
 
     # ──────────────────────────────────────────────────────────────────────────
     # 6. Determinism & Performance Benchmarks
@@ -510,10 +571,12 @@ class TestMilestone2PipelineIntegration(OpaqueBoxTestCase):
     def test_49_atomic_decomposition_pipeline_adapter(self):
         """AtomicDecompositionPipeline adapter instantiates and executes identically."""
         engine = AtomicDecompositionPipeline()
+        tokens = engine.decompose_to_tokens("Python & SQL")
+        self.assertEqual(len(tokens), 2)
         res = engine.decompose("Python & SQL")
-        self.assertEqual(len(res), 2)
-        self.assertEqual(res[0]["atomic_skill"], "Python")
-        self.assertEqual(res[1]["atomic_skill"], "SQL")
+        distinct = list(dict.fromkeys(r["atomic_skill"] for r in res))
+        self.assertEqual(distinct, ["Python", "SQL"])
+        self.assertEqual(len(res), 18)
 
     def test_50_submillisecond_execution_performance(self):
         """Decomposing 200 standard composite skills must average under 5 ms per input."""
@@ -533,6 +596,110 @@ class TestMilestone2PipelineIntegration(OpaqueBoxTestCase):
 
         print(f"\n[BENCHMARK] M2.3 Pipeline Integration: {len(samples)} decompositions in {total_time:.3f}s ({avg_ms:.3f} ms/item)")
         self.assertLess(avg_ms, 5.0, f"Average execution time {avg_ms:.2f} ms exceeded 5.0 ms limit")
+
+    # ──────────────────────────────────────────────────────────────────────────
+    # 7. Milestone 2.3 Post-Review Verification (Blockers 1, 2, 3)
+    # ──────────────────────────────────────────────────────────────────────────
+
+    def test_51_all_catalog_associations_are_preserved(self):
+        """BLOCKER 1: Multi-domain associations: SQL preserves all 8 catalog associations across domains and subcategories."""
+        rows = self.pipeline.decompose("SQL")
+        associations = {(r["domain"], r["sub_category"]) for r in rows}
+        expected = {(e.domain, e.sub_category) for e in self.pipeline.catalog.get_all_exact_matches("SQL")}
+        self.assertEqual(associations, expected)
+        self.assertEqual(len(rows), 8)
+        self.assertTrue(all(r["atomic_skill"] == "SQL" for r in rows))
+        self.assertTrue(all(r["matched_atomic_skill"] == "SQL" for r in rows))
+
+    def test_52_clustered_delimiters_preserve_original_tokens(self):
+        """BLOCKER 2: Verbatim source preservation: raw_token slices preserve verbatim original text and whitespace."""
+        raw = " Python /// SQL &&& Docker "
+        tokens = self.pipeline.decompose_to_tokens(raw)
+        self.assertEqual(len(tokens), 3)
+        self.assertEqual(tokens[0].raw_token, " Python ")
+        self.assertEqual(tokens[1].raw_token, " SQL ")
+        self.assertEqual(tokens[2].raw_token, " Docker ")
+        self.assertEqual(tokens[0].atomic_skill, "Python")
+        self.assertEqual(tokens[1].atomic_skill, "SQL")
+        self.assertEqual(tokens[2].atomic_skill, "Docker")
+
+    def test_53_mid_seniority_is_not_partially_removed(self):
+        """BLOCKER 3: Greedy seniority ordering: Mid-Senior is stripped cleanly as a phrase without dangling hyphens."""
+        result = self.pipeline.decompose("Mid-Senior Python Developer")
+        self.assertGreaterEqual(len(result), 1)
+        self.assertEqual(result[0]["atomic_skill"], "Python")
+        sidecar = self.pipeline.get_sidecar_metadata("Mid-Senior Python Developer")
+        self.assertEqual(sidecar["intra_string_seniority"], "Mid-Senior")
+
+    def test_54_seniority_keywords_ordering_and_shielding(self):
+        """BLOCKER 3: Exhaustive verification of seniority phrases and discipline shielding."""
+        cases = [
+            ("Mid-Senior Python Developer", "Python", "Mid-Senior", CATALOG_EXACT_MATCH),
+            ("Mid-Level Data Analyst", "Data", "Mid-Level", UNMATCHED_NOVEL),
+            ("Senior Software Engineer", "Software", "Senior", UNMATCHED_NOVEL),
+            ("Lead Generation", "Lead Generation", None, PROTECTED_PROPER_NOUN),
+            ("Lead Developer", "Lead Developer", "Lead", REJECTED_NOISE),
+        ]
+        for phrase, exp_skill, exp_seniority, exp_status in cases:
+            tokens = self.pipeline.decompose_to_tokens(phrase)
+            sidecar = self.pipeline.get_sidecar_metadata(phrase)
+            self.assertEqual(tokens[0].atomic_skill, exp_skill)
+            self.assertEqual(tokens[0].match_status, exp_status)
+            self.assertEqual(sidecar["intra_string_seniority"], exp_seniority)
+
+    def test_55_seniority_pythonhashseed_determinism(self):
+        """BLOCKER 3: Deterministic execution independent of Python hash randomization seed."""
+        import subprocess
+        seeds = ["0", "1", "42", "12345", "999999"]
+        test_code = (
+            "from linguistic_intelligence.pipeline import LinguisticPipeline\n"
+            "p = LinguisticPipeline()\n"
+            "for phrase in ['Mid-Senior Python Developer', 'Mid-Level Data Analyst', 'Senior Software Engineer', 'Lead Generation', 'Lead Developer']:\n"
+            "    tokens = p.decompose_to_tokens(phrase)\n"
+            "    sidecar = p.get_sidecar_metadata(phrase)\n"
+            "    print(phrase, '|', [(t.atomic_skill, t.match_status) for t in tokens], '|', sidecar['intra_string_seniority'])\n"
+        )
+        outputs = []
+        for seed in seeds:
+            env = dict(os.environ, PYTHONHASHSEED=seed)
+            proc = subprocess.run([sys.executable, "-c", test_code], capture_output=True, text=True, check=True, env=env)
+            outputs.append(proc.stdout)
+        self.assertTrue(all(o == outputs[0] for o in outputs))
+
+    def test_56_provenance_across_all_execution_paths(self):
+        """ProvenanceRecord covers Category Containers, Acronyms, Industry, Subskills, Clustered Delimiters & Malformed Parens."""
+        # 1. Category Container
+        tokens = self.pipeline.decompose_to_tokens("Development Tools (Git, Jira)")
+        self.assertEqual(len(tokens), 2)
+        self.assertTrue(all(t.provenance is not None for t in tokens))
+        self.assertEqual(tokens[0].provenance.raw_input, "Development Tools (Git, Jira)")
+
+        # 2. Acronym Expansion
+        tokens = self.pipeline.decompose_to_tokens("Amazon Web Services (AWS)")
+        self.assertEqual(len(tokens), 1)
+        self.assertEqual(tokens[0].provenance.raw_input, "Amazon Web Services (AWS)")
+
+        # 3. Industry Context
+        tokens = self.pipeline.decompose_to_tokens("Sales (Transportation & Logistics)")
+        self.assertEqual(len(tokens), 1)
+        self.assertEqual(tokens[0].provenance.raw_input, "Sales (Transportation & Logistics)")
+
+        # 4. Sub-skill Specification
+        tokens = self.pipeline.decompose_to_tokens("Advanced Excel (Cost & Quantity Tracking)")
+        self.assertGreaterEqual(len(tokens), 2)
+        self.assertTrue(all(t.provenance is not None for t in tokens))
+
+        # 5. Clustered Delimiters
+        tokens = self.pipeline.decompose_to_tokens(" Python /// SQL &&& Docker ")
+        self.assertEqual(len(tokens), 3)
+        self.assertEqual(tokens[0].provenance.raw_token, " Python ")
+        self.assertEqual(tokens[1].provenance.raw_token, " SQL ")
+        self.assertEqual(tokens[2].provenance.raw_token, " Docker ")
+
+        # 6. Malformed Parentheses
+        tokens = self.pipeline.decompose_to_tokens("Python (Advanced")
+        self.assertEqual(len(tokens), 1)
+        self.assertTrue(tokens[0].is_malformed)
 
 
 if __name__ == "__main__":
