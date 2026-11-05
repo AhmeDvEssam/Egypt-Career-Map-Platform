@@ -632,11 +632,11 @@ class TestMilestone2PipelineIntegration(OpaqueBoxTestCase):
         self.assertEqual(sidecar["intra_string_seniority"], "Mid-Senior")
 
     def test_54_seniority_keywords_ordering_and_shielding(self):
-        """BLOCKER 3: Exhaustive verification of seniority phrases and discipline shielding."""
+        """BLOCKER 3: Exhaustive verification of seniority phrases, discipline shielding, and avoiding non-skill fragments."""
         cases = [
             ("Mid-Senior Python Developer", "Python", "Mid-Senior", CATALOG_EXACT_MATCH),
-            ("Mid-Level Data Analyst", "Data", "Mid-Level", UNMATCHED_NOVEL),
-            ("Senior Software Engineer", "Software", "Senior", UNMATCHED_NOVEL),
+            ("Mid-Level Data Analyst", "Data Analyst", "Mid-Level", UNMATCHED_NOVEL),
+            ("Senior Software Engineer", "Software Engineer", "Senior", UNMATCHED_NOVEL),
             ("Lead Generation", "Lead Generation", None, PROTECTED_PROPER_NOUN),
             ("Lead Developer", "Lead Developer", "Lead", REJECTED_NOISE),
         ]
@@ -646,6 +646,8 @@ class TestMilestone2PipelineIntegration(OpaqueBoxTestCase):
             self.assertEqual(tokens[0].atomic_skill, exp_skill)
             self.assertEqual(tokens[0].match_status, exp_status)
             self.assertEqual(sidecar["intra_string_seniority"], exp_seniority)
+            # Ensure no generic non-skill fragments like 'Data' or 'Software' are created
+            self.assertNotIn(tokens[0].atomic_skill, ["Data", "Software"])
 
     def test_55_seniority_pythonhashseed_determinism(self):
         """BLOCKER 3: Deterministic execution independent of Python hash randomization seed."""
@@ -723,6 +725,49 @@ class TestMilestone2PipelineIntegration(OpaqueBoxTestCase):
         self.assertTrue(tokens6[0].is_malformed)
         self.assertEqual(tokens6[0].provenance.raw_token, raw6)
         self.assertEqual(tokens6[0].provenance.raw_input, raw6)
+
+    def test_57_decompose_tokens_associations_mathematical_consistency(self):
+        """Invariant: decompose() rows preserve exact catalog associations and match mathematical expansion sum."""
+        test_inputs = [
+            "SQL",
+            "Python",
+            "Docker",
+            "CI/CD",
+            "P&L",
+            "Python & SQL",
+            "Docker / Kubernetes",
+            "HTML, CSS, JavaScript",
+            "Mid-Senior Python Developer",
+            "Mid-Level Data Analyst",
+            "Senior Software Engineer",
+            "Development Tools (Git, Jira)",
+            "Advanced Excel (Cost & Quantity Tracking)",
+            "Lead Developer",
+        ]
+        for raw in test_inputs:
+            tokens = self.pipeline.decompose_to_tokens(raw)
+            rows = self.pipeline.decompose(raw)
+
+            # Mathematical row count invariant: sum of max(1, len(t.associations)) across all tokens
+            expected_row_count = sum(max(1, len(t.associations)) for t in tokens)
+            self.assertEqual(
+                len(rows),
+                expected_row_count,
+                f"Row count mismatch for '{raw}': got {len(rows)}, expected {expected_row_count}",
+            )
+
+            # Association completeness invariant: for each token with catalog associations,
+            # all associations must appear in decomposed rows
+            for t in tokens:
+                if t.associations and len(t.associations) > 1:
+                    token_rows = [r for r in rows if r["atomic_skill"] == t.atomic_skill]
+                    row_assocs = {(r["domain"], r["sub_category"], r["skill_type"]) for r in token_rows}
+                    catalog_assocs = {(e.domain, e.sub_category, e.skill_type) for e in t.associations}
+                    self.assertEqual(
+                        row_assocs,
+                        catalog_assocs,
+                        f"Association set mismatch for token '{t.atomic_skill}' in '{raw}'",
+                    )
 
 
 if __name__ == "__main__":

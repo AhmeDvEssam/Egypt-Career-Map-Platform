@@ -238,12 +238,24 @@ class LinguisticPipeline:
         "mid",
     )
 
-    # Common role/suffix words stripped when extracting pure skill
+    # Job role titles that should ONLY be stripped when the remainder is an independently validated skill
+    JOB_ROLE_TITLES: Set[str] = {
+        "developer", "engineer", "specialist", "consultant", "analyst",
+        "administrator", "architect", "programmer",
+    }
+
+    # Redundant list/domain postfixes that can be stripped when remainder is a non-generic technical term
+    REDUNDANT_POSTFIXES: Set[str] = {
+        "technologies", "technology", "skills", "skill",
+        "certifications", "certification", "networks", "network",
+    }
+
+    # Common role/suffix words checked when extracting pure skill
     ROLE_SUFFIXES: List[str] = [
         "developer", "engineer", "specialist", "consultant", "analyst",
-        "administrator", "architect", "programmer", "technologies", "skills",
-        "pipelines", "pipeline", "design", "programming", "management",
-        "certifications", "certification", "networks", "network",
+        "administrator", "architect", "programmer", "technologies", "technology",
+        "skills", "skill", "pipelines", "pipeline", "design", "programming",
+        "management", "certifications", "certification", "networks", "network",
     ]
 
     # Level modifier prefix patterns capturing verbatim prefix casing
@@ -846,8 +858,18 @@ class LinguisticPipeline:
                 for sfx in self.ROLE_SUFFIXES:
                     sfx_pat = re.compile(rf"\b{sfx}\b", re.IGNORECASE)
                     if sfx_pat.search(base_clean):
-                        if not self.catalog.get_exact_match(base_clean):
-                            base_clean = sfx_pat.sub("", base_clean).strip()
+                        candidate = sfx_pat.sub("", base_clean).strip()
+                        candidate = " ".join(candidate.split())
+                        if not candidate or candidate.lower() in self.GENERIC_WORDS:
+                            continue
+                        if sfx.lower() in self.JOB_ROLE_TITLES:
+                            # Job role titles require independent catalog validation
+                            if self.catalog.get_exact_match(candidate) or self.catalog.get_regex_match(candidate):
+                                base_clean = candidate
+                        else:
+                            # Redundant list/domain postfixes require non-generic technical term (len >= 2)
+                            if len(candidate) >= 2:
+                                base_clean = candidate
 
             base_clean = " ".join(base_clean.split())
 
@@ -1129,13 +1151,22 @@ class LinguisticPipeline:
             sfx_pat = re.compile(rf"\b{sfx}\b", re.IGNORECASE)
             if sfx_pat.search(token_text):
                 candidate = sfx_pat.sub("", token_text).strip()
-                if self.catalog.get_exact_match(candidate) or not self.catalog.get_exact_match(token_text):
-                    token_text = candidate
+                candidate = " ".join(candidate.split())
+                if not candidate or candidate.lower() in self.GENERIC_WORDS:
+                    continue
+                if sfx.lower() in self.JOB_ROLE_TITLES:
+                    # Job role titles require independent catalog validation
+                    if self.catalog.get_exact_match(candidate) or self.catalog.get_regex_match(candidate):
+                        token_text = candidate
+                else:
+                    # Redundant list/domain postfixes require non-generic technical term (len >= 2)
+                    if len(candidate) >= 2:
+                        token_text = candidate
 
         token_text = " ".join(token_text.split())
 
-        # Guard against empty token after stripping role titles / seniority keywords (e.g. "Lead Developer")
-        if not token_text or not token_text.strip():
+        # Guard against empty token or pure role title after stripping role titles / seniority keywords (e.g. "Lead Developer" -> "Developer")
+        if not token_text or not token_text.strip() or token_text.lower() in self.ROLE_SUFFIXES:
             prov = ProvenanceRecord(
                 raw_input=raw_str,
                 raw_token=raw_token,
