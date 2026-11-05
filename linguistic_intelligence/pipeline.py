@@ -872,7 +872,7 @@ class LinguisticPipeline:
                 # Guard: If base_clean is already an exact catalog match, preserve it completely
                 if not self._is_exact_catalog_phrase(base_clean):
                     for sfx in self.ROLE_SUFFIXES:
-                        sfx_pat = re.compile(rf"\b{sfx}\b", re.IGNORECASE)
+                        sfx_pat = re.compile(rf"\b{re.escape(sfx)}\s*$", re.IGNORECASE)
                         if sfx_pat.search(base_clean):
                             candidate = sfx_pat.sub("", base_clean).strip()
                             candidate = " ".join(candidate.split())
@@ -1166,9 +1166,9 @@ class LinguisticPipeline:
 
         # Guard: If token_text is an exact catalog match, preserve it completely
         if not self._is_exact_catalog_phrase(token_text):
-            # Strip redundant role suffixes (e.g. "Excel skills", "Docker technologies", "Python Developer")
+            # Strip redundant role suffixes anchored to the end of the phrase (e.g. "Excel skills", "Python Developer")
             for sfx in self.ROLE_SUFFIXES:
-                sfx_pat = re.compile(rf"\b{sfx}\b", re.IGNORECASE)
+                sfx_pat = re.compile(rf"\b{re.escape(sfx)}\s*$", re.IGNORECASE)
                 if sfx_pat.search(token_text):
                     candidate = sfx_pat.sub("", token_text).strip()
                     candidate = " ".join(candidate.split())

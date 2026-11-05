@@ -787,7 +787,7 @@ class TestMilestone2PipelineIntegration(OpaqueBoxTestCase):
                     )
 
     def test_58_catalog_exact_match_precedence_over_suffix_stripping(self):
-        """BLOCKERS 1 & 2: Exact catalog matches take precedence over suffix cleaning heuristics; no arbitrary stripping."""
+        """BLOCKERS 1 & 2: Exact catalog matches take precedence; suffixes must be end-anchored and validated."""
         cases = [
             ("Project Management", "Project Management", CATALOG_EXACT_MATCH),
             ("Database Design", "Database Design", CATALOG_EXACT_MATCH),
@@ -795,10 +795,12 @@ class TestMilestone2PipelineIntegration(OpaqueBoxTestCase):
             ("Supply Chain Management", "Supply Chain Management", UNMATCHED_NOVEL),
             ("Senior Project Manager", "Project Manager", UNMATCHED_NOVEL),
             ("Python Developer", "Python", CATALOG_EXACT_MATCH),
+            ("Python Developer Tools", "Python Developer Tools", CATALOG_REGEX_MATCH),
             ("Data Analyst", "Data Analyst", UNMATCHED_NOVEL),
             ("Software Engineer", "Software Engineer", UNMATCHED_NOVEL),
             ("Docker technologies", "Docker", CATALOG_EXACT_MATCH),
             ("Excel skills", "Excel", CATALOG_EXACT_MATCH),
+            ("Excel Skills Assessment", "Excel Skills Assessment", CATALOG_REGEX_MATCH),
             ("5G Networks", "5G", UNMATCHED_NOVEL),
         ]
         for phrase, exp_skill, exp_status in cases:
@@ -815,7 +817,50 @@ class TestMilestone2PipelineIntegration(OpaqueBoxTestCase):
                 f"Match status mismatch for '{phrase}': got '{tokens[0].match_status}', expected '{exp_status}'",
             )
             # Ensure domain words like Management and Design are never corrupted into noise
-            self.assertNotIn(tokens[0].atomic_skill, ["Project", "Database", "Supply Chain"])
+            self.assertNotIn(tokens[0].atomic_skill, ["Project", "Database", "Supply Chain", "Python Tools", "Excel Assessment"])
+
+        # Parenthetical counterparts: ensure _handle_top_level_parentheses_or_container and _process_atomic_segment behave identically
+        paren_cases = [
+            ("Python Developer (Intermediate)", "Python", "Intermediate", CATALOG_EXACT_MATCH),
+            ("Python Developer Tools (Intermediate)", "Python Developer Tools", "Intermediate", CATALOG_REGEX_MATCH),
+            ("Excel skills (Advanced)", "Excel", "Advanced", CATALOG_EXACT_MATCH),
+            ("Excel Skills Assessment (Advanced)", "Excel Skills Assessment", "Advanced", CATALOG_REGEX_MATCH),
+        ]
+        for phrase, exp_skill, exp_level, exp_status in paren_cases:
+            tokens = self.pipeline.decompose_to_tokens(phrase)
+            self.assertEqual(len(tokens), 1, f"Expected 1 token for '{phrase}', got {len(tokens)}")
+            self.assertEqual(tokens[0].atomic_skill, exp_skill)
+            self.assertEqual(tokens[0].extracted_skill_level, exp_level)
+            self.assertEqual(tokens[0].match_status, exp_status)
+
+    def test_59_decompose_token_to_row_order_preservation_contract(self):
+        """Contract: decompose() rows strictly preserve the exact sequential ordering of decompose_to_tokens()."""
+        complex_inputs = [
+            "Python, SQL, Docker",
+            "Python & SQL / Kubernetes",
+            "Mid-Senior Python Developer, Excel Skills Assessment, Lead Generation",
+            "Project Management, Database Design, Python Developer (Intermediate)",
+            "Python, Python, Python",
+            "Docker technologies, Excel skills (Advanced), Python Developer Tools",
+        ]
+        for raw in complex_inputs:
+            tokens = self.pipeline.decompose_to_tokens(raw)
+            rows = self.pipeline.decompose(raw)
+
+            # Verify strict 1-to-1 sequential slice ordering
+            current_idx = 0
+            for token_idx, t in enumerate(tokens):
+                k = max(1, len(t.associations))
+                token_rows = rows[current_idx : current_idx + k]
+                self.assertEqual(len(token_rows), k, f"Row count mismatch for token '{t.atomic_skill}' in '{raw}'")
+                for r in token_rows:
+                    self.assertEqual(r["atomic_skill"], t.atomic_skill)
+                    self.assertEqual(r["skill_level"], t.skill_level)
+                    self.assertEqual(r["extracted_skill_level"], t.extracted_skill_level)
+                    self.assertEqual(r["match_status"], t.match_status)
+                current_idx += k
+
+            self.assertEqual(current_idx, len(rows), f"Remaining unmapped rows for '{raw}'")
 
 
 if __name__ == "__main__":
