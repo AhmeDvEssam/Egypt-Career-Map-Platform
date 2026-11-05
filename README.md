@@ -122,31 +122,37 @@ The AI Worker operates as an autonomous background pipeline responsible for pars
 
 ---
 
-## 🔬 Deterministic Linguistic Intelligence & Multi-Domain Skill Engine (Milestone 1)
+## 🔬 Deterministic Linguistic Intelligence & Multi-Domain Skill Engine (Milestones 1 & 2)
 
 The platform incorporates an in-memory, deterministic **Linguistic Intelligence Foundation** (`linguistic_intelligence/`) engineered to process messy, multi-token skill expressions extracted from Egyptian job postings while strictly preserving real-world labor-market cross-domain associations.
 
 ```mermaid
 flowchart TD
-    Raw["Raw Skill Expression<br/>(e.g., 'Senior PL/SQL & Python Developer')"] --> Prep["1. Pre-Processing & Token Sanitization<br/>(Unicode NFC, Whitespace, Punctuation)"]
-    Prep --> Shield["2. Proper Noun & Compound Shield<br/>(Protects 'PL/SQL', 'GitHub Advanced Security', 'Senior Living')"]
-    Shield --> Acronym["3. Bidirectional Acronym Resolver<br/>(386 Mappings, e.g., 'GTM' <-> 'Google Tag Manager')"]
-    Acronym --> Level["4. Two-Column Level & Seniority Governance<br/>(Extracted Level vs. Normalized Proficiency Level)"]
-    Level --> Match["5. Exact & Regex Multi-Domain Catalog Match<br/>(3,794 Rows, 2,756 Unique Standard Skills)"]
-    Match --> Assoc["6. Multi-Domain Association Expansion<br/>(Preserves all 1,319 associations across 281 multi-domain skills)"]
+    Raw["Raw Skill Expression<br/>(e.g., 'Senior PL/SQL & Python Developer (5+ yrs)')"] --> Prep["1. Pre-Processing & Token Sanitization<br/>(Unicode NFC, Whitespace, Punctuation)"]
+    Prep --> Paren["2. Parentheses Typology & Contextual Isolation (M2.1)<br/>(ACRONYM, VERSION, EXPERIENCE, DOMAIN, NOISE)"]
+    Paren --> Shield["3. Proper Noun & Compound Shield (M1/M2.2)<br/>(Protects 'PL/SQL', 'GitHub Advanced Security', 'Senior Living')"]
+    Shield --> Delim["4. Hierarchical Delimiter Splitter (M2.2 & M2.3)<br/>(Escaped Catalog Phrases, Preserved Raw Tokens & Separators)"]
+    Delim --> Acronym["5. Bidirectional Acronym Resolver<br/>(386 Mappings, e.g., 'GTM' <-> 'Google Tag Manager')"]
+    Acronym --> Level["6. Two-Column Level & Seniority Governance<br/>(Extracted Level vs. Normalized Proficiency Level)"]
+    Level --> Match["7. Exact & Regex Multi-Domain Catalog Match<br/>(3,794 Rows, 2,756 Unique Standard Skills)"]
+    Match --> Assoc["8. Multi-Domain Association Expansion<br/>(Preserves all 1,319 associations across 281 multi-domain skills)"]
     Assoc --> Out["Atomic Skill Components<br/>(14-Column Output Contract + Sidecar Metadata)"]
 ```
 
 ### Key Architectural Capabilities
 1. **Multi-Domain Skills Preservation:** No skill is constrained to an artificial single-category silo. A skill like `SQL` or `Python` exists simultaneously across its legitimate professional domains (`Data Science & Analytics`, `Software Engineering & IT`, `Human Resources`). All **3,794 catalog rows** and **1,319 multi-domain associations** are preserved with **0 discards** (100% row-level invariant verified).
 2. **Proper Noun & Compound Shielding:** Protects sensitive technical and business phrases (`PL/SQL`, `GitHub Advanced Security`, `Scrum Master`, `Master Data Management`, `Lead Generation`, `Senior Living`) against false token-swallowing and incorrect seniority/level stripping.
-3. **Deterministic Skill Type Taxonomy:** Enforces a closed, approved 5-category vocabulary (`Hard Skill`, `Soft Skill`, `Tool / Software`, `Language`, `Certification`), with 90 legacy prototype rows deterministically normalized to `Hard Skill` with complete audit logging.
-4. **Sub-Millisecond In-Memory Performance:**
+3. **Parentheses & Delimiter Disambiguation (M2.1 - M2.3):**
+   - Contextual classification of parenthetical segments into structural typologies (`ACRONYM`, `VERSION`, `QUALIFIER`, `EXPERIENCE`, `DOMAIN`, `NOISE`).
+   - Hierarchical splitting on delimiters (`,`, `;`, `/`, `&`, `+`, `and`, `or`) with catalog-aware protection ensuring phrases like `Research and Development` or `CI/CD` are never fragmented.
+   - Separation of `raw_token` (preserving verbatim whitespace boundaries) and `atomic_skill` (sanitized token).
+4. **Deterministic Skill Type Taxonomy:** Enforces a closed, approved 5-category vocabulary (`Hard Skill`, `Soft Skill`, `Tool / Software`, `Language`, `Certification`), with 90 legacy prototype rows deterministically normalized to `Hard Skill` with complete audit logging.
+5. **Sub-Millisecond In-Memory Performance:**
    - Exact Lookups: **0.63 &mu;s / lookup**
    - Regex Scans: **3.98 ms / search**
    - Determinism: **100% bit-for-bit identical outputs** across repeated runs in membership, ordering, and association counts.
-5. **Read-Only Database Safety:** Strict zero-mutation protocol against PostgreSQL (`localhost:5432/egypt_jobs_db`).
-6. **Comprehensive Verification & Evidence:** Fully audited across 102 passing automated tests with zero failures. Complete 15-section technical audit report available at [`.md/milestone_1_final_verification_evidence_package.md`](.md/milestone_1_final_verification_evidence_package.md).
+6. **Read-Only Database Safety:** Strict zero-mutation protocol against PostgreSQL (`localhost:5432/egypt_jobs_db`).
+7. **Comprehensive Verification & Evidence:** Fully verified across **420 passing automated unit & regression tests** with zero failures or skips across M1, M2.1, M2.2, and M2.3.
 
 ---
 
@@ -208,6 +214,68 @@ erDiagram
 * **`jobs`**: Tracks job metadata, normalized categories, seniority levels, salary bounds, and active/closed lifecycle status.
 * **`skills` & `job_skills`**: Normalized skills repository modeling co-occurrence relationships and skill demand trends.
 * **`candidates` & `applications`**: Candidate vector profiles and semantic match scores.
+
+---
+
+## 📂 Repository Module Inventory & Verification Status
+
+```
+Egypt-Career-Map-Platform/
+├── Frontend (Landing + Map + Auth)/
+│   └── frontend/
+│       ├── src/
+│       │   ├── app/
+│       │   │   ├── (auth)/             # NextAuth sign-in / registration routes
+│       │   │   ├── api/                # API routes (apply-live, chat, mirror, user, etc.)
+│       │   │   ├── intelligence/       # Cyberpunk 3D Egyptian Labor Map, Live Feed & Copilot
+│       │   │   ├── profile/            # Candidate resume vault & AI matching
+│       │   │   └── page.tsx            # Visual landing portal
+│       │   ├── components/             # Reusable UI widgets, map layers, modals
+│       │   └── lib/                    # Core libraries (Prisma singleton, Auth, Parsers)
+│       ├── package.json
+│       └── tsconfig.json
+│
+├── Backend API & Integration/
+│   ├── main.py                         # FastAPI REST application (:8000)
+│   ├── ai_worker.py                    # Distributed background skill extractor
+│   ├── apply_runner.py                 # Multi-apply Selenium automation runner
+│   ├── ai_dashboard.py                 # Streamlit live telemetry dashboard (:8501)
+│   ├── providers/                      # Multi-tier LLM router (Gemini, Groq, OpenRouter)
+│   └── requirements.txt
+│
+├── Egypt Jobs Scraper/
+│   ├── src/
+│   │   ├── LinkedInManager.ts          # LinkedIn scraper (smart/raw pagination)
+│   │   ├── IndeedManagerV5.ts          # Playwright stealth Indeed scraper
+│   │   ├── ForasnaManager.ts           # Egyptian local/vocational scraper
+│   │   ├── BaytManager.ts              # Bayt.com MENA listings scraper
+│   │   └── scrapers/JobStatusChecker.ts # Churn & active stock sentinel
+│   ├── app/lib/prisma.ts               # Database access layer for scraper pipelines
+│   └── lib/utils.ts
+│
+├── linguistic_intelligence/             # Deterministic Skill Parser (Milestones 1 & 2)
+│   ├── catalog.py                      # Multi-domain catalog (3,794 rows, zero discards)
+│   ├── proper_nouns.py                 # Compound phrase & proper noun shield
+│   ├── parentheses.py                  # Parentheses typology classifier (M2.1)
+│   ├── delimiters.py                   # Hierarchical delimiter splitter (M2.2 - M2.3)
+│   ├── pipeline.py                     # Deterministic end-to-end normalization pipeline
+│   └── config.py
+│
+├── tests/                              # Automated test suite (420 tests passing)
+│   ├── test_milestone1_comprehensive.py
+│   ├── test_milestone2_parentheses.py
+│   └── test_milestone2_delimiters.py
+│
+└── extension/                          # Chrome Manifest V3 Extension
+    ├── manifest.json
+    ├── content.js                      # DOM scraper & badge injector
+    ├── popup.js                        # Extension popup controller
+    └── popup.html
+```
+
+> [!NOTE]
+> **Git Tracking Synchronization Update:**
+> Previously, the root `.gitignore` contained a broad `lib/` pattern intended for Python virtual environments, which inadvertently prevented directories named `lib/` (including `frontend/src/lib/` and scraper helper libraries) from being tracked in git. This has been resolved with explicit scoped ignore rules (`/lib/` and `!**/src/lib/**`), ensuring all critical modules (`auth.ts`, `prisma.ts`, `deterministicResumeParser.ts`, `egyptGeoData.ts`, `vaultNormalizer.ts`) are 100% committed to GitHub.
 
 ---
 
