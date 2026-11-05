@@ -241,7 +241,7 @@ class LinguisticPipeline:
     # Job role titles that should ONLY be stripped when the remainder is an independently validated skill
     JOB_ROLE_TITLES: Set[str] = {
         "developer", "engineer", "specialist", "consultant", "analyst",
-        "administrator", "architect", "programmer",
+        "administrator", "architect", "programmer", "manager",
     }
 
     # Redundant list/domain postfixes that can be stripped when remainder is a non-generic technical term
@@ -253,9 +253,9 @@ class LinguisticPipeline:
     # Common role/suffix words checked when extracting pure skill
     ROLE_SUFFIXES: List[str] = [
         "developer", "engineer", "specialist", "consultant", "analyst",
-        "administrator", "architect", "programmer", "technologies", "technology",
-        "skills", "skill", "pipelines", "pipeline", "design", "programming",
-        "management", "certifications", "certification", "networks", "network",
+        "administrator", "architect", "programmer", "manager",
+        "technologies", "technology", "skills", "skill",
+        "certifications", "certification", "networks", "network",
     ]
 
     # Level modifier prefix patterns capturing verbatim prefix casing
@@ -617,6 +617,20 @@ class LinguisticPipeline:
                 return comp.upper() if len(comp) <= 6 else comp.title()
         return text
 
+    def _is_exact_catalog_phrase(self, text: str) -> bool:
+        """
+        Checks if text is an exact full-phrase standard skill in the reference catalog.
+        Distinguishes primary canonical skill names (e.g. 'Project Management', 'Database Design')
+        from alias role mappings (e.g. 'Python Developer' -> 'Python').
+        """
+        if not text or not isinstance(text, str):
+            return False
+        clean = text.strip().lower()
+        if clean in self.catalog.all_entries_by_name:
+            return True
+        m = self.catalog.get_exact_match(text)
+        return bool(m and m.standard_skill_name.strip().lower() == clean)
+
     def _create_whole_compound_token(
         self, raw_str: str, trimmed: str, is_oversized: bool
     ) -> IntegratedSkillToken:
@@ -855,21 +869,25 @@ class LinguisticPipeline:
                         base_clean = s_pat.sub("", base_clean).strip()
                         base_clean = re.sub(r"^[\s\-–—]+|[\s\-–—]+$", "", base_clean).strip()
 
-                for sfx in self.ROLE_SUFFIXES:
-                    sfx_pat = re.compile(rf"\b{sfx}\b", re.IGNORECASE)
-                    if sfx_pat.search(base_clean):
-                        candidate = sfx_pat.sub("", base_clean).strip()
-                        candidate = " ".join(candidate.split())
-                        if not candidate or candidate.lower() in self.GENERIC_WORDS:
-                            continue
-                        if sfx.lower() in self.JOB_ROLE_TITLES:
-                            # Job role titles require independent catalog validation
-                            if self.catalog.get_exact_match(candidate) or self.catalog.get_regex_match(candidate):
-                                base_clean = candidate
-                        else:
-                            # Redundant list/domain postfixes require non-generic technical term (len >= 2)
-                            if len(candidate) >= 2:
-                                base_clean = candidate
+                # Guard: If base_clean is already an exact catalog match, preserve it completely
+                if not self._is_exact_catalog_phrase(base_clean):
+                    for sfx in self.ROLE_SUFFIXES:
+                        sfx_pat = re.compile(rf"\b{sfx}\b", re.IGNORECASE)
+                        if sfx_pat.search(base_clean):
+                            candidate = sfx_pat.sub("", base_clean).strip()
+                            candidate = " ".join(candidate.split())
+                            if not candidate or candidate.lower() in self.GENERIC_WORDS:
+                                continue
+                            if sfx.lower() in self.JOB_ROLE_TITLES:
+                                # Job role titles require independent catalog validation
+                                if self.catalog.get_exact_match(candidate) or self.catalog.get_regex_match(candidate):
+                                    base_clean = candidate
+                                    break
+                            elif sfx.lower() in self.REDUNDANT_POSTFIXES:
+                                # Redundant list/domain postfixes require non-generic technical term (len >= 2)
+                                if len(candidate) >= 2:
+                                    base_clean = candidate
+                                    break
 
             base_clean = " ".join(base_clean.split())
 
@@ -1146,22 +1164,26 @@ class LinguisticPipeline:
                 # Clean dangling hyphens and excessive whitespace left by phrase removal
                 token_text = re.sub(r"^[\s\-–—]+|[\s\-–—]+$", "", token_text).strip()
 
-        # Strip redundant role suffixes (e.g. "Excel skills", "Docker technologies", "Python Developer")
-        for sfx in self.ROLE_SUFFIXES:
-            sfx_pat = re.compile(rf"\b{sfx}\b", re.IGNORECASE)
-            if sfx_pat.search(token_text):
-                candidate = sfx_pat.sub("", token_text).strip()
-                candidate = " ".join(candidate.split())
-                if not candidate or candidate.lower() in self.GENERIC_WORDS:
-                    continue
-                if sfx.lower() in self.JOB_ROLE_TITLES:
-                    # Job role titles require independent catalog validation
-                    if self.catalog.get_exact_match(candidate) or self.catalog.get_regex_match(candidate):
-                        token_text = candidate
-                else:
-                    # Redundant list/domain postfixes require non-generic technical term (len >= 2)
-                    if len(candidate) >= 2:
-                        token_text = candidate
+        # Guard: If token_text is an exact catalog match, preserve it completely
+        if not self._is_exact_catalog_phrase(token_text):
+            # Strip redundant role suffixes (e.g. "Excel skills", "Docker technologies", "Python Developer")
+            for sfx in self.ROLE_SUFFIXES:
+                sfx_pat = re.compile(rf"\b{sfx}\b", re.IGNORECASE)
+                if sfx_pat.search(token_text):
+                    candidate = sfx_pat.sub("", token_text).strip()
+                    candidate = " ".join(candidate.split())
+                    if not candidate or candidate.lower() in self.GENERIC_WORDS:
+                        continue
+                    if sfx.lower() in self.JOB_ROLE_TITLES:
+                        # Job role titles require independent catalog validation
+                        if self.catalog.get_exact_match(candidate) or self.catalog.get_regex_match(candidate):
+                            token_text = candidate
+                            break
+                    elif sfx.lower() in self.REDUNDANT_POSTFIXES:
+                        # Redundant list/domain postfixes require non-generic technical term (len >= 2)
+                        if len(candidate) >= 2:
+                            token_text = candidate
+                            break
 
         token_text = " ".join(token_text.split())
 

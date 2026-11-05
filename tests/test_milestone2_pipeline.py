@@ -743,6 +743,12 @@ class TestMilestone2PipelineIntegration(OpaqueBoxTestCase):
             "Development Tools (Git, Jira)",
             "Advanced Excel (Cost & Quantity Tracking)",
             "Lead Developer",
+            "Project Management",
+            "Database Design",
+            "Agile Project Management",
+            "Senior Project Manager",
+            "Supply Chain Management",
+            "Python, Python",
         ]
         for raw in test_inputs:
             tokens = self.pipeline.decompose_to_tokens(raw)
@@ -756,11 +762,22 @@ class TestMilestone2PipelineIntegration(OpaqueBoxTestCase):
                 f"Row count mismatch for '{raw}': got {len(rows)}, expected {expected_row_count}",
             )
 
-            # Association completeness invariant: for each token with catalog associations,
-            # all associations must appear in decomposed rows
+            # Sequential slice mapping invariant: token i corresponds to rows[start : start + K_i]
+            # This completely eliminates row ambiguity when atomic_skill names repeat in the same input.
+            current_idx = 0
             for t in tokens:
-                if t.associations and len(t.associations) > 1:
-                    token_rows = [r for r in rows if r["atomic_skill"] == t.atomic_skill]
+                k = max(1, len(t.associations))
+                token_rows = rows[current_idx : current_idx + k]
+                current_idx += k
+
+                self.assertEqual(len(token_rows), k, f"Row slice length mismatch for token '{t.atomic_skill}' in '{raw}'")
+                self.assertTrue(
+                    all(r["atomic_skill"] == t.atomic_skill for r in token_rows),
+                    f"Row slice atomic_skill mismatch for token '{t.atomic_skill}' in '{raw}'",
+                )
+
+                # Association completeness invariant: verified for EVERY token with associations (single or multiple)
+                if t.associations:
                     row_assocs = {(r["domain"], r["sub_category"], r["skill_type"]) for r in token_rows}
                     catalog_assocs = {(e.domain, e.sub_category, e.skill_type) for e in t.associations}
                     self.assertEqual(
@@ -768,6 +785,37 @@ class TestMilestone2PipelineIntegration(OpaqueBoxTestCase):
                         catalog_assocs,
                         f"Association set mismatch for token '{t.atomic_skill}' in '{raw}'",
                     )
+
+    def test_58_catalog_exact_match_precedence_over_suffix_stripping(self):
+        """BLOCKERS 1 & 2: Exact catalog matches take precedence over suffix cleaning heuristics; no arbitrary stripping."""
+        cases = [
+            ("Project Management", "Project Management", CATALOG_EXACT_MATCH),
+            ("Database Design", "Database Design", CATALOG_EXACT_MATCH),
+            ("Agile Project Management", "Agile Project Management", CATALOG_EXACT_MATCH),
+            ("Supply Chain Management", "Supply Chain Management", UNMATCHED_NOVEL),
+            ("Senior Project Manager", "Project Manager", UNMATCHED_NOVEL),
+            ("Python Developer", "Python", CATALOG_EXACT_MATCH),
+            ("Data Analyst", "Data Analyst", UNMATCHED_NOVEL),
+            ("Software Engineer", "Software Engineer", UNMATCHED_NOVEL),
+            ("Docker technologies", "Docker", CATALOG_EXACT_MATCH),
+            ("Excel skills", "Excel", CATALOG_EXACT_MATCH),
+            ("5G Networks", "5G", UNMATCHED_NOVEL),
+        ]
+        for phrase, exp_skill, exp_status in cases:
+            tokens = self.pipeline.decompose_to_tokens(phrase)
+            self.assertEqual(len(tokens), 1, f"Expected 1 token for '{phrase}', got {len(tokens)}")
+            self.assertEqual(
+                tokens[0].atomic_skill,
+                exp_skill,
+                f"Atomic skill mismatch for '{phrase}': got '{tokens[0].atomic_skill}', expected '{exp_skill}'",
+            )
+            self.assertEqual(
+                tokens[0].match_status,
+                exp_status,
+                f"Match status mismatch for '{phrase}': got '{tokens[0].match_status}', expected '{exp_status}'",
+            )
+            # Ensure domain words like Management and Design are never corrupted into noise
+            self.assertNotIn(tokens[0].atomic_skill, ["Project", "Database", "Supply Chain"])
 
 
 if __name__ == "__main__":
