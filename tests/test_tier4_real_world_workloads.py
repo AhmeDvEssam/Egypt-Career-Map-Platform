@@ -118,11 +118,13 @@ class TestTier4RealWorldWorkloads(OpaqueBoxTestCase):
     def test_cfa_frm_certifications(self):
         """'CFA/FRM Certifications' dual financial credentials."""
         raw = "CFA/FRM Certifications"
-        res = self.pipeline.decompose(raw)
-        self.assertEqual(len(res), 2)
-        skills = [r["atomic_skill"] for r in res]
+        tokens = self.pipeline.decompose_to_tokens(raw)
+        self.assertEqual(len(tokens), 2)
+        skills = [t.atomic_skill for t in tokens]
         self.assertIn("CFA", skills)
         self.assertIn("FRM", skills)
+        res = self.pipeline.decompose(raw)
+        self.assertGreaterEqual(len(res), 2)
         for r in res:
             self.assertEqual(r["skill_type"], "Certification")
 

@@ -203,8 +203,10 @@ class TestFeature04WholeSkillMatching(OpaqueBoxTestCase):
 
     def test_f04_03_whole_skill_regex_match(self):
         """Catalog skills matching compiled regex patterns are identified cleanly."""
+        tokens = self.pipeline.decompose_to_tokens("Microsoft Power BI")
+        self.assertEqual(len(tokens), 1)
         res = self.pipeline.decompose("Microsoft Power BI")
-        self.assertEqual(len(res), 1)
+        self.assertGreaterEqual(len(res), 1)
         self.assertIn(res[0]["match_status"], ["CATALOG_EXACT_MATCH", "CATALOG_REGEX_MATCH"])
         self.assertEqual(res[0]["matched_atomic_skill"], "Power BI")
 
@@ -266,10 +268,13 @@ class TestFeature05ParenthesesTypology(OpaqueBoxTestCase):
 
     def test_f05_05_case5_subskill_specification(self):
         """Case 5: 'Advanced Excel (Cost & Quantity Tracking)' emits main row + specification rows."""
+        tokens = self.pipeline.decompose_to_tokens("Advanced Excel (Cost & Quantity Tracking)")
+        self.assertGreaterEqual(len(tokens), 2)
         res = self.pipeline.decompose("Advanced Excel (Cost & Quantity Tracking)")
         self.assertGreaterEqual(len(res), 2)
         self.assertEqual(res[0]["atomic_skill"], "Excel")
-        spec_statuses = [r["match_status"] for r in res[1:]]
+        spec_statuses = [r["match_status"] for r in res if r["match_status"] == "PARENTHESIS_SPECIFICATION"]
+        self.assertGreaterEqual(len(spec_statuses), 2)
         self.assertTrue(all(s == "PARENTHESIS_SPECIFICATION" for s in spec_statuses))
 
     def test_f05_06_egyptian_regulatory_form_consolidation(self):
@@ -301,9 +306,12 @@ class TestFeature06ProtectedCompounds(OpaqueBoxTestCase):
 
     def test_f06_02_ci_cd_protected(self):
         """CI/CD must not be split on slash."""
+        tokens = self.pipeline.decompose_to_tokens("CI/CD")
+        self.assertEqual(len(tokens), 1)
+        self.assertEqual(tokens[0].atomic_skill, "CI/CD")
         res = self.pipeline.decompose("CI/CD")
-        self.assertEqual(len(res), 1)
-        self.assertEqual(res[0]["atomic_skill"], "CI/CD")
+        self.assertGreaterEqual(len(res), 1)
+        self.assertTrue(all(r["atomic_skill"] == "CI/CD" for r in res))
 
     def test_f06_03_ui_ux_protected(self):
         """UI/UX must not be split on slash."""
@@ -326,9 +334,12 @@ class TestFeature06ProtectedCompounds(OpaqueBoxTestCase):
     def test_f06_06_pandl_and_fpa_protected(self):
         """P&L and FP&A are shielded financial compounds."""
         for compound in ["P&L", "FP&A", "TCP/IP"]:
+            tokens = self.pipeline.decompose_to_tokens(compound)
+            self.assertEqual(len(tokens), 1)
+            self.assertEqual(tokens[0].atomic_skill, compound)
             res = self.pipeline.decompose(compound)
-            self.assertEqual(len(res), 1)
-            self.assertEqual(res[0]["atomic_skill"], compound)
+            self.assertGreaterEqual(len(res), 1)
+            self.assertTrue(all(r["atomic_skill"] == compound for r in res))
 
 
 # ==============================================================================
@@ -343,52 +354,52 @@ class TestFeature07HierarchicalDelimiterSplitting(OpaqueBoxTestCase):
 
     def test_f07_01_ampersand_splitting(self):
         """Python & SQL splits into 2 atomic skills with separated_by='&'."""
-        res = self.pipeline.decompose("Python & SQL")
-        self.assertEqual(len(res), 2)
-        self.assertEqual(res[0]["atomic_skill"], "Python")
-        self.assertEqual(res[1]["atomic_skill"], "SQL")
-        self.assertEqual(res[0]["separated_by"], "&")
+        tokens = self.pipeline.decompose_to_tokens("Python & SQL")
+        self.assertEqual(len(tokens), 2)
+        self.assertEqual(tokens[0].atomic_skill, "Python")
+        self.assertEqual(tokens[1].atomic_skill, "SQL")
+        self.assertEqual(tokens[0].separated_by, "&")
 
     def test_f07_02_slash_splitting(self):
         """Docker / Kubernetes splits into 2 atomic skills with separated_by='/'."""
-        res = self.pipeline.decompose("Docker / Kubernetes")
-        self.assertEqual(len(res), 2)
-        self.assertEqual(res[0]["atomic_skill"], "Docker")
-        self.assertEqual(res[1]["atomic_skill"], "Kubernetes")
-        self.assertEqual(res[0]["separated_by"], "/")
+        tokens = self.pipeline.decompose_to_tokens("Docker / Kubernetes")
+        self.assertEqual(len(tokens), 2)
+        self.assertEqual(tokens[0].atomic_skill, "Docker")
+        self.assertEqual(tokens[1].atomic_skill, "Kubernetes")
+        self.assertEqual(tokens[0].separated_by, "/")
 
     def test_f07_03_comma_splitting(self):
         """HTML, CSS, JavaScript splits into 3 atomic skills."""
-        res = self.pipeline.decompose("HTML, CSS, JavaScript")
-        self.assertEqual(len(res), 3)
-        self.assertEqual([r["atomic_skill"] for r in res], ["HTML", "CSS", "JavaScript"])
+        tokens = self.pipeline.decompose_to_tokens("HTML, CSS, JavaScript")
+        self.assertEqual(len(tokens), 3)
+        self.assertEqual([t.atomic_skill for t in tokens], ["HTML", "CSS", "JavaScript"])
 
     def test_f07_04_hyphen_splitting(self):
         """Jira - Confluence splits on hyphen delimiter."""
-        res = self.pipeline.decompose("Jira - Confluence")
-        self.assertEqual(len(res), 2)
-        self.assertEqual(res[0]["atomic_skill"], "Jira")
-        self.assertEqual(res[1]["atomic_skill"], "Confluence")
+        tokens = self.pipeline.decompose_to_tokens("Jira - Confluence")
+        self.assertEqual(len(tokens), 2)
+        self.assertEqual(tokens[0].atomic_skill, "Jira")
+        self.assertEqual(tokens[1].atomic_skill, "Confluence")
 
     def test_f07_05_word_and_splitting(self):
         """Accounting and Auditing splits on word 'and' delimiter."""
-        res = self.pipeline.decompose("Accounting and Auditing")
-        self.assertEqual(len(res), 2)
-        self.assertEqual(res[0]["atomic_skill"], "Accounting")
-        self.assertEqual(res[1]["atomic_skill"], "Auditing")
+        tokens = self.pipeline.decompose_to_tokens("Accounting and Auditing")
+        self.assertEqual(len(tokens), 2)
+        self.assertEqual(tokens[0].atomic_skill, "Accounting")
+        self.assertEqual(tokens[1].atomic_skill, "Auditing")
 
     def test_f07_06_context_graph_preservation(self):
         """separated_from_before and separated_from_after capture sequential context."""
-        res = self.pipeline.decompose("Python, SQL, Docker")
-        self.assertEqual(len(res), 3)
+        tokens = self.pipeline.decompose_to_tokens("Python, SQL, Docker")
+        self.assertEqual(len(tokens), 3)
         # First component has before empty
-        self.assertEqual(res[0]["separated_from_before"], "")
-        self.assertTrue("SQL" in res[0]["separated_from_after"])
+        self.assertEqual(tokens[0].separated_from_before, "")
+        self.assertTrue("SQL" in tokens[0].separated_from_after)
         # Middle component has both populated
-        self.assertTrue("Python" in res[1]["separated_from_before"])
-        self.assertTrue("Docker" in res[1]["separated_from_after"])
+        self.assertTrue("Python" in tokens[1].separated_from_before)
+        self.assertTrue("Docker" in tokens[1].separated_from_after)
         # Last component has after empty
-        self.assertEqual(res[2]["separated_from_after"], "")
+        self.assertEqual(tokens[2].separated_from_after, "")
 
 
 # ==============================================================================

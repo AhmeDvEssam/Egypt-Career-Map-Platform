@@ -223,8 +223,8 @@ class LinguisticPipeline:
     # Seniority keywords that belong to sidecar intra_string_seniority.
     # Ordered strictly by descending phrase length for deterministic, greedy matching.
     SENIORITY_KEYWORDS: Tuple[str, ...] = (
-        "mid-senior",
         "entry-level",
+        "mid-senior",
         "mid-level",
         "principal",
         "associate",
@@ -1182,7 +1182,7 @@ class LinguisticPipeline:
                 all_reg = self.catalog.get_all_regex_matches(token_text)
                 if all_reg:
                     entry = all_reg[0]
-                    canonical_name = entry.name
+                    canonical_name = token_text
                     domain = entry.domain
                     sub_category = entry.sub_category
                     skill_type = entry.skill_type
@@ -1275,7 +1275,7 @@ class LinguisticPipeline:
                 all_reg = self.catalog.get_all_regex_matches(atomic_skill)
                 if all_reg:
                     entry = all_reg[0]
-                    canonical_name = entry.name
+                    canonical_name = atomic_skill
                     domain = entry.domain
                     sub_cat = entry.sub_category
                     skill_type = entry.skill_type

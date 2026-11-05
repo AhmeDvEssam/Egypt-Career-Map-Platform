@@ -602,10 +602,10 @@ class TestMilestone2PipelineIntegration(OpaqueBoxTestCase):
     # ──────────────────────────────────────────────────────────────────────────
 
     def test_51_all_catalog_associations_are_preserved(self):
-        """BLOCKER 1: Multi-domain associations: SQL preserves all 8 catalog associations across domains and subcategories."""
+        """BLOCKER 1: Multi-domain associations: SQL preserves all 8 catalog associations across domains, subcategories, and skill types."""
         rows = self.pipeline.decompose("SQL")
-        associations = {(r["domain"], r["sub_category"]) for r in rows}
-        expected = {(e.domain, e.sub_category) for e in self.pipeline.catalog.get_all_exact_matches("SQL")}
+        associations = {(r["domain"], r["sub_category"], r["skill_type"]) for r in rows}
+        expected = {(e.domain, e.sub_category, e.skill_type) for e in self.pipeline.catalog.get_all_exact_matches("SQL")}
         self.assertEqual(associations, expected)
         self.assertEqual(len(rows), 8)
         self.assertTrue(all(r["atomic_skill"] == "SQL" for r in rows))
@@ -667,39 +667,62 @@ class TestMilestone2PipelineIntegration(OpaqueBoxTestCase):
         self.assertTrue(all(o == outputs[0] for o in outputs))
 
     def test_56_provenance_across_all_execution_paths(self):
-        """ProvenanceRecord covers Category Containers, Acronyms, Industry, Subskills, Clustered Delimiters & Malformed Parens."""
-        # 1. Category Container
-        tokens = self.pipeline.decompose_to_tokens("Development Tools (Git, Jira)")
-        self.assertEqual(len(tokens), 2)
-        self.assertTrue(all(t.provenance is not None for t in tokens))
-        self.assertEqual(tokens[0].provenance.raw_input, "Development Tools (Git, Jira)")
+        """ProvenanceRecord covers Category Containers, Acronyms, Industry, Subskills, Clustered Delimiters & Malformed Parens, asserting verbatim raw_token sources."""
+        # 1. Category Container: leaf tools preserve exact slice from input
+        raw1 = "Development Tools (Git, Jira)"
+        tokens1 = self.pipeline.decompose_to_tokens(raw1)
+        self.assertEqual(len(tokens1), 2)
+        for t in tokens1:
+            self.assertIsNotNone(t.provenance)
+            self.assertEqual(t.provenance.raw_input, raw1)
+            self.assertIn(t.provenance.raw_token, raw1)
+        self.assertEqual(tokens1[0].provenance.raw_token, "Git")
+        self.assertEqual(tokens1[1].provenance.raw_token, " Jira")
+        self.assertEqual(tokens1[0].atomic_skill, "Git")
+        self.assertEqual(tokens1[1].atomic_skill, "Jira")
 
-        # 2. Acronym Expansion
-        tokens = self.pipeline.decompose_to_tokens("Amazon Web Services (AWS)")
-        self.assertEqual(len(tokens), 1)
-        self.assertEqual(tokens[0].provenance.raw_input, "Amazon Web Services (AWS)")
+        # 2. Acronym Expansion: preserves raw input and cleaned skill
+        raw2 = "Amazon Web Services (AWS)"
+        tokens2 = self.pipeline.decompose_to_tokens(raw2)
+        self.assertEqual(len(tokens2), 1)
+        self.assertEqual(tokens2[0].provenance.raw_input, raw2)
+        self.assertEqual(tokens2[0].provenance.raw_token, raw2)
+        self.assertEqual(tokens2[0].provenance.cleaned_skill, "Amazon Web Services")
 
-        # 3. Industry Context
-        tokens = self.pipeline.decompose_to_tokens("Sales (Transportation & Logistics)")
-        self.assertEqual(len(tokens), 1)
-        self.assertEqual(tokens[0].provenance.raw_input, "Sales (Transportation & Logistics)")
+        # 3. Industry Context: sector extracted to sidecar, core skill preserved
+        raw3 = "Sales (Transportation & Logistics)"
+        tokens3 = self.pipeline.decompose_to_tokens(raw3)
+        self.assertEqual(len(tokens3), 1)
+        self.assertEqual(tokens3[0].provenance.raw_input, raw3)
+        self.assertEqual(tokens3[0].provenance.raw_token, raw3)
+        self.assertEqual(tokens3[0].provenance.cleaned_skill, "Sales")
 
-        # 4. Sub-skill Specification
-        tokens = self.pipeline.decompose_to_tokens("Advanced Excel (Cost & Quantity Tracking)")
-        self.assertGreaterEqual(len(tokens), 2)
-        self.assertTrue(all(t.provenance is not None for t in tokens))
+        # 4. Sub-skill Specification: main skill and subskills preserve verbatim provenance
+        raw4 = "Advanced Excel (Cost & Quantity Tracking)"
+        tokens4 = self.pipeline.decompose_to_tokens(raw4)
+        self.assertGreaterEqual(len(tokens4), 2)
+        for t in tokens4:
+            self.assertIsNotNone(t.provenance)
+            self.assertEqual(t.provenance.raw_input, raw4)
+            self.assertIn(t.provenance.raw_token.strip(), raw4)
 
-        # 5. Clustered Delimiters
-        tokens = self.pipeline.decompose_to_tokens(" Python /// SQL &&& Docker ")
-        self.assertEqual(len(tokens), 3)
-        self.assertEqual(tokens[0].provenance.raw_token, " Python ")
-        self.assertEqual(tokens[1].provenance.raw_token, " SQL ")
-        self.assertEqual(tokens[2].provenance.raw_token, " Docker ")
+        # 5. Clustered Delimiters: exact whitespace and original delimiters untouched
+        raw5 = " Python /// SQL &&& Docker "
+        tokens5 = self.pipeline.decompose_to_tokens(raw5)
+        self.assertEqual(len(tokens5), 3)
+        self.assertEqual(tokens5[0].provenance.raw_token, " Python ")
+        self.assertEqual(tokens5[1].provenance.raw_token, " SQL ")
+        self.assertEqual(tokens5[2].provenance.raw_token, " Docker ")
+        for t in tokens5:
+            self.assertIn(t.provenance.raw_token, raw5)
 
-        # 6. Malformed Parentheses
-        tokens = self.pipeline.decompose_to_tokens("Python (Advanced")
-        self.assertEqual(len(tokens), 1)
-        self.assertTrue(tokens[0].is_malformed)
+        # 6. Malformed Parentheses: captures intact raw string and marks malformed flag
+        raw6 = "Python (Advanced"
+        tokens6 = self.pipeline.decompose_to_tokens(raw6)
+        self.assertEqual(len(tokens6), 1)
+        self.assertTrue(tokens6[0].is_malformed)
+        self.assertEqual(tokens6[0].provenance.raw_token, raw6)
+        self.assertEqual(tokens6[0].provenance.raw_input, raw6)
 
 
 if __name__ == "__main__":

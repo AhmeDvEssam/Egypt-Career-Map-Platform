@@ -39,11 +39,11 @@ class TestTier3PairwiseCombinations(OpaqueBoxTestCase):
     def test_ci_cd_pipelines_intermediate(self):
         """'CI/CD Pipelines (Intermediate)' protects slash compound and extracts intermediate level."""
         raw = "CI/CD Pipelines (Intermediate)"
-        res = self.pipeline.decompose(raw)
-        self.assertEqual(len(res), 1)
-        row = res[0]
-        self.assertEqual(row["atomic_skill"], "CI/CD")
-        self.assertEqual(row["skill_level"], "Intermediate")
+        tokens = self.pipeline.decompose_to_tokens(raw)
+        self.assertEqual(len(tokens), 1)
+        row = tokens[0]
+        self.assertEqual(row.atomic_skill, "CI/CD")
+        self.assertEqual(row.skill_level, "Intermediate")
 
     def test_ui_ux_design_expert(self):
         """'UI/UX Design (Expert)' protects compound and collapses expert to advanced."""
@@ -114,10 +114,10 @@ class TestTier3PairwiseCombinations(OpaqueBoxTestCase):
     def test_lead_time_reduction_and_lean_six_sigma(self):
         """'Lead Time Reduction / Lean Six Sigma' shields cycle time noun and splits slash."""
         raw = "Lead Time Reduction / Lean Six Sigma"
-        res = self.pipeline.decompose(raw)
-        self.assertEqual(len(res), 2)
-        self.assertEqual(res[0]["atomic_skill"], "Lead Time Reduction")
-        self.assertEqual(res[1]["atomic_skill"], "Lean Six Sigma")
+        tokens = self.pipeline.decompose_to_tokens(raw)
+        self.assertEqual(len(tokens), 2)
+        self.assertEqual(tokens[0].atomic_skill, "Lead Time Reduction")
+        self.assertEqual(tokens[1].atomic_skill, "Lean Six Sigma")
 
     def test_senior_care_and_nursing(self):
         """'Senior Care, Nursing & Patient Support' shields Senior Care while splitting comma and '&'."""
@@ -130,10 +130,10 @@ class TestTier3PairwiseCombinations(OpaqueBoxTestCase):
     def test_github_advanced_security_and_devsecops(self):
         """'GitHub Advanced Security & DevSecOps' shields product name while splitting '&'."""
         raw = "GitHub Advanced Security & DevSecOps"
-        res = self.pipeline.decompose(raw)
-        self.assertEqual(len(res), 2)
-        self.assertEqual(res[0]["atomic_skill"], "GitHub Advanced Security")
-        self.assertEqual(res[0]["skill_level"], "Not Specified")
+        tokens = self.pipeline.decompose_to_tokens(raw)
+        self.assertEqual(len(tokens), 2)
+        self.assertEqual(tokens[0].atomic_skill, "GitHub Advanced Security")
+        self.assertEqual(tokens[0].skill_level, "Not Specified")
 
     # --------------------------------------------------------------------------
     # 4. Multiple Parentheses Clauses in a Single String
@@ -141,19 +141,19 @@ class TestTier3PairwiseCombinations(OpaqueBoxTestCase):
     def test_dual_parentheses_levels(self):
         """'Python (Advanced) & Docker (Intermediate)' decomposes both with respective levels."""
         raw = "Python (Advanced) & Docker (Intermediate)"
-        res = self.pipeline.decompose(raw)
-        self.assertEqual(len(res), 2)
-        self.assertEqual(res[0]["atomic_skill"], "Python")
-        self.assertEqual(res[0]["skill_level"], "Advanced")
-        self.assertEqual(res[1]["atomic_skill"], "Docker")
-        self.assertEqual(res[1]["skill_level"], "Intermediate")
+        tokens = self.pipeline.decompose_to_tokens(raw)
+        self.assertEqual(len(tokens), 2)
+        self.assertEqual(tokens[0].atomic_skill, "Python")
+        self.assertEqual(tokens[0].skill_level, "Advanced")
+        self.assertEqual(tokens[1].atomic_skill, "Docker")
+        self.assertEqual(tokens[1].skill_level, "Intermediate")
 
     def test_dual_parentheses_acronyms(self):
         """'AWS (Amazon Web Services) & GCP (Google Cloud Platform)' resolves both pairs."""
         raw = "AWS (Amazon Web Services) & GCP (Google Cloud Platform)"
-        res = self.pipeline.decompose(raw)
-        self.assertEqual(len(res), 2)
-        skills = [r["atomic_skill"] for r in res]
+        tokens = self.pipeline.decompose_to_tokens(raw)
+        self.assertEqual(len(tokens), 2)
+        skills = [t.atomic_skill for t in tokens]
         self.assertTrue(any("AWS" in s or "Amazon Web Services" in s for s in skills))
         self.assertTrue(any("GCP" in s or "Google Cloud Platform" in s for s in skills))
 
@@ -171,18 +171,18 @@ class TestTier3PairwiseCombinations(OpaqueBoxTestCase):
     def test_level_prefix_and_redundant_suffix(self):
         """'Advanced Python programming skills' strips both level prefix and suffix 'skills'."""
         raw = "Advanced Python programming skills"
-        res = self.pipeline.decompose(raw)
-        self.assertEqual(len(res), 1)
-        self.assertIn("Python", res[0]["atomic_skill"])
-        self.assertEqual(res[0]["skill_level"], "Advanced")
+        tokens = self.pipeline.decompose_to_tokens(raw)
+        self.assertEqual(len(tokens), 1)
+        self.assertIn("Python", tokens[0].atomic_skill)
+        self.assertEqual(tokens[0].skill_level, "Advanced")
 
     def test_working_knowledge_of_docker_technologies(self):
         """'Working knowledge of Docker technologies' cleans both ends."""
         raw = "Working knowledge of Docker technologies"
-        res = self.pipeline.decompose(raw)
-        self.assertEqual(len(res), 1)
-        self.assertEqual(res[0]["atomic_skill"], "Docker")
-        self.assertEqual(res[0]["skill_level"], "Intermediate")
+        tokens = self.pipeline.decompose_to_tokens(raw)
+        self.assertEqual(len(tokens), 1)
+        self.assertEqual(tokens[0].atomic_skill, "Docker")
+        self.assertEqual(tokens[0].skill_level, "Intermediate")
 
     # --------------------------------------------------------------------------
     # 6. Ambiguous Modifiers across Multiple Skills
@@ -190,15 +190,15 @@ class TestTier3PairwiseCombinations(OpaqueBoxTestCase):
     def test_strong_python_and_solid_git(self):
         """'Strong Python and Solid Git' maps both to Not Specified while preserving verbatim."""
         raw = "Strong Python and Solid Git"
-        res = self.pipeline.decompose(raw)
-        self.assertEqual(len(res), 2)
-        self.assertEqual(res[0]["atomic_skill"], "Python")
-        self.assertEqual(res[0]["extracted_skill_level"], "Strong")
-        self.assertEqual(res[0]["skill_level"], "Not Specified")
+        tokens = self.pipeline.decompose_to_tokens(raw)
+        self.assertEqual(len(tokens), 2)
+        self.assertEqual(tokens[0].atomic_skill, "Python")
+        self.assertEqual(tokens[0].extracted_skill_level, "Strong")
+        self.assertEqual(tokens[0].skill_level, "Not Specified")
 
-        self.assertEqual(res[1]["atomic_skill"], "Git")
-        self.assertEqual(res[1]["extracted_skill_level"], "Solid")
-        self.assertEqual(res[1]["skill_level"], "Not Specified")
+        self.assertEqual(tokens[1].atomic_skill, "Git")
+        self.assertEqual(tokens[1].extracted_skill_level, "Solid")
+        self.assertEqual(tokens[1].skill_level, "Not Specified")
 
     # --------------------------------------------------------------------------
     # 7. Certifications with Examination Track and Delimiters
@@ -206,14 +206,14 @@ class TestTier3PairwiseCombinations(OpaqueBoxTestCase):
     def test_istqb_advanced_and_pmp_certified(self):
         """'ISTQB Advanced Level & PMP Certified' handles track on one and award on other."""
         raw = "ISTQB Advanced Level & PMP Certified"
-        res = self.pipeline.decompose(raw)
-        self.assertEqual(len(res), 2)
-        self.assertEqual(res[0]["atomic_skill"], "ISTQB")
-        self.assertEqual(res[0]["extracted_skill_level"], "Advanced")
-        self.assertEqual(res[0]["skill_level"], "Not Specified")
+        tokens = self.pipeline.decompose_to_tokens(raw)
+        self.assertEqual(len(tokens), 2)
+        self.assertEqual(tokens[0].atomic_skill, "ISTQB")
+        self.assertEqual(tokens[0].extracted_skill_level, "Advanced")
+        self.assertEqual(tokens[0].skill_level, "Not Specified")
 
-        self.assertEqual(res[1]["atomic_skill"], "PMP")
-        self.assertEqual(res[1]["skill_level"], "Active / Certified")
+        self.assertEqual(tokens[1].atomic_skill, "PMP")
+        self.assertEqual(tokens[1].skill_level, "Active / Certified")
 
     # --------------------------------------------------------------------------
     # 8. Language CEFR + Free-form Language Interactions
@@ -221,14 +221,14 @@ class TestTier3PairwiseCombinations(OpaqueBoxTestCase):
     def test_english_b2_and_fluent_arabic(self):
         """'English (B2) and Fluent Arabic' maps CEFR code on one and holds freeform on other."""
         raw = "English (B2) and Fluent Arabic"
-        res = self.pipeline.decompose(raw)
-        self.assertEqual(len(res), 2)
-        self.assertEqual(res[0]["atomic_skill"], "English")
-        self.assertEqual(res[0]["skill_level"], "B2 (Upper Intermediate)")
+        tokens = self.pipeline.decompose_to_tokens(raw)
+        self.assertEqual(len(tokens), 2)
+        self.assertEqual(tokens[0].atomic_skill, "English")
+        self.assertEqual(tokens[0].skill_level, "B2 (Upper Intermediate)")
 
-        self.assertEqual(res[1]["atomic_skill"], "Arabic")
-        self.assertEqual(res[1]["extracted_skill_level"], "Fluent")
-        self.assertEqual(res[1]["skill_level"], "Not Specified")
+        self.assertEqual(tokens[1].atomic_skill, "Arabic")
+        self.assertEqual(tokens[1].extracted_skill_level, "Fluent")
+        self.assertEqual(tokens[1].skill_level, "Not Specified")
 
     # --------------------------------------------------------------------------
     # 9. Compound Slash Mixed with Consecutive Slashes
@@ -236,9 +236,9 @@ class TestTier3PairwiseCombinations(OpaqueBoxTestCase):
     def test_c_cpp_slash_python_slash_java(self):
         """'C/C++ / Python / Java' splits regular slashes while preserving C/C++ compound."""
         raw = "C/C++ / Python / Java"
-        res = self.pipeline.decompose(raw)
-        self.assertEqual(len(res), 3)
-        self.assertEqual([r["atomic_skill"] for r in res], ["C/C++", "Python", "Java"])
+        tokens = self.pipeline.decompose_to_tokens(raw)
+        self.assertEqual(len(tokens), 3)
+        self.assertEqual([t.atomic_skill for t in tokens], ["C/C++", "Python", "Java"])
 
     def test_etl_elt_slash_data_warehousing(self):
         """'ETL/ELT / Data Warehousing' preserves ETL/ELT compound and splits regular slash."""
