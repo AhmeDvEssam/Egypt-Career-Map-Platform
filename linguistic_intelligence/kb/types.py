@@ -24,13 +24,14 @@ from __future__ import annotations
 
 from collections.abc import Mapping, Sequence, Set
 from dataclasses import dataclass, field
+from datetime import datetime, timezone
 from enum import Enum
 from types import MappingProxyType
 from typing import Any, Dict, List, Optional, Tuple, Union
 
 
 # ==============================================================================
-# 0. Deep Immutability Helper
+# 0. Immutability & Temporal Helpers
 # ==============================================================================
 
 
@@ -38,9 +39,11 @@ def freeze_value(val: Any) -> Any:
     """Recursively freeze mappings into MappingProxyType, lists/tuples into tuples,
     and sets into frozenset.
     
-    Guarantees strict deep immutability for metadata, features, and nested configuration.
-    Permits only safe primitives, Enums, mappings, tuples, and sets. Any arbitrary mutable
-    object is rejected with TypeError.
+    Guarantees strict deep immutability for metadata, features, and nested configuration:
+      - Keys of mappings MUST be immutable string identifiers (isinstance(k, str)).
+      - Permits only safe primitives (str, bytes, int, float, bool, None), Enums, mappings,
+        sequences, and sets.
+      - Any arbitrary mutable object or unsupported key type is rejected with TypeError.
     """
     if val is None:
         return None
@@ -49,7 +52,15 @@ def freeze_value(val: Any) -> Any:
     if isinstance(val, Enum):
         return val
     if isinstance(val, Mapping):
-        return MappingProxyType({k: freeze_value(v) for k, v in val.items()})
+        frozen_dict = {}
+        for k, v in val.items():
+            if not isinstance(k, str):
+                raise TypeError(
+                    f"Mapping keys must be strings, got {type(k).__name__} ({k!r}). "
+                    f"Metadata keys must be immutable string identifiers."
+                )
+            frozen_dict[k] = freeze_value(v)
+        return MappingProxyType(frozen_dict)
     if isinstance(val, (list, tuple)):
         return tuple(freeze_value(v) for v in val)
     if isinstance(val, (set, frozenset)):
@@ -58,6 +69,28 @@ def freeze_value(val: Any) -> Any:
         f"Unsupported metadata value type: {type(val).__name__} ({val!r}). "
         f"Only primitives (str, int, float, bool, None), Enums, mappings, sequences, and sets are permitted."
     )
+
+
+def parse_iso_datetime(value: str) -> datetime:
+    """Parse an ISO 8601 string and normalize to a UTC datetime instance.
+    
+    Supports:
+      - Full ISO 8601 timestamps with timezone offsets (e.g. '2026-01-01T10:00:00+03:00', '2026-01-01T08:00:00Z')
+      - Date-only strings (e.g. '2026-01-01'), which are treated as midnight UTC.
+    
+    Raises:
+      ValueError: If value is not a valid ISO 8601 formatted date/timestamp.
+    """
+    if not isinstance(value, str) or not value.strip():
+        raise ValueError(f"Datetime value must be a non-empty string, got {value!r}")
+    try:
+        dt = datetime.fromisoformat(value.strip())
+    except Exception as e:
+        raise ValueError(f"Invalid ISO 8601 datetime format: {value!r}") from e
+
+    if dt.tzinfo is None:
+        return dt.replace(tzinfo=timezone.utc)
+    return dt.astimezone(timezone.utc)
 
 
 # ==============================================================================
@@ -358,12 +391,31 @@ class FrameOccurrence:
     Strictly separates the canonical Frame Definition (RequirementFrame)
     from its empirical textual realization and parsed complement text.
     
+    SPAN ANCHORING & OFFSET SPECIFICATION:
+      - start_char and end_char demarcate the exact character span of the GOVERNING FRAME
+        TRIGGER EXPRESSION (the linguistic head + preposition pattern, e.g. 'experience in',
+        'proficient with', 'خبرة في') located within source_text:
+            source_text[start_char:end_char] == verbatim_trigger_expression
+      - extracted_complement_text stores the extracted syntactic argument governed by this
+        frame (e.g. 'Python, SQL, and Docker' or 'تحليل البيانات').
+      - If downstream parsers capture the exact span coordinates of the extracted complement
+        or the overarching full span (trigger + complement), these SHOULD be stored in metadata:
+          e.g. metadata['complement_start_char'], metadata['complement_end_char'],
+          or metadata['full_span_start_char'], metadata['full_span_end_char'].
+    
+    INDEXING STANDARD (UNICODE CODE-POINTS):
+      All character offsets (start_char, end_char, and any offset metadata) MUST be 0-based
+      Python Unicode code-point indices (indexing native Python str characters).
+      - NOT UTF-8 byte offsets (e.g., Arabic characters occupy 2 bytes per code point).
+      - NOT UTF-16 code units (e.g., JavaScript string indices).
+      This ensures 100% deterministic, boundary-safe slicing across multilingual English,
+      Arabic, and mixed alphanumeric text:
+        0 <= start_char <= end_char <= len(source_text)
+    
     SOURCE TEXT SCOPE:
       source_text represents the text window in which the frame was recognized.
       This can be the full document section (e.g. REQUIREMENTS or SKILLS) or the immediate
-      enclosing sentence. In either case, start_char and end_char MUST index strictly
-      within source_text:
-        0 <= start_char <= end_char <= len(source_text)
+      enclosing sentence.
     """
     occurrence_id: str
     frame_id: str
@@ -447,7 +499,8 @@ class KnowledgeEvidence:
     
     SCOPE REQUIREMENTS:
       - CORPUS_SNAPSHOT requires snapshot_id.
-      - TIME_WINDOW requires time_window_start and time_window_end (start <= end).
+      - TIME_WINDOW requires time_window_start and time_window_end formatted as valid ISO 8601
+        strings, with chronological start <= end after UTC conversion.
       - SOURCE_PARTITION requires partition_id.
     """
     evidence_id: str
@@ -472,6 +525,13 @@ class KnowledgeEvidence:
             raise ValueError("KnowledgeEvidence 'target_id' cannot be empty.")
         if not self.source_identifier or not self.source_identifier.strip():
             raise ValueError("KnowledgeEvidence 'source_identifier' cannot be empty.")
+        if not self.collected_at or not self.collected_at.strip():
+            raise ValueError("KnowledgeEvidence 'collected_at' cannot be empty.")
+        try:
+            parse_iso_datetime(self.collected_at)
+        except ValueError as e:
+            raise ValueError(f"KnowledgeEvidence 'collected_at' must be a valid ISO 8601 timestamp: {e}") from e
+
         if self.raw_occurrences_count < 0:
             raise ValueError(f"raw_occurrences_count cannot be negative ({self.raw_occurrences_count}).")
         if self.distinct_sections_count < 0:
@@ -498,10 +558,15 @@ class KnowledgeEvidence:
                 raise ValueError("CountingScope.TIME_WINDOW requires a non-empty 'time_window_start'.")
             if not self.time_window_end or not self.time_window_end.strip():
                 raise ValueError("CountingScope.TIME_WINDOW requires a non-empty 'time_window_end'.")
-            if self.time_window_start > self.time_window_end:
+            try:
+                start_dt = parse_iso_datetime(self.time_window_start)
+                end_dt = parse_iso_datetime(self.time_window_end)
+            except ValueError as e:
+                raise ValueError(f"Invalid ISO 8601 timestamp in TIME_WINDOW: {e}") from e
+            if start_dt > end_dt:
                 raise ValueError(
-                    f"time_window_start ('{self.time_window_start}') cannot be later than "
-                    f"time_window_end ('{self.time_window_end}')."
+                    f"time_window_start ('{self.time_window_start}' -> {start_dt.isoformat()}) "
+                    f"cannot be chronologically later than time_window_end ('{self.time_window_end}' -> {end_dt.isoformat()})."
                 )
         elif self.counting_scope == CountingScope.SOURCE_PARTITION:
             if not self.partition_id or not self.partition_id.strip():

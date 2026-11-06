@@ -998,26 +998,54 @@ class TestMilestone3RemediationsAndDeepImmutability(unittest.TestCase):
             SkillLevelEntry(raw_level="", governed_level="Advanced")
 
     def test_30_frame_occurrence_validation_and_boundary_checks(self):
-        """FrameOccurrence validates character offsets within source_text length."""
+        """FrameOccurrence validates character offsets within source_text length using Unicode code-points."""
+        # 1. English Frame Occurrence with exact trigger span anchoring
         raw_sentence = "Candidates must possess strong experience in Python and SQL database architecture."
+        trigger_text = "experience in"
+        start_char = raw_sentence.find(trigger_text)
+        end_char = start_char + len(trigger_text)
+
         occ = FrameOccurrence(
             occurrence_id="occ_001",
             frame_id="frame_experience_in",
             source_text=raw_sentence,
-            start_char=24,
-            end_char=37,
+            start_char=start_char,
+            end_char=end_char,
             extracted_complement_text="Python and SQL database architecture",
             complement_type=FrameComplement.NOUN_PHRASE,
             job_id="job_12345",
             section_id="sec_req_01",
             confidence=0.98,
-            metadata={"engine": "spaCy_parser"},
+            metadata={"engine": "rule_based_parser"},
         )
         validate_frame_occurrence(occ)
+        # Slicing source_text with start_char:end_char extracts the exact trigger phrase
+        self.assertEqual(occ.source_text[occ.start_char:occ.end_char], "experience in")
         self.assertEqual(occ.extracted_complement_text, "Python and SQL database architecture")
         self.assertEqual(occ.complement_type, FrameComplement.NOUN_PHRASE)
 
-        # end_char < start_char rejection
+        # 2. Multilingual Arabic Frame Occurrence with Python Unicode code-point indexing
+        ar_sentence = "يجب أن يمتلك خبرة في تحليل البيانات وإدارة المشاريع"
+        ar_trigger = "خبرة في"
+        ar_start = ar_sentence.find(ar_trigger)
+        ar_end = ar_start + len(ar_trigger)
+
+        occ_ar = FrameOccurrence(
+            occurrence_id="occ_ar_001",
+            frame_id="frame_khobra_fi",
+            source_text=ar_sentence,
+            start_char=ar_start,
+            end_char=ar_end,
+            extracted_complement_text="تحليل البيانات وإدارة المشاريع",
+            complement_type=FrameComplement.NOUN_PHRASE,
+            job_id="job_67890",
+        )
+        validate_frame_occurrence(occ_ar)
+        self.assertEqual(occ_ar.source_text[occ_ar.start_char:occ_ar.end_char], "خبرة في")
+        # Python Unicode code-point length is 7 characters (not 13 UTF-8 bytes)
+        self.assertEqual(occ_ar.end_char - occ_ar.start_char, 7)
+
+        # 3. end_char < start_char rejection
         with self.assertRaises(ValueError):
             FrameOccurrence(
                 occurrence_id="occ_err1",
@@ -1029,7 +1057,7 @@ class TestMilestone3RemediationsAndDeepImmutability(unittest.TestCase):
                 complement_type=FrameComplement.NOUN_PHRASE,
             )
 
-        # end_char > len(source_text) rejection
+        # 4. end_char > len(source_text) rejection
         with self.assertRaises(ValueError):
             FrameOccurrence(
                 occurrence_id="occ_err2",
@@ -1041,7 +1069,7 @@ class TestMilestone3RemediationsAndDeepImmutability(unittest.TestCase):
                 complement_type=FrameComplement.NOUN_PHRASE,
             )
 
-        # Empty complement text rejection
+        # 5. Empty complement text rejection
         with self.assertRaises(ValueError):
             FrameOccurrence(
                 occurrence_id="occ_err3",
@@ -1054,7 +1082,8 @@ class TestMilestone3RemediationsAndDeepImmutability(unittest.TestCase):
             )
 
     def test_31_evidence_scope_and_temporal_validation(self):
-        """Evidence validates CountingScope and temporal window consistency."""
+        """Evidence validates CountingScope and true chronological ISO 8601 temporal window consistency."""
+        # 1. Valid date-only time window
         ev = KnowledgeEvidence(
             evidence_id="ev_scoped",
             target_id="concept_sap",
@@ -1070,7 +1099,73 @@ class TestMilestone3RemediationsAndDeepImmutability(unittest.TestCase):
         validate_evidence(ev)
         self.assertEqual(ev.counting_scope, CountingScope.TIME_WINDOW)
 
-        # Missing snapshot_id for CORPUS_SNAPSHOT
+        # 2. Chronological timezone normalization:
+        # start: 10:00:00+03:00 (07:00:00 UTC)
+        # end:   08:00:00Z       (08:00:00 UTC)
+        # In string comparison "10" > "08" would falsely fail, but chronologically start is before end!
+        ev_tz = KnowledgeEvidence(
+            evidence_id="ev_tz",
+            target_id="concept_python",
+            source_identifier="egypt_jobs_db",
+            raw_occurrences_count=10,
+            distinct_sections_count=5,
+            distinct_jobs_count=5,
+            collected_at="2026-11-06T00:00:00Z",
+            counting_scope=CountingScope.TIME_WINDOW,
+            time_window_start="2026-01-01T10:00:00+03:00",
+            time_window_end="2026-01-01T08:00:00Z",
+        )
+        validate_evidence(ev_tz)
+        self.assertEqual(ev_tz.time_window_start, "2026-01-01T10:00:00+03:00")
+
+        # 3. Inverted chronological bounds across timezones:
+        # start: 12:00:00+02:00 (10:00:00 UTC)
+        # end:   09:00:00Z       (09:00:00 UTC)
+        # Chronologically start > end -> must raise ValueError / ValidationError
+        with self.assertRaises(ValueError):
+            KnowledgeEvidence(
+                evidence_id="ev_time_err",
+                target_id="concept_sap",
+                source_identifier="egypt_jobs_db",
+                raw_occurrences_count=10,
+                distinct_sections_count=5,
+                distinct_jobs_count=5,
+                collected_at="2026-11-06T00:00:00Z",
+                counting_scope=CountingScope.TIME_WINDOW,
+                time_window_start="2026-01-01T12:00:00+02:00",
+                time_window_end="2026-01-01T09:00:00Z",
+            )
+
+        # 4. Malformed date string rejection
+        with self.assertRaises(ValueError):
+            KnowledgeEvidence(
+                evidence_id="ev_bad_date",
+                target_id="concept_sap",
+                source_identifier="egypt_jobs_db",
+                raw_occurrences_count=10,
+                distinct_sections_count=5,
+                distinct_jobs_count=5,
+                collected_at="2026-11-06T00:00:00Z",
+                counting_scope=CountingScope.TIME_WINDOW,
+                time_window_start="not-a-date",
+                time_window_end="2026-06-30",
+            )
+
+        # 5. Malformed collected_at rejection
+        with self.assertRaises(ValueError):
+            KnowledgeEvidence(
+                evidence_id="ev_bad_coll",
+                target_id="concept_sap",
+                source_identifier="egypt_jobs_db",
+                raw_occurrences_count=10,
+                distinct_sections_count=5,
+                distinct_jobs_count=5,
+                collected_at="2026/11/06 12:00",  # non-ISO format
+                counting_scope=CountingScope.CORPUS_SNAPSHOT,
+                snapshot_id="snapshot_2026_q4",
+            )
+
+        # 6. Missing snapshot_id for CORPUS_SNAPSHOT
         with self.assertRaises(ValueError):
             KnowledgeEvidence(
                 evidence_id="ev_no_snap",
@@ -1084,7 +1179,7 @@ class TestMilestone3RemediationsAndDeepImmutability(unittest.TestCase):
                 snapshot_id=None,
             )
 
-        # Missing time window for TIME_WINDOW
+        # 7. Missing time window for TIME_WINDOW
         with self.assertRaises(ValueError):
             KnowledgeEvidence(
                 evidence_id="ev_no_time",
@@ -1099,22 +1194,7 @@ class TestMilestone3RemediationsAndDeepImmutability(unittest.TestCase):
                 time_window_end=None,
             )
 
-        # Inverted temporal bounds
-        with self.assertRaises(ValueError):
-            KnowledgeEvidence(
-                evidence_id="ev_time_err",
-                target_id="concept_sap",
-                source_identifier="egypt_jobs_db",
-                raw_occurrences_count=10,
-                distinct_sections_count=5,
-                distinct_jobs_count=5,
-                collected_at="2026-11-06T00:00:00Z",
-                counting_scope=CountingScope.TIME_WINDOW,
-                time_window_start="2026-12-31",
-                time_window_end="2026-01-01",
-            )
-
-        # Missing partition_id for SOURCE_PARTITION
+        # 8. Missing partition_id for SOURCE_PARTITION
         with self.assertRaises(ValueError):
             KnowledgeEvidence(
                 evidence_id="ev_no_part",
@@ -1129,17 +1209,31 @@ class TestMilestone3RemediationsAndDeepImmutability(unittest.TestCase):
             )
 
     def test_32_freeze_value_rejects_arbitrary_mutable_objects(self):
-        """freeze_value rejects arbitrary mutable user objects with TypeError."""
+        """freeze_value rejects arbitrary mutable user objects and non-string mapping keys with TypeError."""
+        # 1. Arbitrary mutable objects rejected
         with self.assertRaises(TypeError):
             freeze_value(CustomMutableObject(value=42))
 
-        # Rejection when nested inside a dictionary
+        # Rejection when nested inside a dictionary value
         with self.assertRaises(TypeError):
             freeze_value({"safe_key": 1, "unsafe_obj": CustomMutableObject()})
 
         # Rejection when nested inside a list
         with self.assertRaises(TypeError):
             freeze_value(["valid_string", CustomMutableObject()])
+
+        # 2. Non-string mapping keys strictly rejected
+        with self.assertRaises(TypeError):
+            freeze_value({123: "integer_key"})
+
+        with self.assertRaises(TypeError):
+            freeze_value({("tuple", "key"): "value"})
+
+        with self.assertRaises(TypeError):
+            freeze_value({CustomMutableObject(): "mutable_key"})
+
+        with self.assertRaises(TypeError):
+            freeze_value({"nested": {456: "nested_int_key"}})
 
     def test_33_freeze_value_freezes_sets_to_frozenset(self):
         """freeze_value converts sets to frozenset preserving set semantics."""

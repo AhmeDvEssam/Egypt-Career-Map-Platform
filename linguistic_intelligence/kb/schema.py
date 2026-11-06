@@ -38,6 +38,7 @@ from linguistic_intelligence.kb.types import (
     RequirementFrame,
     SkillLevelEntry,
     TextNormalizationResult,
+    parse_iso_datetime,
 )
 
 
@@ -229,7 +230,14 @@ def validate_requirement_frame(frame: RequirementFrame) -> None:
 
 
 def validate_frame_occurrence(occurrence: FrameOccurrence) -> None:
-    """Validate a concrete FrameOccurrence in raw text."""
+    """Validate a concrete FrameOccurrence in raw text.
+    
+    Verifies that:
+      - start_char and end_char index the governing frame trigger span using 0-based
+        Python Unicode code-point indices strictly bounded by len(source_text):
+        0 <= start_char <= end_char <= len(source_text).
+      - extracted_complement_text contains non-empty extracted syntactic arguments.
+    """
     if not isinstance(occurrence, FrameOccurrence):
         raise ValidationError(f"Expected FrameOccurrence instance, got {type(occurrence).__name__}")
     if not occurrence.occurrence_id or not occurrence.occurrence_id.strip():
@@ -309,7 +317,14 @@ def validate_evidence(evidence: KnowledgeEvidence) -> None:
             f"distinct_sections_count ({sec})."
         )
 
-    # Scope-specific data requirements
+    # Temporal & Scope-specific data requirements
+    if not evidence.collected_at or not evidence.collected_at.strip():
+        raise ValidationError("KnowledgeEvidence 'collected_at' cannot be empty.")
+    try:
+        parse_iso_datetime(evidence.collected_at)
+    except ValueError as e:
+        raise ValidationError(f"KnowledgeEvidence 'collected_at' is not a valid ISO 8601 timestamp: {e}")
+
     if evidence.counting_scope == CountingScope.CORPUS_SNAPSHOT:
         if not evidence.snapshot_id or not evidence.snapshot_id.strip():
             raise ValidationError("CountingScope.CORPUS_SNAPSHOT requires a non-empty 'snapshot_id'.")
@@ -318,10 +333,15 @@ def validate_evidence(evidence: KnowledgeEvidence) -> None:
             raise ValidationError("CountingScope.TIME_WINDOW requires a non-empty 'time_window_start'.")
         if not evidence.time_window_end or not evidence.time_window_end.strip():
             raise ValidationError("CountingScope.TIME_WINDOW requires a non-empty 'time_window_end'.")
-        if evidence.time_window_start > evidence.time_window_end:
+        try:
+            start_dt = parse_iso_datetime(evidence.time_window_start)
+            end_dt = parse_iso_datetime(evidence.time_window_end)
+        except ValueError as e:
+            raise ValidationError(f"Invalid ISO 8601 timestamp in TIME_WINDOW: {e}")
+        if start_dt > end_dt:
             raise ValidationError(
-                f"time_window_start ('{evidence.time_window_start}') cannot be later than "
-                f"time_window_end ('{evidence.time_window_end}')."
+                f"time_window_start ('{evidence.time_window_start}' -> {start_dt.isoformat()}) "
+                f"cannot be chronologically later than time_window_end ('{evidence.time_window_end}' -> {end_dt.isoformat()})."
             )
     elif evidence.counting_scope == CountingScope.SOURCE_PARTITION:
         if not evidence.partition_id or not evidence.partition_id.strip():
