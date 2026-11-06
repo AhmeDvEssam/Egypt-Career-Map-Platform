@@ -244,6 +244,12 @@ def validate_frame_occurrence(occurrence: FrameOccurrence) -> None:
         raise ValidationError(
             f"end_char ({occurrence.end_char}) cannot precede start_char ({occurrence.start_char})."
         )
+    if occurrence.end_char > len(occurrence.source_text):
+        raise ValidationError(
+            f"end_char ({occurrence.end_char}) exceeds source_text length ({len(occurrence.source_text)})."
+        )
+    if not occurrence.extracted_complement_text or not occurrence.extracted_complement_text.strip():
+        raise ValidationError("FrameOccurrence 'extracted_complement_text' cannot be empty.")
     if not isinstance(occurrence.complement_type, FrameComplement):
         raise ValidationError(
             f"Invalid complement_type: '{occurrence.complement_type}'. Must be FrameComplement."
@@ -303,13 +309,23 @@ def validate_evidence(evidence: KnowledgeEvidence) -> None:
             f"distinct_sections_count ({sec})."
         )
 
-    # Temporal bounds validation
-    if evidence.time_window_start and evidence.time_window_end:
+    # Scope-specific data requirements
+    if evidence.counting_scope == CountingScope.CORPUS_SNAPSHOT:
+        if not evidence.snapshot_id or not evidence.snapshot_id.strip():
+            raise ValidationError("CountingScope.CORPUS_SNAPSHOT requires a non-empty 'snapshot_id'.")
+    elif evidence.counting_scope == CountingScope.TIME_WINDOW:
+        if not evidence.time_window_start or not evidence.time_window_start.strip():
+            raise ValidationError("CountingScope.TIME_WINDOW requires a non-empty 'time_window_start'.")
+        if not evidence.time_window_end or not evidence.time_window_end.strip():
+            raise ValidationError("CountingScope.TIME_WINDOW requires a non-empty 'time_window_end'.")
         if evidence.time_window_start > evidence.time_window_end:
             raise ValidationError(
                 f"time_window_start ('{evidence.time_window_start}') cannot be later than "
                 f"time_window_end ('{evidence.time_window_end}')."
             )
+    elif evidence.counting_scope == CountingScope.SOURCE_PARTITION:
+        if not evidence.partition_id or not evidence.partition_id.strip():
+            raise ValidationError("CountingScope.SOURCE_PARTITION requires a non-empty 'partition_id'.")
 
 
 def validate_metadata(

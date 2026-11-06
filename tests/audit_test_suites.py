@@ -26,6 +26,16 @@ test_files = sorted(
 
 print(f"Auditing {len(test_files)} test suites in {test_dir}\n", flush=True)
 
+def is_class_level_skip(test_item: object) -> bool:
+    """Explicitly distinguish class-level skips from method-level skips."""
+    if isinstance(test_item, type):
+        return True
+    method_name = getattr(test_item, "_testMethodName", None)
+    if method_name == "setUpClass":
+        return True
+    return "setUpClass" in str(test_item)
+
+
 suite_results = []
 
 for tf in test_files:
@@ -56,8 +66,8 @@ for tf in test_files:
     errors = len(result.errors)
 
     # Class-level skips (setUpClass) vs individual method skips
-    class_skip_records = [s for s in result.skipped if "setUpClass" in str(s[0])]
-    method_skips = len([s for s in result.skipped if "setUpClass" not in str(s[0])])
+    class_skip_records = [s for s in result.skipped if is_class_level_skip(s[0])]
+    method_skips = len([s for s in result.skipped if not is_class_level_skip(s[0])])
     class_skips = len(class_skip_records)
 
     passed = max(0, result.testsRun - failed - errors - method_skips)

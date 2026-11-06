@@ -166,7 +166,6 @@ class IConceptStore(ABC):
         """
         pass
 
-    @abstractmethod
     def resolve_single_alias(
         self,
         alias: str,
@@ -174,10 +173,14 @@ class IConceptStore(ABC):
     ) -> Optional[DomainConcept]:
         """Resolve an alias returning a single concept if unambiguous.
         
+        Template method: delegates to resolve_alias() and enforces strict uniqueness.
         Returns the unique concept if exactly one match exists (or after domain filtering);
         returns None if ambiguous (multiple matches) or unmatched.
         """
-        pass
+        candidates = self.resolve_alias(alias, context_domain=context_domain)
+        if len(candidates) == 1:
+            return candidates[0]
+        return None
 
     @abstractmethod
     def get_by_type(self, concept_type: ConceptType) -> List[DomainConcept]:

@@ -13,8 +13,10 @@ Verifies:
   9. Original-text preservation and deep immutability across all entities
   10. Abstract interface conformance (ABC instantiation checks & stub verification)
   11. Full knowledge bundle referential integrity, publication governance & invariants
-  12. Polysemous alias resolution with domain context conditioning
+  12. Polysemous alias resolution with template method resolve_single_alias
   13. Strong typing for SkillLevelEntry and ILevelStore
+  14. Strict CountingScope analytical prerequisites (snapshot_id, time windows, partition_id)
+  15. FrameOccurrence character offset and complement text boundary guarantees
 """
 
 import sys
@@ -84,6 +86,12 @@ from linguistic_intelligence.kb.schema import (
     validate_requirement_frame,
     validate_skill_level_entry,
 )
+
+
+class CustomMutableObject:
+    """Arbitrary user-defined class used to probe deep immutability rejection."""
+    def __init__(self, value: int = 10):
+        self.value = value
 
 
 class TestMilestone3EntitiesAndValidation(unittest.TestCase):
@@ -191,21 +199,18 @@ class TestMilestone3LinguisticInvariants(unittest.TestCase):
 
     def test_07_morphology_non_equivalence_invariant(self):
         """Derivation relationship does NOT imply semantic equivalence."""
-        # Action (Verb)
         entry_develop = LexicalEntry(
             lexical_id="lex_develop",
             lemma="develop",
             language="en",
             pos=("VERB",),
         )
-        # Agent (Noun)
         entry_developer = LexicalEntry(
             lexical_id="lex_developer",
             lemma="developer",
             language="en",
             pos=("NOUN",),
         )
-        # Discipline / Process (Noun)
         entry_development = LexicalEntry(
             lexical_id="lex_development",
             lemma="development",
@@ -213,7 +218,6 @@ class TestMilestone3LinguisticInvariants(unittest.TestCase):
             pos=("NOUN",),
         )
 
-        # Derivation relation: develop -> developer (AGENT_NOUN)
         rel_agent = MorphologicalRelation(
             relation_id="rel_develop_to_developer",
             source_lexical_id=entry_develop.lexical_id,
@@ -221,7 +225,6 @@ class TestMilestone3LinguisticInvariants(unittest.TestCase):
             relation_type=MorphologyRelationType.DERIVATION,
             derivation_type=DerivationType.AGENT_NOUN,
         )
-        # Derivation relation: develop -> development (ABSTRACT_NOUN)
         rel_abstract = MorphologicalRelation(
             relation_id="rel_develop_to_development",
             source_lexical_id=entry_develop.lexical_id,
@@ -233,12 +236,10 @@ class TestMilestone3LinguisticInvariants(unittest.TestCase):
         validate_morphological_relation(rel_agent)
         validate_morphological_relation(rel_abstract)
 
-        # Invariant checks: Source and target must remain distinct entities
         self.assertNotEqual(rel_agent.source_lexical_id, rel_agent.target_lexical_id)
         self.assertEqual(rel_agent.derivation_type, DerivationType.AGENT_NOUN)
         self.assertEqual(rel_abstract.derivation_type, DerivationType.ABSTRACT_NOUN)
 
-        # Self-referential relation must be rejected
         with self.assertRaises(ValueError):
             MorphologicalRelation(
                 relation_id="rel_invalid_self",
@@ -277,7 +278,6 @@ class TestMilestone3LinguisticInvariants(unittest.TestCase):
             domains=[ConceptAssociation(domain="Sales & Business Development", sub_category="B2B Sales")],
         )
 
-        # 3 contextual mappings from the single lexical ID 'lex_pipeline'
         map1 = ConceptLexicalMapping(
             mapping_id="map_pipe_cicd",
             concept_id=concept_cicd.concept_id,
@@ -303,7 +303,6 @@ class TestMilestone3LinguisticInvariants(unittest.TestCase):
         for m in (map1, map2, map3):
             validate_concept_lexical_mapping(m)
 
-        # Verify they share the same lexical_id but map to 3 distinct concepts
         self.assertEqual(map1.lexical_id, map2.lexical_id)
         self.assertEqual(map2.lexical_id, map3.lexical_id)
         self.assertNotEqual(map1.concept_id, map2.concept_id)
@@ -338,7 +337,6 @@ class TestMilestone3LinguisticInvariants(unittest.TestCase):
 
     def test_10_evidence_metric_invariants_and_anti_inflation(self):
         """Evidence metrics enforce raw_occurrences >= distinct_sections >= distinct_jobs >= 0."""
-        # Valid evidence: 50 occurrences across 30 sections in 20 jobs
         ev_valid = KnowledgeEvidence(
             evidence_id="ev_01",
             target_id="concept_sales",
@@ -348,6 +346,7 @@ class TestMilestone3LinguisticInvariants(unittest.TestCase):
             distinct_jobs_count=20,
             collected_at="2026-11-05T12:00:00Z",
             counting_scope=CountingScope.CORPUS_SNAPSHOT,
+            snapshot_id="snapshot_2026_q4",
         )
         validate_evidence(ev_valid)
 
@@ -361,6 +360,7 @@ class TestMilestone3LinguisticInvariants(unittest.TestCase):
                 distinct_sections_count=0,
                 distinct_jobs_count=0,
                 collected_at="2026-11-05T12:00:00Z",
+                snapshot_id="snap1",
             )
 
         # Inflation violation: sections > raw
@@ -370,9 +370,10 @@ class TestMilestone3LinguisticInvariants(unittest.TestCase):
                 target_id="concept_sales",
                 source_identifier="egypt_jobs_db",
                 raw_occurrences_count=10,
-                distinct_sections_count=15,  # Invalid: 15 sections cannot hold only 10 occurrences
+                distinct_sections_count=15,
                 distinct_jobs_count=5,
                 collected_at="2026-11-05T12:00:00Z",
+                snapshot_id="snap1",
             )
 
         # Inflation violation: jobs > sections
@@ -383,8 +384,9 @@ class TestMilestone3LinguisticInvariants(unittest.TestCase):
                 source_identifier="egypt_jobs_db",
                 raw_occurrences_count=20,
                 distinct_sections_count=10,
-                distinct_jobs_count=15,  # Invalid: 15 jobs cannot be contained in only 10 sections
+                distinct_jobs_count=15,
                 collected_at="2026-11-05T12:00:00Z",
+                snapshot_id="snap1",
             )
 
 
@@ -453,15 +455,13 @@ class TestMilestone3RequirementFramesAndVersion(unittest.TestCase):
         )
         validate_metadata(meta, expected_major_schema="3")
 
-        # Incompatible major version rejection
         with self.assertRaises(SchemaVersionError):
             validate_metadata(meta, expected_major_schema="4")
 
-        # Malformed version string rejection
         with self.assertRaises(SchemaVersionError):
             parse_semantic_version("not_a_version")
         with self.assertRaises(SchemaVersionError):
-            parse_semantic_version("3.0")  # missing patch
+            parse_semantic_version("3.0")
 
 
 class TestMilestone3MultilingualContracts(unittest.TestCase):
@@ -485,7 +485,6 @@ class TestMilestone3MultilingualContracts(unittest.TestCase):
         self.assertEqual(result.normalized_text, raw_text)
         self.assertEqual(result.status, NormalizationStatus.PASSTHROUGH)
 
-        # Immutability
         with self.assertRaises(FrozenInstanceError):
             result.original_text = "Modified text"  # type: ignore
 
@@ -546,7 +545,6 @@ class TestMilestone3MultilingualContracts(unittest.TestCase):
             )
 
         with self.assertRaises(ValidationError):
-            # FAILED status without error message must fail validation
             res = TextNormalizationResult(
                 original_text="text",
                 normalized_text=None,
@@ -617,7 +615,6 @@ class TestMilestone3KnowledgeBundleIntegrity(unittest.TestCase):
     """Test group 11: Referential integrity and bundle invariant verification."""
 
     def setUp(self):
-        # Build a valid mini knowledge bundle
         self.entry1 = LexicalEntry(
             lexical_id="lex_python",
             lemma="python",
@@ -692,6 +689,7 @@ class TestMilestone3KnowledgeBundleIntegrity(unittest.TestCase):
             distinct_jobs_count=9500,
             collected_at="2026-11-05T12:00:00Z",
             counting_scope=CountingScope.CORPUS_SNAPSHOT,
+            snapshot_id="snapshot_2026_q4",
         )
 
         self.meta = KnowledgeMetadata(
@@ -748,7 +746,7 @@ class TestMilestone3KnowledgeBundleIntegrity(unittest.TestCase):
     def test_23_duplicate_identifier_detection(self):
         """Duplicate IDs within the same entity collection raise InvariantViolationError."""
         dup_concept = DomainConcept(
-            concept_id="concept_python_lang",  # duplicate ID
+            concept_id="concept_python_lang",
             canonical_name="Python Duplicate",
             concept_type=ConceptType.SKILL,
             status=LifecycleStatus.APPROVED,
@@ -778,27 +776,22 @@ class TestMilestone3RemediationsAndDeepImmutability(unittest.TestCase):
         self.assertIsInstance(entry.metadata, MappingProxyType)
         self.assertEqual(entry.metadata["source"], "initial_source")
 
-        # Top-level mutation rejection
         with self.assertRaises(TypeError):
             entry.metadata["source"] = "modified"  # type: ignore
 
-        # Nested dict mutation rejection
         with self.assertRaises(TypeError):
             entry.metadata["nested"]["confidence"] = 1.0  # type: ignore
 
-        # Nested list frozen to tuple rejection
         self.assertIsInstance(entry.metadata["nested"]["tags"], tuple)
         with self.assertRaises(AttributeError):
             entry.metadata["nested"]["tags"].append("ai")  # type: ignore
 
     def test_25_deep_immutability_across_all_entities(self):
         """All entities with nested metadata or collections enforce deep immutability."""
-        # LexicalForm
         form = LexicalForm(form="dev", normalized_form="dev", grammatical_features={"tense": "present"})
         with self.assertRaises(TypeError):
             form.grammatical_features["tense"] = "past"  # type: ignore
 
-        # DomainConcept
         concept = DomainConcept(
             concept_id="c1",
             canonical_name="Concept",
@@ -808,14 +801,12 @@ class TestMilestone3RemediationsAndDeepImmutability(unittest.TestCase):
         with self.assertRaises(TypeError):
             concept.metadata["priority"] = 2  # type: ignore
 
-        # ConceptLexicalMapping
         mapping = ConceptLexicalMapping(
             mapping_id="m1", concept_id="c1", lexical_id="lex1", metadata={"rule": "exact"}
         )
         with self.assertRaises(TypeError):
             mapping.metadata["rule"] = "fuzzy"  # type: ignore
 
-        # RequirementFrame
         frame = RequirementFrame(
             frame_id="f1",
             canonical_expression="exp",
@@ -826,14 +817,12 @@ class TestMilestone3RemediationsAndDeepImmutability(unittest.TestCase):
         with self.assertRaises(TypeError):
             frame.metadata["weight"] = 2.0  # type: ignore
 
-        # KnowledgeMetadata
         meta = KnowledgeMetadata(
             schema_version="3.0.0", knowledge_version="1.0.0", provenance={"author": "lead"}
         )
         with self.assertRaises(TypeError):
             meta.provenance["author"] = "changed"  # type: ignore
 
-        # TextNormalizationResult
         norm = TextNormalizationResult(
             original_text="text",
             normalized_text="text",
@@ -868,18 +857,15 @@ class TestMilestone3RemediationsAndDeepImmutability(unittest.TestCase):
             status=LifecycleStatus.APPROVED,
         )
 
-        # Structural validation succeeds for all lifecycle statuses
         validate_domain_concept(draft_concept)
         validate_domain_concept(proposed_concept)
         validate_domain_concept(approved_concept)
 
-        # Publication validation rejects DRAFT and PROPOSED
         with self.assertRaises(InvariantViolationError):
             validate_publishable_concept(draft_concept)
         with self.assertRaises(InvariantViolationError):
             validate_publishable_concept(proposed_concept)
 
-        # Publication validation accepts APPROVED
         validate_publishable_concept(approved_concept)
 
     def test_27_publication_bundle_rejects_unapproved_concepts(self):
@@ -892,7 +878,6 @@ class TestMilestone3RemediationsAndDeepImmutability(unittest.TestCase):
         )
         lex = LexicalEntry(lexical_id="lex_test", lemma="test", language="en", pos=("NOUN",))
 
-        # Rejection in publication bundle
         with self.assertRaises(InvariantViolationError):
             validate_publication_bundle(
                 lexical_entries=[lex],
@@ -902,7 +887,6 @@ class TestMilestone3RemediationsAndDeepImmutability(unittest.TestCase):
                 requirement_frames=[],
             )
 
-        # Allowed in general discovery bundle
         validate_knowledge_bundle(
             lexical_entries=[lex],
             domain_concepts=[draft_concept],
@@ -913,7 +897,8 @@ class TestMilestone3RemediationsAndDeepImmutability(unittest.TestCase):
         )
 
     def test_28_concept_store_polysemous_alias_resolution(self):
-        """IConceptStore.resolve_alias returns List[DomainConcept] supporting polysemy."""
+        """IConceptStore.resolve_alias returns List[DomainConcept], and resolve_single_alias works as concrete template."""
+        # Note: MockConceptStore does NOT implement resolve_single_alias! It inherits the concrete default implementation.
         class MockConceptStore(IConceptStore):
             def __init__(self, concepts: List[DomainConcept]):
                 self.concepts = {c.concept_id: c for c in concepts}
@@ -931,12 +916,6 @@ class TestMilestone3RemediationsAndDeepImmutability(unittest.TestCase):
                 if context_domain:
                     matches = [c for c in matches if any(a.domain == context_domain for a in c.domains)]
                 return matches
-
-            def resolve_single_alias(
-                self, alias: str, context_domain: Optional[str] = None
-            ) -> Optional[DomainConcept]:
-                candidates = self.resolve_alias(alias, context_domain=context_domain)
-                return candidates[0] if len(candidates) == 1 else None
 
             def get_by_type(self, concept_type: ConceptType) -> List[DomainConcept]:
                 return [c for c in self.concepts.values() if c.concept_type == concept_type]
@@ -983,7 +962,7 @@ class TestMilestone3RemediationsAndDeepImmutability(unittest.TestCase):
         candidates = store.resolve_alias("pipeline")
         self.assertEqual(len(candidates), 3)
 
-        # Ambiguous single lookup returns None
+        # Ambiguous single lookup delegates to inherited template method and returns None
         self.assertIsNone(store.resolve_single_alias("pipeline"))
 
         # Context-domain disambiguation
@@ -991,7 +970,7 @@ class TestMilestone3RemediationsAndDeepImmutability(unittest.TestCase):
         self.assertEqual(len(data_candidates), 1)
         self.assertEqual(data_candidates[0].canonical_name, "Data Pipeline")
 
-        # Disambiguated single lookup succeeds
+        # Disambiguated single lookup succeeds via template method
         single_res = store.resolve_single_alias("pipeline", context_domain="Data Science & Analytics")
         self.assertIsNotNone(single_res)
         self.assertEqual(single_res.canonical_name, "Data Pipeline")
@@ -1009,20 +988,17 @@ class TestMilestone3RemediationsAndDeepImmutability(unittest.TestCase):
         self.assertEqual(entry.raw_level, "Expert")
         self.assertEqual(entry.governed_level, "Advanced")
 
-        # Immutability
         with self.assertRaises(FrozenInstanceError):
             entry.governed_level = "Beginner"  # type: ignore
 
-        # Deep metadata immutability
         with self.assertRaises(TypeError):
             entry.metadata["source"] = "modified"  # type: ignore
 
-        # Rejection of empty level
         with self.assertRaises(ValueError):
             SkillLevelEntry(raw_level="", governed_level="Advanced")
 
     def test_30_frame_occurrence_validation_and_boundary_checks(self):
-        """FrameOccurrence validates character offsets and complement realize text."""
+        """FrameOccurrence validates character offsets within source_text length."""
         raw_sentence = "Candidates must possess strong experience in Python and SQL database architecture."
         occ = FrameOccurrence(
             occurrence_id="occ_001",
@@ -1041,21 +1017,41 @@ class TestMilestone3RemediationsAndDeepImmutability(unittest.TestCase):
         self.assertEqual(occ.extracted_complement_text, "Python and SQL database architecture")
         self.assertEqual(occ.complement_type, FrameComplement.NOUN_PHRASE)
 
-        # Offset validation
+        # end_char < start_char rejection
         with self.assertRaises(ValueError):
             FrameOccurrence(
-                occurrence_id="occ_err",
+                occurrence_id="occ_err1",
                 frame_id="f1",
                 source_text="short",
                 start_char=10,
-                end_char=5,  # end < start
+                end_char=5,
                 extracted_complement_text="comp",
                 complement_type=FrameComplement.NOUN_PHRASE,
             )
 
-        # Deep immutability
-        with self.assertRaises(TypeError):
-            occ.metadata["engine"] = "other"  # type: ignore
+        # end_char > len(source_text) rejection
+        with self.assertRaises(ValueError):
+            FrameOccurrence(
+                occurrence_id="occ_err2",
+                frame_id="f1",
+                source_text="Experience in Python",
+                start_char=15,
+                end_char=100,  # 100 exceeds len("Experience in Python") which is 20
+                extracted_complement_text="Python",
+                complement_type=FrameComplement.NOUN_PHRASE,
+            )
+
+        # Empty complement text rejection
+        with self.assertRaises(ValueError):
+            FrameOccurrence(
+                occurrence_id="occ_err3",
+                frame_id="f1",
+                source_text="Experience in Python",
+                start_char=0,
+                end_char=10,
+                extracted_complement_text="   ",
+                complement_type=FrameComplement.NOUN_PHRASE,
+            )
 
     def test_31_evidence_scope_and_temporal_validation(self):
         """Evidence validates CountingScope and temporal window consistency."""
@@ -1068,27 +1064,93 @@ class TestMilestone3RemediationsAndDeepImmutability(unittest.TestCase):
             distinct_jobs_count=50,
             collected_at="2026-11-06T00:00:00Z",
             counting_scope=CountingScope.TIME_WINDOW,
-            snapshot_id="snapshot_2026_q4",
             time_window_start="2026-01-01",
             time_window_end="2026-06-30",
         )
         validate_evidence(ev)
         self.assertEqual(ev.counting_scope, CountingScope.TIME_WINDOW)
 
-        # Temporal bounds check: start > end must be rejected
-        ev_invalid_time = KnowledgeEvidence(
-            evidence_id="ev_time_err",
-            target_id="concept_sap",
-            source_identifier="egypt_jobs_db",
-            raw_occurrences_count=10,
-            distinct_sections_count=5,
-            distinct_jobs_count=5,
-            collected_at="2026-11-06T00:00:00Z",
-            time_window_start="2026-12-31",
-            time_window_end="2026-01-01",  # end precedes start
-        )
-        with self.assertRaises(ValidationError):
-            validate_evidence(ev_invalid_time)
+        # Missing snapshot_id for CORPUS_SNAPSHOT
+        with self.assertRaises(ValueError):
+            KnowledgeEvidence(
+                evidence_id="ev_no_snap",
+                target_id="concept_sap",
+                source_identifier="egypt_jobs_db",
+                raw_occurrences_count=10,
+                distinct_sections_count=5,
+                distinct_jobs_count=5,
+                collected_at="2026-11-06T00:00:00Z",
+                counting_scope=CountingScope.CORPUS_SNAPSHOT,
+                snapshot_id=None,
+            )
+
+        # Missing time window for TIME_WINDOW
+        with self.assertRaises(ValueError):
+            KnowledgeEvidence(
+                evidence_id="ev_no_time",
+                target_id="concept_sap",
+                source_identifier="egypt_jobs_db",
+                raw_occurrences_count=10,
+                distinct_sections_count=5,
+                distinct_jobs_count=5,
+                collected_at="2026-11-06T00:00:00Z",
+                counting_scope=CountingScope.TIME_WINDOW,
+                time_window_start="2026-01-01",
+                time_window_end=None,
+            )
+
+        # Inverted temporal bounds
+        with self.assertRaises(ValueError):
+            KnowledgeEvidence(
+                evidence_id="ev_time_err",
+                target_id="concept_sap",
+                source_identifier="egypt_jobs_db",
+                raw_occurrences_count=10,
+                distinct_sections_count=5,
+                distinct_jobs_count=5,
+                collected_at="2026-11-06T00:00:00Z",
+                counting_scope=CountingScope.TIME_WINDOW,
+                time_window_start="2026-12-31",
+                time_window_end="2026-01-01",
+            )
+
+        # Missing partition_id for SOURCE_PARTITION
+        with self.assertRaises(ValueError):
+            KnowledgeEvidence(
+                evidence_id="ev_no_part",
+                target_id="concept_sap",
+                source_identifier="egypt_jobs_db",
+                raw_occurrences_count=10,
+                distinct_sections_count=5,
+                distinct_jobs_count=5,
+                collected_at="2026-11-06T00:00:00Z",
+                counting_scope=CountingScope.SOURCE_PARTITION,
+                partition_id="",
+            )
+
+    def test_32_freeze_value_rejects_arbitrary_mutable_objects(self):
+        """freeze_value rejects arbitrary mutable user objects with TypeError."""
+        with self.assertRaises(TypeError):
+            freeze_value(CustomMutableObject(value=42))
+
+        # Rejection when nested inside a dictionary
+        with self.assertRaises(TypeError):
+            freeze_value({"safe_key": 1, "unsafe_obj": CustomMutableObject()})
+
+        # Rejection when nested inside a list
+        with self.assertRaises(TypeError):
+            freeze_value(["valid_string", CustomMutableObject()])
+
+    def test_33_freeze_value_freezes_sets_to_frozenset(self):
+        """freeze_value converts sets to frozenset preserving set semantics."""
+        raw_set = {"python", "sql", "docker"}
+        frozen = freeze_value(raw_set)
+        self.assertIsInstance(frozen, frozenset)
+        self.assertEqual(frozen, frozenset({"python", "sql", "docker"}))
+
+        # Rejection of in-place mutation
+        with self.assertRaises(AttributeError):
+            frozen.add("kubernetes")  # type: ignore
 
 
 if __name__ == "__main__":

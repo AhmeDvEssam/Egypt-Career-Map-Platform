@@ -15,7 +15,8 @@ CRITICAL ARCHITECTURAL INVARIANTS:
   2. Discovered candidate != approved knowledge (LifecycleStatus publication gating).
   3. Unknown term != missing skill (ConceptType controlled taxonomy).
   4. Original text is strictly immutable across all normalization transformations.
-  5. Deep Immutability: All nested mappings are frozen via MappingProxyType, sequences via tuples.
+  5. Deep Immutability: All nested mappings are frozen via MappingProxyType, sequences via tuples,
+     sets via frozenset. Arbitrary mutable objects are rejected with TypeError.
   6. Empirical counts are distinct: Raw Occurrences >= Distinct Sections >= Distinct Jobs >= 0.
 """
 
@@ -34,21 +35,29 @@ from typing import Any, Dict, List, Optional, Tuple, Union
 
 
 def freeze_value(val: Any) -> Any:
-    """Recursively freeze mappings into MappingProxyType and sequences into tuples.
+    """Recursively freeze mappings into MappingProxyType, lists/tuples into tuples,
+    and sets into frozenset.
     
-    Guarantees deep immutability for metadata, features, and nested configuration.
-    Any attempt to mutate nested dictionaries (e.g. entry.metadata['key'] = 'val')
-    raises TypeError: 'mappingproxy' object does not support item assignment.
+    Guarantees strict deep immutability for metadata, features, and nested configuration.
+    Permits only safe primitives, Enums, mappings, tuples, and sets. Any arbitrary mutable
+    object is rejected with TypeError.
     """
     if val is None:
         return None
     if isinstance(val, (str, bytes, int, float, bool)):
         return val
+    if isinstance(val, Enum):
+        return val
     if isinstance(val, Mapping):
         return MappingProxyType({k: freeze_value(v) for k, v in val.items()})
-    if isinstance(val, (list, tuple, set)):
+    if isinstance(val, (list, tuple)):
         return tuple(freeze_value(v) for v in val)
-    return val
+    if isinstance(val, (set, frozenset)):
+        return frozenset(freeze_value(v) for v in val)
+    raise TypeError(
+        f"Unsupported metadata value type: {type(val).__name__} ({val!r}). "
+        f"Only primitives (str, int, float, bool, None), Enums, mappings, sequences, and sets are permitted."
+    )
 
 
 # ==============================================================================
@@ -348,6 +357,13 @@ class FrameOccurrence:
     
     Strictly separates the canonical Frame Definition (RequirementFrame)
     from its empirical textual realization and parsed complement text.
+    
+    SOURCE TEXT SCOPE:
+      source_text represents the text window in which the frame was recognized.
+      This can be the full document section (e.g. REQUIREMENTS or SKILLS) or the immediate
+      enclosing sentence. In either case, start_char and end_char MUST index strictly
+      within source_text:
+        0 <= start_char <= end_char <= len(source_text)
     """
     occurrence_id: str
     frame_id: str
@@ -368,10 +384,18 @@ class FrameOccurrence:
             raise ValueError("FrameOccurrence 'frame_id' cannot be empty.")
         if self.source_text is None:
             raise ValueError("FrameOccurrence 'source_text' cannot be None.")
-        if self.start_char < 0 or self.end_char < self.start_char:
+        if self.start_char < 0:
+            raise ValueError(f"start_char cannot be negative ({self.start_char}).")
+        if self.end_char < self.start_char:
             raise ValueError(
-                f"Invalid char offsets: [{self.start_char}:{self.end_char}]"
+                f"end_char ({self.end_char}) cannot precede start_char ({self.start_char})."
             )
+        if self.end_char > len(self.source_text):
+            raise ValueError(
+                f"end_char ({self.end_char}) exceeds source_text length ({len(self.source_text)})."
+            )
+        if not self.extracted_complement_text or not self.extracted_complement_text.strip():
+            raise ValueError("FrameOccurrence 'extracted_complement_text' cannot be empty.")
         if not (0.0 <= self.confidence <= 1.0):
             raise ValueError(f"Confidence must be between 0.0 and 1.0, got {self.confidence}")
         object.__setattr__(
@@ -420,6 +444,11 @@ class KnowledgeEvidence:
       Every section containing the evidence contains at least 1 raw occurrence.
       Therefore, across any homogeneous counting scope:
         raw_occurrences_count >= distinct_sections_count >= distinct_jobs_count >= 0
+    
+    SCOPE REQUIREMENTS:
+      - CORPUS_SNAPSHOT requires snapshot_id.
+      - TIME_WINDOW requires time_window_start and time_window_end (start <= end).
+      - SOURCE_PARTITION requires partition_id.
     """
     evidence_id: str
     target_id: str
@@ -432,6 +461,7 @@ class KnowledgeEvidence:
     snapshot_id: Optional[str] = None
     time_window_start: Optional[str] = None
     time_window_end: Optional[str] = None
+    partition_id: Optional[str] = None
     reference_uri: Optional[str] = None
     metadata: Mapping[str, Any] = field(default_factory=dict)
 
@@ -458,6 +488,25 @@ class KnowledgeEvidence:
                 f"distinct_jobs_count ({self.distinct_jobs_count}) cannot exceed "
                 f"distinct_sections_count ({self.distinct_sections_count})."
             )
+
+        # CountingScope specific requirements
+        if self.counting_scope == CountingScope.CORPUS_SNAPSHOT:
+            if not self.snapshot_id or not self.snapshot_id.strip():
+                raise ValueError("CountingScope.CORPUS_SNAPSHOT requires a non-empty 'snapshot_id'.")
+        elif self.counting_scope == CountingScope.TIME_WINDOW:
+            if not self.time_window_start or not self.time_window_start.strip():
+                raise ValueError("CountingScope.TIME_WINDOW requires a non-empty 'time_window_start'.")
+            if not self.time_window_end or not self.time_window_end.strip():
+                raise ValueError("CountingScope.TIME_WINDOW requires a non-empty 'time_window_end'.")
+            if self.time_window_start > self.time_window_end:
+                raise ValueError(
+                    f"time_window_start ('{self.time_window_start}') cannot be later than "
+                    f"time_window_end ('{self.time_window_end}')."
+                )
+        elif self.counting_scope == CountingScope.SOURCE_PARTITION:
+            if not self.partition_id or not self.partition_id.strip():
+                raise ValueError("CountingScope.SOURCE_PARTITION requires a non-empty 'partition_id'.")
+
         object.__setattr__(
             self, "metadata", freeze_value(self.metadata if self.metadata is not None else {})
         )
