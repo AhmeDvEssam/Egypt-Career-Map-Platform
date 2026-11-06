@@ -1,27 +1,54 @@
 """
 Linguistic Intelligence — Milestone 3.0 Knowledge Types & Entities
 ===================================================================
-Defines strongly-typed, immutable dataclasses and controlled enums for:
+Defines strongly-typed, deeply immutable dataclasses and controlled enums for:
   - Lexical entries and surface forms (Layer 1)
   - Morphological relationships and derivational families (Layer 2)
-  - Multi-word requirement frames and syntactic complements (Layer 3)
+  - Multi-word requirement frame definitions & occurrences (Layer 3)
   - Domain concepts and contextual polysemy mappings (Layer 4)
+  - Governed skill level entries (Consumable by M3.2)
   - Empirical corpus evidence and version metadata
   - Multilingual text normalization contracts (Readiness for M3.4+)
 
 CRITICAL ARCHITECTURAL INVARIANTS:
   1. Morphological relationship != semantic equivalence (Develop != Developer != Development).
-  2. Discovered candidate != approved knowledge (LifecycleStatus gating).
+  2. Discovered candidate != approved knowledge (LifecycleStatus publication gating).
   3. Unknown term != missing skill (ConceptType controlled taxonomy).
   4. Original text is strictly immutable across all normalization transformations.
-  5. Empirical counts are distinct: Raw Occurrences != Distinct Sections != Distinct Jobs.
+  5. Deep Immutability: All nested mappings are frozen via MappingProxyType, sequences via tuples.
+  6. Empirical counts are distinct: Raw Occurrences >= Distinct Sections >= Distinct Jobs >= 0.
 """
 
 from __future__ import annotations
 
+from collections.abc import Mapping, Sequence, Set
 from dataclasses import dataclass, field
 from enum import Enum
-from typing import Any, Dict, List, Optional, Set, Tuple, Union
+from types import MappingProxyType
+from typing import Any, Dict, List, Optional, Tuple, Union
+
+
+# ==============================================================================
+# 0. Deep Immutability Helper
+# ==============================================================================
+
+
+def freeze_value(val: Any) -> Any:
+    """Recursively freeze mappings into MappingProxyType and sequences into tuples.
+    
+    Guarantees deep immutability for metadata, features, and nested configuration.
+    Any attempt to mutate nested dictionaries (e.g. entry.metadata['key'] = 'val')
+    raises TypeError: 'mappingproxy' object does not support item assignment.
+    """
+    if val is None:
+        return None
+    if isinstance(val, (str, bytes, int, float, bool)):
+        return val
+    if isinstance(val, Mapping):
+        return MappingProxyType({k: freeze_value(v) for k, v in val.items()})
+    if isinstance(val, (list, tuple, set)):
+        return tuple(freeze_value(v) for v in val)
+    return val
 
 
 # ==============================================================================
@@ -110,6 +137,13 @@ class MappingType(str, Enum):
     RELATED = "RELATED"
 
 
+class CountingScope(str, Enum):
+    """Scope boundaries for empirical evidence aggregation."""
+    CORPUS_SNAPSHOT = "CORPUS_SNAPSHOT"
+    TIME_WINDOW = "TIME_WINDOW"
+    SOURCE_PARTITION = "SOURCE_PARTITION"
+
+
 # ==============================================================================
 # 2. Immutable Core Knowledge Dataclasses
 # ==============================================================================
@@ -120,17 +154,23 @@ class LexicalForm:
     """Surface realization of a lexical entry.
     
     Preserves verbatim orthography, casing, and inflected forms.
+    Guarantees deep immutability for grammatical features.
     """
     form: str
     normalized_form: str
     form_type: LexicalFormType = LexicalFormType.LEMMA
-    grammatical_features: Dict[str, Any] = field(default_factory=dict)
+    grammatical_features: Mapping[str, Any] = field(default_factory=dict)
 
     def __post_init__(self) -> None:
         if not self.form or not self.form.strip():
             raise ValueError("LexicalForm 'form' cannot be empty or whitespace.")
         if not self.normalized_form or not self.normalized_form.strip():
             raise ValueError("LexicalForm 'normalized_form' cannot be empty or whitespace.")
+        object.__setattr__(
+            self,
+            "grammatical_features",
+            freeze_value(self.grammatical_features if self.grammatical_features is not None else {}),
+        )
 
 
 @dataclass(frozen=True)
@@ -139,13 +179,14 @@ class LexicalEntry:
     
     Represents an English or Arabic word/phrase with its lemma, language,
     parts of speech, and surface forms. Independent of domain concepts.
+    Guarantees deep immutability for pos, surface_forms, and metadata.
     """
     lexical_id: str
     lemma: str
     language: str
     pos: Tuple[str, ...]
     surface_forms: Tuple[LexicalForm, ...] = field(default_factory=tuple)
-    metadata: Dict[str, Any] = field(default_factory=dict)
+    metadata: Mapping[str, Any] = field(default_factory=dict)
 
     def __post_init__(self) -> None:
         if not self.lexical_id or not self.lexical_id.strip():
@@ -154,11 +195,13 @@ class LexicalEntry:
             raise ValueError("LexicalEntry 'lemma' cannot be empty.")
         if not self.language or not self.language.strip():
             raise ValueError("LexicalEntry 'language' cannot be empty.")
-        # Ensure pos and surface_forms are converted to immutable tuples if passed as lists
-        if isinstance(self.pos, (list, set)):
-            object.__setattr__(self, "pos", tuple(self.pos))
-        if isinstance(self.surface_forms, (list, set)):
-            object.__setattr__(self, "surface_forms", tuple(self.surface_forms))
+        object.__setattr__(self, "pos", tuple(self.pos) if self.pos is not None else ())
+        object.__setattr__(
+            self, "surface_forms", tuple(self.surface_forms) if self.surface_forms is not None else ()
+        )
+        object.__setattr__(
+            self, "metadata", freeze_value(self.metadata if self.metadata is not None else {})
+        )
         if not self.pos:
             raise ValueError("LexicalEntry must define at least one part-of-speech tag.")
 
@@ -176,7 +219,7 @@ class MorphologicalRelation:
     target_lexical_id: str
     relation_type: MorphologyRelationType
     derivation_type: Optional[DerivationType] = None
-    metadata: Dict[str, Any] = field(default_factory=dict)
+    metadata: Mapping[str, Any] = field(default_factory=dict)
 
     def __post_init__(self) -> None:
         if not self.relation_id or not self.relation_id.strip():
@@ -190,8 +233,10 @@ class MorphologicalRelation:
                 f"Source and target lexical IDs cannot be identical ('{self.source_lexical_id}')."
             )
         if self.relation_type == MorphologyRelationType.DERIVATION and self.derivation_type is None:
-            # Default to OTHER if derivation type not specified
             object.__setattr__(self, "derivation_type", DerivationType.OTHER)
+        object.__setattr__(
+            self, "metadata", freeze_value(self.metadata if self.metadata is not None else {})
+        )
 
 
 @dataclass(frozen=True)
@@ -213,6 +258,7 @@ class DomainConcept:
     """A professional, labor-market, or technical concept (Layer 4).
     
     Represents an entity in the labor market ontology (Skill, Tool, Discipline, etc.).
+    Guarantees deep immutability for domains, aliases, and metadata.
     """
     concept_id: str
     canonical_name: str
@@ -221,17 +267,18 @@ class DomainConcept:
     domains: Tuple[ConceptAssociation, ...] = field(default_factory=tuple)
     aliases: Tuple[str, ...] = field(default_factory=tuple)
     status: LifecycleStatus = LifecycleStatus.APPROVED
-    metadata: Dict[str, Any] = field(default_factory=dict)
+    metadata: Mapping[str, Any] = field(default_factory=dict)
 
     def __post_init__(self) -> None:
         if not self.concept_id or not self.concept_id.strip():
             raise ValueError("DomainConcept 'concept_id' cannot be empty.")
         if not self.canonical_name or not self.canonical_name.strip():
             raise ValueError("DomainConcept 'canonical_name' cannot be empty.")
-        if isinstance(self.domains, (list, set)):
-            object.__setattr__(self, "domains", tuple(self.domains))
-        if isinstance(self.aliases, (list, set)):
-            object.__setattr__(self, "aliases", tuple(self.aliases))
+        object.__setattr__(self, "domains", tuple(self.domains) if self.domains is not None else ())
+        object.__setattr__(self, "aliases", tuple(self.aliases) if self.aliases is not None else ())
+        object.__setattr__(
+            self, "metadata", freeze_value(self.metadata if self.metadata is not None else {})
+        )
 
 
 @dataclass(frozen=True)
@@ -249,7 +296,7 @@ class ConceptLexicalMapping:
     mapping_type: MappingType = MappingType.EXACT
     context_domain: Optional[str] = None
     confidence: float = 1.0
-    metadata: Dict[str, Any] = field(default_factory=dict)
+    metadata: Mapping[str, Any] = field(default_factory=dict)
 
     def __post_init__(self) -> None:
         if not self.mapping_id or not self.mapping_id.strip():
@@ -260,11 +307,14 @@ class ConceptLexicalMapping:
             raise ValueError("ConceptLexicalMapping 'lexical_id' cannot be empty.")
         if not (0.0 <= self.confidence <= 1.0):
             raise ValueError(f"Confidence score must be between 0.0 and 1.0, got {self.confidence}")
+        object.__setattr__(
+            self, "metadata", freeze_value(self.metadata if self.metadata is not None else {})
+        )
 
 
 @dataclass(frozen=True)
 class RequirementFrame:
-    """Multi-word expression governing candidate requirements (Layer 3).
+    """Multi-word expression governing candidate requirements (Layer 3 Frame Definition).
     
     Identifies syntactic frames (e.g. 'experience in', 'ability to', 'responsible for')
     and binds them to their expected syntactic complement structure.
@@ -276,7 +326,7 @@ class RequirementFrame:
     preposition: Optional[str] = None
     expected_complement: FrameComplement = FrameComplement.NOUN_PHRASE
     semantic_function: str = "EXPERIENCE_REQUIREMENT"
-    metadata: Dict[str, Any] = field(default_factory=dict)
+    metadata: Mapping[str, Any] = field(default_factory=dict)
 
     def __post_init__(self) -> None:
         if not self.frame_id or not self.frame_id.strip():
@@ -287,15 +337,89 @@ class RequirementFrame:
             raise ValueError("RequirementFrame 'head_lemma' cannot be empty.")
         if not self.head_pos or not self.head_pos.strip():
             raise ValueError("RequirementFrame 'head_pos' cannot be empty.")
+        object.__setattr__(
+            self, "metadata", freeze_value(self.metadata if self.metadata is not None else {})
+        )
+
+
+@dataclass(frozen=True)
+class FrameOccurrence:
+    """Instantiated occurrence of a RequirementFrame in raw job text (Layer 3 Frame Occurrence).
+    
+    Strictly separates the canonical Frame Definition (RequirementFrame)
+    from its empirical textual realization and parsed complement text.
+    """
+    occurrence_id: str
+    frame_id: str
+    source_text: str
+    start_char: int
+    end_char: int
+    extracted_complement_text: str
+    complement_type: FrameComplement
+    job_id: Optional[str] = None
+    section_id: Optional[str] = None
+    confidence: float = 1.0
+    metadata: Mapping[str, Any] = field(default_factory=dict)
+
+    def __post_init__(self) -> None:
+        if not self.occurrence_id or not self.occurrence_id.strip():
+            raise ValueError("FrameOccurrence 'occurrence_id' cannot be empty.")
+        if not self.frame_id or not self.frame_id.strip():
+            raise ValueError("FrameOccurrence 'frame_id' cannot be empty.")
+        if self.source_text is None:
+            raise ValueError("FrameOccurrence 'source_text' cannot be None.")
+        if self.start_char < 0 or self.end_char < self.start_char:
+            raise ValueError(
+                f"Invalid char offsets: [{self.start_char}:{self.end_char}]"
+            )
+        if not (0.0 <= self.confidence <= 1.0):
+            raise ValueError(f"Confidence must be between 0.0 and 1.0, got {self.confidence}")
+        object.__setattr__(
+            self, "metadata", freeze_value(self.metadata if self.metadata is not None else {})
+        )
+
+
+@dataclass(frozen=True)
+class SkillLevelEntry:
+    """Structured entry representing a governed skill level mapping.
+    
+    Connects verbatim extracted levels (e.g. 'Expert', 'Senior') to
+    governed level tiers ('Advanced', 'Intermediate', etc.) per the level matrix.
+    Consumable by M3.2 SkillLevelGovernor.
+    """
+    raw_level: str
+    governed_level: str
+    skill_type: str = "Technical"
+    confidence: float = 1.0
+    metadata: Mapping[str, Any] = field(default_factory=dict)
+
+    def __post_init__(self) -> None:
+        if not self.raw_level or not self.raw_level.strip():
+            raise ValueError("SkillLevelEntry 'raw_level' cannot be empty.")
+        if not self.governed_level or not self.governed_level.strip():
+            raise ValueError("SkillLevelEntry 'governed_level' cannot be empty.")
+        if not (0.0 <= self.confidence <= 1.0):
+            raise ValueError(f"SkillLevelEntry confidence must be between 0.0 and 1.0, got {self.confidence}")
+        object.__setattr__(
+            self, "metadata", freeze_value(self.metadata if self.metadata is not None else {})
+        )
 
 
 @dataclass(frozen=True)
 class KnowledgeEvidence:
     """Empirical corpus evidence supporting a knowledge entity or mapping.
     
-    CRITICAL STATISTICAL INVARIANT:
-      raw_occurrences_count >= distinct_sections_count >= distinct_jobs_count >= 0
-    These metrics represent fundamentally different denominators and must never be conflated.
+    DEFINITIONS & COUNTING SEMANTICS:
+      - Job: Distinct job posting identified by unique job_id.
+      - Section: Parsed structured document section (DESCRIPTION, REQUIREMENTS, SKILLS).
+        Each section has a distinct identity within its parent job posting.
+      - Occurrence: Single textual appearance of the target entity within a section.
+    
+    CONTAINMENT HIERARCHY INVARIANT:
+      Every job containing the evidence contains at least 1 section containing the evidence.
+      Every section containing the evidence contains at least 1 raw occurrence.
+      Therefore, across any homogeneous counting scope:
+        raw_occurrences_count >= distinct_sections_count >= distinct_jobs_count >= 0
     """
     evidence_id: str
     target_id: str
@@ -304,8 +428,12 @@ class KnowledgeEvidence:
     distinct_sections_count: int
     distinct_jobs_count: int
     collected_at: str
+    counting_scope: CountingScope = CountingScope.CORPUS_SNAPSHOT
+    snapshot_id: Optional[str] = None
+    time_window_start: Optional[str] = None
+    time_window_end: Optional[str] = None
     reference_uri: Optional[str] = None
-    metadata: Dict[str, Any] = field(default_factory=dict)
+    metadata: Mapping[str, Any] = field(default_factory=dict)
 
     def __post_init__(self) -> None:
         if not self.evidence_id or not self.evidence_id.strip():
@@ -330,6 +458,9 @@ class KnowledgeEvidence:
                 f"distinct_jobs_count ({self.distinct_jobs_count}) cannot exceed "
                 f"distinct_sections_count ({self.distinct_sections_count})."
             )
+        object.__setattr__(
+            self, "metadata", freeze_value(self.metadata if self.metadata is not None else {})
+        )
 
 
 @dataclass(frozen=True)
@@ -340,13 +471,16 @@ class KnowledgeMetadata:
     source_revision: Optional[str] = None
     created_at: str = ""
     checksum: Optional[str] = None
-    provenance: Dict[str, Any] = field(default_factory=dict)
+    provenance: Mapping[str, Any] = field(default_factory=dict)
 
     def __post_init__(self) -> None:
         if not self.schema_version or not self.schema_version.strip():
             raise ValueError("KnowledgeMetadata 'schema_version' cannot be empty.")
         if not self.knowledge_version or not self.knowledge_version.strip():
             raise ValueError("KnowledgeMetadata 'knowledge_version' cannot be empty.")
+        object.__setattr__(
+            self, "provenance", freeze_value(self.provenance if self.provenance is not None else {})
+        )
 
 
 @dataclass(frozen=True)
@@ -358,7 +492,8 @@ class TextNormalizationResult:
       2. If status != SUCCESS and != PASSTHROUGH, normalized_text may be None,
          but original_text remains intact.
       3. Provider, model version, and error details are fully auditable.
-      4. alignment_metadata allows future token/character offset reconstruction.
+      4. alignment_metadata allows future token/character offset reconstruction
+         and is deeply immutable.
     """
     original_text: str
     normalized_text: Optional[str]
@@ -367,9 +502,10 @@ class TextNormalizationResult:
     normalization_method: str
     model_version: Optional[str]
     status: NormalizationStatus
-    alignment_metadata: Optional[Dict[str, Any]] = None
+    alignment_metadata: Optional[Mapping[str, Any]] = None
     error: Optional[str] = None
 
     def __post_init__(self) -> None:
         if self.original_text is None:
             raise ValueError("TextNormalizationResult 'original_text' cannot be None.")
+        object.__setattr__(self, "alignment_metadata", freeze_value(self.alignment_metadata))

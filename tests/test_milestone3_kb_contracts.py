@@ -2,23 +2,26 @@
 Unit Test Suite for Milestone 3.0: Knowledge Contracts & Schema Foundation
 ==========================================================================
 Verifies:
-  1. Entity construction, immutability, and validation
+  1. Entity construction, deep immutability, and validation
   2. Controlled enum validation
   3. Morphological separation: Derivation != Semantic Equivalence
   4. Concept mapping cardinality (1-to-many, many-to-1, polysemy)
-  5. Evidence metric integrity: raw >= sections >= jobs >= 0
-  6. Requirement-frame validation
+  5. Evidence metric integrity: raw >= sections >= jobs >= 0 and containment hierarchy
+  6. Requirement-frame definitions vs occurrences
   7. Semantic versioning & schema compatibility
   8. Text normalization contracts (pass-through, translation result, failure preservation)
-  9. Original-text preservation and immutability
+  9. Original-text preservation and deep immutability across all entities
   10. Abstract interface conformance (ABC instantiation checks & stub verification)
-  11. Full knowledge bundle referential integrity and invariant checks
+  11. Full knowledge bundle referential integrity, publication governance & invariants
+  12. Polysemous alias resolution with domain context conditioning
+  13. Strong typing for SkillLevelEntry and ILevelStore
 """
 
 import sys
 import unittest
 from dataclasses import FrozenInstanceError
 from pathlib import Path
+from types import MappingProxyType
 from typing import Any, Dict, List, Optional
 
 # Add project root to sys.path
@@ -30,9 +33,11 @@ from linguistic_intelligence.kb.types import (
     ConceptAssociation,
     ConceptLexicalMapping,
     ConceptType,
+    CountingScope,
     DerivationType,
     DomainConcept,
     FrameComplement,
+    FrameOccurrence,
     KnowledgeEvidence,
     KnowledgeMetadata,
     LexicalEntry,
@@ -44,7 +49,9 @@ from linguistic_intelligence.kb.types import (
     MorphologyRelationType,
     NormalizationStatus,
     RequirementFrame,
+    SkillLevelEntry,
     TextNormalizationResult,
+    freeze_value,
 )
 from linguistic_intelligence.kb.contracts import (
     IConceptStore,
@@ -65,13 +72,17 @@ from linguistic_intelligence.kb.schema import (
     validate_concept_lexical_mapping,
     validate_domain_concept,
     validate_evidence,
+    validate_frame_occurrence,
     validate_knowledge_bundle,
     validate_lexical_entry,
     validate_lexical_form,
     validate_metadata,
     validate_morphological_relation,
     validate_normalization_result,
+    validate_publication_bundle,
+    validate_publishable_concept,
     validate_requirement_frame,
+    validate_skill_level_entry,
 )
 
 
@@ -336,6 +347,7 @@ class TestMilestone3LinguisticInvariants(unittest.TestCase):
             distinct_sections_count=30,
             distinct_jobs_count=20,
             collected_at="2026-11-05T12:00:00Z",
+            counting_scope=CountingScope.CORPUS_SNAPSHOT,
         )
         validate_evidence(ev_valid)
 
@@ -651,6 +663,7 @@ class TestMilestone3KnowledgeBundleIntegrity(unittest.TestCase):
                 ConceptAssociation(domain="Software Engineering & IT", sub_category="Backend Development"),
             ),
             aliases=("Python 3", "py"),
+            status=LifecycleStatus.APPROVED,
         )
 
         self.mapping1 = ConceptLexicalMapping(
@@ -678,6 +691,7 @@ class TestMilestone3KnowledgeBundleIntegrity(unittest.TestCase):
             distinct_sections_count=12000,
             distinct_jobs_count=9500,
             collected_at="2026-11-05T12:00:00Z",
+            counting_scope=CountingScope.CORPUS_SNAPSHOT,
         )
 
         self.meta = KnowledgeMetadata(
@@ -737,6 +751,7 @@ class TestMilestone3KnowledgeBundleIntegrity(unittest.TestCase):
             concept_id="concept_python_lang",  # duplicate ID
             canonical_name="Python Duplicate",
             concept_type=ConceptType.SKILL,
+            status=LifecycleStatus.APPROVED,
         )
         with self.assertRaises(InvariantViolationError):
             validate_knowledge_bundle(
@@ -746,6 +761,334 @@ class TestMilestone3KnowledgeBundleIntegrity(unittest.TestCase):
                 concept_mappings=[self.mapping1],
                 requirement_frames=[self.frame1],
             )
+
+
+class TestMilestone3RemediationsAndDeepImmutability(unittest.TestCase):
+    """Test group 12 & 13: Review Remediations (Deep Immutability, Lifecycle, Typing, Frames, Aliases)."""
+
+    def test_24_deep_immutability_nested_metadata_rejection(self):
+        """Attempting to mutate nested metadata in LexicalEntry raises TypeError."""
+        entry = LexicalEntry(
+            lexical_id="lex_test",
+            lemma="test",
+            language="en",
+            pos=("NOUN",),
+            metadata={"source": "initial_source", "nested": {"confidence": 0.95, "tags": ["nlp", "egypt"]}},
+        )
+        self.assertIsInstance(entry.metadata, MappingProxyType)
+        self.assertEqual(entry.metadata["source"], "initial_source")
+
+        # Top-level mutation rejection
+        with self.assertRaises(TypeError):
+            entry.metadata["source"] = "modified"  # type: ignore
+
+        # Nested dict mutation rejection
+        with self.assertRaises(TypeError):
+            entry.metadata["nested"]["confidence"] = 1.0  # type: ignore
+
+        # Nested list frozen to tuple rejection
+        self.assertIsInstance(entry.metadata["nested"]["tags"], tuple)
+        with self.assertRaises(AttributeError):
+            entry.metadata["nested"]["tags"].append("ai")  # type: ignore
+
+    def test_25_deep_immutability_across_all_entities(self):
+        """All entities with nested metadata or collections enforce deep immutability."""
+        # LexicalForm
+        form = LexicalForm(form="dev", normalized_form="dev", grammatical_features={"tense": "present"})
+        with self.assertRaises(TypeError):
+            form.grammatical_features["tense"] = "past"  # type: ignore
+
+        # DomainConcept
+        concept = DomainConcept(
+            concept_id="c1",
+            canonical_name="Concept",
+            concept_type=ConceptType.SKILL,
+            metadata={"priority": 1},
+        )
+        with self.assertRaises(TypeError):
+            concept.metadata["priority"] = 2  # type: ignore
+
+        # ConceptLexicalMapping
+        mapping = ConceptLexicalMapping(
+            mapping_id="m1", concept_id="c1", lexical_id="lex1", metadata={"rule": "exact"}
+        )
+        with self.assertRaises(TypeError):
+            mapping.metadata["rule"] = "fuzzy"  # type: ignore
+
+        # RequirementFrame
+        frame = RequirementFrame(
+            frame_id="f1",
+            canonical_expression="exp",
+            head_lemma="exp",
+            head_pos="NOUN",
+            metadata={"weight": 1.5},
+        )
+        with self.assertRaises(TypeError):
+            frame.metadata["weight"] = 2.0  # type: ignore
+
+        # KnowledgeMetadata
+        meta = KnowledgeMetadata(
+            schema_version="3.0.0", knowledge_version="1.0.0", provenance={"author": "lead"}
+        )
+        with self.assertRaises(TypeError):
+            meta.provenance["author"] = "changed"  # type: ignore
+
+        # TextNormalizationResult
+        norm = TextNormalizationResult(
+            original_text="text",
+            normalized_text="text",
+            source_language="en",
+            target_language="en",
+            normalization_method="NONE",
+            model_version=None,
+            status=NormalizationStatus.PASSTHROUGH,
+            alignment_metadata={"tokens": 1},
+        )
+        with self.assertRaises(TypeError):
+            norm.alignment_metadata["tokens"] = 2  # type: ignore
+
+    def test_26_lifecycle_publication_governance(self):
+        """validate_publishable_concept strictly requires LifecycleStatus.APPROVED."""
+        draft_concept = DomainConcept(
+            concept_id="c_draft",
+            canonical_name="Discovered Candidate",
+            concept_type=ConceptType.SKILL,
+            status=LifecycleStatus.DRAFT,
+        )
+        proposed_concept = DomainConcept(
+            concept_id="c_prop",
+            canonical_name="Proposed Candidate",
+            concept_type=ConceptType.SKILL,
+            status=LifecycleStatus.PROPOSED,
+        )
+        approved_concept = DomainConcept(
+            concept_id="c_app",
+            canonical_name="Approved Skill",
+            concept_type=ConceptType.SKILL,
+            status=LifecycleStatus.APPROVED,
+        )
+
+        # Structural validation succeeds for all lifecycle statuses
+        validate_domain_concept(draft_concept)
+        validate_domain_concept(proposed_concept)
+        validate_domain_concept(approved_concept)
+
+        # Publication validation rejects DRAFT and PROPOSED
+        with self.assertRaises(InvariantViolationError):
+            validate_publishable_concept(draft_concept)
+        with self.assertRaises(InvariantViolationError):
+            validate_publishable_concept(proposed_concept)
+
+        # Publication validation accepts APPROVED
+        validate_publishable_concept(approved_concept)
+
+    def test_27_publication_bundle_rejects_unapproved_concepts(self):
+        """validate_publication_bundle rejects bundles containing non-approved concepts."""
+        draft_concept = DomainConcept(
+            concept_id="c_draft_only",
+            canonical_name="Unapproved Candidate",
+            concept_type=ConceptType.SKILL,
+            status=LifecycleStatus.DRAFT,
+        )
+        lex = LexicalEntry(lexical_id="lex_test", lemma="test", language="en", pos=("NOUN",))
+
+        # Rejection in publication bundle
+        with self.assertRaises(InvariantViolationError):
+            validate_publication_bundle(
+                lexical_entries=[lex],
+                domain_concepts=[draft_concept],
+                morphological_relations=[],
+                concept_mappings=[],
+                requirement_frames=[],
+            )
+
+        # Allowed in general discovery bundle
+        validate_knowledge_bundle(
+            lexical_entries=[lex],
+            domain_concepts=[draft_concept],
+            morphological_relations=[],
+            concept_mappings=[],
+            requirement_frames=[],
+            require_approved_lifecycle=False,
+        )
+
+    def test_28_concept_store_polysemous_alias_resolution(self):
+        """IConceptStore.resolve_alias returns List[DomainConcept] supporting polysemy."""
+        class MockConceptStore(IConceptStore):
+            def __init__(self, concepts: List[DomainConcept]):
+                self.concepts = {c.concept_id: c for c in concepts}
+
+            def get_by_id(self, concept_id: str) -> Optional[DomainConcept]:
+                return self.concepts.get(concept_id)
+
+            def get_by_canonical_name(self, name: str) -> Optional[DomainConcept]:
+                return next((c for c in self.concepts.values() if c.canonical_name == name), None)
+
+            def resolve_alias(
+                self, alias: str, context_domain: Optional[str] = None
+            ) -> List[DomainConcept]:
+                matches = [c for c in self.concepts.values() if alias in c.aliases or c.canonical_name == alias]
+                if context_domain:
+                    matches = [c for c in matches if any(a.domain == context_domain for a in c.domains)]
+                return matches
+
+            def resolve_single_alias(
+                self, alias: str, context_domain: Optional[str] = None
+            ) -> Optional[DomainConcept]:
+                candidates = self.resolve_alias(alias, context_domain=context_domain)
+                return candidates[0] if len(candidates) == 1 else None
+
+            def get_by_type(self, concept_type: ConceptType) -> List[DomainConcept]:
+                return [c for c in self.concepts.values() if c.concept_type == concept_type]
+
+            def get_by_domain(self, domain: str, sub_category: Optional[str] = None) -> List[DomainConcept]:
+                return [c for c in self.concepts.values() if any(a.domain == domain for a in c.domains)]
+
+            def get_concepts_for_lexical_id(
+                self, lexical_id: str, context_domain: Optional[str] = None
+            ) -> List[DomainConcept]:
+                return []
+
+            def get_lexical_mappings(self, concept_id: str) -> List[ConceptLexicalMapping]:
+                return []
+
+            def get_all_concepts(self) -> List[DomainConcept]:
+                return list(self.concepts.values())
+
+        c_cicd = DomainConcept(
+            concept_id="c_cicd",
+            canonical_name="CI/CD Pipeline",
+            concept_type=ConceptType.SKILL,
+            domains=[ConceptAssociation(domain="Software Engineering & IT")],
+            aliases=["pipeline"],
+        )
+        c_data = DomainConcept(
+            concept_id="c_data",
+            canonical_name="Data Pipeline",
+            concept_type=ConceptType.SKILL,
+            domains=[ConceptAssociation(domain="Data Science & Analytics")],
+            aliases=["pipeline"],
+        )
+        c_sales = DomainConcept(
+            concept_id="c_sales",
+            canonical_name="Sales Pipeline",
+            concept_type=ConceptType.BUSINESS_ACTIVITY,
+            domains=[ConceptAssociation(domain="Sales & Business Development")],
+            aliases=["pipeline"],
+        )
+
+        store = MockConceptStore([c_cicd, c_data, c_sales])
+
+        # Without context: returns all 3 candidates
+        candidates = store.resolve_alias("pipeline")
+        self.assertEqual(len(candidates), 3)
+
+        # Ambiguous single lookup returns None
+        self.assertIsNone(store.resolve_single_alias("pipeline"))
+
+        # Context-domain disambiguation
+        data_candidates = store.resolve_alias("pipeline", context_domain="Data Science & Analytics")
+        self.assertEqual(len(data_candidates), 1)
+        self.assertEqual(data_candidates[0].canonical_name, "Data Pipeline")
+
+        # Disambiguated single lookup succeeds
+        single_res = store.resolve_single_alias("pipeline", context_domain="Data Science & Analytics")
+        self.assertIsNotNone(single_res)
+        self.assertEqual(single_res.canonical_name, "Data Pipeline")
+
+    def test_29_skill_level_entry_strong_typing_and_immutability(self):
+        """SkillLevelEntry replaces Any in level governance contracts."""
+        entry = SkillLevelEntry(
+            raw_level="Expert",
+            governed_level="Advanced",
+            skill_type="Technical",
+            confidence=1.0,
+            metadata={"source": "M1 Level Matrix"},
+        )
+        validate_skill_level_entry(entry)
+        self.assertEqual(entry.raw_level, "Expert")
+        self.assertEqual(entry.governed_level, "Advanced")
+
+        # Immutability
+        with self.assertRaises(FrozenInstanceError):
+            entry.governed_level = "Beginner"  # type: ignore
+
+        # Deep metadata immutability
+        with self.assertRaises(TypeError):
+            entry.metadata["source"] = "modified"  # type: ignore
+
+        # Rejection of empty level
+        with self.assertRaises(ValueError):
+            SkillLevelEntry(raw_level="", governed_level="Advanced")
+
+    def test_30_frame_occurrence_validation_and_boundary_checks(self):
+        """FrameOccurrence validates character offsets and complement realize text."""
+        raw_sentence = "Candidates must possess strong experience in Python and SQL database architecture."
+        occ = FrameOccurrence(
+            occurrence_id="occ_001",
+            frame_id="frame_experience_in",
+            source_text=raw_sentence,
+            start_char=24,
+            end_char=37,
+            extracted_complement_text="Python and SQL database architecture",
+            complement_type=FrameComplement.NOUN_PHRASE,
+            job_id="job_12345",
+            section_id="sec_req_01",
+            confidence=0.98,
+            metadata={"engine": "spaCy_parser"},
+        )
+        validate_frame_occurrence(occ)
+        self.assertEqual(occ.extracted_complement_text, "Python and SQL database architecture")
+        self.assertEqual(occ.complement_type, FrameComplement.NOUN_PHRASE)
+
+        # Offset validation
+        with self.assertRaises(ValueError):
+            FrameOccurrence(
+                occurrence_id="occ_err",
+                frame_id="f1",
+                source_text="short",
+                start_char=10,
+                end_char=5,  # end < start
+                extracted_complement_text="comp",
+                complement_type=FrameComplement.NOUN_PHRASE,
+            )
+
+        # Deep immutability
+        with self.assertRaises(TypeError):
+            occ.metadata["engine"] = "other"  # type: ignore
+
+    def test_31_evidence_scope_and_temporal_validation(self):
+        """Evidence validates CountingScope and temporal window consistency."""
+        ev = KnowledgeEvidence(
+            evidence_id="ev_scoped",
+            target_id="concept_sap",
+            source_identifier="egypt_jobs_db.job_descriptions",
+            raw_occurrences_count=100,
+            distinct_sections_count=80,
+            distinct_jobs_count=50,
+            collected_at="2026-11-06T00:00:00Z",
+            counting_scope=CountingScope.TIME_WINDOW,
+            snapshot_id="snapshot_2026_q4",
+            time_window_start="2026-01-01",
+            time_window_end="2026-06-30",
+        )
+        validate_evidence(ev)
+        self.assertEqual(ev.counting_scope, CountingScope.TIME_WINDOW)
+
+        # Temporal bounds check: start > end must be rejected
+        ev_invalid_time = KnowledgeEvidence(
+            evidence_id="ev_time_err",
+            target_id="concept_sap",
+            source_identifier="egypt_jobs_db",
+            raw_occurrences_count=10,
+            distinct_sections_count=5,
+            distinct_jobs_count=5,
+            collected_at="2026-11-06T00:00:00Z",
+            time_window_start="2026-12-31",
+            time_window_end="2026-01-01",  # end precedes start
+        )
+        with self.assertRaises(ValidationError):
+            validate_evidence(ev_invalid_time)
 
 
 if __name__ == "__main__":

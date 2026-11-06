@@ -3,10 +3,12 @@ Linguistic Intelligence — Milestone 3.0 Knowledge Schema & Invariants
 =====================================================================
 Validates knowledge entities, schema version compatibility, and relational invariants:
   - Referential integrity across lexical entries, morphological relations, and concepts
-  - Statistical evidence invariants (raw >= sections >= jobs >= 0)
+  - Statistical evidence containment hierarchy (raw >= sections >= jobs >= 0)
   - Non-equivalence invariant: derivation != semantic concept identity
   - Concept classification taxonomy guardrails (prevent unknown terms -> SKILL)
-  - Source text immutability and normalizer contract safety
+  - Production publication lifecycle governance: separating discovery candidates (DRAFT/PROPOSED)
+    from approved runtime concepts (APPROVED)
+  - Deep immutability and normalizer contract safety
 """
 
 from __future__ import annotations
@@ -18,9 +20,11 @@ from linguistic_intelligence.kb.types import (
     ConceptAssociation,
     ConceptLexicalMapping,
     ConceptType,
+    CountingScope,
     DerivationType,
     DomainConcept,
     FrameComplement,
+    FrameOccurrence,
     KnowledgeEvidence,
     KnowledgeMetadata,
     LexicalEntry,
@@ -32,6 +36,7 @@ from linguistic_intelligence.kb.types import (
     MorphologyRelationType,
     NormalizationStatus,
     RequirementFrame,
+    SkillLevelEntry,
     TextNormalizationResult,
 )
 
@@ -154,7 +159,7 @@ def validate_concept_association(assoc: ConceptAssociation) -> None:
 
 
 def validate_domain_concept(concept: DomainConcept) -> None:
-    """Validate a DomainConcept entity."""
+    """Validate a DomainConcept entity for structural correctness."""
     if not isinstance(concept, DomainConcept):
         raise ValidationError(f"Expected DomainConcept instance, got {type(concept).__name__}")
     if not concept.concept_id or not concept.concept_id.strip():
@@ -171,6 +176,20 @@ def validate_domain_concept(concept: DomainConcept) -> None:
         )
     for assoc in concept.domains:
         validate_concept_association(assoc)
+
+
+def validate_publishable_concept(concept: DomainConcept) -> None:
+    """Validate that a concept is officially APPROVED for runtime publication.
+    
+    Prevents DRAFT, PROPOSED, DEPRECATED, or REJECTED concepts from entering
+    production runtime snapshots while allowing them in discovery stores.
+    """
+    validate_domain_concept(concept)
+    if concept.status != LifecycleStatus.APPROVED:
+        raise InvariantViolationError(
+            f"Concept '{concept.concept_id}' has lifecycle status '{concept.status.value}', "
+            f"but only '{LifecycleStatus.APPROVED.value}' concepts can be published for runtime."
+        )
 
 
 def validate_concept_lexical_mapping(mapping: ConceptLexicalMapping) -> None:
@@ -192,7 +211,7 @@ def validate_concept_lexical_mapping(mapping: ConceptLexicalMapping) -> None:
 
 
 def validate_requirement_frame(frame: RequirementFrame) -> None:
-    """Validate a RequirementFrame entity."""
+    """Validate a RequirementFrame entity (Frame Definition)."""
     if not isinstance(frame, RequirementFrame):
         raise ValidationError(f"Expected RequirementFrame instance, got {type(frame).__name__}")
     if not frame.frame_id or not frame.frame_id.strip():
@@ -209,8 +228,48 @@ def validate_requirement_frame(frame: RequirementFrame) -> None:
         )
 
 
+def validate_frame_occurrence(occurrence: FrameOccurrence) -> None:
+    """Validate a concrete FrameOccurrence in raw text."""
+    if not isinstance(occurrence, FrameOccurrence):
+        raise ValidationError(f"Expected FrameOccurrence instance, got {type(occurrence).__name__}")
+    if not occurrence.occurrence_id or not occurrence.occurrence_id.strip():
+        raise ValidationError("FrameOccurrence 'occurrence_id' cannot be empty.")
+    if not occurrence.frame_id or not occurrence.frame_id.strip():
+        raise ValidationError("FrameOccurrence 'frame_id' cannot be empty.")
+    if occurrence.source_text is None:
+        raise ValidationError("FrameOccurrence 'source_text' cannot be None.")
+    if occurrence.start_char < 0:
+        raise ValidationError(f"start_char cannot be negative ({occurrence.start_char}).")
+    if occurrence.end_char < occurrence.start_char:
+        raise ValidationError(
+            f"end_char ({occurrence.end_char}) cannot precede start_char ({occurrence.start_char})."
+        )
+    if not isinstance(occurrence.complement_type, FrameComplement):
+        raise ValidationError(
+            f"Invalid complement_type: '{occurrence.complement_type}'. Must be FrameComplement."
+        )
+    if not (0.0 <= occurrence.confidence <= 1.0):
+        raise InvariantViolationError(
+            f"Confidence must be between 0.0 and 1.0, got {occurrence.confidence}"
+        )
+
+
+def validate_skill_level_entry(entry: SkillLevelEntry) -> None:
+    """Validate a SkillLevelEntry entity."""
+    if not isinstance(entry, SkillLevelEntry):
+        raise ValidationError(f"Expected SkillLevelEntry instance, got {type(entry).__name__}")
+    if not entry.raw_level or not entry.raw_level.strip():
+        raise ValidationError("SkillLevelEntry 'raw_level' cannot be empty.")
+    if not entry.governed_level or not entry.governed_level.strip():
+        raise ValidationError("SkillLevelEntry 'governed_level' cannot be empty.")
+    if not (0.0 <= entry.confidence <= 1.0):
+        raise InvariantViolationError(
+            f"Confidence must be between 0.0 and 1.0, got {entry.confidence}"
+        )
+
+
 def validate_evidence(evidence: KnowledgeEvidence) -> None:
-    """Validate KnowledgeEvidence and enforce distinct denominator hierarchy."""
+    """Validate KnowledgeEvidence and enforce distinct denominator containment hierarchy."""
     if not isinstance(evidence, KnowledgeEvidence):
         raise ValidationError(f"Expected KnowledgeEvidence instance, got {type(evidence).__name__}")
     if not evidence.evidence_id or not evidence.evidence_id.strip():
@@ -219,8 +278,12 @@ def validate_evidence(evidence: KnowledgeEvidence) -> None:
         raise ValidationError("KnowledgeEvidence 'target_id' cannot be empty.")
     if not evidence.source_identifier or not evidence.source_identifier.strip():
         raise ValidationError("KnowledgeEvidence 'source_identifier' cannot be empty.")
+    if not isinstance(evidence.counting_scope, CountingScope):
+        raise ValidationError(
+            f"Invalid counting_scope: '{evidence.counting_scope}'. Must be CountingScope enum."
+        )
 
-    # Distinct Denominators & Anti-Inflation Rules
+    # Distinct Denominators & Containment Hierarchy
     raw = evidence.raw_occurrences_count
     sec = evidence.distinct_sections_count
     jobs = evidence.distinct_jobs_count
@@ -231,12 +294,22 @@ def validate_evidence(evidence: KnowledgeEvidence) -> None:
         )
     if sec > raw:
         raise InvariantViolationError(
-            f"distinct_sections_count ({sec}) cannot exceed raw_occurrences_count ({raw})."
+            f"Containment violation: distinct_sections_count ({sec}) cannot exceed "
+            f"raw_occurrences_count ({raw})."
         )
     if jobs > sec:
         raise InvariantViolationError(
-            f"distinct_jobs_count ({jobs}) cannot exceed distinct_sections_count ({sec})."
+            f"Containment violation: distinct_jobs_count ({jobs}) cannot exceed "
+            f"distinct_sections_count ({sec})."
         )
+
+    # Temporal bounds validation
+    if evidence.time_window_start and evidence.time_window_end:
+        if evidence.time_window_start > evidence.time_window_end:
+            raise ValidationError(
+                f"time_window_start ('{evidence.time_window_start}') cannot be later than "
+                f"time_window_end ('{evidence.time_window_end}')."
+            )
 
 
 def validate_metadata(
@@ -283,7 +356,7 @@ def validate_normalization_result(result: TextNormalizationResult) -> None:
 
 
 # ==============================================================================
-# 4. Knowledge Bundle Referential Integrity & Invariant Validation
+# 4. Knowledge Bundle Referential Integrity & Publication Validation
 # ==============================================================================
 
 
@@ -296,6 +369,7 @@ def validate_knowledge_bundle(
     evidence_list: Optional[Collection[KnowledgeEvidence]] = None,
     metadata: Optional[KnowledgeMetadata] = None,
     expected_major_schema: Optional[str] = "3",
+    require_approved_lifecycle: bool = False,
 ) -> None:
     """Perform exhaustive referential integrity and invariant validation across a full KB collection.
     
@@ -306,6 +380,8 @@ def validate_knowledge_bundle(
       4. Evidence targets existing concepts, lexical entries, relations, or frames.
       5. Derivations do NOT implicitly collapse concepts (preserves entity distinction).
       6. Metadata version compatibility.
+      7. Publication Lifecycle Governance: when require_approved_lifecycle=True,
+         verifies that all concepts have LifecycleStatus.APPROVED.
     """
     if metadata is not None:
         validate_metadata(metadata, expected_major_schema=expected_major_schema)
@@ -321,7 +397,10 @@ def validate_knowledge_bundle(
     # 2. Validate Domain Concepts & build ID index
     concept_ids: Set[str] = set()
     for concept in domain_concepts:
-        validate_domain_concept(concept)
+        if require_approved_lifecycle:
+            validate_publishable_concept(concept)
+        else:
+            validate_domain_concept(concept)
         if concept.concept_id in concept_ids:
             raise InvariantViolationError(f"Duplicate concept_id detected: '{concept.concept_id}'")
         concept_ids.add(concept.concept_id)
@@ -384,3 +463,31 @@ def validate_knowledge_bundle(
                 raise ReferentialIntegrityError(
                     f"Evidence '{ev.evidence_id}' references non-existent target_id: '{ev.target_id}'"
                 )
+
+
+def validate_publication_bundle(
+    lexical_entries: Collection[LexicalEntry],
+    domain_concepts: Collection[DomainConcept],
+    morphological_relations: Collection[MorphologicalRelation],
+    concept_mappings: Collection[ConceptLexicalMapping],
+    requirement_frames: Collection[RequirementFrame],
+    evidence_list: Optional[Collection[KnowledgeEvidence]] = None,
+    metadata: Optional[KnowledgeMetadata] = None,
+    expected_major_schema: Optional[str] = "3",
+) -> None:
+    """Validate a complete knowledge bundle strictly enforcing production publication invariants.
+    
+    Guarantees that all contained concepts have LifecycleStatus.APPROVED.
+    Rejects DRAFT, PROPOSED, DEPRECATED, or REJECTED concepts from entering runtime bundles.
+    """
+    validate_knowledge_bundle(
+        lexical_entries=lexical_entries,
+        domain_concepts=domain_concepts,
+        morphological_relations=morphological_relations,
+        concept_mappings=concept_mappings,
+        requirement_frames=requirement_frames,
+        evidence_list=evidence_list,
+        metadata=metadata,
+        expected_major_schema=expected_major_schema,
+        require_approved_lifecycle=True,
+    )

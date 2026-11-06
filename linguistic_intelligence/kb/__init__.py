@@ -9,9 +9,11 @@ from linguistic_intelligence.kb.types import (
     ConceptAssociation,
     ConceptLexicalMapping,
     ConceptType,
+    CountingScope,
     DerivationType,
     DomainConcept,
     FrameComplement,
+    FrameOccurrence,
     KnowledgeEvidence,
     KnowledgeMetadata,
     LexicalEntry,
@@ -23,7 +25,9 @@ from linguistic_intelligence.kb.types import (
     MorphologyRelationType,
     NormalizationStatus,
     RequirementFrame,
+    SkillLevelEntry,
     TextNormalizationResult,
+    freeze_value,
 )
 
 from linguistic_intelligence.kb.contracts import (
@@ -46,23 +50,29 @@ from linguistic_intelligence.kb.schema import (
     validate_concept_lexical_mapping,
     validate_domain_concept,
     validate_evidence,
+    validate_frame_occurrence,
     validate_knowledge_bundle,
     validate_lexical_entry,
     validate_lexical_form,
     validate_metadata,
     validate_morphological_relation,
     validate_normalization_result,
+    validate_publication_bundle,
+    validate_publishable_concept,
     validate_requirement_frame,
+    validate_skill_level_entry,
 )
 
 __all__ = [
-    # Types & Enums
+    # Types, Enums & Helpers
     "ConceptAssociation",
     "ConceptLexicalMapping",
     "ConceptType",
+    "CountingScope",
     "DerivationType",
     "DomainConcept",
     "FrameComplement",
+    "FrameOccurrence",
     "KnowledgeEvidence",
     "KnowledgeMetadata",
     "LexicalEntry",
@@ -74,7 +84,9 @@ __all__ = [
     "MorphologyRelationType",
     "NormalizationStatus",
     "RequirementFrame",
+    "SkillLevelEntry",
     "TextNormalizationResult",
+    "freeze_value",
     # Contracts
     "IConceptStore",
     "IExpressionStore",
@@ -93,11 +105,15 @@ __all__ = [
     "validate_concept_lexical_mapping",
     "validate_domain_concept",
     "validate_evidence",
+    "validate_frame_occurrence",
     "validate_knowledge_bundle",
     "validate_lexical_entry",
     "validate_lexical_form",
     "validate_metadata",
     "validate_morphological_relation",
     "validate_normalization_result",
+    "validate_publication_bundle",
+    "validate_publishable_concept",
     "validate_requirement_frame",
+    "validate_skill_level_entry",
 ]

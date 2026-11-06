@@ -15,7 +15,10 @@ CRITICAL DESIGN PRINCIPLES:
   2. Complete separation of storage backend from runtime query contracts.
   3. Strict read contracts that future execution components (SkillLevelGovernor, AtomicClassifier)
      will consume without introducing hardcoded lists.
-  4. Multilingual boundary (ITextNormalizer) guarantees original-text immutability.
+  4. Strong typing throughout: SkillLevelEntry replaces Any in level governance contracts.
+  5. Polysemy-aware alias resolution: resolve_alias returns List[DomainConcept] to prevent
+     blind overwriting of multi-domain terms.
+  6. Multilingual boundary (ITextNormalizer) guarantees original-text immutability.
 """
 
 from __future__ import annotations
@@ -34,6 +37,7 @@ from linguistic_intelligence.kb.types import (
     MorphologicalRelation,
     MorphologyRelationType,
     RequirementFrame,
+    SkillLevelEntry,
     TextNormalizationResult,
 )
 
@@ -120,8 +124,8 @@ class ILevelStore(ABC):
         pass
 
     @abstractmethod
-    def get_level_entry(self, raw_level: str) -> Optional[Any]:
-        """Retrieve full level metadata entry for a raw level string."""
+    def get_level_entry(self, raw_level: str) -> Optional[SkillLevelEntry]:
+        """Retrieve structured level governance entry for a raw level string."""
         pass
 
     @abstractmethod
@@ -149,8 +153,30 @@ class IConceptStore(ABC):
         pass
 
     @abstractmethod
-    def resolve_alias(self, alias: str) -> Optional[DomainConcept]:
-        """Resolve a recognized alias or surface string to its canonical domain concept."""
+    def resolve_alias(
+        self,
+        alias: str,
+        context_domain: Optional[str] = None,
+    ) -> List[DomainConcept]:
+        """Resolve an alias or surface string to candidate domain concepts.
+        
+        Returns a list of matching concepts to explicitly support polysemy
+        (e.g. 'pipeline' in Software vs Data vs Sales). When context_domain
+        is provided, candidate concepts are filtered or ranked by domain.
+        """
+        pass
+
+    @abstractmethod
+    def resolve_single_alias(
+        self,
+        alias: str,
+        context_domain: Optional[str] = None,
+    ) -> Optional[DomainConcept]:
+        """Resolve an alias returning a single concept if unambiguous.
+        
+        Returns the unique concept if exactly one match exists (or after domain filtering);
+        returns None if ambiguous (multiple matches) or unmatched.
+        """
         pass
 
     @abstractmethod
