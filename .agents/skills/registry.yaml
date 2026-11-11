@@ -1,0 +1,620 @@
+version: 1.1.0
+schema: egypt-career-map-skill-registry-v1
+last_updated: '2026-11-11'
+skills:
+- id: career_intelligence
+  name: career_intelligence
+  path: .agents/skills/career_intelligence
+  domain: Labor Market Intelligence
+  purpose: Transforms raw PostgreSQL data into 100-point career intelligence metrics, derived analytics, and 3D geospatial
+    visualizations.
+  triggers:
+  - 100-point architecture queries
+  - Geospatial Egyptian labor market visualization
+  - Derived career transition analytics
+  status: ACTIVE
+  source_type: existing
+  source_url: local_repository
+  license: Proprietary / Project-Owned
+  version_or_commit: 1.0.0
+  security_review: passed
+  owner_role: BI / Market Intelligence Specialist
+  dependencies: []
+  overlaps:
+  - ecm-bi-market-intelligence
+  complements:
+  - ecm-bi-market-intelligence
+  - ecm-analytics-data-modeling
+  last_reviewed: '2026-11-11'
+  verification_notes: Pre-existing workspace skill. Verified compatible with local PostgreSQL database schema.
+- id: dispatching-parallel-agents
+  name: dispatching-parallel-agents
+  path: .agents/skills/dispatching-parallel-agents
+  domain: Agent Orchestration
+  purpose: Delegates independent tasks and investigations to specialized parallel agents with isolated context and decoupled
+    write boundaries.
+  triggers:
+  - 2 or more independent failures
+  - Parallel domain investigations
+  - Decoupled multi-file reviews
+  status: ACTIVE
+  source_type: external
+  source_url: https://github.com/obra/superpowers
+  license: MIT
+  version_or_commit: main (2026-11-11)
+  security_review: passed
+  owner_role: Lead Orchestrator / Integrator
+  dependencies: []
+  overlaps: []
+  complements:
+  - writing-plans
+  - receiving-code-review
+  last_reviewed: '2026-11-11'
+  verification_notes: 'Scanned via skill-security (Score: 0, SAFE). Enforces isolated context per subagent.'
+  source_commit: 4c703b4129b0f19c99fa8f9c0e2a2c13d8d5e5b2
+  source_repo: https://github.com/obra/superpowers
+- id: receiving-code-review
+  name: receiving-code-review
+  path: .agents/skills/receiving-code-review
+  domain: Agent Orchestration
+  purpose: Guides agents when receiving code review feedback, requiring technical verification and evidence before making
+    changes.
+  triggers:
+  - Receiving review feedback
+  - Challenging questionable review comments
+  - Resolving conflicting reviewer findings
+  status: ACTIVE
+  source_type: external
+  source_url: https://github.com/obra/superpowers
+  license: MIT
+  version_or_commit: main (2026-11-11)
+  security_review: passed
+  owner_role: Lead Orchestrator / Integrator
+  dependencies: []
+  overlaps: []
+  complements:
+  - requesting-code-review
+  - verification-before-completion
+  last_reviewed: '2026-11-11'
+  verification_notes: 'Scanned via skill-security (Score: 0, SAFE). Rejects blind performative agreement.'
+  source_commit: 4c703b4129b0f19c99fa8f9c0e2a2c13d8d5e5b2
+  source_repo: https://github.com/obra/superpowers
+- id: requesting-code-review
+  name: requesting-code-review
+  path: .agents/skills/requesting-code-review
+  domain: Quality Assurance
+  purpose: Structures evidence-based code review requests before merging, verifying requirements and test evidence.
+  triggers:
+  - Completing task milestones
+  - Before requesting PR or merge approval
+  - Independent code audits
+  status: ACTIVE
+  source_type: external
+  source_url: https://github.com/obra/superpowers
+  license: MIT
+  version_or_commit: main (2026-11-11)
+  security_review: passed_with_notes
+  owner_role: Independent QA / Verification Reviewer
+  dependencies: []
+  overlaps: []
+  complements:
+  - verification-before-completion
+  - ecm-testing-verification
+  last_reviewed: '2026-11-11'
+  verification_notes: 'Scanned via skill-security (Score: 46 - flagged due to review prompt instructions; verified safe for
+    internal review).'
+  source_commit: 4c703b4129b0f19c99fa8f9c0e2a2c13d8d5e5b2
+  source_repo: https://github.com/obra/superpowers
+- id: security-audit
+  name: security-audit
+  path: .agents/skills/security-audit
+  domain: Application Security
+  purpose: Coverage-led vulnerability hunting, source-first investigation, and structured reporting based on Cloudflare's
+    security audit skill.
+  triggers:
+  - Security questions
+  - Vulnerability assessments
+  - Codebase security audits and penetration reviews
+  status: ACTIVE
+  source_type: external
+  source_url: https://github.com/cloudflare/security-audit-skill
+  license: Apache-2.0
+  version_or_commit: main (2026-11-11)
+  security_review: passed
+  owner_role: Application Security Auditor
+  dependencies: []
+  overlaps:
+  - ecm-application-security
+  complements:
+  - ecm-application-security
+  - skill-security
+  last_reviewed: '2026-11-11'
+  verification_notes: 'Scanned via skill-security (Score: 0, SAFE). Provides universal sandboxed execution and ledger schema.'
+  source_commit: 4c703b4129b0f19c99fa8f9c0e2a2c13d8d5e5b2
+  source_repo: https://github.com/obra/superpowers
+- id: skill-security
+  name: skill-security
+  path: .agents/skills/skill-security
+  domain: Security Tooling
+  purpose: Audits AI agent skills for security risks, prompt injection, credential exfiltration, and malicious code before
+    installation.
+  triggers:
+  - Auditing third-party skills
+  - Inspecting new skill repositories
+  - Pre-installation safety checks
+  status: ACTIVE
+  source_type: external
+  source_url: https://github.com/superagent-ai/skills
+  license: MIT
+  version_or_commit: main (2026-11-11)
+  security_review: passed
+  owner_role: Application Security Auditor
+  dependencies: []
+  overlaps: []
+  complements:
+  - security-audit
+  last_reviewed: '2026-11-11'
+  verification_notes: Executable scanner script present in scripts/scan.py. Used to verify all installed skills.
+  source_commit: 4c703b4129b0f19c99fa8f9c0e2a2c13d8d5e5b2
+  source_repo: https://github.com/obra/superpowers
+- id: systematic-debugging
+  name: systematic-debugging
+  path: .agents/skills/systematic-debugging
+  domain: Debugging & Diagnostics
+  purpose: Enforces systematic hypothesis-driven debugging process when encountering bugs or unexpected behaviors before proposing
+    fixes.
+  triggers:
+  - Bug investigations
+  - Test failures
+  - Unexpected runtime errors
+  status: ACTIVE
+  source_type: external
+  source_url: https://github.com/obra/superpowers
+  license: MIT
+  version_or_commit: main (2026-11-11)
+  security_review: passed
+  owner_role: Backend / Worker Specialist
+  dependencies: []
+  overlaps: []
+  complements:
+  - verification-before-completion
+  - ecm-testing-verification
+  last_reviewed: '2026-11-11'
+  verification_notes: 'Scanned via skill-security (Score: 0, SAFE). Prevents speculative patching.'
+  source_commit: 4c703b4129b0f19c99fa8f9c0e2a2c13d8d5e5b2
+  source_repo: https://github.com/obra/superpowers
+- id: verification-before-completion
+  name: verification-before-completion
+  path: .agents/skills/verification-before-completion
+  domain: Quality Assurance
+  purpose: 'Strictly enforces the Iron Law: no completion claims without fresh verification command execution evidence.'
+  triggers:
+  - Before claiming work is complete
+  - Before claiming tests pass
+  - Before requesting PR or merge approval
+  status: ACTIVE
+  source_type: external
+  source_url: https://github.com/obra/superpowers
+  license: MIT
+  version_or_commit: main (2026-11-11)
+  security_review: passed
+  owner_role: Independent QA / Verification Reviewer
+  dependencies: []
+  overlaps: []
+  complements:
+  - ecm-testing-verification
+  last_reviewed: '2026-11-11'
+  verification_notes: 'Scanned via skill-security (Score: 8, SAFE). Core governance principle for all agents.'
+  source_commit: 4c703b4129b0f19c99fa8f9c0e2a2c13d8d5e5b2
+  source_repo: https://github.com/obra/superpowers
+- id: writing-plans
+  name: writing-plans
+  path: .agents/skills/writing-plans
+  domain: Planning & Architecture
+  purpose: Structures comprehensive, reviewable implementation plans for complex multi-step tasks before touching code.
+  triggers:
+  - Multi-step implementation tasks
+  - Spec implementation
+  - High-risk feature additions
+  status: ACTIVE
+  source_type: external
+  source_url: https://github.com/obra/superpowers
+  license: MIT
+  version_or_commit: main (2026-11-11)
+  security_review: passed
+  owner_role: Lead Orchestrator / Integrator
+  dependencies: []
+  overlaps: []
+  complements:
+  - dispatching-parallel-agents
+  - ecm-architecture-quality-review
+  last_reviewed: '2026-11-11'
+  verification_notes: 'Scanned via skill-security (Score: 0, SAFE). Enforces bite-sized plan steps.'
+  source_commit: 4c703b4129b0f19c99fa8f9c0e2a2c13d8d5e5b2
+  source_repo: https://github.com/obra/superpowers
+- id: ecm-data-engineering-pipelines
+  name: ecm-data-engineering-pipelines
+  path: .agents/skills/ecm-data-engineering-pipelines
+  domain: Data Platform
+  purpose: Engineering and operating resilient batch, streaming, and incremental ETL/ELT pipelines, checkpointing, and replay.
+  triggers:
+  - Data pipeline design and debugging
+  - ETL/ELT staging and cleansing
+  - Watermarking, backfills, and schema evolution
+  status: ACTIVE
+  source_type: project_authored
+  source_url: local_repository
+  license: Proprietary / Project-Owned
+  version_or_commit: 1.0.0
+  security_review: passed
+  owner_role: Data Engineering Specialist
+  dependencies: []
+  overlaps: []
+  complements:
+  - ecm-postgresql-architecture
+  - ecm-data-quality-governance
+  last_reviewed: '2026-11-11'
+  verification_notes: Authored according to Kimball ETL principles and project standards.
+- id: ecm-postgresql-architecture
+  name: ecm-postgresql-architecture
+  path: .agents/skills/ecm-postgresql-architecture
+  domain: Database Engineering
+  purpose: PostgreSQL relational architecture, schema modeling, indexing strategy, transaction isolation, and query optimization.
+  triggers:
+  - Database schema design and migrations
+  - PostgreSQL query tuning and EXPLAIN ANALYZE
+  - Transaction isolation, concurrency locking, and connection pooling
+  status: ACTIVE
+  source_type: project_authored
+  source_url: local_repository
+  license: Proprietary / Project-Owned
+  version_or_commit: 1.0.0
+  security_review: passed
+  owner_role: PostgreSQL Specialist
+  dependencies: []
+  overlaps: []
+  complements:
+  - ecm-data-engineering-pipelines
+  - ecm-worker-reliability
+  last_reviewed: '2026-11-11'
+  verification_notes: Enforces non-blocking migrations, TIMESTAMPTZ, and FOR UPDATE SKIP LOCKED patterns.
+- id: ecm-data-quality-governance
+  name: ecm-data-quality-governance
+  path: .agents/skills/ecm-data-quality-governance
+  domain: Data Governance
+  purpose: Data quality contracts, automated validation layers, lineage tracking, freshness monitoring, and PII minimization.
+  triggers:
+  - Data quality assertions and contract definitions
+  - Data lineage and provenance auditing
+  - Quarantine routing and PII masking
+  status: ACTIVE
+  source_type: project_authored
+  source_url: local_repository
+  license: Proprietary / Project-Owned
+  version_or_commit: 1.0.0
+  security_review: passed
+  owner_role: Data Engineering Specialist
+  dependencies: []
+  overlaps: []
+  complements:
+  - ecm-data-engineering-pipelines
+  - ecm-bi-market-intelligence
+  last_reviewed: '2026-11-11'
+  verification_notes: Defines the 5 dimensions of labor market data quality and Egyptian phone/email masking.
+- id: ecm-hybrid-skill-extraction
+  name: ecm-hybrid-skill-extraction
+  path: .agents/skills/ecm-hybrid-skill-extraction
+  domain: AI & NLP Engineering
+  purpose: Deterministic-first hybrid skill extraction engine combining Aho-Corasick, trie/regex matching, and strict LLM
+    fallbacks.
+  triggers:
+  - Skill extraction from job descriptions
+  - Taxonomy alias graph mapping
+  - Contextual word disambiguation and hallucination containment
+  status: ACTIVE
+  source_type: project_authored
+  source_url: local_repository
+  license: Proprietary / Project-Owned
+  version_or_commit: 1.0.0
+  security_review: passed
+  owner_role: AI / NLP Specialist
+  dependencies:
+  - ecm-arabic-multilingual-nlp
+  overlaps: []
+  complements:
+  - ecm-arabic-multilingual-nlp
+  - ecm-nlp-evaluation
+  last_reviewed: '2026-11-11'
+  verification_notes: Enforces deterministic-first hierarchy with microsecond Aho-Corasick matching.
+- id: ecm-arabic-multilingual-nlp
+  name: ecm-arabic-multilingual-nlp
+  path: .agents/skills/ecm-arabic-multilingual-nlp
+  domain: Natural Language Processing
+  purpose: Multilingual Arabic-English text processing, Egyptian Arabic dialect normalization, and code-switching tokenization.
+  triggers:
+  - Arabic/English text preprocessing
+  - Egyptian Arabic colloquial normalization
+  - Code-switching technical term extraction (e.g., 'الـReact')
+  status: ACTIVE
+  source_type: project_authored
+  source_url: local_repository
+  license: Proprietary / Project-Owned
+  version_or_commit: 1.0.0
+  security_review: passed
+  owner_role: Arabic NLP Specialist
+  dependencies: []
+  overlaps: []
+  complements:
+  - ecm-hybrid-skill-extraction
+  - ecm-nlp-evaluation
+  last_reviewed: '2026-11-11'
+  verification_notes: Preserves technical punctuation (C++, C#, .NET) and handles Arabic particle prefixes.
+- id: ecm-nlp-evaluation
+  name: ecm-nlp-evaluation
+  path: .agents/skills/ecm-nlp-evaluation
+  domain: Model Evaluation
+  purpose: Empirical evaluation, precision, recall, F1, span matching, regression test suites, and gold standard benchmarking.
+  triggers:
+  - NLP model accuracy benchmarking
+  - Precision/Recall/F1 evaluation runs
+  - Skill extraction regression test gates
+  status: ACTIVE
+  source_type: project_authored
+  source_url: local_repository
+  license: Proprietary / Project-Owned
+  version_or_commit: 1.0.0
+  security_review: passed
+  owner_role: AI / NLP Specialist
+  dependencies: []
+  overlaps: []
+  complements:
+  - ecm-hybrid-skill-extraction
+  - ecm-testing-verification
+  last_reviewed: '2026-11-11'
+  verification_notes: Defines strict exact vs partial span matching and CI regression assertion gates.
+- id: ecm-web-ingestion-resilience
+  name: ecm-web-ingestion-resilience
+  path: .agents/skills/ecm-web-ingestion-resilience
+  domain: Web Ingestion
+  purpose: Resilient web scraping, crawling architecture, adaptive throttling, rate limiting, DOM drift defense, and ethical
+    ingestion.
+  triggers:
+  - Job scraper design and execution
+  - Rate limiting and circuit breaking on job portals
+  - DOM schema drift and parser updates
+  status: ACTIVE
+  source_type: project_authored
+  source_url: local_repository
+  license: Proprietary / Project-Owned
+  version_or_commit: 1.0.0
+  security_review: passed
+  owner_role: Web Ingestion Specialist
+  dependencies: []
+  overlaps: []
+  complements:
+  - ecm-data-engineering-pipelines
+  - ecm-worker-reliability
+  last_reviewed: '2026-11-11'
+  verification_notes: Strictly adheres to robots.txt and ethical scraping; zero CAPTCHA bypass.
+- id: ecm-worker-reliability
+  name: ecm-worker-reliability
+  path: .agents/skills/ecm-worker-reliability
+  domain: Distributed Systems
+  purpose: Asynchronous worker reliability, queue semantics, transactional outbox/inbox patterns, idempotency, and distributed
+    leasing.
+  triggers:
+  - Background worker and queue consumer implementation
+  - Transactional outbox claiming and dispatch
+  - Distributed lease renewal, fencing tokens, and dead-letter queues
+  status: ACTIVE
+  source_type: project_authored
+  source_url: local_repository
+  license: Proprietary / Project-Owned
+  version_or_commit: 1.0.0
+  security_review: passed
+  owner_role: Backend / Worker Specialist
+  dependencies:
+  - ecm-postgresql-architecture
+  overlaps: []
+  complements:
+  - ecm-postgresql-architecture
+  - ecm-production-reliability
+  last_reviewed: '2026-11-11'
+  verification_notes: Codifies At-Least-Once delivery, 64-char SHA-256 keys, and JIT claim fencing.
+- id: ecm-api-backend-architecture
+  name: ecm-api-backend-architecture
+  path: .agents/skills/ecm-api-backend-architecture
+  domain: Backend Architecture
+  purpose: REST/RPC API architecture, request validation, tenant/session isolation, error contracts, and backward compatibility.
+  triggers:
+  - API route design and controllers
+  - Request schema validation and error standardization
+  - Keyset pagination and IDOR defense
+  status: ACTIVE
+  source_type: project_authored
+  source_url: local_repository
+  license: Proprietary / Project-Owned
+  version_or_commit: 1.0.0
+  security_review: passed
+  owner_role: Backend / Worker Specialist
+  dependencies: []
+  overlaps: []
+  complements:
+  - ecm-application-security
+  - ecm-worker-reliability
+  last_reviewed: '2026-11-11'
+  verification_notes: Enforces RFC 9457 Problem Details and keyset pagination.
+- id: ecm-application-security
+  name: ecm-application-security
+  path: .agents/skills/ecm-application-security
+  domain: Application Security
+  purpose: Application security standards, threat modeling, SSRF egress controls, prototype pollution defenses, and cryptographic
+    verification.
+  triggers:
+  - SSRF transport implementation and egress validation
+  - Strict JSON parsing and prototype pollution defense
+  - Ed25519 cryptographic signatures and dual-control recovery
+  status: ACTIVE
+  source_type: project_authored
+  source_url: local_repository
+  license: Proprietary / Project-Owned
+  version_or_commit: 1.0.0
+  security_review: passed
+  owner_role: Application Security Auditor
+  dependencies:
+  - security-audit
+  overlaps:
+  - security-audit
+  complements:
+  - security-audit
+  - ecm-api-backend-architecture
+  last_reviewed: '2026-11-11'
+  verification_notes: Codifies the 3-stage egress policy and RFC 8785 canonical serialization.
+- id: ecm-production-reliability
+  name: ecm-production-reliability
+  path: .agents/skills/ecm-production-reliability
+  domain: Reliability Engineering
+  purpose: Production reliability engineering, failure mode analysis, graceful degradation, circuit breaking, and observability
+    (SLO/SLI).
+  triggers:
+  - Failure mode and effects analysis (FMEA)
+  - Timeout budget propagation and health check probes
+  - Incident triage and disaster recovery runbooks
+  status: ACTIVE
+  source_type: project_authored
+  source_url: local_repository
+  license: Proprietary / Project-Owned
+  version_or_commit: 1.0.0
+  security_review: passed
+  owner_role: Backend / Worker Specialist
+  dependencies: []
+  overlaps: []
+  complements:
+  - ecm-worker-reliability
+  - ecm-architecture-quality-review
+  last_reviewed: '2026-11-11'
+  verification_notes: Separates liveness from readiness probes; establishes deadline propagation.
+- id: ecm-frontend-generative-ui
+  name: ecm-frontend-generative-ui
+  path: .agents/skills/ecm-frontend-generative-ui
+  domain: Frontend Engineering
+  purpose: Frontend architecture, Next.js/React component design, responsive layouts, accessibility, and safe Generative UI
+    rendering.
+  triggers:
+  - Next.js/React component implementation
+  - Generative UI card and chart rendering
+  - RTL/LTR Arabic layout switching and WCAG accessibility
+  status: ACTIVE
+  source_type: project_authored
+  source_url: local_repository
+  license: Proprietary / Project-Owned
+  version_or_commit: 1.0.0
+  security_review: passed
+  owner_role: Frontend Specialist
+  dependencies: []
+  overlaps: []
+  complements:
+  - ecm-bi-market-intelligence
+  last_reviewed: '2026-11-11'
+  verification_notes: Strictly forbids raw dangerouslySetInnerHTML; uses schema-validated component catalog.
+- id: ecm-bi-market-intelligence
+  name: ecm-bi-market-intelligence
+  path: .agents/skills/ecm-bi-market-intelligence
+  domain: Business Intelligence
+  purpose: Business intelligence, Egyptian labor market analytics, salary distribution estimation, skill demand trending,
+    and geographic segmentation.
+  triggers:
+  - Labor market metric calculation and reporting
+  - Salary median and IQR distribution modeling
+  - Skill co-occurrence and geographic segmentation
+  status: ACTIVE
+  source_type: project_authored
+  source_url: local_repository
+  license: Proprietary / Project-Owned
+  version_or_commit: 1.0.0
+  security_review: passed
+  owner_role: BI / Market Intelligence Specialist
+  dependencies:
+  - career_intelligence
+  overlaps:
+  - career_intelligence
+  complements:
+  - career_intelligence
+  - ecm-analytics-data-modeling
+  last_reviewed: '2026-11-11'
+  verification_notes: Mandates median/IQR for skewed salaries and enforces denominator deduplication.
+- id: ecm-analytics-data-modeling
+  name: ecm-analytics-data-modeling
+  path: .agents/skills/ecm-analytics-data-modeling
+  domain: Data Modeling
+  purpose: Dimensional data modeling, star schemas, fact and dimension design, slowly changing dimensions (SCD), and semantic
+    analytical layers.
+  triggers:
+  - Analytical star schema and fact table design
+  - Conformed dimension modeling (Dim_Skill, Dim_Location)
+  - Grain declaration and SCD type 1/2 design
+  status: ACTIVE
+  source_type: project_authored
+  source_url: local_repository
+  license: Proprietary / Project-Owned
+  version_or_commit: 1.0.0
+  security_review: passed
+  owner_role: Data Engineering Specialist
+  dependencies:
+  - ecm-postgresql-architecture
+  overlaps: []
+  complements:
+  - ecm-postgresql-architecture
+  - ecm-bi-market-intelligence
+  last_reviewed: '2026-11-11'
+  verification_notes: Enforces Kimball grain declaration comments on every fact table.
+- id: ecm-architecture-quality-review
+  name: ecm-architecture-quality-review
+  path: .agents/skills/ecm-architecture-quality-review
+  domain: Architecture Review
+  purpose: Architecture decision records (ADRs), boundary integrity, dependency direction, failure-mode review, and technical
+    approval gates.
+  triggers:
+  - Architecture specification review
+  - ADR formulation and evaluation
+  - Milestone approval and technical sign-off gates
+  status: ACTIVE
+  source_type: project_authored
+  source_url: local_repository
+  license: Proprietary / Project-Owned
+  version_or_commit: 1.0.0
+  security_review: passed
+  owner_role: Lead Orchestrator / Integrator
+  dependencies: []
+  overlaps: []
+  complements:
+  - writing-plans
+  - ecm-testing-verification
+  last_reviewed: '2026-11-11'
+  verification_notes: Enforces clean architecture dependency direction and evidence-based verdicts.
+- id: ecm-testing-verification
+  name: ecm-testing-verification
+  path: .agents/skills/ecm-testing-verification
+  domain: Quality Assurance
+  purpose: Multi-tier testing strategy, deterministic test fixtures, concurrency testing, metamorphic testing, and reproducible
+    verification evidence.
+  triggers:
+  - Test suite implementation and execution
+  - Concurrency and race condition testing
+  - Independent verification audits and fixture management
+  status: ACTIVE
+  source_type: project_authored
+  source_url: local_repository
+  license: Proprietary / Project-Owned
+  version_or_commit: 1.0.0
+  security_review: passed
+  owner_role: Independent QA / Verification Reviewer
+  dependencies:
+  - verification-before-completion
+  overlaps:
+  - verification-before-completion
+  complements:
+  - verification-before-completion
+  - requesting-code-review
+  last_reviewed: '2026-11-11'
+  verification_notes: Requires zero test pollution and explicit assertions on error messages/metrics.

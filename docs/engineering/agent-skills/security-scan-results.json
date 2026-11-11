@@ -1,0 +1,1195 @@
+{
+  "scanner_info": {
+    "engine": "skill-security static analyzer + yara_lite fallback",
+    "ruleset_version": "1.1.0",
+    "yara_backend": "fallback (Python AST + regex analyzer; native yara C-extension omitted on Windows host)",
+    "scan_timestamp": "2026-11-11T13:08:00Z"
+  },
+  "total_skills_scanned": 25,
+  "scans": {
+    "career_intelligence": {
+      "skill": "career_intelligence",
+      "source": ".agents\\skills\\career_intelligence",
+      "yara_backend": "fallback",
+      "risk": {
+        "score": 0,
+        "severity": "LOW",
+        "recommendation": "LIKELY SAFE"
+      },
+      "has_executable_scripts": false,
+      "components": [
+        {
+          "file": "SKILL.md",
+          "kind": "skill_manifest",
+          "lines": 124,
+          "executable": false
+        }
+      ],
+      "findings": [],
+      "summary": {
+        "total": 0,
+        "by_severity": {},
+        "by_category": {}
+      }
+    },
+    "dispatching-parallel-agents": {
+      "skill": "dispatching-parallel-agents",
+      "source": ".agents\\skills\\dispatching-parallel-agents",
+      "yara_backend": "fallback",
+      "risk": {
+        "score": 0,
+        "severity": "LOW",
+        "recommendation": "LIKELY SAFE"
+      },
+      "has_executable_scripts": false,
+      "components": [
+        {
+          "file": "SKILL.md",
+          "kind": "skill_manifest",
+          "lines": 168,
+          "executable": false
+        }
+      ],
+      "findings": [],
+      "summary": {
+        "total": 0,
+        "by_severity": {},
+        "by_category": {}
+      }
+    },
+    "ecm-analytics-data-modeling": {
+      "skill": "ecm-analytics-data-modeling",
+      "source": ".agents\\skills\\ecm-analytics-data-modeling",
+      "yara_backend": "fallback",
+      "risk": {
+        "score": 0,
+        "severity": "LOW",
+        "recommendation": "LIKELY SAFE"
+      },
+      "has_executable_scripts": false,
+      "components": [
+        {
+          "file": "SKILL.md",
+          "kind": "skill_manifest",
+          "lines": 88,
+          "executable": false
+        }
+      ],
+      "findings": [],
+      "summary": {
+        "total": 0,
+        "by_severity": {},
+        "by_category": {}
+      }
+    },
+    "ecm-api-backend-architecture": {
+      "skill": "ecm-api-backend-architecture",
+      "source": ".agents\\skills\\ecm-api-backend-architecture",
+      "yara_backend": "fallback",
+      "risk": {
+        "score": 0,
+        "severity": "LOW",
+        "recommendation": "LIKELY SAFE"
+      },
+      "has_executable_scripts": false,
+      "components": [
+        {
+          "file": "SKILL.md",
+          "kind": "skill_manifest",
+          "lines": 107,
+          "executable": false
+        }
+      ],
+      "findings": [],
+      "summary": {
+        "total": 0,
+        "by_severity": {},
+        "by_category": {}
+      }
+    },
+    "ecm-application-security": {
+      "skill": "ecm-application-security",
+      "source": ".agents\\skills\\ecm-application-security",
+      "yara_backend": "fallback",
+      "risk": {
+        "score": 0,
+        "severity": "LOW",
+        "recommendation": "LIKELY SAFE"
+      },
+      "has_executable_scripts": false,
+      "components": [
+        {
+          "file": "SKILL.md",
+          "kind": "skill_manifest",
+          "lines": 96,
+          "executable": false
+        }
+      ],
+      "findings": [],
+      "summary": {
+        "total": 0,
+        "by_severity": {},
+        "by_category": {}
+      }
+    },
+    "ecm-arabic-multilingual-nlp": {
+      "skill": "ecm-arabic-multilingual-nlp",
+      "source": ".agents\\skills\\ecm-arabic-multilingual-nlp",
+      "yara_backend": "fallback",
+      "risk": {
+        "score": 0,
+        "severity": "LOW",
+        "recommendation": "LIKELY SAFE"
+      },
+      "has_executable_scripts": false,
+      "components": [
+        {
+          "file": "SKILL.md",
+          "kind": "skill_manifest",
+          "lines": 119,
+          "executable": false
+        }
+      ],
+      "findings": [],
+      "summary": {
+        "total": 0,
+        "by_severity": {},
+        "by_category": {}
+      }
+    },
+    "ecm-architecture-quality-review": {
+      "skill": "ecm-architecture-quality-review",
+      "source": ".agents\\skills\\ecm-architecture-quality-review",
+      "yara_backend": "fallback",
+      "risk": {
+        "score": 0,
+        "severity": "LOW",
+        "recommendation": "LIKELY SAFE"
+      },
+      "has_executable_scripts": false,
+      "components": [
+        {
+          "file": "SKILL.md",
+          "kind": "skill_manifest",
+          "lines": 86,
+          "executable": false
+        }
+      ],
+      "findings": [],
+      "summary": {
+        "total": 0,
+        "by_severity": {},
+        "by_category": {}
+      }
+    },
+    "ecm-bi-market-intelligence": {
+      "skill": "ecm-bi-market-intelligence",
+      "source": ".agents\\skills\\ecm-bi-market-intelligence",
+      "yara_backend": "fallback",
+      "risk": {
+        "score": 0,
+        "severity": "LOW",
+        "recommendation": "LIKELY SAFE"
+      },
+      "has_executable_scripts": false,
+      "components": [
+        {
+          "file": "SKILL.md",
+          "kind": "skill_manifest",
+          "lines": 123,
+          "executable": false
+        }
+      ],
+      "findings": [],
+      "summary": {
+        "total": 0,
+        "by_severity": {},
+        "by_category": {}
+      }
+    },
+    "ecm-data-engineering-pipelines": {
+      "skill": "ecm-data-engineering-pipelines",
+      "source": ".agents\\skills\\ecm-data-engineering-pipelines",
+      "yara_backend": "fallback",
+      "risk": {
+        "score": 0,
+        "severity": "LOW",
+        "recommendation": "LIKELY SAFE"
+      },
+      "has_executable_scripts": false,
+      "components": [
+        {
+          "file": "SKILL.md",
+          "kind": "skill_manifest",
+          "lines": 89,
+          "executable": false
+        }
+      ],
+      "findings": [],
+      "summary": {
+        "total": 0,
+        "by_severity": {},
+        "by_category": {}
+      }
+    },
+    "ecm-data-quality-governance": {
+      "skill": "ecm-data-quality-governance",
+      "source": ".agents\\skills\\ecm-data-quality-governance",
+      "yara_backend": "fallback",
+      "risk": {
+        "score": 0,
+        "severity": "LOW",
+        "recommendation": "LIKELY SAFE"
+      },
+      "has_executable_scripts": false,
+      "components": [
+        {
+          "file": "SKILL.md",
+          "kind": "skill_manifest",
+          "lines": 88,
+          "executable": false
+        }
+      ],
+      "findings": [],
+      "summary": {
+        "total": 0,
+        "by_severity": {},
+        "by_category": {}
+      }
+    },
+    "ecm-frontend-generative-ui": {
+      "skill": "ecm-frontend-generative-ui",
+      "source": ".agents\\skills\\ecm-frontend-generative-ui",
+      "yara_backend": "fallback",
+      "risk": {
+        "score": 0,
+        "severity": "LOW",
+        "recommendation": "LIKELY SAFE"
+      },
+      "has_executable_scripts": false,
+      "components": [
+        {
+          "file": "SKILL.md",
+          "kind": "skill_manifest",
+          "lines": 99,
+          "executable": false
+        }
+      ],
+      "findings": [],
+      "summary": {
+        "total": 0,
+        "by_severity": {},
+        "by_category": {}
+      }
+    },
+    "ecm-hybrid-skill-extraction": {
+      "skill": "ecm-hybrid-skill-extraction",
+      "source": ".agents\\skills\\ecm-hybrid-skill-extraction",
+      "yara_backend": "fallback",
+      "risk": {
+        "score": 0,
+        "severity": "LOW",
+        "recommendation": "LIKELY SAFE"
+      },
+      "has_executable_scripts": false,
+      "components": [
+        {
+          "file": "SKILL.md",
+          "kind": "skill_manifest",
+          "lines": 174,
+          "executable": false
+        }
+      ],
+      "findings": [],
+      "summary": {
+        "total": 0,
+        "by_severity": {},
+        "by_category": {}
+      }
+    },
+    "ecm-nlp-evaluation": {
+      "skill": "ecm-nlp-evaluation",
+      "source": ".agents\\skills\\ecm-nlp-evaluation",
+      "yara_backend": "fallback",
+      "risk": {
+        "score": 0,
+        "severity": "LOW",
+        "recommendation": "LIKELY SAFE"
+      },
+      "has_executable_scripts": true,
+      "components": [
+        {
+          "file": "resources\\benchmark_gold_corpus.jsonl",
+          "kind": "other",
+          "lines": 6,
+          "executable": false
+        },
+        {
+          "file": "resources\\gold_corpus_schema.json",
+          "kind": "text",
+          "lines": 30,
+          "executable": false
+        },
+        {
+          "file": "scripts\\evaluate_nlp.py",
+          "kind": "python",
+          "lines": 131,
+          "executable": true
+        },
+        {
+          "file": "SKILL.md",
+          "kind": "skill_manifest",
+          "lines": 94,
+          "executable": false
+        }
+      ],
+      "findings": [],
+      "summary": {
+        "total": 0,
+        "by_severity": {},
+        "by_category": {}
+      }
+    },
+    "ecm-postgresql-architecture": {
+      "skill": "ecm-postgresql-architecture",
+      "source": ".agents\\skills\\ecm-postgresql-architecture",
+      "yara_backend": "fallback",
+      "risk": {
+        "score": 0,
+        "severity": "LOW",
+        "recommendation": "LIKELY SAFE"
+      },
+      "has_executable_scripts": false,
+      "components": [
+        {
+          "file": "SKILL.md",
+          "kind": "skill_manifest",
+          "lines": 90,
+          "executable": false
+        }
+      ],
+      "findings": [],
+      "summary": {
+        "total": 0,
+        "by_severity": {},
+        "by_category": {}
+      }
+    },
+    "ecm-production-reliability": {
+      "skill": "ecm-production-reliability",
+      "source": ".agents\\skills\\ecm-production-reliability",
+      "yara_backend": "fallback",
+      "risk": {
+        "score": 0,
+        "severity": "LOW",
+        "recommendation": "LIKELY SAFE"
+      },
+      "has_executable_scripts": false,
+      "components": [
+        {
+          "file": "SKILL.md",
+          "kind": "skill_manifest",
+          "lines": 95,
+          "executable": false
+        }
+      ],
+      "findings": [],
+      "summary": {
+        "total": 0,
+        "by_severity": {},
+        "by_category": {}
+      }
+    },
+    "ecm-testing-verification": {
+      "skill": "ecm-testing-verification",
+      "source": ".agents\\skills\\ecm-testing-verification",
+      "yara_backend": "fallback",
+      "risk": {
+        "score": 0,
+        "severity": "LOW",
+        "recommendation": "LIKELY SAFE"
+      },
+      "has_executable_scripts": false,
+      "components": [
+        {
+          "file": "SKILL.md",
+          "kind": "skill_manifest",
+          "lines": 86,
+          "executable": false
+        }
+      ],
+      "findings": [],
+      "summary": {
+        "total": 0,
+        "by_severity": {},
+        "by_category": {}
+      }
+    },
+    "ecm-web-ingestion-resilience": {
+      "skill": "ecm-web-ingestion-resilience",
+      "source": ".agents\\skills\\ecm-web-ingestion-resilience",
+      "yara_backend": "fallback",
+      "risk": {
+        "score": 0,
+        "severity": "LOW",
+        "recommendation": "LIKELY SAFE"
+      },
+      "has_executable_scripts": false,
+      "components": [
+        {
+          "file": "SKILL.md",
+          "kind": "skill_manifest",
+          "lines": 94,
+          "executable": false
+        }
+      ],
+      "findings": [],
+      "summary": {
+        "total": 0,
+        "by_severity": {},
+        "by_category": {}
+      }
+    },
+    "ecm-worker-reliability": {
+      "skill": "ecm-worker-reliability",
+      "source": ".agents\\skills\\ecm-worker-reliability",
+      "yara_backend": "fallback",
+      "risk": {
+        "score": 0,
+        "severity": "LOW",
+        "recommendation": "LIKELY SAFE"
+      },
+      "has_executable_scripts": false,
+      "components": [
+        {
+          "file": "SKILL.md",
+          "kind": "skill_manifest",
+          "lines": 98,
+          "executable": false
+        }
+      ],
+      "findings": [],
+      "summary": {
+        "total": 0,
+        "by_severity": {},
+        "by_category": {}
+      }
+    },
+    "receiving-code-review": {
+      "skill": "receiving-code-review",
+      "source": ".agents\\skills\\receiving-code-review",
+      "yara_backend": "fallback",
+      "risk": {
+        "score": 0,
+        "severity": "LOW",
+        "recommendation": "LIKELY SAFE"
+      },
+      "has_executable_scripts": false,
+      "components": [
+        {
+          "file": "SKILL.md",
+          "kind": "skill_manifest",
+          "lines": 206,
+          "executable": false
+        }
+      ],
+      "findings": [],
+      "summary": {
+        "total": 0,
+        "by_severity": {},
+        "by_category": {}
+      }
+    },
+    "requesting-code-review": {
+      "skill": "requesting-code-review",
+      "source": ".agents\\skills\\requesting-code-review",
+      "yara_backend": "fallback",
+      "risk": {
+        "score": 0,
+        "severity": "LOW",
+        "recommendation": "LIKELY SAFE"
+      },
+      "has_executable_scripts": false,
+      "components": [
+        {
+          "file": "code-reviewer.md",
+          "kind": "markdown",
+          "lines": 199,
+          "executable": false
+        },
+        {
+          "file": "SKILL.md",
+          "kind": "skill_manifest",
+          "lines": 96,
+          "executable": false
+        }
+      ],
+      "findings": [],
+      "summary": {
+        "total": 0,
+        "by_severity": {},
+        "by_category": {}
+      }
+    },
+    "security-audit": {
+      "skill": "security-audit",
+      "source": ".agents\\skills\\security-audit",
+      "yara_backend": "fallback",
+      "risk": {
+        "score": 0,
+        "severity": "LOW",
+        "recommendation": "LIKELY SAFE"
+      },
+      "has_executable_scripts": true,
+      "components": [
+        {
+          "file": "AI-AND-LLM.md",
+          "kind": "markdown",
+          "lines": 84,
+          "executable": false
+        },
+        {
+          "file": "ATTACK-CLASSES.md",
+          "kind": "markdown",
+          "lines": 131,
+          "executable": false
+        },
+        {
+          "file": "CLIENT-SIDE.md",
+          "kind": "markdown",
+          "lines": 84,
+          "executable": false
+        },
+        {
+          "file": "CLOUD-AND-DEPLOYMENT.md",
+          "kind": "markdown",
+          "lines": 87,
+          "executable": false
+        },
+        {
+          "file": "DATA-ISOLATION-AND-LIFECYCLE.md",
+          "kind": "markdown",
+          "lines": 85,
+          "executable": false
+        },
+        {
+          "file": "DESKTOP-MOBILE-AND-LOCAL-IPC.md",
+          "kind": "markdown",
+          "lines": 90,
+          "executable": false
+        },
+        {
+          "file": "HUNTING.md",
+          "kind": "markdown",
+          "lines": 252,
+          "executable": false
+        },
+        {
+          "file": "MEMORY-SAFETY-AND-BINARY.md",
+          "kind": "markdown",
+          "lines": 102,
+          "executable": false
+        },
+        {
+          "file": "PROTOCOLS-RPC-AND-MESSAGING.md",
+          "kind": "markdown",
+          "lines": 82,
+          "executable": false
+        },
+        {
+          "file": "RECONNAISSANCE.md",
+          "kind": "markdown",
+          "lines": 157,
+          "executable": false
+        },
+        {
+          "file": "report-schema.json",
+          "kind": "text",
+          "lines": 462,
+          "executable": false
+        },
+        {
+          "file": "RESOURCE-EXHAUSTION-AND-AVAILABILITY.md",
+          "kind": "markdown",
+          "lines": 79,
+          "executable": false
+        },
+        {
+          "file": "SKILL.md",
+          "kind": "skill_manifest",
+          "lines": 193,
+          "executable": false
+        },
+        {
+          "file": "SUPPLY-CHAIN-AND-RELEASE.md",
+          "kind": "markdown",
+          "lines": 74,
+          "executable": false
+        },
+        {
+          "file": "validate-coverage-ledger.cjs",
+          "kind": "javascript",
+          "lines": 873,
+          "executable": true
+        },
+        {
+          "file": "validate-coverage-ledger.test.cjs",
+          "kind": "javascript",
+          "lines": 741,
+          "executable": true
+        },
+        {
+          "file": "validate-findings.cjs",
+          "kind": "javascript",
+          "lines": 774,
+          "executable": true
+        },
+        {
+          "file": "validate-findings.test.cjs",
+          "kind": "javascript",
+          "lines": 653,
+          "executable": true
+        },
+        {
+          "file": "VALIDATION-AND-REPORTING.md",
+          "kind": "markdown",
+          "lines": 187,
+          "executable": false
+        },
+        {
+          "file": "WEB-PROTOCOL-AND-AUTH.md",
+          "kind": "markdown",
+          "lines": 106,
+          "executable": false
+        }
+      ],
+      "findings": [],
+      "summary": {
+        "total": 0,
+        "by_severity": {},
+        "by_category": {}
+      }
+    },
+    "skill-security": {
+      "skill": "skill-security",
+      "source": ".agents\\skills\\skill-security",
+      "yara_backend": "fallback",
+      "risk": {
+        "score": 100,
+        "severity": "CRITICAL",
+        "recommendation": "DO NOT INSTALL"
+      },
+      "has_executable_scripts": true,
+      "components": [
+        {
+          "file": "references\\taxonomy.md",
+          "kind": "markdown",
+          "lines": 232,
+          "executable": false
+        },
+        {
+          "file": "rules\\malware.yar",
+          "kind": "other",
+          "lines": 120,
+          "executable": false
+        },
+        {
+          "file": "rules\\skill_threats.yar",
+          "kind": "other",
+          "lines": 123,
+          "executable": false
+        },
+        {
+          "file": "rules\\webshells.yar",
+          "kind": "other",
+          "lines": 98,
+          "executable": false
+        },
+        {
+          "file": "scripts\\analyzers.py",
+          "kind": "python",
+          "lines": 575,
+          "executable": true
+        },
+        {
+          "file": "scripts\\scan.py",
+          "kind": "python",
+          "lines": 281,
+          "executable": true
+        },
+        {
+          "file": "scripts\\yara_lite.py",
+          "kind": "python",
+          "lines": 324,
+          "executable": true
+        },
+        {
+          "file": "SKILL.md",
+          "kind": "skill_manifest",
+          "lines": 99,
+          "executable": false
+        }
+      ],
+      "findings": [
+        {
+          "rule_id": "SC1",
+          "title": "eval over fetched content",
+          "category": "Supply Chain",
+          "severity": "CRITICAL",
+          "confidence": 0.9,
+          "file": "references\\taxonomy.md",
+          "line": 160,
+          "evidence": "| AST8 | **Dangerous execution chain** \u2014 a dangerous call wrapping another dangerous source in one expression (e.g. `exe",
+          "explanation": ""
+        },
+        {
+          "rule_id": "PI6",
+          "title": "YARA: skill_audit_manipulation",
+          "category": "Skill Prompt Injection",
+          "severity": "CRITICAL",
+          "confidence": 0.85,
+          "file": "SKILL.md",
+          "line": 1,
+          "evidence": "$mark_safe, $no_findings, $skip_scan, $reviewer",
+          "explanation": "Content attempting to manipulate a security review of the skill"
+        },
+        {
+          "rule_id": "PI6",
+          "title": "YARA: skill_audit_manipulation",
+          "category": "Skill Prompt Injection",
+          "severity": "CRITICAL",
+          "confidence": 0.85,
+          "file": "references\\taxonomy.md",
+          "line": 1,
+          "evidence": "$mark_safe",
+          "explanation": "Content attempting to manipulate a security review of the skill"
+        },
+        {
+          "rule_id": "YR1",
+          "title": "YARA: credential_stealer",
+          "category": "Malware",
+          "severity": "CRITICAL",
+          "confidence": 0.8,
+          "file": "rules\\malware.yar",
+          "line": 1,
+          "evidence": "$wallet_files, $exch_apikeys",
+          "explanation": "Credential / secret harvesting (AMOS-class stealer behavior)"
+        },
+        {
+          "rule_id": "RA3",
+          "title": "YARA: skill_memory_poisoning",
+          "category": "Skill Memory Poisoning",
+          "severity": "CRITICAL",
+          "confidence": 0.8,
+          "file": "rules\\skill_threats.yar",
+          "line": 1,
+          "evidence": "$claude_md",
+          "explanation": "Writes to agent memory/persistent context so effects survive skill removal"
+        },
+        {
+          "rule_id": "RA3",
+          "title": "Writes to agent memory / rules files",
+          "category": "Memory Poisoning",
+          "severity": "CRITICAL",
+          "confidence": 0.8,
+          "file": "rules\\skill_threats.yar",
+          "line": 65,
+          "evidence": "$claude_md   = /(>>?|open\\s*\\([^)]*[\"']a[\"']|write_text)[^\\n]{0,60}(CLAUDE\\.md|AGENTS\\.md|\\.cursorrules|GEMINI\\.md)/ noc",
+          "explanation": ""
+        },
+        {
+          "rule_id": "RA3",
+          "title": "YARA: skill_memory_poisoning",
+          "category": "Skill Memory Poisoning",
+          "severity": "CRITICAL",
+          "confidence": 0.8,
+          "file": "scripts\\analyzers.py",
+          "line": 1,
+          "evidence": "$claude_md",
+          "explanation": "Writes to agent memory/persistent context so effects survive skill removal"
+        },
+        {
+          "rule_id": "RA3",
+          "title": "Writes to agent memory / rules files",
+          "category": "Memory Poisoning",
+          "severity": "CRITICAL",
+          "confidence": 0.8,
+          "file": "scripts\\analyzers.py",
+          "line": 178,
+          "evidence": "r\"(?:>>?|open\\s*\\([^)]*[\\\"']a[\\\"']|write_text|append)[^\\n]{0,60}(?:CLAUDE\\.md|AGENTS\\.md|GEMINI\\.md|\\.cursorrules|\\.clau",
+          "explanation": ""
+        },
+        {
+          "rule_id": "PI3",
+          "title": "Covert transmission instruction",
+          "category": "Prompt Injection",
+          "severity": "HIGH",
+          "confidence": 0.9,
+          "file": "references\\taxonomy.md",
+          "line": 48,
+          "evidence": "| PI3 | Instruction telling the agent to exfiltrate, \"send\", \"report\", \"log to\", or covertly transmit data as part of no",
+          "explanation": ""
+        },
+        {
+          "rule_id": "SC1",
+          "title": "Remote code fetch-and-execute (curl|bash)",
+          "category": "Supply Chain",
+          "severity": "HIGH",
+          "confidence": 0.9,
+          "file": "references\\taxonomy.md",
+          "line": 131,
+          "evidence": "| SC1 | Remote code fetch-and-execute \u2014 `curl ... \\| bash`, PowerShell download cradle, or `eval` over fetched content. ",
+          "explanation": ""
+        },
+        {
+          "rule_id": "SC1",
+          "title": "PowerShell download cradle",
+          "category": "Supply Chain",
+          "severity": "HIGH",
+          "confidence": 0.9,
+          "file": "scripts\\analyzers.py",
+          "line": 164,
+          "evidence": "r\"(?:iwr|Invoke-WebRequest|Net\\.WebClient[^\\n]{0,40}DownloadString)[^\\n]{0,80}\\|\\s*(?:iex|Invoke-Expression)\", 0.9),",
+          "explanation": ""
+        },
+        {
+          "rule_id": "PI1",
+          "title": "YARA: skill_instruction_override",
+          "category": "Skill Prompt Injection",
+          "severity": "HIGH",
+          "confidence": 0.8,
+          "file": "SKILL.md",
+          "line": 1,
+          "evidence": "$ignore_prev",
+          "explanation": "Instruction-override / jailbreak phrasing embedded in skill content"
+        },
+        {
+          "rule_id": "PI1",
+          "title": "YARA: skill_instruction_override",
+          "category": "Skill Prompt Injection",
+          "severity": "HIGH",
+          "confidence": 0.8,
+          "file": "references\\taxonomy.md",
+          "line": 1,
+          "evidence": "$ignore_prev",
+          "explanation": "Instruction-override / jailbreak phrasing embedded in skill content"
+        },
+        {
+          "rule_id": "EX3",
+          "title": "Credential / secret file access",
+          "category": "Data Exfiltration",
+          "severity": "HIGH",
+          "confidence": 0.8,
+          "file": "references\\taxonomy.md",
+          "line": 93,
+          "evidence": "| EX3 | Credential / secret-file access \u2014 reading `.env`, `~/.aws/credentials`, `~/.ssh/`, `.npmrc`, token/keychain path",
+          "explanation": ""
+        },
+        {
+          "rule_id": "EX2",
+          "title": "Environment variable harvesting",
+          "category": "Data Exfiltration",
+          "severity": "HIGH",
+          "confidence": 0.8,
+          "file": "scripts\\analyzers.py",
+          "line": 155,
+          "evidence": "r\"(?:for\\s+\\w+\\s*,?\\s*\\w*\\s+in\\s+os\\.environ(?:\\.items\\(\\))?|dict\\(os\\.environ\\)|json\\.dumps\\(\\s*dict\\(os\\.environ|print",
+          "explanation": ""
+        },
+        {
+          "rule_id": "EX3",
+          "title": "Credential / secret file access",
+          "category": "Data Exfiltration",
+          "severity": "HIGH",
+          "confidence": 0.8,
+          "file": "scripts\\analyzers.py",
+          "line": 157,
+          "evidence": "r\"(?:\\.ssh/id_(?:rsa|ed25519|dsa|ecdsa)|\\.aws/credentials|\\.config/gcloud|\\.netrc|\\.npmrc|\\.pypirc|\\.git-credentials|\\.d",
+          "explanation": ""
+        },
+        {
+          "rule_id": "PI5",
+          "title": "System prompt extraction",
+          "category": "System Prompt Leakage",
+          "severity": "HIGH",
+          "confidence": 0.75,
+          "file": "references\\taxonomy.md",
+          "line": 50,
+          "evidence": "| PI5 | System-prompt extraction \u2014 instructions to reveal, repeat, or print the system prompt, instructions, or hidden c",
+          "explanation": ""
+        },
+        {
+          "rule_id": "YR1",
+          "title": "YARA: backdoor_persistence",
+          "category": "Malware",
+          "severity": "HIGH",
+          "confidence": 0.75,
+          "file": "rules\\malware.yar",
+          "line": 1,
+          "evidence": "$cron_payload, $ld_preload",
+          "explanation": "Persistence via cron, ssh keys, shell rc files, systemd, LD_PRELOAD"
+        },
+        {
+          "rule_id": "EA5",
+          "title": "YARA: skill_hook_permission_abuse",
+          "category": "Skill Excessive Agency",
+          "severity": "HIGH",
+          "confidence": 0.75,
+          "file": "rules\\skill_threats.yar",
+          "line": 1,
+          "evidence": "$pretooluse",
+          "explanation": "Abuse of the agent platform's hook system or permission flags"
+        },
+        {
+          "rule_id": "YR3",
+          "title": "YARA: cryptominer_indicators",
+          "category": "Cryptominer",
+          "severity": "HIGH",
+          "confidence": 0.75,
+          "file": "rules\\webshells.yar",
+          "line": 1,
+          "evidence": "$xmrig, $miner_pool, $coinhive",
+          "explanation": "Cryptocurrency miner / cryptojacking indicators"
+        },
+        {
+          "rule_id": "YR1",
+          "title": "YARA: backdoor_persistence",
+          "category": "Malware",
+          "severity": "HIGH",
+          "confidence": 0.75,
+          "file": "scripts\\analyzers.py",
+          "line": 1,
+          "evidence": "$cron_payload",
+          "explanation": "Persistence via cron, ssh keys, shell rc files, systemd, LD_PRELOAD"
+        },
+        {
+          "rule_id": "AST2",
+          "title": "eval() call",
+          "category": "Dangerous Code",
+          "severity": "HIGH",
+          "confidence": 0.75,
+          "file": "scripts\\yara_lite.py",
+          "line": 264,
+          "evidence": "return bool(eval(expr, {\"__builtins__\": {}}, {\"__H__\": hits}))  # noqa: S307",
+          "explanation": ""
+        },
+        {
+          "rule_id": "YR1",
+          "title": "YARA: keylogger_indicators",
+          "category": "Malware",
+          "severity": "HIGH",
+          "confidence": 0.7,
+          "file": "rules\\malware.yar",
+          "line": 1,
+          "evidence": "$winhook",
+          "explanation": "Keylogging functionality"
+        },
+        {
+          "rule_id": "YR1",
+          "title": "YARA: c2_framework_indicators",
+          "category": "Malware",
+          "severity": "HIGH",
+          "confidence": 0.7,
+          "file": "rules\\malware.yar",
+          "line": 1,
+          "evidence": "$dns_tunnel",
+          "explanation": "Command-and-control beacon / framework indicators"
+        },
+        {
+          "rule_id": "RA2",
+          "title": "Persistence mechanism",
+          "category": "Rogue Agent",
+          "severity": "HIGH",
+          "confidence": 0.7,
+          "file": "rules\\malware.yar",
+          "line": 42,
+          "evidence": "$ssh_authkeys   = /(>>?|tee\\s+-a)\\s*[^\\n]{0,80}\\.ssh\\/authorized_keys/ nocase",
+          "explanation": ""
+        },
+        {
+          "rule_id": "RA2",
+          "title": "Persistence mechanism",
+          "category": "Rogue Agent",
+          "severity": "HIGH",
+          "confidence": 0.7,
+          "file": "scripts\\analyzers.py",
+          "line": 174,
+          "evidence": "r\"(?:crontab\\s+-|>>?\\s*[^\\n]{0,40}\\.(?:bashrc|zshrc|profile|bash_profile)|LaunchAgents/|/etc/init\\.d/|systemctl\\s+enable",
+          "explanation": ""
+        },
+        {
+          "rule_id": "CT5",
+          "title": "Auto-approve / permission bypass flag",
+          "category": "Excessive Agency",
+          "severity": "HIGH",
+          "confidence": 0.6,
+          "file": "references\\taxonomy.md",
+          "line": 73,
+          "evidence": "| CT5 | Auto-approve / permission-bypass flag \u2014 config or instruction that disables confirmation prompts, sets `--danger",
+          "explanation": ""
+        },
+        {
+          "rule_id": "CT5",
+          "title": "Auto-approve / permission bypass flag",
+          "category": "Excessive Agency",
+          "severity": "HIGH",
+          "confidence": 0.6,
+          "file": "rules\\skill_threats.yar",
+          "line": 84,
+          "evidence": "$autoapprove    = /(\"?(dangerously[_-]?skip[_-]?permissions|auto[_-]?approve|bypass[_-]?permissions|yolo)\"?\\s*[:=]\\s*(tr",
+          "explanation": ""
+        },
+        {
+          "rule_id": "YR4",
+          "title": "YARA: hacktool_indicators",
+          "category": "Hacktool",
+          "severity": "HIGH",
+          "confidence": 0.6,
+          "file": "rules\\webshells.yar",
+          "line": 1,
+          "evidence": "$msf_payload, $mimikatz, $recon, $privesc",
+          "explanation": "Offensive tools / recon / exploit frameworks"
+        },
+        {
+          "rule_id": "CT5",
+          "title": "Auto-approve / permission bypass flag",
+          "category": "Excessive Agency",
+          "severity": "HIGH",
+          "confidence": 0.6,
+          "file": "scripts\\analyzers.py",
+          "line": 180,
+          "evidence": "(\"CT5\", \"Auto-approve / permission bypass flag\", \"Excessive Agency\", \"HIGH\",",
+          "explanation": ""
+        }
+      ],
+      "summary": {
+        "total": 30,
+        "by_severity": {
+          "CRITICAL": 8,
+          "HIGH": 22
+        },
+        "by_category": {
+          "Supply Chain": 3,
+          "Skill Prompt Injection": 4,
+          "Malware": 5,
+          "Skill Memory Poisoning": 2,
+          "Memory Poisoning": 2,
+          "Prompt Injection": 1,
+          "Data Exfiltration": 3,
+          "System Prompt Leakage": 1,
+          "Skill Excessive Agency": 1,
+          "Cryptominer": 1,
+          "Dangerous Code": 1,
+          "Rogue Agent": 2,
+          "Excessive Agency": 3,
+          "Hacktool": 1
+        }
+      }
+    },
+    "systematic-debugging": {
+      "skill": "systematic-debugging",
+      "source": ".agents\\skills\\systematic-debugging",
+      "yara_backend": "fallback",
+      "risk": {
+        "score": 0,
+        "severity": "LOW",
+        "recommendation": "LIKELY SAFE"
+      },
+      "has_executable_scripts": true,
+      "components": [
+        {
+          "file": "condition-based-waiting-example.ts",
+          "kind": "javascript",
+          "lines": 159,
+          "executable": true
+        },
+        {
+          "file": "condition-based-waiting.md",
+          "kind": "markdown",
+          "lines": 116,
+          "executable": false
+        },
+        {
+          "file": "defense-in-depth.md",
+          "kind": "markdown",
+          "lines": 123,
+          "executable": false
+        },
+        {
+          "file": "find-polluter.sh",
+          "kind": "shell",
+          "lines": 73,
+          "executable": true
+        },
+        {
+          "file": "root-cause-tracing.md",
+          "kind": "markdown",
+          "lines": 170,
+          "executable": false
+        },
+        {
+          "file": "SKILL.md",
+          "kind": "skill_manifest",
+          "lines": 284,
+          "executable": false
+        }
+      ],
+      "findings": [],
+      "summary": {
+        "total": 0,
+        "by_severity": {},
+        "by_category": {}
+      }
+    },
+    "verification-before-completion": {
+      "skill": "verification-before-completion",
+      "source": ".agents\\skills\\verification-before-completion",
+      "yara_backend": "fallback",
+      "risk": {
+        "score": 0,
+        "severity": "LOW",
+        "recommendation": "LIKELY SAFE"
+      },
+      "has_executable_scripts": false,
+      "components": [
+        {
+          "file": "SKILL.md",
+          "kind": "skill_manifest",
+          "lines": 121,
+          "executable": false
+        }
+      ],
+      "findings": [],
+      "summary": {
+        "total": 0,
+        "by_severity": {},
+        "by_category": {}
+      }
+    },
+    "writing-plans": {
+      "skill": "writing-plans",
+      "source": ".agents\\skills\\writing-plans",
+      "yara_backend": "fallback",
+      "risk": {
+        "score": 0,
+        "severity": "LOW",
+        "recommendation": "LIKELY SAFE"
+      },
+      "has_executable_scripts": false,
+      "components": [
+        {
+          "file": "SKILL.md",
+          "kind": "skill_manifest",
+          "lines": 205,
+          "executable": false
+        }
+      ],
+      "findings": [],
+      "summary": {
+        "total": 0,
+        "by_severity": {},
+        "by_category": {}
+      }
+    }
+  }
+}

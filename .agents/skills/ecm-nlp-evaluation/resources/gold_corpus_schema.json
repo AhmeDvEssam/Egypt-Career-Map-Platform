@@ -1,0 +1,29 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "GoldStandardCorpusDocument",
+  "type": "object",
+  "properties": {
+    "doc_id": { "type": "string" },
+    "language": { "type": "string", "enum": ["ar", "en", "mixed"] },
+    "domain": { "type": "string" },
+    "text": { "type": "string" },
+    "gold_skills": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "skill_id": { "type": "string" },
+          "canonical_name": { "type": "string" },
+          "surface_form": { "type": "string" },
+          "start_char": { "type": "integer", "minimum": 0 },
+          "end_char": { "type": "integer", "minimum": 0 },
+          "frequency_tier": { "type": "string", "enum": ["HEAD", "TORSO", "TAIL"] }
+        },
+        "required": ["skill_id", "canonical_name", "surface_form", "start_char", "end_char", "frequency_tier"],
+        "additionalProperties": false
+      }
+    }
+  },
+  "required": ["doc_id", "language", "domain", "text", "gold_skills"],
+  "additionalProperties": false
+}

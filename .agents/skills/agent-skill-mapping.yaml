@@ -1,0 +1,454 @@
+# ==============================================================================
+# EGYPT CAREER MAP (HIRE Q) — AGENT-TO-SKILL MAPPING MATRIX
+# ==============================================================================
+# Canonical Standard: EGYPT_CAREER_MAP_AGENT_SKILLS_STANDARD.md
+# Version: 1.1.0
+# Last Updated: 2026-11-11
+#
+# AUDIT REVISION v1.1.0:
+# - Finding A Resolved: Independent QA Reviewer is strictly READ-ONLY (zero write scope).
+# - Finding B Resolved: Eliminated write scope overlaps (Frontend vs Backend path segregation).
+# - Finding C Resolved: Application Security Auditor is strictly READ-ONLY;
+#   remediations decoupled to Security Remediation Engineer.
+# - Zero Overlapping Write Boundaries enforced across all engineering roles.
+# - Operational Notice: write_ownership.allowed_paths defines contractual governance policies
+#   and staging boundaries enforced via CI pre-commit checks and reviewer gates, rather than
+#   an OS-level kernel sandbox.
+# ==============================================================================
+
+version: "1.1.0"
+schema: "egypt-career-map-agent-skill-mapping-v1"
+last_updated: "2026-11-11"
+
+agents:
+  # ----------------------------------------------------------------------------
+  # 1. Orchestration & Architecture
+  # ----------------------------------------------------------------------------
+  - role: "Lead Orchestrator / Integrator"
+    description: "Coordinates multi-agent workflows, reviews cross-module boundaries, synthesizes findings, and owns final milestone integration."
+    primary_responsibilities:
+      - "Milestone scoping, workstream decomposition, and task dispatching"
+      - "Resolving conflicting specialist findings and cross-module architectural risks"
+      - "Enforcing governance standards, slash-command policies, and acceptance gates"
+    required_skills:
+      - "dispatching-parallel-agents"
+      - "writing-plans"
+      - "receiving-code-review"
+      - "ecm-architecture-quality-review"
+    optional_skills:
+      - "systematic-debugging"
+      - "ecm-production-reliability"
+    restricted_skills:
+      - "ecm-web-ingestion-resilience"  # Scraper mechanics should not be executed by orchestrator
+      - "ecm-arabic-multilingual-nlp"   # Delegate to Arabic NLP specialist
+    expected_output_artifacts:
+      - "Orchestration briefings and task dispatch manifests"
+      - "Consolidated architecture review and audit reports"
+      - "Updated registry.yaml, agent-skill-mapping.yaml, and governance documents"
+    verification_owner: "Independent QA / Verification Reviewer"
+    write_ownership:
+      allowed_paths:
+        - ".agents/rules/*"
+        - ".agents/skills/registry.yaml"
+        - ".agents/skills/agent-skill-mapping.yaml"
+        - ".agents/skills/slash-command-policy.md"
+        - ".agents/skills/README.md"
+        - "AGENTS.md"
+        - "EGYPT_CAREER_MAP_AGENT_SKILLS_STANDARD.md"
+        - "docs/engineering/agent-skills/*"
+      forbidden_paths:
+        - "Frontend (Landing + Map + Auth)/*"
+        - "Egypt Jobs Scraper/*"
+        - "backend/*"
+        - "database/*"
+
+  # ----------------------------------------------------------------------------
+  # 2. Data Engineering & Governance
+  # ----------------------------------------------------------------------------
+  - role: "Data Engineering Specialist"
+    description: "Builds and operates resilient ETL/ELT pipelines, ingestion staging, data quality gates, and analytical data models."
+    primary_responsibilities:
+      - "Designing idempotent batch and streaming pipeline stages (Raw -> Staging -> Gold)"
+      - "Implementing data quality assertions, contracts, and quarantine routing"
+      - "Constructing star schema dimensional models and grain declarations"
+    required_skills:
+      - "ecm-data-engineering-pipelines"
+      - "ecm-data-quality-governance"
+      - "ecm-analytics-data-modeling"
+    optional_skills:
+      - "ecm-postgresql-architecture"
+      - "systematic-debugging"
+    restricted_skills:
+      - "ecm-application-security"       # Security audit belongs to Security Auditor
+      - "ecm-frontend-generative-ui"     # UI code belongs to Frontend Specialist
+    expected_output_artifacts:
+      - "Pipeline execution scripts and dbt models"
+      - "Data contract definitions and quarantine handler logs"
+      - "Dimensional star schema migration scripts"
+    verification_owner: "Independent QA / Verification Reviewer"
+    write_ownership:
+      allowed_paths:
+        - "data_pipelines/*"
+        - "etl/*"
+        - "models/dimensional/*"
+      forbidden_paths:
+        - "Frontend (Landing + Map + Auth)/*"
+        - ".agents/rules/*"
+        - "backend/*"
+
+  # ----------------------------------------------------------------------------
+  # 3. Database Architecture & Optimization
+  # ----------------------------------------------------------------------------
+  - role: "PostgreSQL Specialist"
+    description: "Designs relational schemas, manages migrations, optimizes query plans, tunes connection pooling, and enforces transactional safety."
+    primary_responsibilities:
+      - "Relational schema design, constraints, and non-blocking DDL migrations"
+      - "Query optimization using EXPLAIN (ANALYZE, BUFFERS) and index selection"
+      - "Managing concurrency, transaction isolation levels, and row-level locking"
+    required_skills:
+      - "ecm-postgresql-architecture"
+      - "systematic-debugging"
+      - "verification-before-completion"
+    optional_skills:
+      - "ecm-data-engineering-pipelines"
+      - "ecm-worker-reliability"
+    restricted_skills:
+      - "ecm-web-ingestion-resilience"
+      - "ecm-frontend-generative-ui"
+    expected_output_artifacts:
+      - "Prisma schema and SQL migration files"
+      - "Query optimization benchmark reports with EXPLAIN plans"
+      - "Autovacuum and PgBouncer configuration specs"
+    verification_owner: "Git / Migration / Release Auditor"
+    write_ownership:
+      allowed_paths:
+        - "Frontend (Landing + Map + Auth)/frontend/prisma/*"
+        - "Frontend (Landing + Map + Auth)/frontend/migrations/*"
+        - "database/*"
+      forbidden_paths:
+        - "Frontend (Landing + Map + Auth)/frontend/src/components/*"
+        - "Frontend (Landing + Map + Auth)/frontend/src/app/*"
+        - "Egypt Jobs Scraper/*"
+
+  # ----------------------------------------------------------------------------
+  # 4. AI & NLP Engineering
+  # ----------------------------------------------------------------------------
+  - role: "AI / NLP Specialist"
+    description: "Builds, optimizes, and evaluates deterministic-first hybrid skill extraction engines and taxonomy alignment graphs."
+    primary_responsibilities:
+      - "Compiling and tuning Aho-Corasick automaton with ESCO and custom aliases"
+      - "Implementing contextual disambiguation and hallucination-contained LLM fallbacks"
+      - "Running precision, recall, and F1 regression test suites against gold datasets"
+    required_skills:
+      - "ecm-hybrid-skill-extraction"
+      - "ecm-nlp-evaluation"
+      - "systematic-debugging"
+    optional_skills:
+      - "ecm-arabic-multilingual-nlp"
+      - "verification-before-completion"
+    restricted_skills:
+      - "ecm-postgresql-architecture"    # Database DDL belongs to PostgreSQL specialist
+      - "ecm-web-ingestion-resilience"
+    expected_output_artifacts:
+      - "Compiled taxonomy alias dictionary and trie/automaton artifacts"
+      - "Hybrid skill extraction service modules"
+      - "NLP evaluation benchmark reports (Precision/Recall/F1)"
+    verification_owner: "Independent QA / Verification Reviewer"
+    write_ownership:
+      allowed_paths:
+        - "nlp/models/*"
+        - "nlp/taxonomy/*"
+        - "nlp/benchmarks/*"
+      forbidden_paths:
+        - "Frontend (Landing + Map + Auth)/*"
+        - ".agents/rules/*"
+        - "nlp/arabic/*"                 # Reserved for Arabic NLP Specialist
+
+  - role: "Arabic NLP Specialist"
+    description: "Specializes in Egyptian Arabic dialect normalization, Unicode harmonization, and bilingual code-switching tokenization."
+    primary_responsibilities:
+      - "Implementing Arabic orthographic normalization (Alef, Taa Marbuta, diacritics, tatweel)"
+      - "Handling Egyptian colloquial job terminology and transliterated technical keywords"
+      - "Tokenizing mixed Arabic/English technical phrases preserving Latin entity bounds"
+    required_skills:
+      - "ecm-arabic-multilingual-nlp"
+      - "ecm-nlp-evaluation"
+      - "systematic-debugging"
+    optional_skills:
+      - "ecm-hybrid-skill-extraction"
+    restricted_skills:
+      - "ecm-postgresql-architecture"
+      - "ecm-application-security"
+    expected_output_artifacts:
+      - "Arabic normalization preprocessor modules"
+      - "Bilingual tokenization and entity regex extractors"
+      - "Dialectal test corpus and evaluation slices"
+    verification_owner: "AI / NLP Specialist"
+    write_ownership:
+      allowed_paths:
+        - "nlp/arabic/*"
+        - "nlp/preprocessing/*"
+      forbidden_paths:
+        - "database/*"
+        - "Frontend (Landing + Map + Auth)/*"
+        - "nlp/models/*"
+
+  # ----------------------------------------------------------------------------
+  # 5. Ingestion & Crawling Systems
+  # ----------------------------------------------------------------------------
+  - role: "Web Ingestion Specialist"
+    description: "Designs, monitors, and hardens resilient web crawlers collecting public vacancies across Egyptian and regional job portals."
+    primary_responsibilities:
+      - "Configuring respectful, rate-limited crawlers adhering to robots.txt"
+      - "Implementing exponential backoff with full jitter and circuit breakers"
+      - "Detecting and adapting to DOM schema drift using multi-strategy parsers"
+    required_skills:
+      - "ecm-web-ingestion-resilience"
+      - "systematic-debugging"
+      - "ecm-testing-verification"
+    optional_skills:
+      - "ecm-data-quality-governance"
+      - "ecm-worker-reliability"
+    restricted_skills:
+      - "ecm-application-security"
+      - "ecm-frontend-generative-ui"
+    expected_output_artifacts:
+      - "Scrapy spiders and crawling pipelines"
+      - "Target portal rate-limiting policies and circuit breaker configs"
+      - "Raw snapshot archival handlers"
+    verification_owner: "Independent QA / Verification Reviewer"
+    write_ownership:
+      allowed_paths:
+        - "Egypt Jobs Scraper/*"
+        - "scrapers/*"
+      forbidden_paths:
+        - "Frontend (Landing + Map + Auth)/*"
+        - "database/*"
+        - "backend/*"
+
+  # ----------------------------------------------------------------------------
+  # 6. Backend Services & Distributed Workers
+  # ----------------------------------------------------------------------------
+  - role: "Backend / Worker Specialist"
+    description: "Engineers asynchronous background workers, queue consumers, transactional outbox handlers, and core REST/RPC APIs."
+    primary_responsibilities:
+      - "Implementing At-Least-Once queue processing with idempotency keys and leases"
+      - "Developing transactional outbox JIT claim workers with per-event fencing tokens"
+      - "Building schema-validated REST API routes adhering to RFC 9457 Problem Details"
+    required_skills:
+      - "ecm-worker-reliability"
+      - "ecm-api-backend-architecture"
+      - "ecm-production-reliability"
+      - "systematic-debugging"
+    optional_skills:
+      - "ecm-postgresql-architecture"
+      - "ecm-application-security"
+    restricted_skills:
+      - "ecm-frontend-generative-ui"
+      - "ecm-arabic-multilingual-nlp"
+    expected_output_artifacts:
+      - "Outbox and background worker services"
+      - "REST API route handlers and schema validators"
+      - "Health check probes and graceful shutdown handlers"
+    verification_owner: "Lead Orchestrator / Integrator"
+    write_ownership:
+      allowed_paths:
+        - "backend/*"
+        - "Frontend (Landing + Map + Auth)/frontend/src/app/api/*"
+        - "Frontend (Landing + Map + Auth)/frontend/src/lib/services/*"
+      forbidden_paths:
+        - "Frontend (Landing + Map + Auth)/frontend/src/components/*"
+        - "Frontend (Landing + Map + Auth)/frontend/src/app/(dashboard)/*"
+        - "Frontend (Landing + Map + Auth)/frontend/src/app/(auth)/*"
+        - "Egypt Jobs Scraper/*"
+
+  # ----------------------------------------------------------------------------
+  # 7. Frontend Architecture & Generative UI
+  # ----------------------------------------------------------------------------
+  - role: "Frontend Specialist"
+    description: "Constructs accessible, responsive Next.js/React web applications, design systems, and safe Generative UI widgets."
+    primary_responsibilities:
+      - "Building server and client component hierarchies with Tailwind CSS"
+      - "Implementing safe, schema-validated Generative UI card and chart rendering"
+      - "Ensuring bidirectional RTL/LTR support and WCAG 2.1 AA accessibility"
+    required_skills:
+      - "ecm-frontend-generative-ui"
+      - "systematic-debugging"
+      - "verification-before-completion"
+    optional_skills:
+      - "ecm-bi-market-intelligence"
+      - "ecm-api-backend-architecture"
+    restricted_skills:
+      - "ecm-postgresql-architecture"
+      - "ecm-web-ingestion-resilience"
+    expected_output_artifacts:
+      - "React components, layouts, and page views"
+      - "Generative UI component catalogs and Zod prop schemas"
+      - "Accessibility and responsive visual test suites"
+    verification_owner: "Independent QA / Verification Reviewer"
+    write_ownership:
+      allowed_paths:
+        - "Frontend (Landing + Map + Auth)/frontend/src/components/*"
+        - "Frontend (Landing + Map + Auth)/frontend/src/app/(dashboard)/*"
+        - "Frontend (Landing + Map + Auth)/frontend/src/app/(auth)/*"
+        - "Frontend (Landing + Map + Auth)/frontend/src/styles/*"
+      forbidden_paths:
+        - "Frontend (Landing + Map + Auth)/frontend/src/app/api/*"  # STRICTLY RESERVED FOR BACKEND
+        - "database/*"
+        - "Egypt Jobs Scraper/*"
+        - "backend/*"
+
+  # ----------------------------------------------------------------------------
+  # 8. Business Intelligence & Market Analytics
+  # ----------------------------------------------------------------------------
+  - role: "BI / Market Intelligence Specialist"
+    description: "Calculates labor market metrics, models salary distributions, analyzes skill demand trends, and creates executive dashboards."
+    primary_responsibilities:
+      - "Formulating demand share ratios, growth velocities, and skill co-occurrence graphs"
+      - "Computing salary medians, IQRs, and adjusting for Egyptian currency devaluations"
+      - "Designing 100-point career intelligence metrics and geographic segmentations"
+    required_skills:
+      - "career_intelligence"
+      - "ecm-bi-market-intelligence"
+      - "ecm-analytics-data-modeling"
+    optional_skills:
+      - "ecm-frontend-generative-ui"
+      - "ecm-data-quality-governance"
+    restricted_skills:
+      - "ecm-web-ingestion-resilience"
+      - "ecm-application-security"
+    expected_output_artifacts:
+      - "Analytical query scripts and materialized view definitions"
+      - "Labor market trend analysis reports"
+      - "Dashboard payload generation modules"
+    verification_owner: "Data Engineering Specialist"
+    write_ownership:
+      allowed_paths:
+        - "analytics/*"
+        - "bi/*"
+        - "reports/*"
+      forbidden_paths:
+        - "Egypt Jobs Scraper/*"
+        - "Frontend (Landing + Map + Auth)/frontend/src/lib/security/*"
+        - "backend/*"
+
+  # ----------------------------------------------------------------------------
+  # 9. Application Security (Separated into Auditor vs Remediation Engineer)
+  # ----------------------------------------------------------------------------
+  - role: "Application Security Auditor"
+    description: "Performs strict, independent, read-only vulnerability hunting, threat modeling, SSRF egress audits, and cryptographic verification."
+    primary_responsibilities:
+      - "Independent source-first vulnerability hunting and attack surface mapping"
+      - "Auditing SSRF defenses, socket pinning, and 3-stage IANA egress policy"
+      - "Verifying RFC 8259 strict JSON parsing and prototype pollution immunity"
+      - "Validating Ed25519 cryptographic signatures and dual-control recovery workflows"
+    required_skills:
+      - "security-audit"
+      - "skill-security"
+      - "ecm-application-security"
+      - "verification-before-completion"
+    optional_skills:
+      - "systematic-debugging"
+      - "ecm-architecture-quality-review"
+    restricted_skills:
+      - "ecm-frontend-generative-ui"
+      - "ecm-bi-market-intelligence"
+    expected_output_artifacts:
+      - "Vulnerability assessment reports (findings.json, REPORT.md)"
+      - "Security advisory notes and threat models"
+      - "Third-party skill security audit ledgers"
+    verification_owner: "Lead Orchestrator / Integrator"
+    write_ownership:
+      # STRICT AUDIT SEPARATION (Finding C): Auditor is 100% READ-ONLY.
+      allowed_paths: []
+      forbidden_paths:
+        - "**/*"
+
+  - role: "Security Remediation Engineer"
+    description: "Implements authorized security patches, transport defenses, strict parsers, and cryptographic hardening under explicit gates."
+    primary_responsibilities:
+      - "Implementing authorized SSRF defenses, socket pinning, and egress validation"
+      - "Developing strict RFC 8259 JSON parsers and RFC 8785 canonicalizers"
+      - "Remediating cryptographic signature checks and database outbox fencing"
+    required_skills:
+      - "ecm-application-security"
+      - "systematic-debugging"
+      - "ecm-testing-verification"
+    optional_skills:
+      - "ecm-postgresql-architecture"
+      - "ecm-worker-reliability"
+    restricted_skills:
+      - "ecm-frontend-generative-ui"
+      - "ecm-bi-market-intelligence"
+    expected_output_artifacts:
+      - "Hardened security modules and transport implementations"
+      - "Security regression unit and integration tests"
+    verification_owner: "Application Security Auditor"
+    write_ownership:
+      allowed_paths:
+        - "Frontend (Landing + Map + Auth)/frontend/src/lib/security/*"
+        - "security/*"
+      forbidden_paths:
+        - "Frontend (Landing + Map + Auth)/frontend/src/app/*"
+        - "Egypt Jobs Scraper/*"
+
+  # ----------------------------------------------------------------------------
+  # 10. Quality Assurance & Independent Verification
+  # ----------------------------------------------------------------------------
+  - role: "Independent QA / Verification Reviewer"
+    description: "Performs strict, independent, read-only verification of code, schemas, and test execution without implementation bias."
+    primary_responsibilities:
+      - "Auditing test suites to ensure real code execution and non-trivial assertions"
+      - "Challenging completion declarations under the Iron Law of Verification"
+      - "Validating metadata consistency, registry schemas, and skill frontmatter"
+      - "Reporting unverified claims, skipped tests, or masked assertions"
+    required_skills:
+      - "verification-before-completion"
+      - "requesting-code-review"
+      - "ecm-testing-verification"
+    optional_skills:
+      - "receiving-code-review"
+      - "ecm-architecture-quality-review"
+    restricted_skills:
+      - "ecm-web-ingestion-resilience"
+      - "ecm-frontend-generative-ui"
+    expected_output_artifacts:
+      - "Independent verification audit reports and claim verification matrices"
+      - "Reproducible execution logs and failure reproduction traces"
+      - "QA sign-off or blocker recommendations"
+    verification_owner: "Lead Orchestrator / Integrator"
+    write_ownership:
+      # STRICT AUDIT SEPARATION (Finding A): QA Auditor is 100% READ-ONLY.
+      # Does NOT modify tests or code during verification; reports findings to file owners.
+      allowed_paths: []
+      forbidden_paths:
+        - "**/*"
+
+  # ----------------------------------------------------------------------------
+  # 11. Git, Migration & Release Auditing
+  # ----------------------------------------------------------------------------
+  - role: "Git / Migration / Release Auditor"
+    description: "Audits Git branch states, uncommitted modifications, migration application safety, and operational release hygiene."
+    primary_responsibilities:
+      - "Verifying Git HEAD pins, commit counts, and untracked file status"
+      - "Auditing database migrations against target databases for non-destructive safety"
+      - "Enforcing zero unauthorized commits, zero pushes, and environment isolation"
+    required_skills:
+      - "requesting-code-review"
+      - "verification-before-completion"
+      - "ecm-architecture-quality-review"
+    optional_skills:
+      - "ecm-postgresql-architecture"
+    restricted_skills:
+      - "ecm-web-ingestion-resilience"
+      - "ecm-frontend-generative-ui"
+    expected_output_artifacts:
+      - "Git tree audit and migration state verification reports"
+      - "Release readiness checklists"
+      - "Environment isolation audit logs"
+    verification_owner: "Lead Orchestrator / Integrator"
+    write_ownership:
+      # Audit role is strictly READ-ONLY; reports findings without modifying repository code.
+      allowed_paths: []
+      forbidden_paths:
+        - "**/*"
