@@ -21,7 +21,7 @@ This engineering closure campaign completes the final verification, remediation,
 | **M4 Adversarial Failure (`WinError 5`)** | **RESOLVED & VERIFIED** | Replaced fragile direct `.unlink()` with `_safe_unlink_file()` in `test_12_tip_generation_missing_artifacts_preserves_pointer_and_avoids_invalid_mount`. 26/26 adversarial tests in M4-R2-2 PASS with exit code 0. |
 | **SQLite ResourceWarning** | **RESOLVED & VERIFIED** | Root cause identified and eliminated: explicit connection closures and cursor lifecycle cleanup added in `tests/test_milestone3_snapshots.py` (lines 898, 1005) and `tests/test_milestone5_admin_security.py` (T20.6). Ran all 195 milestone tests under `python -W error::ResourceWarning` with **ZERO warnings** and exit code 0. |
 | **Windows NTFS Platform Verification** | **100% VERIFIED** | 15/15 v3.24 acceptance tests PASS, 194/195 milestone tests PASS (1 POSIX-only test skipped as designed), 372/372 adversarial challenger tests PASS. Zero regressions. |
-| **Linux/POSIX Execution & Durability** | **VERIFIED VIA ABSTRACTION AUDIT & UNIT FIXTURES** | Direct WSL2/Docker kernel execution could not be run natively on the host due to physical absence of WSL/Docker on this Windows host (`wsl.exe -l -v` returned WSL not installed). Mocked POSIX durability tests passed 3/3; POSIX code paths audited for strict fail-closed contract compliance. |
+| **Linux/POSIX Execution & Durability** | **PARTIAL VERIFICATION (MOCKS & AUDIT ONLY — KNOWN CONSTRAINT)** | Direct WSL2/Docker kernel execution could not be run natively on the host due to physical absence of WSL/Docker on this Windows host (`wsl.exe -l -v` returned WSL not installed). Mocked POSIX durability tests passed 3/3; POSIX code paths audited for fail-closed compliance. Genuine Linux kernel / ext4 verification remains an open platform constraint pending a dedicated Linux CI runner. |
 | **Protected Scope Immutability** | **79/79 MATCH (100%)** | Canonical audit verified bit-for-bit identity across all 79 frozen baseline milestone files. Zero hash divergences. |
 | **PostgreSQL Read-Only Safety** | **100% READ-ONLY** | `localhost:5432/egypt_jobs_db` verified: 0 writes, 0 DDL, public schema `kb_*` tables count is 0. |
 | **Repository Integrity & Change Boundary** | **GOVERNANCE ENFORCED** | Implementation code and test files remain strictly local. Only authorized Markdown documentation is committed and pushed. |
@@ -261,6 +261,8 @@ An architectural audit of `knowledge_base/` confirmed POSIX compatibility:
 
 ## 12. Complete Test Execution Matrix
 
+### A. Unit & Adversarial Test Suites
+
 | Test Suite Category | Test File / Command | Tests Executed | Passed | Failed | Skipped | Errors | Exit Code |
 |---|---|---|---|---|---|---|---|
 | **v3.24 Comprehensive Acceptance** | `scratch/test_v3_24_comprehensive_suite.py` | 15 | 15 | 0 | 0 | 0 | **0** |
@@ -281,9 +283,14 @@ An architectural audit of `knowledge_base/` confirmed POSIX compatibility:
 | **M4-R2-2 Adversarial Challenger** | `tests/test_challenger_m4_r2_2_adversarial.py` | 26 | 26 | 0 | 0 | 0 | **0** |
 | **M5-1 Adversarial Challenger** | `tests/test_challenger_m5_1_adversarial.py` | 35 | 35 | 0 | 0 | 0 | **0** |
 | **M5-2 Adversarial Challenger** | `tests/test_challenger_m5_2_adversarial.py` | 45 | 45 | 0 | 0 | 0 | **0** |
-| **Baseline 79 Immutability Audit** | `audit_79_baseline_files.py` | 79 files | 79 | 0 | 0 | 0 | **0** |
-| **PostgreSQL Database Safety** | `audit_database_safety.py` | 3 checks | 3 | 0 | 0 | 0 | **0** |
-| **TOTALS** | — | **601 tests** | **600** | **0** | **1** | **0** | **ALL 0** |
+| **SUBTOTAL (Unit & Adversarial Tests)** | — | **582 tests** | **581** | **0** | **1** | **0** | **ALL 0** |
+
+### B. Governance & Database Safety Audits (Non-Unit Verification)
+
+| Audit Scope | Tool / Script | Entities Audited | Passed / Matched | Divergences / Mutations | Exit Code |
+|---|---|---|---|---|---|
+| **Baseline 79 Immutability Audit** | `audit_79_baseline_files.py` | 79 frozen baseline files | 79 (100% match) | 0 altered / 0 deleted | **0** |
+| **PostgreSQL Database Safety** | `audit_database_safety.py` | 3 checks (DDL, writes, kb_* tables) | 3 passed (100% read-only) | 0 writes / 0 DDL | **0** |
 
 ---
 
